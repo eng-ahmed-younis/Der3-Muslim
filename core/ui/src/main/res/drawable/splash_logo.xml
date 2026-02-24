@@ -1,0 +1,75 @@
+<!--
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:autoMirrored="true"
+    android:width="413dp"
+    android:height="402dp"
+    android:viewportWidth="413"
+    android:viewportHeight="402">
+
+    &lt;!&ndash; Move entire design to center &ndash;&gt;
+    <group
+        android:translateX="46.5"
+        android:translateY="41">
+
+        <path
+            android:fillAlpha="0.2"
+            android:fillColor="#C5A059"
+            android:pathData="M128,64L192,64A64,64 0,0 1,256 128L256,192A64,64 0,0 1,192 256L128,256A64,64 0,0 1,64 192L64,128A64,64 0,0 1,128 64z"/>
+
+        <path
+            android:fillAlpha="0.2"
+            android:fillColor="#00000000"
+            android:strokeAlpha="0.2"
+            android:strokeColor="#C5A059"
+            android:strokeWidth="4"
+            android:pathData="M175.56,87.87L232.12,144.44A22,22 110.32,0 1,232.12 175.56L175.56,232.12A22,22 101.97,0 1,144.44 232.12L87.88,175.56A22,22 69.84,0 1,87.88 144.44L144.44,87.87A22,22 117.05,0 1,175.56 87.87z"/>
+
+        <path
+            android:fillColor="#00000000"
+            android:strokeAlpha="0.4"
+            android:strokeColor="#C5A059"
+            android:strokeWidth="2"
+            android:pathData="M107.77,106.69L186.03,90.06A23,23 121.01,0 1,213.3 107.77L229.94,186.02A23,23 126.38,0 1,212.22 213.3L133.97,229.93A23,23 121.15,0 1,106.69 212.22L90.06,133.97A23,23 80.88,0 1,107.77 106.69z"/>
+
+        <path
+            android:fillColor="#C5A059"
+            android:pathData="M160.01,191.3C152.98,189.21 147.14,184.95 142.49,178.52C137.84,172.09 135.51,164.84 135.51,156.78V137.86L160.01,128.7L184.51,137.86V156.78C184.51,164.84 182.18,172.09 177.53,178.52C172.88,184.95 167.04,189.21 160.01,191.3V191.3"/>
+
+    </group>
+
+</vector>-->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:autoMirrored="true"
+    android:width="413dp"
+    android:height="402dp"
+    android:viewportWidth="413"
+    android:viewportHeight="402">
+
+    <!-- Center entire design -->
+    <group
+        android:translateX="46.5"
+        android:translateY="41">
+
+        <path
+            android:fillAlpha="0.2"
+            android:fillColor="#00000000"
+            android:strokeAlpha="0.2"
+            android:strokeColor="#C5A059"
+            android:strokeWidth="4"
+            android:pathData="M175.56,87.87L232.12,144.44A22,22 110.32,0 1,232.12 175.56L175.56,232.12A22,22 101.97,0 1,144.44 232.12L87.88,175.56A22,22 69.84,0 1,87.88 144.44L144.44,87.87A22,22 117.05,0 1,175.56 87.87z"/>
+
+        <path
+            android:fillColor="#00000000"
+            android:strokeAlpha="0.4"
+            android:strokeColor="#C5A059"
+            android:strokeWidth="2"
+            android:pathData="M107.77,106.69L186.03,90.06A23,23 121.01,0 1,213.3 107.77L229.94,186.02A23,23 126.38,0 1,212.22 213.3L133.97,229.93A23,23 121.15,0 1,106.69 212.22L90.06,133.97A23,23 80.88,0 1,107.77 106.69z"/>
+
+        <path
+            android:fillColor="#C5A059"
+            android:pathData="M160.01,191.3C152.98,189.21 147.14,184.95 142.49,178.52C137.84,172.09 135.51,164.84 135.51,156.78V137.86L160.01,128.7L184.51,137.86V156.78C184.51,164.84 182.18,172.09 177.53,178.52C172.88,184.95 167.04,189.21 160.01,191.3V191.3"/>
+
+    </group>
+
+</vector>
