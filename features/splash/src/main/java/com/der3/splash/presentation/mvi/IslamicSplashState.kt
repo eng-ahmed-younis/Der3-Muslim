@@ -8,4 +8,6 @@ import com.der3.utils.DEFAULT_BOOLEAN
 @Stable
 data class IslamicSplashState (
     val isLoading: Boolean = DEFAULT_BOOLEAN,
+    val isSplashFinished: Boolean = DEFAULT_BOOLEAN,
+
 ) : MviState

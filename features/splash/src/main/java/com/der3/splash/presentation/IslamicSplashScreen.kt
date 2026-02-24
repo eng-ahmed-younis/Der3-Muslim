@@ -2,6 +2,8 @@ package com.der3.splash.presentation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.der3.ui.themes.Der3MuslimTheme
 
 
 @Composable
@@ -27,14 +29,5 @@ fun IslamicSplashScreen() {
 @Preview(showBackground = true, showSystemUi = true)
 fun IslamicSplashScreenPreview() {
 
-    Der3MuslimTheme {
-        IslamicSplashScreen()
-    }
-}
-
-
-// 3 second delay
-LaunchedEffect(Unit) {
-    delay(3000)
-    onNavigateToHome()
+    IslamicSplashScreen()
 }

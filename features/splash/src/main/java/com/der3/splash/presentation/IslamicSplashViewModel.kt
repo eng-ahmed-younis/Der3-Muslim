@@ -7,12 +7,23 @@ import com.der3.splash.presentation.mvi.IslamicSplashReducer
 import com.der3.splash.presentation.mvi.IslamicSplashState
 import javax.inject.Inject
 
-class IslamicSplashViewModel @Inject constructor() : MviBaseViewModel<IslamicSplashState, IslamicSplashAction , IslamicSplashIntent> (
+class IslamicSplashViewModel @Inject constructor(
+    private val
+) : MviBaseViewModel<IslamicSplashState, IslamicSplashAction , IslamicSplashIntent> (
     initialState = IslamicSplashState(),
     reducer = IslamicSplashReducer()
 ){
+
+    init {
+
+    }
     override fun handleIntent(intent: IslamicSplashIntent) {
         TODO("Not yet implemented")
+    }
+
+
+    private fun onSplashFinished() {
+
     }
 
 }

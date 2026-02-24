@@ -1,16 +1,16 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.kotlin.kapt)
 }
 
 android {
     namespace = "com.der3.data_store"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = BuildVersions.COMPILE_SDK
 
     defaultConfig {
-        minSdk = 24
+        minSdk = BuildVersions.MIN_SDK
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -26,11 +26,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.toVersion(BuildVersions.JAVA_VERSION)
+        targetCompatibility = JavaVersion.toVersion(BuildVersions.JAVA_VERSION)
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = BuildVersions.JAVA_VERSION.toString()
     }
 }
 
@@ -41,4 +41,12 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    //Hilt
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
+
+    //data-store
+    implementation(libs.datastore.preferences)
+
 }
