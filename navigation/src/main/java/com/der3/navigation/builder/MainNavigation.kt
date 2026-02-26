@@ -1,0 +1,24 @@
+package com.der3.navigation.builder
+
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.composable
+import com.der3.on_boarding.presentation.screens.OnBoardingRoute
+import com.der3.screens.Der3NavigationRoute
+import com.der3.splash.presentation.IslamicSplashRoute
+
+
+fun NavGraphBuilder.mainNavigation(rootNavController: NavHostController) {
+
+    composable<Der3NavigationRoute.SplashScreen> {
+        IslamicSplashRoute{
+            rootNavController.navigate(route = it)
+        }
+    }
+
+    composable <Der3NavigationRoute.OnboardingScreen> {
+        OnBoardingRoute { screen ->
+            rootNavController.navigate(route = screen)
+        }
+    }
+}

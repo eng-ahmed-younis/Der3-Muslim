@@ -1,20 +1,21 @@
-package com.der3.mvi
+package com.der3.screens
 
 import androidx.annotation.Keep
 import androidx.compose.runtime.Stable
-import kotlinx.serialization.Serializable
 import kotlin.reflect.KClass
+import kotlinx.serialization.Serializable
 
 @Keep
 @Stable
 interface Screens {
-    @Keep
+
     @Serializable
     data class Back(
-        val payload: Map<String, String>? = null
+        val payload: Map<String, String>? = null,
+        val count: Int = 1
     ) : Screens
 
-    @Keep
+
     @Serializable
     data class BackTo(
         val screen: Screens,
@@ -22,14 +23,14 @@ interface Screens {
         val payload: Map<String, String>? = null
     ) : Screens
 
-    @Keep
+
     @Serializable
     data class NavigateToRoot(
         val screen: Screens,
         val exclusive: Boolean = false
     ) : Screens
 
-    @Keep
+
     @Serializable
     data class Replace(
         val newScreen: Screens,
@@ -37,7 +38,7 @@ interface Screens {
         val payload: Map<String, String>? = null
     ) : Screens
 
-    @Keep
+
     @Stable
     @Serializable
     data class NavigateKeepingOnly(

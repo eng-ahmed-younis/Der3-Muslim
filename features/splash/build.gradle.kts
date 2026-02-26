@@ -1,8 +1,10 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -30,6 +32,12 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
+    buildFeatures {
+        compose = true
+    }
+
+
     kotlinOptions {
         jvmTarget = "11"
     }
@@ -53,6 +61,11 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
 
+
+    // testing
+    debugImplementation(libs.androidx.compose.ui.tooling)
+
+
     //Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
@@ -60,6 +73,8 @@ dependencies {
 
     implementation(project(":core:ui"))
     implementation(project(":core:mvi"))
+    implementation(project(":core:ui-model"))
     implementation(project(":core:utils"))
+    implementation(project(":screens"))
     implementation(project(":core:data_store"))
 }

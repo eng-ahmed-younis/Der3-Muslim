@@ -16,6 +16,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven {
+            url = uri("https://androidx.dev/snapshots/builds/13508953/artifacts/repository")
+        }
     }
 }
 
@@ -30,3 +33,5 @@ include(":features:splash")
 include(":core:data_store")
 include(":core:ui-model")
 include(":core:mvi")
+include(":features:on_boarding")
+include(":screens")

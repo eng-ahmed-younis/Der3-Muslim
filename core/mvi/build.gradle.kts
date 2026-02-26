@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -37,6 +38,8 @@ android {
 }
 
 dependencies {
+    //implementation(project(path = ":navigation"))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -46,7 +49,11 @@ dependencies {
 
     // Compose
     implementation(libs.androidx.compose.runtime)
-
     //ViewModel
     implementation(libs.lifecycle.viewmodel.ktx)
+    // serialization
+    implementation(libs.kotlinx.serialization.json)
+
+    implementation(project(path = ":screens"))
+
 }

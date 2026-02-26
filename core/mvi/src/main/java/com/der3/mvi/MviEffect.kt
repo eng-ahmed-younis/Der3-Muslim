@@ -1,5 +1,7 @@
 package com.der3.mvi
 
+import com.der3.screens.Screens
+
 
 interface MviEffect {
 

@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.hilt.android)
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.kotlin.kapt)
 }
 
@@ -89,8 +90,16 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
 
+    implementation("androidx.compose.material:material-icons-core:1.6.0")
+    implementation("androidx.compose.material:material-icons-extended:1.6.0")
+
+    //Navigation
+    implementation(libs.androidx.navigation.compose)
 
     implementation(project(path = ":core:ui"))
     implementation(project(path = ":core:ui-model"))
+    implementation(project(path = ":features:splash"))
+    implementation(project(path = ":navigation"))
+    implementation(project(path = ":screens"))
 
 }
