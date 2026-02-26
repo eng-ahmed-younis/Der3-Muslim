@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.Campaign
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Checkroom
 import androidx.compose.material.icons.filled.DirectionsCar
+import androidx.compose.material.icons.filled.DoorFront
 import androidx.compose.material.icons.filled.FlightLand
 import androidx.compose.material.icons.filled.FlightTakeoff
 import androidx.compose.material.icons.filled.Favorite
@@ -77,12 +78,14 @@ val zekrCategories = listOf(
     ZekrCategory("أذكار الاستيقاظ من النوم", "10 أذكار", Icons.Default.LightMode),
 
     // 🚪 المنزل والطهارة
-    ZekrCategory("دعاء دخول الخلاء", "1 ذكر", Icons.AutoMirrored.Filled.Login),
-    ZekrCategory("دعاء الخروج من الخلاء", "1 ذكر", Icons.AutoMirrored.Filled.Logout),
+    ZekrCategory("دعاء دخول الخلاء", "1 ذكر", Icons.Filled.DoorFront),
+    ZekrCategory("أذكار الآذان", "5 أذكار", Icons.Default.Mosque),
+
     ZekrCategory("الذكر قبل الوضوء", "1 ذكر", Icons.Default.WaterDrop),
     ZekrCategory("الذكر بعد الفراغ من الوضوء", "3 أذكار", Icons.Default.CheckCircle),
     ZekrCategory("الذكر عند الخروج من المنزل", "2 ذكر", Icons.AutoMirrored.Filled.DirectionsWalk),
     ZekrCategory("الذكر عند دخول المنزل", "2 ذكر", Icons.Default.Home),
+    ZekrCategory("دعاء الخروج من الخلاء", "1 ذكر", Icons.AutoMirrored.Filled.Logout),
 
     // 🕌 المسجد والصلاة
     ZekrCategory("دعاء الذهاب إلى المسجد", "2 ذكر", Icons.AutoMirrored.Filled.DirectionsWalk),

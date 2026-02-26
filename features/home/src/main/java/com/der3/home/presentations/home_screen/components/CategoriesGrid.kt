@@ -27,20 +27,38 @@ fun CategoriesGrid(
     categories: List<ZekrCategory>
 ) {
 
-    LazyVerticalGrid(
+/*    LazyVerticalGrid(
         columns = GridCells
             .Fixed(2),
         userScrollEnabled = true,
+        contentPadding = androidx.compose.foundation.layout.PaddingValues(
+            bottom = 8.dp
+        ),
         modifier = modifier
             .height(600.dp),
-           // .padding(bottom = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         itemsIndexed(categories) {index, category ->
             CategoryCard(category = category)
         }
+    }*/
+
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        userScrollEnabled = true,
+        contentPadding = androidx.compose.foundation.layout.PaddingValues(
+            bottom = 8.dp
+        ),
+        modifier = modifier.height(600.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        itemsIndexed(categories.take(6)) { index, category ->
+            CategoryCard(category = category)
+        }
     }
+
 }
 
 @Preview(showBackground = true)
