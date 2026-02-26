@@ -32,7 +32,7 @@ class IslamicSplashViewModel @Inject constructor(
 
     private fun startSplashTimer() {
         viewModelScope.launch {
-            delay(3000)
+            delay(1000)
             onSplashFinished()
         }
     }
@@ -41,7 +41,7 @@ class IslamicSplashViewModel @Inject constructor(
         when(dataStoreRepository.hasCompletedOnboarding){
             true ->{
                 Log.i("IslamicSplashViewModel","true")
-                onEffect(MviEffect.Navigate(screen = Der3NavigationRoute.MainScreen))
+                onEffect(MviEffect.Navigate(screen = Der3NavigationRoute.HomeScreen))
             }
             false ->{
                 Log.i("IslamicSplashViewModel","false")

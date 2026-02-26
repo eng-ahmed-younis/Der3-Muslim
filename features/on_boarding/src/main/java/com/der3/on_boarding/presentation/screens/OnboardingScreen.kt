@@ -57,10 +57,11 @@ fun OnBoardingScreen(
     ShiftSystemBarStyle(
         statusBarColor = AppColors.gray50,
         isStatusBarVisible = true,
-        useDarkStatusBarIcons = false,
+        useDarkStatusBarIcons = true,
         navigationBarColor = AppColors.gray50,
         useDarkNavigationBarIcons = false
     )
+
 
 
     val pagerState = rememberPagerState(
@@ -68,6 +69,12 @@ fun OnBoardingScreen(
         pageCount = { state.totalPages }
     )
 
+    // Sync state with pager when user swipes manually
+    LaunchedEffect(pagerState.currentPage) {
+        if (pagerState.currentPage != state.currentPage) {
+            onIntent(OnBoardingIntent.NextPage(pagerState.currentPage)) // or a dedicated SyncPage intent
+        }
+    }
 
     // Sync pager with state
     LaunchedEffect(state.currentPage) {
@@ -96,6 +103,11 @@ fun OnBoardingScreen(
             1 -> KeyFeaturePage(
                 currentPage = state.currentPage,
                 totalPages = state.totalPages,
+                onPrevious = {
+                    onIntent(
+                        OnBoardingIntent.PreviousPage(page)
+                    )
+                },
                 onSkip = {
                     onIntent(
                         OnBoardingIntent.SkipOnBoarding(page)

@@ -3,6 +3,8 @@ package com.der3.muslim.main_screen.bottom_bar
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Category
+import androidx.compose.material.icons.filled.Dashboard
+import androidx.compose.material.icons.filled.Dataset
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Fingerprint
 import androidx.compose.material.icons.filled.Home
@@ -19,14 +21,14 @@ data class BottomTab(
 
 val bottomTabs = listOf(
     BottomTab(
-        route = Der3NavigationRoute.MainScreen,
+        route = Der3NavigationRoute.HomeScreen,
         label = R.string.home_title,
         icon = Icons.Default.Home
     ),
     BottomTab(
         route = Der3NavigationRoute.SectionScreen,
-        label = R.string.azkar_title, // Added Section/Azkar tab
-        icon = Icons.Default.Category
+        label = R.string.sections_title, // Added Section/Azkar tab
+        icon = Icons.Default.Dashboard
     ),
     BottomTab(
         route = Der3NavigationRoute.TasbeehScreen,

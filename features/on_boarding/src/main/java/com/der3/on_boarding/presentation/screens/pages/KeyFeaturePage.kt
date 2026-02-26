@@ -39,7 +39,8 @@ fun KeyFeaturePage(
     currentPage: Int = 1,
     totalPages: Int = 3,
     onSkip: () -> Unit = {},
-    onNext: () -> Unit = {}
+    onNext: () -> Unit = {},
+    onPrevious: () -> Unit = {}
 ) {
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
 
@@ -65,7 +66,9 @@ fun KeyFeaturePage(
                     modifier = Modifier.clickable { onSkip() }
                 )
 
-                IconButton(onClick = { }) {
+                IconButton(onClick = {
+                    onPrevious()
+                }) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Outlined.ArrowForward,
                         contentDescription = null

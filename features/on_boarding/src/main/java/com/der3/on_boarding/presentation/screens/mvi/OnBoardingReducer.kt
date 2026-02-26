@@ -27,10 +27,6 @@ class OnBoardingReducer @Inject constructor() :
                 state.copy(currentPage = prev)
             }
 
-            is OnBoardingAction.SkipOnBoarding,
-            is OnBoardingAction.CompleteOnBoarding -> {
-                state.copy(onBoardingCompleted = true)
-            }
 
             is OnBoardingAction.LoadOnBoarding -> {
                 state

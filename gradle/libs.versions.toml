@@ -7,6 +7,7 @@ material3 = "1.4.0-alpha14"
 # Compose
 composeBom = "2024.09.00"
 composeCompiler = "1.5.15"
+materialIconsCore = "1.7.8"
 navigationCompose = "2.9.6"
 composeRuntime = "1.7.0"
 
@@ -38,6 +39,8 @@ jetbrainsKotlinJvm = "2.0.21"
 
 
 [libraries]
+androidx-compose-material-icons-core = { module = "androidx.compose.material:material-icons-core", version.ref = "materialIconsCore" }
+androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsCore" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }

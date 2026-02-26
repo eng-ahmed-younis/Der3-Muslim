@@ -78,7 +78,7 @@ private fun DrawerRowPreview() {
                 item = DrawerItem(
                     title = R.string.home_title,
                     icon = Icons.Default.Home,
-                    route = Der3NavigationRoute.MainScreen
+                    route = Der3NavigationRoute.HomeScreen
                 ),
                 selected = true,
                 onClick = {}

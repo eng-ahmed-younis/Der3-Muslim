@@ -1,15 +1,12 @@
 package com.der3.muslim.main_screen.bottom_bar
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.der3.screens.Der3NavigationRoute
@@ -19,11 +16,15 @@ import com.der3.ui.themes.Der3MuslimTheme
 
 @Composable
 fun Der3BottomBar(
+    modifier: Modifier = Modifier,
     currentRoute: String,
     onTabClick: (Screens) -> Unit,
     bottomTabs: List<BottomTab>
 ) {
-    NavigationBar {
+    NavigationBar (
+        modifier = modifier,
+        containerColor = AppColors.green25,
+    ){
         bottomTabs.forEach { tab ->
             NavigationBarItem(
                 selected = currentRoute == tab.route::class.qualifiedName,
@@ -53,7 +54,7 @@ private fun Der3BottomBarPreview() {
     Der3MuslimTheme {
         Der3BottomBar(
             // To show a tab as selected, we pass its qualified class name.
-            currentRoute = Der3NavigationRoute.MainScreen::class.qualifiedName ?: "",
+            currentRoute = Der3NavigationRoute.HomeScreen::class.qualifiedName ?: "",
             onTabClick = {},
             bottomTabs = bottomTabs // Use the globally defined list
         )

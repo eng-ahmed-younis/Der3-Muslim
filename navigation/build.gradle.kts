@@ -65,4 +65,5 @@ dependencies {
     implementation(project(path = ":screens"))
     implementation(project(path = ":features:splash"))
     implementation(project(path = ":features:on_boarding"))
+    implementation(project(path = ":features:home"))
 }

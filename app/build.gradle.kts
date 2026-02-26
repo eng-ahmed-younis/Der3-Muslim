@@ -90,13 +90,14 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
 
-    implementation("androidx.compose.material:material-icons-core:1.6.0")
-    implementation("androidx.compose.material:material-icons-extended:1.6.0")
+    implementation(libs.androidx.compose.material.icons.core)
+    implementation(libs.androidx.compose.material.icons.extended)
 
     //Navigation
     implementation(libs.androidx.navigation.compose)
 
     implementation(project(path = ":core:ui"))
+    implementation(project(path = ":core:utils"))
     implementation(project(path = ":core:ui-model"))
     implementation(project(path = ":features:splash"))
     implementation(project(path = ":navigation"))

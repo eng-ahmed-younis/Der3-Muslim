@@ -52,7 +52,7 @@ fun DrawerHeader() {
                 text = "تطبيق أذكار",
                 color = AppColors.white,
                 fontSize = 28.sp,
-                fontFamily = FontFamily(Font(com.der3.muslim.R.font.cairo_bold)),
+                fontFamily = FontFamily(Font(com.der3.ui.R.font.cairo_bold)),
                 fontWeight = FontWeight.Bold
             )
 
@@ -61,7 +61,7 @@ fun DrawerHeader() {
                 modifier = Modifier
                     .offset(y = (-4).dp),
                 color = AppColors.gold400,
-                fontFamily = FontFamily(Font(com.der3.muslim.R.font.cairo_extralight)),
+                fontFamily = FontFamily(Font(com.der3.ui.R.font.cairo_extralight)),
                 fontSize = 14.sp
             )
         }

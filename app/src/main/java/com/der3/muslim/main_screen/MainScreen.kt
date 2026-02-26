@@ -6,20 +6,20 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.*
-import androidx.navigation.toRoute
 import com.der3.muslim.main_screen.bottom_bar.Der3BottomBar
 import com.der3.muslim.main_screen.bottom_bar.bottomTabs
 import com.der3.muslim.main_screen.drawer.AzkarDrawer
 import com.der3.muslim.main_screen.drawer.model.drawerItems
 import com.der3.navigation.NavigationManager.navigateTo
 import com.der3.screens.Der3NavigationRoute
+import com.der3.utils.LocalDrawerState
 import kotlinx.coroutines.launch
 
 @Composable
 fun MainScreen() {
 
     val navController = rememberNavController()
-    val drawerState = rememberDrawerState(DrawerValue.Closed)
+    val drawerState = LocalDrawerState.current
     val scope = rememberCoroutineScope()
 
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
@@ -27,7 +27,7 @@ fun MainScreen() {
     
 
     val showBottomBar = when (currentRoute) {
-         Der3NavigationRoute.MainScreen::class.qualifiedName,
+         Der3NavigationRoute.HomeScreen::class.qualifiedName,
          Der3NavigationRoute.FavouriteScreen::class.qualifiedName,
          Der3NavigationRoute.TasbeehScreen::class.qualifiedName,
          Der3NavigationRoute.SectionScreen::class.qualifiedName -> true

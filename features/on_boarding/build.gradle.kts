@@ -81,9 +81,9 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
 
 
-
     implementation(project(path = ":core:ui"))
     implementation(project(path = ":core:mvi"))
     implementation(project(path = ":screens"))
+    implementation(project(path = ":core:data_store"))
     implementation(project(path = ":core:ui-model"))
 }

@@ -3,6 +3,7 @@
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="11">
       <module name="Der3_Muslim.mvi" target="21" />
+      <module name="Der3_Muslim.utils" target="21" />
     </bytecodeTargetLevel>
   </component>
 </project>

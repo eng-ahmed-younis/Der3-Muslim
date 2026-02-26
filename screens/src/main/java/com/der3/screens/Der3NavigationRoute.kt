@@ -7,7 +7,7 @@ sealed interface Der3NavigationRoute : Screens {
 
     // bottom bar
     @Serializable
-    object MainScreen : Der3NavigationRoute
+    object HomeScreen : Der3NavigationRoute
 
     @Serializable
     object SectionScreen : Der3NavigationRoute
