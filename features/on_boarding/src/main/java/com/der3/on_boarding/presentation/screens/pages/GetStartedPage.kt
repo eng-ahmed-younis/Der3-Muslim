@@ -34,7 +34,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import com.der3.on_boarding.presentation.screens.components.OnBoardingIndicator
+import com.der3.ui.components.HorizontalDotsIndicator
 import com.der3.ui.R
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
@@ -127,7 +127,7 @@ fun GetStartedPage(
             Spacer(Modifier.height(22.dp))
 
             // Indicator
-            OnBoardingIndicator(
+            HorizontalDotsIndicator(
                 currentPage = currentPage,
                 totalPages = totalPages
             )

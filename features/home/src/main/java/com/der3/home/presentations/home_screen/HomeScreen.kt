@@ -76,6 +76,7 @@ fun HomeScreen(
         statusBarColor = Color(0xFFF4F6F5),
         isStatusBarVisible = true,
         useDarkStatusBarIcons = true,
+        isEdgeToEdgeEnabled = true,
         isNavigationBarVisible = false,
         navigationBarColor = AppColors.gray50,
         useDarkNavigationBarIcons = false
@@ -126,7 +127,9 @@ fun HomeScreen(
             ) }
 
             item {
-                DailyNotificationCard {}
+                DailyNotificationCard {
+                    onIntent(HomeIntent.NavigateToDailyNotifications)
+                }
             }
 
             item { Spacer(modifier = Modifier.height(16.dp)) }

@@ -57,6 +57,7 @@ fun OnBoardingScreen(
     ShiftSystemBarStyle(
         statusBarColor = AppColors.gray50,
         isStatusBarVisible = true,
+        isEdgeToEdgeEnabled = true,
         useDarkStatusBarIcons = true,
         navigationBarColor = AppColors.gray50,
         useDarkNavigationBarIcons = false

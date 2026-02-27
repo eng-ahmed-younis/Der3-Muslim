@@ -75,6 +75,7 @@ fun IslamicSplashScreen(
     ShiftSystemBarStyle(
         statusBarColor = AppColors.green900,
         isStatusBarVisible = true,
+        isEdgeToEdgeEnabled = true,
         useDarkStatusBarIcons = false,
         navigationBarColor = AppColors.green900,
         useDarkNavigationBarIcons = false
