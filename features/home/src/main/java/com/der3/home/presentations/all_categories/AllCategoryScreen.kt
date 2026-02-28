@@ -1,6 +1,7 @@
 package com.der3.home.presentations.all_categories
 
 import Der3TopAppBar
+import LoadingDialog
 import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
@@ -16,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.der3.data.provider.ZekrCategoriesProvider
 import com.der3.home.presentations.all_categories.components.CategoryRow
 import com.der3.home.presentations.all_categories.mvi.AllCategoryIntent
 import com.der3.home.presentations.all_categories.mvi.AllCategoryState
@@ -85,11 +87,13 @@ fun AllCategoryScreen(
     LaunchedEffect(key1 = searchText) {
         snapshotFlow { searchText }
             .debounce(300)
-          //  .distinctUntilChanged()
+            .distinctUntilChanged()
             .collect {
                 onIntent(AllCategoryIntent.UpdateSearchQuery(it))
             }
     }
+
+    LoadingDialog(visible = state.isLoading)
 
 
     Column(
@@ -115,7 +119,7 @@ fun AllCategoryScreen(
             label = stringResource(id = R.string.reminder_name_hint),
             value = searchText,
             iconAction = Icons.Default.Search,
-            borderColor = AppColors.gray200,
+            borderColor = AppColors.gray500,
             backgroundColor = AppColors.white,
             labelColor = AppColors.gray500,
             iconActionColor = AppColors.gray500,
@@ -128,8 +132,12 @@ fun AllCategoryScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(height = (state.categories.size * 100).dp)
-                .padding(horizontal = 16.dp, vertical = 16.dp)
+                .heightIn(
+                    min = (state.categories.size * 100).dp,
+                    max = ((state.categories.size + 3) * 100).dp
+                )
+                .padding(horizontal = 16.dp, vertical = 16.dp),
+            contentPadding = PaddingValues(bottom = 16.dp)
         ) {
             itemsIndexed(state.categories){ index , category ->
                 CategoryRow(
@@ -162,7 +170,10 @@ fun AllCategoryScreenPreview() {
         language = Locale.Builder().setLanguage("ar").build()
     ) {
         AllCategoryScreen(
-            state = AllCategoryState(),
+            state = AllCategoryState(
+                isLoading = true,
+                categories = ZekrCategoriesProvider.categories
+            ),
             onIntent = {}
         )
     }

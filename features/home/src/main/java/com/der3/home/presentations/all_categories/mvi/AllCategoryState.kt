@@ -9,6 +9,7 @@ import com.der3.utils.DEFAULT_BOOLEAN
 data class AllCategoryState (
     val isLoading: Boolean = DEFAULT_BOOLEAN,
     val categories: List<CategoryUi> = emptyList(),
+    val cachedCategories: List<CategoryUi> = emptyList(),
     val searchQuery: String = "",
     val error: String? = null
 ): MviState

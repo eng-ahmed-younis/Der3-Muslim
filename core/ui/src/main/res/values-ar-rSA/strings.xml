@@ -34,6 +34,21 @@
     <string name="reminder_vibration_subtitle">مفعل عند الرنين</string>
     <string name="save_reminder">حفظ التنبيه</string>
 
+    <!-- Onboarding Page 1 -->
+    <string name="onboarding_skip">تخطي</string>
+    <string name="onboarding_title_1">اقرأ الأذكار بسهولة</string>
+    <string name="onboarding_desc_1">جميع الأذكار مرتبة حسب الفئات لتسهيل\nالوصول إليها في كل وقت وحين</string>
+    <string name="onboarding_next">التالي</string>
+
+    <!-- Onboarding Page 2 -->
+    <string name="onboarding_title_2">اسمع بصوت واضح</string>
+    <string name="onboarding_desc_2">تشغيل صوت لكل ذكر لمساعدتك على الحفظ\nوالتدبر بخشوع وطمأنينة</string>
+
+    <!-- Onboarding Page 3 -->
+    <string name="onboarding_title_3">تتبع عدد التكرار</string>
+    <string name="onboarding_desc_3">عداد ذكي لإكمال ذكرك اليومي بكل\nسهولة ويسر</string>
+    <string name="onboarding_start_button">ابدأ الآن</string>
+
 
 
     <!-- error dialog -->
@@ -41,4 +56,10 @@
     <string name="error_dialog_message">حدث خطأ غير متوقع، يرجى المحاولة مرة أخرى</string>
     <string name="error_dialog_retry">إعادة المحاولة</string>
     <string name="error_dialog_close">إغلاق</string>
+
+
+    <!-- Loading Dialog -->
+    <string name="loading_title">جاري التحميل...</string>
+    <string name="loading_message">يرجى الانتظار قليلاً، نحن نقوم بتجهيز المحتوى لك</string>
+
 </resources>

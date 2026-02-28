@@ -16,11 +16,22 @@ class AllCategoryReducer @Inject constructor() : Reducer<AllCategoryActions,AllC
             }
 
             is AllCategoryActions.LoadAllAzkarCategory -> {
-                state.copy(categories = action.category)
+                state.copy(
+                    categories = action.category,
+                    cachedCategories = action.category
+                )
             }
 
             is AllCategoryActions.OnLoading -> {
                 state.copy(isLoading = action.isLoading)
+            }
+
+            is AllCategoryActions.LoadSearchAzkarCategory -> {
+                state.copy(categories = action.category)
+            }
+
+            AllCategoryActions.SearchQueryEmpty -> {
+                state.copy(categories = state.cachedCategories)
             }
         }
     }

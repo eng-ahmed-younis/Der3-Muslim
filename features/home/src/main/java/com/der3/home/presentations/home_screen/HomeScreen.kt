@@ -1,5 +1,6 @@
 package com.der3.home.presentations.home_screen
 
+import LoadingDialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -106,6 +107,7 @@ fun HomeScreen(
         useDarkNavigationBarIcons = false
     )
 
+    LoadingDialog(visible = state.isLoading)
 
     Column(
         modifier = Modifier
@@ -177,6 +179,7 @@ fun HomeScreenPreview() {
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
             HomeScreen(
                 state = HomeState(
+                    isLoading = true,
                     homeAzkarCategory = ZekrCategoriesProvider.categories
                 ),
                 onIntent = {}

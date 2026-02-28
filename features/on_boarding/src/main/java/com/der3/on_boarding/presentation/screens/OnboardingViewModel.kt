@@ -44,7 +44,7 @@ class OnboardingViewModel @Inject constructor(
             }
 
             is OnBoardingIntent.CompleteOnBoarding -> {
-                saveOnBoardingState()
+               saveOnBoardingState()
                 onEffect(
                     MviEffect.Navigate(
                         screen = Screens.Replace(

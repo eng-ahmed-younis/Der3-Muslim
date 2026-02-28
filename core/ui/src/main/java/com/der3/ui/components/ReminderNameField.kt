@@ -52,9 +52,9 @@ fun ReminderNameField(
         maxLines = 1,
         shape = RoundedCornerShape(20.dp),
         textStyle = TextStyle(
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold,
-            fontFamily = FontFamily(Font(R.font.cairo_bold))
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Normal,
+            fontFamily = FontFamily(Font(R.font.cairo))
         ),
         placeholder = {
             Text(

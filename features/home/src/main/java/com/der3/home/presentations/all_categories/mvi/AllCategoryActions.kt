@@ -9,5 +9,9 @@ import com.der3.ui.models.CategoryUi
 sealed interface AllCategoryActions : MviAction {
     data class OnLoading(val isLoading: Boolean) : AllCategoryActions
     data class LoadAllAzkarCategory(val category: List<CategoryUi>) : AllCategoryActions
+
+    data class LoadSearchAzkarCategory(val category: List<CategoryUi>) : AllCategoryActions
+
+    data object SearchQueryEmpty : AllCategoryActions
     data class UpdateSearchQuery(val query: String) : AllCategoryActions
 }
