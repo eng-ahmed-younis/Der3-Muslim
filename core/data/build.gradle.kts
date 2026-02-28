@@ -45,6 +45,9 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    implementation(libs.androidx.compose.material.icons.core)
+    implementation(libs.androidx.compose.material.icons.extended)
+
     //Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
@@ -52,5 +55,8 @@ dependencies {
 
     // KotlinX Serialization
     implementation(libs.kotlinx.serialization.json)
+
+
+    implementation(project(":core:ui"))
 
 }

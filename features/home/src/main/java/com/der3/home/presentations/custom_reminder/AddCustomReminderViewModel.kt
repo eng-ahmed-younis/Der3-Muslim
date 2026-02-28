@@ -1,9 +1,9 @@
-package com.der3.home.presentations.custom_reminde
+package com.der3.home.presentations.custom_reminder
 
-import com.der3.home.presentations.custom_reminde.mvi.AddCustomReminderAction
-import com.der3.home.presentations.custom_reminde.mvi.AddCustomReminderIntent
-import com.der3.home.presentations.custom_reminde.mvi.AddCustomReminderReducer
-import com.der3.home.presentations.custom_reminde.mvi.AddCustomReminderState
+import com.der3.home.presentations.custom_reminder.mvi.AddCustomReminderAction
+import com.der3.home.presentations.custom_reminder.mvi.AddCustomReminderIntent
+import com.der3.home.presentations.custom_reminder.mvi.AddCustomReminderReducer
+import com.der3.home.presentations.custom_reminder.mvi.AddCustomReminderState
 import com.der3.mvi.MviBaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

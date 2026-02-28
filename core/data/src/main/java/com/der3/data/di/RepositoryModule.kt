@@ -1,7 +1,8 @@
 package com.der3.data.di
 
 import android.content.Context
-import com.der3.data.repo.AzkarRepository
+import com.der3.data.repo.AzkarRepositoryImpl
+import com.der3.data.repo.api.AzkarRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,11 +13,11 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object DataModule {
+object RepositoryModule {
 
     @Provides
     @Singleton
     fun provideAzkarRepository(
         @ApplicationContext context: Context
-    ): AzkarRepository = AzkarRepository(context)
+    ): AzkarRepository = AzkarRepositoryImpl(context)
 }

@@ -74,6 +74,7 @@ dependencies {
     implementation(project(":core:ui"))
     implementation(project(":core:mvi"))
     implementation(project(":core:utils"))
+    implementation(project(":core:data"))
     implementation(project(":core:ui-model"))
     implementation(project(":screens"))
 }

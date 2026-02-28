@@ -1,4 +1,4 @@
-package com.der3.home.presentations.custom_reminde.mvi
+package com.der3.home.presentations.custom_reminder.mvi
 
 import com.der3.mvi.Reducer
 import javax.inject.Inject

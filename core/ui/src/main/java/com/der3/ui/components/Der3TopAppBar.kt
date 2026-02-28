@@ -66,7 +66,7 @@ fun Der3TopAppBar(
             Text(
                 text = title,
                 fontSize = 20.sp,
-                fontWeight = FontWeight.W700,
+                fontWeight = FontWeight.Bold,
                 color = titleColor
             )
         }

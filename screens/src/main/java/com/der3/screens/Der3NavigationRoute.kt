@@ -20,6 +20,7 @@ sealed interface Der3NavigationRoute : Screens {
 
 
 
+
     // daily notifications
     @Serializable
     object DailyNotificationsScreen : Der3NavigationRoute
@@ -28,11 +29,19 @@ sealed interface Der3NavigationRoute : Screens {
     object AddCustomReminderScreen : Der3NavigationRoute
 
 
+    // splash & onboarding
     @Serializable
     object SplashScreen : Der3NavigationRoute
 
     @Serializable
     object OnboardingScreen : Der3NavigationRoute
+
+
+
+    // home screens
+    @Serializable
+    object AllCategoriesScreen : Der3NavigationRoute
+
 
     @Serializable
     object SettingsScreen : Der3NavigationRoute

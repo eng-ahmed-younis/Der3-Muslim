@@ -7,4 +7,6 @@ import com.der3.mvi.MviIntent
 sealed interface HomeIntent  : MviIntent {
 
     data object NavigateToDailyNotifications : HomeIntent
+
+    data object NavigateToAllCategories : HomeIntent
 }

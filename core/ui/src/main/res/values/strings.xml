@@ -27,10 +27,18 @@
     <string name="reminder_time_label">وقت التنبيه</string>
     <string name="reminder_repeat_label">تكرار التنبيه</string>
     <string name="reminder_sound_title">صوت التنبيه</string>
+    <string name="zekr_name_label">أسم الذكر</string> <!-- Add this line -->
     <string name="reminder_sound_subtitle">نغمة افتراضية</string>
     <string name="reminder_vibration_title">الاهتزاز</string>
     <string name="reminder_vibration_subtitle">مفعل عند الرنين</string>
     <string name="save_reminder">حفظ التنبيه</string>
 
+
+
+    <!-- error dialog -->
+    <string name="error_dialog_title">عذرًا، حدث خطأ ما</string>
+    <string name="error_dialog_message">حدث خطأ غير متوقع، يرجى المحاولة مرة أخرى</string>
+    <string name="error_dialog_retry">إعادة المحاولة</string>
+    <string name="error_dialog_close">إغلاق</string>
 
 </resources>

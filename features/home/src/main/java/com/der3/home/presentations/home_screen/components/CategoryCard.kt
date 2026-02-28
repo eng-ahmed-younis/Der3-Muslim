@@ -22,21 +22,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.der3.home.domain.ZekrCategory
-import com.der3.home.domain.zekrCategories
+import com.der3.ui.models.CategoryUi
 import com.der3.ui.themes.Der3MuslimTheme
 import androidx.compose.runtime.remember
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import com.der3.data.provider.ZekrCategoriesProvider
 import com.der3.ui.R
 import com.der3.utils.PalletColors
 
 @Composable
 fun CategoryCard(
     modifier: Modifier = Modifier,
-    category: ZekrCategory
+    category: CategoryUi
 ) {
 
     // Pick random color ONCE per composition
@@ -62,7 +62,8 @@ fun CategoryCard(
                 modifier = Modifier
                     .size(60.dp)
                     .background(
-                        bgColor, // 👈 random background
+                        //bgColor, // 👈 random background
+                        color = category.iconBg,
                         shape = CircleShape
                     ),
                 contentAlignment = Alignment.Center
@@ -70,7 +71,8 @@ fun CategoryCard(
                 Icon(
                     category.icon,
                     contentDescription = null,
-                    tint = Color.Black // better contrast for mixed palette
+                   // tint = Color.Black // better contrast for mixed palette
+                    tint = category.iconTint
                 )
             }
 
@@ -94,7 +96,7 @@ fun CategoryCard(
                 overflow = TextOverflow.Ellipsis,
                 fontWeight = FontWeight.W600,
                 textAlign = TextAlign.Center,
-                fontFamily = FontFamily(Font(R.font.cairo_extralight))
+                fontFamily = FontFamily(Font(R.font.cairo_medium))
             )
         }
     }
@@ -105,7 +107,7 @@ fun CategoryCard(
 fun CategoryCardPreview() {
     Der3MuslimTheme {
         CategoryCard(
-            category = zekrCategories.first()
+            category = ZekrCategoriesProvider.categories.first()
         )
     }
 }

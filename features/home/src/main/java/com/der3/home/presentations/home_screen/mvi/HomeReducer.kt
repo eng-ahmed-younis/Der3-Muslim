@@ -7,6 +7,19 @@ class HomeReducer : Reducer<HomeAction, HomeState> {
         action: HomeAction,
         state: HomeState
     ): HomeState {
-        TODO("Not yet implemented")
+        return when (action){
+
+            is HomeAction.OnLoading -> {
+                state.copy(
+                    isLoading = action.isLoading
+                )
+            }
+
+            is HomeAction.LoadHomeAzkarCategory -> {
+                state.copy(
+                    homeAzkarCategory = action.category
+                )
+            }
+        }
     }
 }

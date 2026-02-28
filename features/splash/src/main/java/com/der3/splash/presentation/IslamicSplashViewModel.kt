@@ -2,7 +2,7 @@ package com.der3.splash.presentation
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.der3.data.repo.AzkarRepository
+import com.der3.data.repo.api.AzkarRepository
 import com.der3.data_store.api.DataStoreRepository
 import com.der3.mvi.MviBaseViewModel
 import com.der3.mvi.MviEffect

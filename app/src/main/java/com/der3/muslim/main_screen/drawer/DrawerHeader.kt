@@ -61,7 +61,7 @@ fun DrawerHeader() {
                 modifier = Modifier
                     .offset(y = (-4).dp),
                 color = AppColors.gold400,
-                fontFamily = FontFamily(Font(com.der3.ui.R.font.cairo_extralight)),
+                fontFamily = FontFamily(Font(com.der3.ui.R.font.cairo_medium)),
                 fontSize = 14.sp
             )
         }

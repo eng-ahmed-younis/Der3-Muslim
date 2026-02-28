@@ -38,7 +38,6 @@ android {
 }
 
 dependencies {
-    //implementation(project(path = ":navigation"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -55,5 +54,6 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
 
     implementation(project(path = ":screens"))
+    implementation(project(path = ":core:ui-model"))
 
 }

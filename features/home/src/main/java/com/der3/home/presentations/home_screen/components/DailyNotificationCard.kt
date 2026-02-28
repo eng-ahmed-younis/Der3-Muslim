@@ -99,7 +99,7 @@ fun DailyNotificationCard(
                     text = "قم بتفعيل التنبيهات للأذكار اليومية",
                     fontSize = 14.sp,
                     fontWeight = FontWeight.W800,
-                    fontFamily = FontFamily(Font(R.font.cairo_extralight)),
+                    fontFamily = FontFamily(Font(R.font.cairo_medium)),
                     color = AppColors.gray500
                 )
 

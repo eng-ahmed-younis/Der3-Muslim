@@ -1,4 +1,4 @@
-package com.der3.home.presentations.custom_reminde
+package com.der3.home.presentations.custom_reminder
 
 import Der3TopAppBar
 import androidx.compose.foundation.background
@@ -30,13 +30,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.der3.home.presentations.custom_reminde.mvi.AddCustomReminderIntent
-import com.der3.home.presentations.custom_reminde.mvi.AddCustomReminderState
+import com.der3.home.presentations.custom_reminder.mvi.AddCustomReminderIntent
+import com.der3.home.presentations.custom_reminder.mvi.AddCustomReminderState
 import com.der3.mvi.MviEffect
 import com.der3.screens.Screens
+import com.der3.ui.components.SectionLabel
 import com.der3.ui.components.SwitchCard
+import com.der3.ui.style.ShiftSystemBarStyle
 import com.der3.ui.themes.Der3MuslimTheme
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -59,6 +62,19 @@ fun AddCustomReminderRoute(
             }
         }.launchIn(scope)
     }
+
+
+    ShiftSystemBarStyle(
+        statusBarColor = Color(0xFFF4F6F5),
+        isStatusBarVisible = true,
+        useDarkStatusBarIcons = true,
+        isEdgeToEdgeEnabled = true,
+        isNavigationBarVisible = false,
+        navigationBarColor = AppColors.gray50,
+        useDarkNavigationBarIcons = false
+    )
+
+
 
     AddCustomReminderScreen(
         state = viewModel.viewState,
@@ -191,16 +207,6 @@ fun AddCustomReminderScreen(
     }
 }
 
-
-@Composable
-private fun SectionLabel(text: String) {
-    Text(
-        text = text,
-        color = AppColors.green800,
-        fontWeight = FontWeight.Bold,
-        fontSize = 16.sp
-    )
-}
 
 
 

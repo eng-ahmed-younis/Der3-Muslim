@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -17,6 +18,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -32,6 +36,13 @@ fun ReminderNameField(
     modifier: Modifier = Modifier,
     label: String,
     value: String,
+    labelColor: Color = AppColors.blueGray400,
+    iconAction: ImageVector = Icons.Default.Edit,
+    borderColor: Color = AppColors.green100,
+    iconActionColor: Color = AppColors.green400,
+    backgroundColor: Color = Color.White,
+    cursorColor: Color = AppColors.green400,
+    textColor: Color = AppColors.gray900Text,
     onValueChange: (String) -> Unit
 ) {
     OutlinedTextField(
@@ -39,31 +50,47 @@ fun ReminderNameField(
         onValueChange = onValueChange,
         singleLine = true,
         maxLines = 1,
+        shape = RoundedCornerShape(20.dp),
+        textStyle = TextStyle(
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
+            fontFamily = FontFamily(Font(R.font.cairo_bold))
+        ),
         placeholder = {
             Text(
                 text = label,
-                color = AppColors.blueGray400,
+                color = labelColor,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Normal,
-                fontFamily = FontFamily(Font(R.font.cairo_extralight))
+                fontFamily = FontFamily(Font(R.font.cairo_medium))
             )
-                      },
+        },
+
         modifier = modifier
-            .fillMaxWidth()
-            .border(
-                width = 1.dp,
-                color = AppColors.green100,
-                shape = RoundedCornerShape(20.dp)
-            ),
-        shape = RoundedCornerShape(20.dp),
+            .fillMaxWidth(),
+
         trailingIcon = {
             Icon(
-                imageVector = Icons.Default.Edit,
+                imageVector = iconAction,
                 contentDescription = null,
-                tint = AppColors.green400,
+                tint = iconActionColor,
                 modifier = Modifier.size(24.dp)
             )
-        }
+        },
+
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedContainerColor = backgroundColor,
+            unfocusedContainerColor = backgroundColor,
+            disabledContainerColor = backgroundColor,
+
+            focusedBorderColor = borderColor,
+            unfocusedBorderColor = borderColor,
+            disabledBorderColor = borderColor,
+
+            cursorColor = cursorColor,
+            focusedTextColor = textColor,
+            unfocusedTextColor = textColor
+        )
     )
 }
 
@@ -89,6 +116,7 @@ private fun ReminderNameFieldPreview() {
                     .fillMaxWidth(fraction = 0.9f)
                     .padding(16.dp),
                 label = "مثال: أذكار الصباح",
+
                 value = textState,
                 onValueChange = { textState = it }
             )
