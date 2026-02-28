@@ -20,8 +20,12 @@ sealed interface Der3NavigationRoute : Screens {
 
 
 
+    // daily notifications
     @Serializable
     object DailyNotificationsScreen : Der3NavigationRoute
+
+    @Serializable
+    object AddCustomReminderScreen : Der3NavigationRoute
 
 
     @Serializable

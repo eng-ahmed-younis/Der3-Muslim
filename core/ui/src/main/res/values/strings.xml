@@ -11,4 +11,26 @@
     <string name="settings_title">الإعدادات</string>
     <string name="about_title">عن التطبيق</string>
     <string name="version_title">الإصدار</string>
+    <string name="home_view_all_action">عرض الكل</string>
+    <string name="home_categories_title">التصنيفات</string>
+
+    <string name="daily_notifications_title">التنبيهات اليومية</string>
+    <string name="daily_notifications_header_subtitle">حافظ على وردك اليومي من خلال التنبيهات</string>
+    <string name="daily_notifications_add_custom">إضافة تنبيه مخصص</string>
+
+    <!-- Existing keys (ensure these exist) -->
+    <string name="azkar_morning">أذكار الصباح</string>
+    <string name="azkar_evening">أذكار المساء</string>
+    <string name="add_custom_reminder_title">إضافة تنبيه مخصص</string>
+    <string name="reminder_name_label">اسم التنبيه</string>
+    <string name="reminder_name_hint">مثال: أذكار الصباح</string>
+    <string name="reminder_time_label">وقت التنبيه</string>
+    <string name="reminder_repeat_label">تكرار التنبيه</string>
+    <string name="reminder_sound_title">صوت التنبيه</string>
+    <string name="reminder_sound_subtitle">نغمة افتراضية</string>
+    <string name="reminder_vibration_title">الاهتزاز</string>
+    <string name="reminder_vibration_subtitle">مفعل عند الرنين</string>
+    <string name="save_reminder">حفظ التنبيه</string>
+
+
 </resources>

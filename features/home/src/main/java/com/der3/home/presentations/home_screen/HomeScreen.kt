@@ -15,6 +15,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
@@ -29,11 +30,11 @@ import com.der3.home.presentations.home_screen.mvi.HomeIntent
 import com.der3.home.presentations.home_screen.mvi.HomeState
 import com.der3.mvi.MviEffect
 import com.der3.screens.Screens
+import com.der3.ui.R
 import com.der3.ui.style.ShiftSystemBarStyle
 import com.der3.ui.themes.Der3MuslimTheme
 import java.util.Locale
 import com.der3.ui.themes.AppColors
-import com.der3.ui.themes.Der3MuslimTheme
 import com.der3.utils.LocalDrawerState
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -90,6 +91,8 @@ fun HomeScreen(
     ) {
 
         HomeTopHeader(
+            modifier = Modifier,
+            backgroundColor = AppColors.gray50,
             onDrawerClick = {
                 if (drawerState.isOpen) {
                     scope.launch {
@@ -117,8 +120,8 @@ fun HomeScreen(
 
             item {
                 SectionHeader(
-                    title = "التصنيفات",
-                    action = "عرض الكل"
+                    title = stringResource(id = R.string.home_categories_title),
+                    action = stringResource(id = R.string.home_view_all_action)
                 )
             }
 

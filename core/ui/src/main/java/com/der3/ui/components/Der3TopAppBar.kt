@@ -36,7 +36,7 @@ fun Der3TopAppBar(
         modifier = modifier
             .fillMaxWidth()
             .background(backgroundColor)
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+            .padding(horizontal = 10.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
 
@@ -50,7 +50,10 @@ fun Der3TopAppBar(
                 )
             }
         } else {
-            Spacer(modifier = Modifier.size(48.dp)) // keep title centered
+            Spacer(
+                modifier = Modifier
+                    .size(48.dp)
+            )
         }
 
         // 🔹 Center (Title Row)

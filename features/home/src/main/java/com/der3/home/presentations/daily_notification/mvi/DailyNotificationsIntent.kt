@@ -18,4 +18,5 @@ sealed interface DailyNotificationsIntent  : MviIntent {
     data object NavigateBack : DailyNotificationsIntent
     data object NavigateToEditNotification : DailyNotificationsIntent
     data object NavigateToAddNotification : DailyNotificationsIntent
+    data object NavigateToAddCustomReminder : DailyNotificationsIntent
 }

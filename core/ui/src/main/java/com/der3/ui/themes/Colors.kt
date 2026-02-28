@@ -9,12 +9,14 @@ internal val lightColors = Colors(
     green800 = Color(0xFF1B5F21),
     green700 = Color(0xFF1F6B2D),
     green500 = Color(0xFF5f8f63),
+    green400 = Color(0xFFa4bfa6),
     green100 = Color(0xFFDDE8DF),
     green50 = Color(0xFFE4EDE6),
     green25 = Color(0xFFF4F6F5),
 
     gray900Text = Color(0xFF111827),
     gray500 = Color(0xFF6B7280),
+    blueGray400 = Color(0xFF9BA9BD),
     gray200 = Color(0xFFE2E8F0),
     gray100 = Color(0xFFCBD5C9),
     gray50 = Color(0xFFF5F6F3),
@@ -32,12 +34,14 @@ internal val darkColors = Colors(
     green800 = Color(0xFF1B5F21),
     green700 = Color(0xFF1F6B2D),
     green500 = Color(0xFF5f8f63),
+    green400 = Color(0xFFa4bfa6),
     green100 = Color(0xFFDDE8DF),
     green50 = Color(0xFFE4EDE6),
     green25 = Color(0xFFF4F6F5),
 
     gray900Text = Color(0xFF111827),
     gray500 = Color(0xFF6B7280),
+    blueGray400 = Color(0xFF9BA9BD),
     gray200 = Color(0xFFE2E8F0),
     gray100 = Color(0xFFCBD5C9),
     gray50 = Color(0xFFF5F6F3),
@@ -57,6 +61,7 @@ data class Colors(
     val green800: Color,
     val green700:Color,
     val green500:Color,
+    val green400:Color,
     val green100: Color,
     val green50:Color,
     val green25: Color,
@@ -70,7 +75,11 @@ data class Colors(
 
     val gray900Text:Color,
     val gray500:Color,
+    val blueGray400:Color,
     val gray100:Color,
     val gray200:Color,
     val gray50: Color
+
+
 )
+

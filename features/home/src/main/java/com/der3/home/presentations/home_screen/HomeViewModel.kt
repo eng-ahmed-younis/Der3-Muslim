@@ -16,7 +16,7 @@ class HomeViewModel @Inject constructor() : MviBaseViewModel<HomeState, HomeActi
     override fun handleIntent(intent: HomeIntent) {
         when(intent){
             is HomeIntent.NavigateToDailyNotifications -> {
-                onEffect(MviEffect.Navigate(Der3NavigationRoute.DailyNotificationsScreen))
+                onEffect(MviEffect.Navigate(screen = Der3NavigationRoute.DailyNotificationsScreen))
             }
         }
     }

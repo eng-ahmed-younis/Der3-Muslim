@@ -1,6 +1,10 @@
 package com.der3.muslim.main_screen
 
 import MainNavHost
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -12,6 +16,7 @@ import com.der3.muslim.main_screen.drawer.AzkarDrawer
 import com.der3.muslim.main_screen.drawer.model.drawerItems
 import com.der3.navigation.NavigationManager.navigateTo
 import com.der3.screens.Der3NavigationRoute
+import com.der3.ui.themes.AppColors
 import com.der3.utils.LocalDrawerState
 import kotlinx.coroutines.launch
 
@@ -49,6 +54,7 @@ fun MainScreen() {
         }
     ) {
         Scaffold(
+            containerColor = AppColors.gray50,
          /*   topBar = {
                 if (showBottomBar) {
                     TopAppBar(
@@ -64,13 +70,21 @@ fun MainScreen() {
                 }
             },*/
             bottomBar = {
-                if (showBottomBar) {
+                AnimatedVisibility(
+                    visible = showBottomBar,
+                    enter = slideInVertically(
+                        initialOffsetY = { it },
+                        animationSpec = tween(400)
+                    ),
+                    exit = slideOutVertically(
+                        targetOffsetY = { it },
+                        animationSpec = tween(400)
+                    )
+                ) {
                     Der3BottomBar(
                         currentRoute = currentRoute ?: "",
                         bottomTabs = bottomTabs,
-                        onTabClick = { route ->
-                            navController.navigateTo(route)
-                        }
+                        onTabClick = { route -> navController.navigateTo(route) }
                     )
                 }
             }

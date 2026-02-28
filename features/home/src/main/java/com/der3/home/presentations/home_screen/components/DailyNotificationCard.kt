@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -70,12 +71,13 @@ fun DailyNotificationCard(
                     .size(56.dp)
                     .background(
                         AppColors.green800,
-                        shape = CircleShape
+                        shape = RoundedCornerShape(20.dp)
                     ),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    Icons.Default.Notifications,
+                    painter = painterResource(R.drawable.notifications_active),
+                        //Icons.Default.Notifications,
                     null,
                     tint = Color.White
                 )

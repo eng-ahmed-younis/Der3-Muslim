@@ -30,6 +30,7 @@ import com.der3.ui.themes.Der3MuslimTheme
 @Composable
 fun HomeTopHeader(
     modifier: Modifier = Modifier,
+    backgroundColor: Color = AppColors.white,
     onDrawerClick: () -> Unit,
     onNotificationClick: () -> Unit
 ) {
@@ -37,7 +38,7 @@ fun HomeTopHeader(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .background(AppColors.white)
+            .background(color = backgroundColor)
             .padding(horizontal = 16.dp, vertical = 18.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
@@ -104,6 +105,7 @@ fun HomeTopHeaderPreview() {
     Der3MuslimTheme {
         HomeTopHeader(
             onDrawerClick = {},
+            backgroundColor = AppColors.gray50,
             onNotificationClick = {}
         )
     }

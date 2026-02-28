@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,6 +24,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.WbSunny
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.der3.home.presentations.daily_notification.components.AddCustomNotificationButton
 import com.der3.home.presentations.daily_notification.components.DailyNotificationsHeader
@@ -32,6 +32,7 @@ import com.der3.home.presentations.daily_notification.mvi.DailyNotificationsInte
 import com.der3.home.presentations.daily_notification.mvi.DailyNotificationsState
 import com.der3.mvi.MviEffect
 import com.der3.screens.Screens
+import com.der3.ui.R
 import com.der3.ui.style.ShiftSystemBarStyle
 import com.der3.ui.themes.Der3MuslimTheme
 import com.der3.utils.PalletColors
@@ -91,10 +92,9 @@ fun DailyNotificationsScreen(
             .background(AppColors.gray50)
     ) {
 
-        // 🔹 TopAppBar من الكومبوننت بتاعك
         Der3TopAppBar(
             backgroundColor = AppColors.gray50,
-            title = "التنبيهات اليومية",
+            title = stringResource(id = R.string.daily_notifications_title),
             onBackClick = {
                 onIntent(DailyNotificationsIntent.NavigateBack)
             },
@@ -110,8 +110,8 @@ fun DailyNotificationsScreen(
 
             item {
                 DailyNotificationsHeader(
-                    title = "التنبيهات اليومية",
-                    subtitle = "حافظ على وردك اليومي من خلال التنبيهات",
+                    title = stringResource(R.string.daily_notifications_title),
+                    subtitle = stringResource(R.string.daily_notifications_header_subtitle),
                     icon = Icons.Default.Notifications,
                     iconColor = AppColors.green800,
                     iconBgColor = AppColors.green50,
@@ -137,8 +137,10 @@ fun DailyNotificationsScreen(
             item {
                 AddCustomNotificationButton(
                     modifier = Modifier,
-                    text = "إضافة تنبيه مخصص",
-                    onClick = {}
+                    text = stringResource(R.string.daily_notifications_add_custom),
+                    onClick = {
+                        onIntent(DailyNotificationsIntent.NavigateToAddCustomReminder)
+                    }
                 )
             }
 

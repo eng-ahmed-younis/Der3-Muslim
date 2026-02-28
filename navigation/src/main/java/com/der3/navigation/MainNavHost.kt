@@ -16,7 +16,8 @@ fun MainNavHost(
     NavHost(
         navController = navController,
         startDestination = Der3NavigationRoute.SplashScreen,
-        modifier = modifier
+        modifier = modifier,
+
     ) {
         mainNavigation(rootNavController = navController)
         sideMenuNavigation(rootNavController = navController)

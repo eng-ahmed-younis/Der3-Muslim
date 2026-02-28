@@ -3,6 +3,7 @@ package com.der3.navigation.builder
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import com.der3.home.presentations.custom_reminde.AddCustomReminderRoute
 import com.der3.home.presentations.daily_notification.DailyNotificationsRoute
 import com.der3.home.presentations.home_screen.HomeRoute
 import com.der3.navigation.NavigationManager.navigateTo
@@ -27,13 +28,19 @@ fun NavGraphBuilder.mainNavigation(rootNavController: NavHostController) {
 
     composable<Der3NavigationRoute.HomeScreen> {
         HomeRoute { screen ->
-            rootNavController.navigate(route = screen)
+            rootNavController.navigateTo(screen = screen)
         }
     }
 
     composable<Der3NavigationRoute.DailyNotificationsScreen> {
         DailyNotificationsRoute { screen ->
-            rootNavController.navigate(route = screen)
+            rootNavController.navigateTo(screen = screen)
+        }
+    }
+
+    composable<Der3NavigationRoute.AddCustomReminderScreen> {
+        AddCustomReminderRoute { screen ->
+            rootNavController.navigateTo(screen = screen)
         }
     }
 }

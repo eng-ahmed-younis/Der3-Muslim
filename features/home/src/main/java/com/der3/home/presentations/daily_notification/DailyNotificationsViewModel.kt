@@ -6,7 +6,10 @@ import com.der3.home.presentations.daily_notification.mvi.DailyNotificationsRedu
 import com.der3.home.presentations.daily_notification.mvi.DailyNotificationsState
 import com.der3.mvi.MviBaseViewModel
 import com.der3.mvi.MviEffect
+import com.der3.mvi.MviEffect.*
+import com.der3.screens.Der3NavigationRoute
 import com.der3.screens.Screens
+import com.der3.screens.Screens.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -23,12 +26,15 @@ class DailyNotificationsViewModel @Inject constructor() :
             is DailyNotificationsIntent.DeleteNotification -> TODO()
             DailyNotificationsIntent.LoadNotifications -> TODO()
             DailyNotificationsIntent.NavigateBack -> {
-                onEffect(MviEffect.Navigate(screen = Screens.Back()))
+                onEffect(Navigate(screen = Back()))
             }
             DailyNotificationsIntent.NavigateToAddNotification -> TODO()
             DailyNotificationsIntent.NavigateToEditNotification -> TODO()
             is DailyNotificationsIntent.ToggleNotification -> TODO()
             is DailyNotificationsIntent.UpdateNotification -> TODO()
+            DailyNotificationsIntent.NavigateToAddCustomReminder -> {
+                onEffect(MviEffect.Navigate(screen = Der3NavigationRoute.AddCustomReminderScreen))
+            }
         }
     }
 }
