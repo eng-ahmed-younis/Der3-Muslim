@@ -1,7 +1,7 @@
 package com.der3.home.presentations.daily_notification.mvi
 
 import androidx.compose.runtime.Stable
-import com.der3.home.domain.DailyNotificationItem
+import com.der3.home.domain.model.DailyNotificationItem
 import com.der3.mvi.MviIntent
 
 @Stable

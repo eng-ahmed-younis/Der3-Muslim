@@ -61,6 +61,11 @@
     <string name="loading_message">يرجى الانتظار قليلاً، نحن نقوم بتجهيز المحتوى لك</string>
 
 
+    <!-- Zekr Details Screen -->
+    <string name="zekr_details_title">تفاصيل الذكر</string>
+    <string name="zekr_details_quran_verse">الَّذِينَ آمَنُوا وَتَطْمَئِنُّ قُلُوبُهُم بِذِكْرِ اللَّهِ ۗ أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ</string>
+
+
 
     // for info card
 

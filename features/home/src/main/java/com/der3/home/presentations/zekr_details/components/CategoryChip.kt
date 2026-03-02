@@ -36,7 +36,7 @@ fun CategoryChip(
 private fun CategoryChipPreview() {
     Der3MuslimTheme {
         Box(modifier = Modifier.padding(16.dp)) {
-            CategoryChip(text = "أذكار الصباح")
+            CategoryChip(text = "الَّذِينَ آمَنُوا وَتَطْمَئِنُّ قُلُوبُهُم بِذِكْرِ اللَّهِ ۗ أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ")
         }
     }
 }

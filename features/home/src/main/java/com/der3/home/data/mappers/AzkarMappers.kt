@@ -1,10 +1,10 @@
 package com.der3.home.data.mappers
 
 import com.der3.data.model.AzkarCategory
+import com.der3.data.model.AzkarItem
 import com.der3.data.provider.ZekrCategoriesProvider
-import com.der3.home.domain.ZekrUiModel
+import com.der3.home.domain.model.ZekrUiModel
 import com.der3.ui.models.CategoryUi
-import kotlin.text.toIntOrNull
 
 
 fun List<AzkarCategory>.toUiCategories(): List<CategoryUi> {
@@ -43,7 +43,16 @@ fun AzkarCategory.toZekrUiModels(): List<ZekrUiModel>? {
             id = item.id,
             text = item.text,
             repeatCount = item.count,
-            sourceUrl = item.audio
+            audioPath = item.audioPath
         )
     }
+}
+
+fun AzkarItem.toZekrUiModel(): ZekrUiModel{
+    return ZekrUiModel(
+        id = this.id,
+        text = this.text,
+        repeatCount = this.count,
+        audioPath = this.audioPath
+    )
 }

@@ -52,7 +52,8 @@ sealed interface Der3NavigationRoute : Screens {
 
     @Serializable
     data class ZekrDetailsScreen(
-        val zekrId: Int
+        val zekrId: Int,
+        val categoryId: Int
     ) : Der3NavigationRoute
 
 

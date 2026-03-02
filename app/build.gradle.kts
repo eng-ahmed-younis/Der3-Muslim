@@ -99,6 +99,7 @@ dependencies {
     implementation(project(path = ":core:ui"))
     implementation(project(path = ":core:utils"))
     implementation(project(path = ":core:ui-model"))
+    implementation(project(path = ":core:player"))
     implementation(project(path = ":features:splash"))
     implementation(project(path = ":navigation"))
     implementation(project(path = ":screens"))

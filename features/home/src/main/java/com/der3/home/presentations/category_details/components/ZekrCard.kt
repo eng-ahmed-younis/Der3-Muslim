@@ -31,7 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.der3.home.domain.ZekrUiModel
+import com.der3.home.domain.model.ZekrUiModel
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
 import java.util.Locale
@@ -185,7 +185,7 @@ private fun ZekrCardPreview() {
     val sampleZekr =    ZekrUiModel(
         id = 2,
         text = "اللّهُـمَّ بِكَ أَصْـبَحْنا وَبِكَ أَمْسَـينا",
-        sourceUrl = "",
+        audioPath = "",
         repeatCount = 1,
         isFavorite = false,
         isBookmarked = false

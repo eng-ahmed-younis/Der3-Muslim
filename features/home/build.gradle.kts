@@ -80,5 +80,7 @@ dependencies {
     implementation(project(":core:utils"))
     implementation(project(":core:data"))
     implementation(project(":core:ui-model"))
+    implementation(project(":core:player"))
     implementation(project(":screens"))
+
 }

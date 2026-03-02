@@ -139,7 +139,7 @@ private fun CircularZekrCounterPreview() {
             contentAlignment = Alignment.Center
         ) {
             CircularZekrCounter(
-                progress = 0.66f,
+                progress = 0.36f,
                 count = 11,
                 total = 33,
                 onClick = {},

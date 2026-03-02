@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.der3.data.params.CategoryDetailsParams
 import com.der3.home.di.factory.CategoryDetailsViewModelFactory
-import com.der3.home.domain.ZekrUiModel
+import com.der3.home.domain.model.ZekrUiModel
 import com.der3.home.presentations.category_details.CategoryDetailsViewModel
 import com.der3.home.presentations.category_details.mvi.CategoryDetailsIntent
 import com.der3.home.presentations.category_details.mvi.CategoryDetailsState
@@ -156,7 +156,7 @@ private fun AzkarDetailsScreenPreview() {
          ZekrUiModel(
              id = 1,
              text = "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ وَالْحَمْدُ لِلَّهِ",
-             sourceUrl = "",
+             audioPath = "",
              repeatCount = 1,
              isFavorite = false,
              isBookmarked = false
@@ -164,7 +164,7 @@ private fun AzkarDetailsScreenPreview() {
          ZekrUiModel(
              id = 2,
              text = "اللّهُـمَّ بِكَ أَصْـبَحْنا وَبِكَ أَمْسَـينا",
-             sourceUrl = "",
+             audioPath = "",
              repeatCount = 1,
              isFavorite = false,
              isBookmarked = false

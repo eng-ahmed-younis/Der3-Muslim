@@ -2,11 +2,13 @@ package com.der3.navigation.builder
 
 import AzkarDetailsRoute
 import ZekrDetailsRoute
+import android.util.Log
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.der3.data.params.CategoryDetailsParams
+import com.der3.data.params.ZekrDetailsParams
 import com.der3.home.presentations.all_categories.AllCategoriesRoute
 import com.der3.home.presentations.custom_reminder.AddCustomReminderRoute
 import com.der3.home.presentations.daily_notification.DailyNotificationsRoute
@@ -80,12 +82,17 @@ fun NavGraphBuilder.der3AppNavigation(rootNavController: NavHostController) {
     composable<Der3NavigationRoute.ZekrDetailsScreen> { backStackEntry ->
         val param: Der3NavigationRoute.ZekrDetailsScreen = backStackEntry.toRoute()
 
-        ZekrDetailsRoute(
+        val screenParams = ZekrDetailsParams(
+            zekrId = param.zekrId,
+            categoryId = param.categoryId
+        )
 
+        ZekrDetailsRoute(
+            params = screenParams
         ) { screen ->
             rootNavController.navigateTo(screen = screen)
         }
-     }
+    }
 
 
 }

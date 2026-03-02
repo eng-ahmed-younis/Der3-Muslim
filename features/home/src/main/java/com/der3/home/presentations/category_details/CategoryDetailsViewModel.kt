@@ -54,15 +54,24 @@ class CategoryDetailsViewModel @AssistedInject constructor(
 
 
     override fun handleIntent(intent: CategoryDetailsIntent) {
-        when(intent){
+        when (intent) {
             is CategoryDetailsIntent.OnBackClick -> {
                 onEffect(MviEffect.Navigate(Screens.Back()))
             }
+
             is CategoryDetailsIntent.OnZekrClick -> {
-                onEffect(MviEffect.Navigate(screen = Der3NavigationRoute.ZekrDetailsScreen(intent.zekrId)))
+                onEffect(
+                    MviEffect.Navigate(
+                        screen = Der3NavigationRoute.ZekrDetailsScreen(
+                            categoryId = params.categoryId,
+                            zekrId = intent.zekrId
+                        )
+                    )
+                )
             }
+
             else -> {}
-           // is AzkarDetailsIntent.OnShareClick -> onAction(AzkarDetailsAction.OnShareClick(intent.zekr))
+            // is AzkarDetailsIntent.OnShareClick -> onAction(AzkarDetailsAction.OnShareClick(intent.zekr))
         }
 
     }

@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Share
@@ -30,18 +31,20 @@ import java.util.Locale
 @Composable
 fun ControlPanel(
     modifier: Modifier = Modifier,
+    isPlaying: Boolean = false,
     onFavorite: () -> Unit,
     onPlay: () -> Unit,
     onReset: () -> Unit,
     onShare: () -> Unit,
     onVolume: () -> Unit
 ) {
-    Column (
+    Column(
         modifier = modifier
             .fillMaxWidth()
+            .clip(RoundedCornerShape(16.dp))
             .background(AppColors.white)
             .padding(vertical = 30.dp),
-    ){
+    ) {
         Row(
             modifier = modifier
                 .fillMaxWidth()
@@ -97,7 +100,7 @@ fun ControlPanel(
                         .background(AppColors.green700)
                 ) {
                     Icon(
-                        imageVector = Icons.Default.PlayArrow,
+                        imageVector = if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
                         contentDescription = "Play",
                         tint = AppColors.white
                     )
@@ -133,7 +136,7 @@ fun ControlPanel(
             }
 
         }
-     //   Spacer(modifier = Modifier.height(16.dp))
+        //   Spacer(modifier = Modifier.height(16.dp))
     }
 }
 

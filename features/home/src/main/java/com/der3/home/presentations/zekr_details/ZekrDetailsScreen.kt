@@ -1,6 +1,4 @@
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.MaterialTheme
@@ -23,17 +22,21 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.der3.data.params.ZekrDetailsParams
+import com.der3.home.di.factory.ZekrDetailsViewModelFactory
 import com.der3.home.presentations.zekr_details.ZekrDetailsViewModel
 import com.der3.home.presentations.zekr_details.mvi.ZekrDetailsIntent
 import com.der3.home.presentations.zekr_details.mvi.ZekrDetailsState
 import com.der3.model.UiText
 import com.der3.mvi.MviEffect
 import com.der3.screens.Screens
+import com.der3.ui.R
 import com.der3.ui.components.ErrorDialog
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
@@ -45,10 +48,16 @@ import java.util.Locale
 
 @Composable
 fun ZekrDetailsRoute(
-    onNavigate:(Screens) -> Unit,
+    params: ZekrDetailsParams,
+    onNavigate: (Screens) -> Unit
 ) {
 
-    val viewModel = hiltViewModel<ZekrDetailsViewModel>()
+    val viewModel: ZekrDetailsViewModel =
+        hiltViewModel<ZekrDetailsViewModel, ZekrDetailsViewModelFactory> { factory ->
+            factory.create(params)
+        }
+
+
     val scope = rememberCoroutineScope()
     var errorMessage by remember { mutableStateOf<String?>(null) }
     var errorType by remember { mutableStateOf<UiText?>(null) }
@@ -85,26 +94,29 @@ fun ZekrDetailsRoute(
 @Composable
 fun ZekrDetailsScreen(
     state: ZekrDetailsState,
-    onIntent:(ZekrDetailsIntent) -> Unit,
+    onIntent: (ZekrDetailsIntent) -> Unit,
 ) {
 
-    val progress = if (state.totalCount > 0) state.currentCount / state.totalCount.toFloat() else 0f
+
+    val total = state.zekrDetails.repeatCount.coerceAtLeast(1)
+    val progress = (state.currentCount.toFloat() / total.toFloat()).coerceIn(0f, 1f)
+
     val scrollState = rememberScrollState()
+
+    LoadingDialog(visible = state.isLoading)
+
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(AppColors.gray50)
-            .scrollable(
-                state = scrollState,
-                orientation = Orientation.Vertical
-            ),
+            .verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally,
 
-    ) {
+        ) {
 
         Der3TopAppBar(
-            title = "تفاصيل الذكر",
+            title = stringResource(R.string.zekr_details_title),
             backgroundColor = AppColors.gray50,
             onBackClick = {
                 onIntent(ZekrDetailsIntent.Back)
@@ -116,7 +128,10 @@ fun ZekrDetailsScreen(
 
 
         // Category Badge
-        CategoryChip("تسبيح")
+        CategoryChip(
+            text = stringResource(R.string.zekr_details_quran_verse)
+
+        )
 
         Spacer(Modifier.height(20.dp))
 
@@ -144,9 +159,9 @@ fun ZekrDetailsScreen(
         CircularZekrCounter(
             progress = progress,
             count = state.currentCount,
-            total = state.totalCount,
+            total = state.zekrDetails.repeatCount,
             onClick = {
-               // onIntent(ZekrDetailsIntent.Increment)
+                onIntent(ZekrDetailsIntent.IncrementZekrReadingCount)
             }
         )
 
@@ -159,16 +174,21 @@ fun ZekrDetailsScreen(
                 .padding(horizontal = 16.dp)
         )
 
-     //   Spacer(Modifier.height(40.dp))
-        Spacer(modifier = Modifier.weight(1f))
+        Spacer(Modifier.height(40.dp))
 
         ControlPanel(
             modifier = Modifier
                 .fillMaxWidth(),
-              //  .padding(horizontal = 16.dp),
+            isPlaying = state.audioState.isPlaying,
             onFavorite = {},
-            onPlay = {},
-            onReset = {  },
+            onPlay = {
+                onIntent(
+                    ZekrDetailsIntent.ToggleAudio(
+                        audioPath = state.zekrDetails.audioPath
+                    )
+                )
+            },
+            onReset = {},
             onShare = {},
             onVolume = {}
         )
@@ -192,3 +212,20 @@ private fun ZekrDetailsScreenPreview() {
         )
     }
 }
+
+/**
+ * UI click
+↓
+Intent.ToggleAudio
+↓
+UseCase
+↓
+AudioPlayer
+↓
+ObserveAzkarAudioStateUseCase
+↓
+Reducer updates state
+↓
+Compose recomposes
+↓
+Icon switches Play/Pause automatically*/

@@ -7,4 +7,10 @@ import com.der3.mvi.MviIntent
 sealed interface ZekrDetailsIntent : MviIntent {
     data class LoadZekrDetails(val zekrId: Int) : ZekrDetailsIntent
     data object Back : ZekrDetailsIntent
+
+    data object IncrementZekrReadingCount : ZekrDetailsIntent
+
+    data class ToggleAudio(val audioPath: String) : ZekrDetailsIntent
+    data object StopAudio : ZekrDetailsIntent
+
 }
