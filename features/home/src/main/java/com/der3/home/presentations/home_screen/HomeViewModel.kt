@@ -1,8 +1,8 @@
 package com.der3.home.presentations.home_screen
 
 import androidx.lifecycle.viewModelScope
-import com.der3.data.mappers.toUiCategories
 import com.der3.data.use_case.GetAzkarCategoriesUseCase
+import com.der3.home.data.mappers.toUiCategories
 import com.der3.home.presentations.home_screen.mvi.HomeAction
 import com.der3.home.presentations.home_screen.mvi.HomeIntent
 import com.der3.home.presentations.home_screen.mvi.HomeReducer
@@ -34,30 +34,43 @@ class HomeViewModel @Inject constructor(
     }
 
     override fun handleIntent(intent: HomeIntent) {
-        when(intent){
+        when (intent) {
             is HomeIntent.NavigateToDailyNotifications -> {
                 onEffect(Navigate(screen = Der3NavigationRoute.DailyNotificationsScreen))
             }
 
             HomeIntent.NavigateToAllCategories -> {
-                onEffect(MviEffect.Navigate(screen = Der3NavigationRoute.AllCategoriesScreen))
+                onEffect(Navigate(screen = Der3NavigationRoute.AllCategoriesScreen))
 
+            }
+
+            is HomeIntent.NavigateToAzkarDetails -> {
+                onEffect(
+                    Navigate(
+                        screen = Der3NavigationRoute.CategoryDetailsScreen(
+                            categoryId = intent.category.id,
+                            categoryTitle = intent.category.title,
+                            categorySubtitle = intent.category.subtitle,
+                            categoryCount = intent.category.count
+                        )
+                    )
+                )
             }
         }
     }
 
- /*   private fun getAllAzkarCategories() {
-        getAllCategoriesUseCase.invoke()
-            .onStart {
-                onAction(HomeAction.OnLoading(true))
-            }.onEach { categories ->
-                onAction(HomeAction.LoadHomeAzkarCategory(category = categories))
-            }.onCompletion {
-                onAction(HomeAction.OnLoading(false))
-            }.catch {
+    /*   private fun getAllAzkarCategories() {
+           getAllCategoriesUseCase.invoke()
+               .onStart {
+                   onAction(HomeAction.OnLoading(true))
+               }.onEach { categories ->
+                   onAction(HomeAction.LoadHomeAzkarCategory(category = categories))
+               }.onCompletion {
+                   onAction(HomeAction.OnLoading(false))
+               }.catch {
 
-            }.launchIn(viewModelScope)
-    }*/
+               }.launchIn(viewModelScope)
+       }*/
 
     private fun getAllAzkarCategories() {
         getAllCategoriesUseCase.invoke()

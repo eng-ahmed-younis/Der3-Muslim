@@ -43,7 +43,7 @@ import com.der3.ui.style.ShiftSystemBarStyle
 import com.der3.ui.themes.Der3MuslimTheme
 import java.util.Locale
 import com.der3.ui.themes.AppColors
-import com.der3.utils.LocalDrawerState
+import com.der3.ui.models.LocalDrawerState
 import com.der3.utils.asString
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -154,7 +154,10 @@ fun HomeScreen(
 
             item {
                 CategoriesGrid(
-                    categories = state.homeAzkarCategory
+                    categories = state.homeAzkarCategory,
+                    onCategoryClick = {
+                        onIntent(HomeIntent.NavigateToAzkarDetails(it))
+                    }
                 )
             }
 

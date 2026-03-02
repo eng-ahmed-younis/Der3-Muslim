@@ -1,4 +1,4 @@
-package com.der3.utils
+package com.der3.ui.models
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp

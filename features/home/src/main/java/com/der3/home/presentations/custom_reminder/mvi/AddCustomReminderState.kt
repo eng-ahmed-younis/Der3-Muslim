@@ -1,9 +1,10 @@
 package com.der3.home.presentations.custom_reminder.mvi
 
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
 import com.der3.mvi.MviState
 
-@Stable
+@Immutable
 data class AddCustomReminderState (
     val isLoading: Boolean = false,
     val reminderName: String = "",

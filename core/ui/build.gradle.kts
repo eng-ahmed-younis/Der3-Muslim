@@ -72,5 +72,5 @@ dependencies {
 
 
     implementation(project(path = ":core:ui-model"))
-    implementation(project(path = ":core:utils"))
+   // implementation(project(path = ":core:utils"))
 }

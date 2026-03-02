@@ -12,7 +12,7 @@ import androidx.core.graphics.drawable.DrawableCompat.getLayoutDirection
 import com.der3.model.AppStyle
 import com.der3.ui.language.LocalAppLanguage
 import com.der3.ui.language.LocalDirection
-import com.der3.utils.LocalDrawerState
+import com.der3.ui.models.LocalDrawerState
 import java.util.Locale
 
 

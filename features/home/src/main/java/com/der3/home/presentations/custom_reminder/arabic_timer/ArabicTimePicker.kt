@@ -1,4 +1,4 @@
-package com.example.timepicker
+package com.der3.home.presentations.custom_reminder.arabic_timer
 
 import AmPmToggle
 import android.annotation.SuppressLint
@@ -26,7 +26,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.der3.ui.components.arabic_timer.WheelColumn
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
 import java.util.Locale

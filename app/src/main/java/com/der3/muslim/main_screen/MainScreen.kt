@@ -17,7 +17,7 @@ import com.der3.muslim.main_screen.drawer.model.drawerItems
 import com.der3.navigation.NavigationManager.navigateTo
 import com.der3.screens.Der3NavigationRoute
 import com.der3.ui.themes.AppColors
-import com.der3.utils.LocalDrawerState
+import com.der3.ui.models.LocalDrawerState
 import kotlinx.coroutines.launch
 
 @Composable

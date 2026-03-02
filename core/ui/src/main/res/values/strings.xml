@@ -61,4 +61,35 @@
     <string name="loading_message">يرجى الانتظار قليلاً، نحن نقوم بتجهيز المحتوى لك</string>
 
 
+
+    // for info card
+
+    <plurals name="minutes_count">
+        <item quantity="zero">لا توجد دقائق</item>
+        <item quantity="one">دقيقة واحدة</item>
+        <item quantity="two">دقيقتان</item>
+        <item quantity="few">%1$d دقائق</item>
+        <item quantity="many">%1$d دقيقة</item>
+        <item quantity="other">%1$d دقيقة</item>
+    </plurals>
+
+
+    <plurals name="times_count">
+        <item quantity="one">مرة </item>
+        <item quantity="two">مرتين</item>
+        <item quantity="few">%1$d مرات</item>
+        <item quantity="many">%1$d مرة</item>
+        <item quantity="other">%1$d مرة</item>
+    </plurals>
+
+
+
+    <plurals name="zekr_count">
+        <item quantity="one">ذكر</item>
+        <item quantity="two">ذكرين</item>
+        <item quantity="few">%d أذكار</item>
+        <item quantity="many">%d ذكرًا</item>
+        <item quantity="other">%d ذكر</item>
+    </plurals>
+
 </resources>

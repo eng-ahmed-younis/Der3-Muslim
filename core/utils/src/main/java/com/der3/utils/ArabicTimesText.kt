@@ -1,6 +1,7 @@
 package com.der3.utils
 
 import com.der3.model.TimeWordType
+import com.der3.model.ZekrCountType
 
 fun Int.toArabicTimesText(): String {
     val type = when {
@@ -22,3 +23,5 @@ fun Int.toArabicTimesText(): String {
         "$this $word"
     }
 }
+
+

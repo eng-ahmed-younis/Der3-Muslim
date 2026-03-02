@@ -35,7 +35,7 @@ import com.der3.screens.Screens
 import com.der3.ui.R
 import com.der3.ui.style.ShiftSystemBarStyle
 import com.der3.ui.themes.Der3MuslimTheme
-import com.der3.utils.PalletColors
+import com.der3.ui.models.PalletColors
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 

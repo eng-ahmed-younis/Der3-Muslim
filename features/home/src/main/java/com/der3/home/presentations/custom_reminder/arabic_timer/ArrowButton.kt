@@ -1,4 +1,4 @@
-package com.der3.ui.components.arabic_timer
+package com.der3.home.presentations.custom_reminder.arabic_timer
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,7 +16,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.der3.ui.themes.Der3MuslimTheme
-import com.example.timepicker.SideValueColor
 
 @Composable
 fun ArrowButton(

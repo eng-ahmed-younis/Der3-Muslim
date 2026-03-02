@@ -8,6 +8,7 @@ import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.automirrored.filled.Reply
 import androidx.compose.material.icons.automirrored.filled.SpeakerNotes
+import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material.icons.filled.AcUnit
 import androidx.compose.material.icons.filled.AccessibilityNew
 import androidx.compose.material.icons.filled.Agriculture
@@ -78,7 +79,6 @@ import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material.icons.filled.Thunderstorm
 import androidx.compose.material.icons.filled.Umbrella
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material.icons.filled.VolunteerActivism
 import androidx.compose.material.icons.filled.WaterDrop
 import androidx.compose.material.icons.filled.WbSunny
@@ -250,7 +250,9 @@ object ZekrCategoriesProvider {
         CategoryUi(id = 109, title = "كيف يرد السلام على الكافر إذا سلَّم", subtitle = "الرد المشروع على غير المسلم", count = "1 ذكر", icon = Icons.Default.RecordVoiceOver),
 
         // 🐓 الأصوات
-        CategoryUi(id = 110, title = "الدعاء عند سماع صياح الديك ونهيق الحمار", subtitle = "سؤال الله وقت صياح الديك", count = "1 ذكر", icon = Icons.Default.VolumeUp),
+        CategoryUi(id = 110, title = "الدعاء عند سماع صياح الديك ونهيق الحمار", subtitle = "سؤال الله وقت صياح الديك", count = "1 ذكر",
+            icon = Icons.AutoMirrored.Filled.VolumeUp
+        ),
         CategoryUi(id = 111, title = "دعاء نباح الكلاب بالليل", subtitle = "الاستعاذة عند سماع نباح الكلاب ليلاً", count = "1 ذكر", icon = Icons.Default.Nightlight),
 
         // 💬 آداب الكلام

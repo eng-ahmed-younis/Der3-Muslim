@@ -1,4 +1,4 @@
-package com.der3.ui.components.arabic_timer
+package com.der3.home.presentations.custom_reminder.arabic_timer
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -34,8 +34,6 @@ import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
 import com.der3.utils.pad2
 import com.der3.utils.wrap
-import com.example.timepicker.LightGreen
-import com.example.timepicker.SideValueColor
 import kotlinx.coroutines.launch
 
 @Composable

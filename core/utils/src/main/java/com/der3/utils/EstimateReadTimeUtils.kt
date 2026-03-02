@@ -44,6 +44,11 @@ fun detectZekrLength(text: String): ZekrLength {
     // Count number of words (handles multiple spaces & line breaks)
     val wordCount = text
         .trim()
+        // In Regular Expressions (Regex), \s is a special shortcut that matches any whitespace character.
+        // This includes:
+        // 1- Standard spaces.
+        // 2- Tabs (\t).
+        // 3-New lines / Line breaks (\n)
         .split("\\s+".toRegex())
         .size
 

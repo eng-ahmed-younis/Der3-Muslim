@@ -20,7 +20,8 @@ import java.util.Locale
 @Composable
 fun CategoriesGrid(
     modifier: Modifier = Modifier,
-    categories: List<CategoryUi>
+    categories: List<CategoryUi>,
+    onCategoryClick: (CategoryUi) -> Unit
 ) {
 
     LazyVerticalGrid(
@@ -34,7 +35,10 @@ fun CategoriesGrid(
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         itemsIndexed(categories.take(6)) { index, category ->
-            CategoryCard(category = category)
+            CategoryCard(
+                category = category,
+                onCategoryClick = onCategoryClick
+            )
         }
     }
 
@@ -48,7 +52,8 @@ fun CategoriesGridPreview() {
     ) {
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
             CategoriesGrid(
-                categories = ZekrCategoriesProvider.categories
+                categories = ZekrCategoriesProvider.categories,
+                onCategoryClick = {}
             )
         }
     }

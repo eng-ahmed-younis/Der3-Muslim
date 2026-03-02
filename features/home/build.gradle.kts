@@ -62,6 +62,10 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
 
 
+    // KotlinX Serialization
+    implementation(libs.kotlinx.serialization.json)
+
+
     //Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)

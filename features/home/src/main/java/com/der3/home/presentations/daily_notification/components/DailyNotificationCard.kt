@@ -40,7 +40,7 @@ import androidx.compose.material.icons.filled.WbSunny
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.ui.tooling.preview.Preview
 import com.der3.ui.themes.Der3MuslimTheme
-import com.der3.utils.PalletColors
+import com.der3.ui.models.PalletColors
 
 
 @Composable

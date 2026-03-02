@@ -7,7 +7,7 @@ import androidx.compose.material.icons.filled.NightsStay
 import androidx.compose.material.icons.filled.WbSunny
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.der3.utils.PalletColors
+import com.der3.ui.models.PalletColors
 
 data class DailyNotificationItem(
     val id: String,

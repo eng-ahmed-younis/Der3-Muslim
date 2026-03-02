@@ -1,6 +1,7 @@
 package com.der3.home.presentations.home_screen.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -31,12 +32,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import com.der3.data.provider.ZekrCategoriesProvider
 import com.der3.ui.R
-import com.der3.utils.PalletColors
+import com.der3.ui.models.PalletColors
 
 @Composable
 fun CategoryCard(
     modifier: Modifier = Modifier,
-    category: CategoryUi
+    category: CategoryUi,
+    onCategoryClick: (CategoryUi) -> Unit
 ) {
 
     // Pick random color ONCE per composition
@@ -45,7 +47,8 @@ fun CategoryCard(
     }
 
     Card(
-        modifier = modifier,
+        modifier = modifier
+            .clickable(onClick = { onCategoryClick(category) }),
         shape = RoundedCornerShape(28.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(4.dp)
@@ -107,7 +110,8 @@ fun CategoryCard(
 fun CategoryCardPreview() {
     Der3MuslimTheme {
         CategoryCard(
-            category = ZekrCategoriesProvider.categories.first()
+            category = ZekrCategoriesProvider.categories.first(),
+            onCategoryClick = {}
         )
     }
 }
