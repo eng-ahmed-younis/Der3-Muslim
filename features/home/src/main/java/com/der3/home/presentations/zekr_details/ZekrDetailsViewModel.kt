@@ -3,15 +3,15 @@ package com.der3.home.presentations.zekr_details
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.der3.data.params.ZekrDetailsParams
-import com.der3.data.use_case.GetAzkarCategoryByIdUseCase
 import com.der3.data.use_case.GetAzkarItemByIdUseCase
+import com.der3.data_store.api.DataStoreRepository
 import com.der3.home.data.mappers.toZekrUiModel
-import com.der3.home.data.mappers.toZekrUiModels
 import com.der3.home.di.factory.ZekrDetailsViewModelFactory
 import com.der3.home.domain.use_case.ObserveAzkarAudioStateUseCase
 import com.der3.home.domain.use_case.StopAzkarAudioUseCase
 import com.der3.home.domain.use_case.ToggleAzkarAudioUseCase
 import com.der3.home.presentations.zekr_details.mvi.ZekrDetailsAction
+import com.der3.home.presentations.zekr_details.mvi.ZekrDetailsAction.*
 import com.der3.home.presentations.zekr_details.mvi.ZekrDetailsIntent
 import com.der3.home.presentations.zekr_details.mvi.ZekrDetailsReducer
 import com.der3.home.presentations.zekr_details.mvi.ZekrDetailsState
@@ -36,7 +36,8 @@ class ZekrDetailsViewModel @AssistedInject constructor(
     private val getAzkarItemByIdUseCase: GetAzkarItemByIdUseCase,
     private val toggleAudio: ToggleAzkarAudioUseCase,
     private val stopAudio: StopAzkarAudioUseCase,
-    private val observeAudioState: ObserveAzkarAudioStateUseCase
+    private val observeAudioState: ObserveAzkarAudioStateUseCase,
+    private val dataStoreRepository: DataStoreRepository
 ) : MviBaseViewModel<ZekrDetailsState, ZekrDetailsAction, ZekrDetailsIntent>(
     initialState = ZekrDetailsState(),
     reducer = ZekrDetailsReducer()
@@ -47,7 +48,7 @@ class ZekrDetailsViewModel @AssistedInject constructor(
         // Observe audio player state and push it into MVI state
         observeAudioState()
             .onEach { state ->
-                Log.i("ZekrDetailsReducer","init isplaying ${state.isPlaying}")
+                Log.i("ZekrDetailsReducer", "init isplaying ${state.isPlaying}")
                 onAction(ZekrDetailsAction.UpdateAudioState(state))
             }
             .catch { e ->
@@ -83,6 +84,19 @@ class ZekrDetailsViewModel @AssistedInject constructor(
             ZekrDetailsIntent.IncrementZekrReadingCount -> {
                 onAction(action = ZekrDetailsAction.UpdateZekrReadingCount)
             }
+
+            ZekrDetailsIntent.ExpandDropdownMenu -> {
+                onAction(action = ZekrDetailsAction.ExpandDropdownMenu)
+            }
+
+            is ZekrDetailsIntent.UpdateFontSize -> {
+                onAction(action = UpdateDeaultFontSize(font = intent.updateFont))
+                dataStoreRepository.zekrScreenDetailsFontSize = intent.updateFont
+            }
+
+            ZekrDetailsIntent.FontSizeSheetVisibility -> {
+                onAction(action = FontSizeSheetVisibility)
+            }
         }
     }
 
@@ -99,6 +113,7 @@ class ZekrDetailsViewModel @AssistedInject constructor(
                 onAction(ZekrDetailsAction.OnZekrDetailsLoaded(zekrDetails = it))
             }
         }.onCompletion {
+            loadDefaultFontSize()
             onAction(ZekrDetailsAction.OnLoading(false))
         }.catch {
             onEffect(
@@ -110,6 +125,12 @@ class ZekrDetailsViewModel @AssistedInject constructor(
             )
             onAction(ZekrDetailsAction.OnLoading(false))
         }.launchIn(viewModelScope)
+    }
+
+    private fun loadDefaultFontSize() {
+        onAction(
+            action = ZekrDetailsAction.UpdateDeaultFontSize(font = dataStoreRepository.zekrScreenDetailsFontSize)
+        )
     }
 
     override fun onCleared() {

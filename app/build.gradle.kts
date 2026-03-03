@@ -1,10 +1,13 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
+ //   alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.google.services)
+
+ //   alias(libs.plugins.kotlin.kapt)
 }
 
 android {
@@ -36,15 +39,18 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility =
-            JavaVersion.toVersion(BuildVersions.JAVA_VERSION)
-        targetCompatibility =
-            JavaVersion.toVersion(BuildVersions.JAVA_VERSION)
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = BuildVersions.JAVA_VERSION.toString()
+    //noinspection WrongGradleMethod
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+        }
     }
+
+
 
     buildFeatures {
         compose = true
@@ -67,6 +73,11 @@ dependencies {
     // Compose BOM
     implementation(platform(libs.androidx.compose.bom))
 
+
+    // Firebase BoM
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+
     // Compose UI
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)
@@ -79,16 +90,17 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+  //  androidTestImplementation(libs.androidx.compose.ui.test.junit4)
 
     // Debug
     debugImplementation(libs.androidx.compose.ui.tooling)
-    debugImplementation(libs.androidx.compose.ui.test.manifest)
+//    debugImplementation(libs.androidx.compose.ui.test.manifest)
 
 
     //Hilt
     implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
+   // kapt(libs.hilt.compiler)
 
     implementation(libs.androidx.compose.material.icons.core)
     implementation(libs.androidx.compose.material.icons.extended)

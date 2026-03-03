@@ -1,6 +1,6 @@
 package com.der3.home.presentations.all_categories
 
-import Der3TopAppBar
+import com.der3.ui.components.Der3TopAppBar
 import LoadingDialog
 import android.util.Log
 import androidx.compose.runtime.Composable
@@ -21,7 +21,6 @@ import com.der3.data.provider.ZekrCategoriesProvider
 import com.der3.home.presentations.all_categories.components.CategoryRow
 import com.der3.home.presentations.all_categories.mvi.AllCategoryIntent
 import com.der3.home.presentations.all_categories.mvi.AllCategoryState
-import com.der3.home.presentations.custom_reminder.mvi.AddCustomReminderIntent
 import com.der3.mvi.MviEffect
 import com.der3.screens.Screens
 import com.der3.ui.R
@@ -106,7 +105,7 @@ fun AllCategoryScreen(
             backgroundColor = AppColors.gray50,
             titleColor = AppColors.gray900Text,
             navigationIconColor = AppColors.gray900Text,
-            actionIconColor = AppColors.green800,
+            //actionIconColor = AppColors.green800,
             onBackClick = {
                 onNavigate(Screens.Back())
             }

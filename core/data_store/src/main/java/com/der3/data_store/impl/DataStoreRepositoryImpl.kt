@@ -17,5 +17,15 @@ class DataStoreRepositoryImpl(private val dataStoreService: DataStoreService) : 
                 dataStoreService.set(DataStoreKeys.ONBOARDING_KEY, value)
             }
         }
+    override var zekrScreenDetailsFontSize: Int
+        get() = runBlocking {
+            dataStoreService.get<Int>(DataStoreKeys.ZEKR_DETAILS_SCREEN_FONT_SIZE, 24).first()
+
+        }
+        set(value) {
+            runBlocking (Dispatchers.IO){
+                dataStoreService.set(DataStoreKeys.ZEKR_DETAILS_SCREEN_FONT_SIZE, value)
+            }
+        }
 
 }

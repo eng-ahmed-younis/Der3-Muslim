@@ -1,9 +1,12 @@
+package com.der3.home.presentations.category_details
+
+import LoadingDialog
+import ReadingInfoCard
+import ZekrCard
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Share
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -19,12 +22,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.der3.data.params.CategoryDetailsParams
 import com.der3.home.di.factory.CategoryDetailsViewModelFactory
 import com.der3.home.domain.model.ZekrUiModel
-import com.der3.home.presentations.category_details.CategoryDetailsViewModel
 import com.der3.home.presentations.category_details.mvi.CategoryDetailsIntent
 import com.der3.home.presentations.category_details.mvi.CategoryDetailsState
 import com.der3.model.UiText
 import com.der3.mvi.MviEffect
 import com.der3.screens.Screens
+import com.der3.ui.components.Der3TopAppBar
 import com.der3.ui.components.ErrorDialog
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
@@ -105,10 +108,10 @@ fun AzkarDetailsScreen(
             title = state.categoryTitle,
             backgroundColor = AppColors.gray50,
             onBackClick = { onIntent(CategoryDetailsIntent.OnBackClick) },
-            actionIcon = Icons.Default.Share,
+          /*  actionIcon = Icons.Default.Share,
             onActionClick = {
                 onIntent(CategoryDetailsIntent.OnShareClick(state.azkarItems.first()))
-            }
+            }*/
         )
 
         LazyColumn(

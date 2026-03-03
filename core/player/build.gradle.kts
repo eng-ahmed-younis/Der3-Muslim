@@ -1,7 +1,8 @@
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.kapt)
+  //  alias(libs.plugins.kotlin.android)
+  //  alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -27,11 +28,21 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility =
+            JavaVersion.toVersion(BuildVersions.JAVA_VERSION)
+        targetCompatibility =
+            JavaVersion.toVersion(BuildVersions.JAVA_VERSION)
     }
-    kotlinOptions {
-        jvmTarget = "11"
+
+
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(
+                org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(
+                    BuildVersions.JAVA_VERSION.toString()
+                )
+            )
+        }
     }
 }
 
@@ -46,5 +57,6 @@ dependencies {
 
     //Hilt
     implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+  //  kapt(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
 }

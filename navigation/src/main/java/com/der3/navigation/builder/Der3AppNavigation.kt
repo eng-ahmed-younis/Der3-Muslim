@@ -1,8 +1,7 @@
 package com.der3.navigation.builder
 
-import AzkarDetailsRoute
-import ZekrDetailsRoute
-import android.util.Log
+import com.der3.home.presentations.category_details.AzkarDetailsRoute
+import com.der3.home.presentations.zekr_details.ZekrDetailsRoute
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable

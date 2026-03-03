@@ -1,23 +1,22 @@
+package com.der3.ui.components
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import com.der3.ui.themes.AppColors
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
-
+import java.util.Locale
 
 @Composable
 fun Der3TopAppBar(
@@ -26,12 +25,11 @@ fun Der3TopAppBar(
     backgroundColor: Color,
     titleColor: Color = AppColors.gray900Text,
     navigationIconColor: Color = AppColors.gray900Text,
-    actionIconColor: Color = AppColors.gray900Text,
     showBackButton: Boolean = true,
     onBackClick: () -> Unit = {},
-    actionIcon: ImageVector? = null,
-    onActionClick: (() -> Unit)? = null
+    trailingContent: @Composable (() -> Unit)? = null
 ) {
+
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -40,7 +38,7 @@ fun Der3TopAppBar(
         verticalAlignment = Alignment.CenterVertically
     ) {
 
-        // 🔹 Left (Back Button)
+        // 🔹 Back Button
         if (showBackButton) {
             IconButton(onClick = onBackClick) {
                 Icon(
@@ -50,18 +48,13 @@ fun Der3TopAppBar(
                 )
             }
         } else {
-            Spacer(
-                modifier = Modifier
-                    .size(48.dp)
-            )
+            Spacer(modifier = Modifier.size(48.dp))
         }
 
-        // 🔹 Center (Title Row)
+        // 🔹 Title
         Row(
-            modifier = Modifier
-                .weight(1f),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
+            modifier = Modifier.weight(1f),
+            horizontalArrangement = Arrangement.Center
         ) {
             Text(
                 text = title,
@@ -71,36 +64,32 @@ fun Der3TopAppBar(
             )
         }
 
-        // 🔹 Right (Action Icon)
-        if (actionIcon != null) {
-            IconButton(onClick = { onActionClick?.invoke() }) {
-                Icon(
-                    imageVector = actionIcon,
-                    contentDescription = "Action",
-                    tint = actionIconColor
-                )
-            }
-        } else {
-            Spacer(modifier = Modifier.size(48.dp)) // balance layout
-        }
+        // 🔹 Trailing Content
+
+        trailingContent?.invoke()
+
     }
 }
 
-
-
-@Preview(
-    showBackground = true,
-    showSystemUi = true
-)
+@Preview(showBackground = true)
 @Composable
 fun Der3TopAppBarPreview() {
-    Der3MuslimTheme {
+    Der3MuslimTheme(
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
         Der3TopAppBar(
-            title = "Home",
+            title = "Der3 Top App Bar",
             backgroundColor = AppColors.gray50,
             onBackClick = {},
-            actionIcon = Icons.Default.Favorite,
-            onActionClick = {}
+            trailingContent = {
+                IconButton(onClick = {}) {
+                    Icon(
+                        imageVector = Icons.Default.MoreVert,
+                        contentDescription = "More",
+                        tint = AppColors.gray900Text
+                    )
+                }
+            }
         )
     }
 }

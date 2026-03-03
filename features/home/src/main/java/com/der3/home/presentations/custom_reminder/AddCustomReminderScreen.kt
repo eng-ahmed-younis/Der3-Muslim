@@ -1,6 +1,6 @@
 package com.der3.home.presentations.custom_reminder
 
-import Der3TopAppBar
+import com.der3.ui.components.Der3TopAppBar
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -100,7 +100,7 @@ fun AddCustomReminderScreen(
             backgroundColor = AppColors.gray50,
             titleColor = AppColors.green800,
             navigationIconColor = AppColors.green800,
-            actionIconColor = AppColors.green800,
+            //actionIconColor = AppColors.green800,
             onBackClick = {
                 onNavigate(Screens.Back())
             }

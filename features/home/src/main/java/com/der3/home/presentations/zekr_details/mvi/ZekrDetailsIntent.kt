@@ -13,4 +13,11 @@ sealed interface ZekrDetailsIntent : MviIntent {
     data class ToggleAudio(val audioPath: String) : ZekrDetailsIntent
     data object StopAudio : ZekrDetailsIntent
 
+
+    data object ExpandDropdownMenu : ZekrDetailsIntent
+
+    data object FontSizeSheetVisibility : ZekrDetailsIntent
+
+    data class UpdateFontSize(val updateFont: Int): ZekrDetailsIntent
+
 }

@@ -1,6 +1,6 @@
 package com.der3.home.presentations.daily_notification
 
-import Der3TopAppBar
+import com.der3.ui.components.Der3TopAppBar
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -98,8 +98,8 @@ fun DailyNotificationsScreen(
             onBackClick = {
                 onIntent(DailyNotificationsIntent.NavigateBack)
             },
-            actionIcon = Icons.Default.Settings,
-            onActionClick = {}
+     /*       actionIcon = Icons.Default.Settings,
+            onActionClick = {}*/
         )
 
         LazyColumn(

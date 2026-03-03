@@ -2,10 +2,11 @@ import com.android.builder.model.v2.models.Versions
 
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
+  //  alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.hilt.android)
-    alias(libs.plugins.kotlin.kapt)
+ //   alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -42,8 +43,14 @@ android {
     }
 
 
-    kotlinOptions {
-        jvmTarget = BuildVersions.JAVA_VERSION.toString()
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(
+                org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(
+                    BuildVersions.JAVA_VERSION.toString()
+                )
+            )
+        }
     }
 }
 
@@ -68,16 +75,17 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+   // androidTestImplementation(libs.androidx.compose.ui.test.junit4)
 
     // Debug
     debugImplementation(libs.androidx.compose.ui.tooling)
-    debugImplementation(libs.androidx.compose.ui.test.manifest)
+ //   debugImplementation(libs.androidx.compose.ui.test.manifest)
 
 
     //Hilt
     implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+   // kapt(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
 
 

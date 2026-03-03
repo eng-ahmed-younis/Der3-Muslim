@@ -1,16 +1,28 @@
+package com.der3.home.presentations.zekr_details
+
+import CategoryChip
+import CircularZekrCounter
+import ControlPanel
+import com.der3.ui.components.Der3TopAppBar
+import LoadingDialog
+import ProgressCard
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -23,21 +35,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.der3.data.params.ZekrDetailsParams
 import com.der3.home.di.factory.ZekrDetailsViewModelFactory
-import com.der3.home.presentations.zekr_details.ZekrDetailsViewModel
 import com.der3.home.presentations.zekr_details.mvi.ZekrDetailsIntent
 import com.der3.home.presentations.zekr_details.mvi.ZekrDetailsState
+import com.der3.home.utils.AzkarDetailsMenuItems
 import com.der3.model.UiText
 import com.der3.mvi.MviEffect
 import com.der3.screens.Screens
 import com.der3.ui.R
+import com.der3.ui.components.CustomMenu
 import com.der3.ui.components.ErrorDialog
+import com.der3.ui.components.FontSizeBottomSheet
+import com.der3.ui.components.TextSlider
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
 import com.der3.utils.asString
@@ -48,8 +62,7 @@ import java.util.Locale
 
 @Composable
 fun ZekrDetailsRoute(
-    params: ZekrDetailsParams,
-    onNavigate: (Screens) -> Unit
+    params: ZekrDetailsParams, onNavigate: (Screens) -> Unit
 ) {
 
     val viewModel: ZekrDetailsViewModel =
@@ -77,16 +90,10 @@ fun ZekrDetailsRoute(
         }.launchIn(scope)
     }
 
-    ErrorDialog(
-        visible = showErrorDialog,
-        message = errorMessage,
-        onRetry = {},
-        onDismiss = {}
-    )
+    ErrorDialog(visible = showErrorDialog, message = errorMessage, onRetry = {}, onDismiss = {})
 
     ZekrDetailsScreen(
-        state = viewModel.viewState,
-        onIntent = viewModel::onIntent
+        state = viewModel.viewState, onIntent = viewModel::onIntent
     )
 
 }
@@ -106,6 +113,16 @@ fun ZekrDetailsScreen(
     LoadingDialog(visible = state.isLoading)
 
 
+    FontSizeBottomSheet(
+        isVisible = state.fontSizeSheetVisibility,
+        currentFontSize = state.zekrFontSize.toFloat(),
+        onDismiss = {},
+        onSave = { font ->
+            onIntent(ZekrDetailsIntent.UpdateFontSize(updateFont = font.toInt()))
+        },
+        onReset = {}
+    )
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -121,7 +138,31 @@ fun ZekrDetailsScreen(
             onBackClick = {
                 onIntent(ZekrDetailsIntent.Back)
             },
-            actionIcon = Icons.Default.MoreVert
+            trailingContent = {
+                IconButton(
+                    onClick = {
+                        onIntent(ZekrDetailsIntent.ExpandDropdownMenu)
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.MoreVert,
+                        contentDescription = "More",
+                        tint = AppColors.gray900Text
+                    )
+                }
+
+                CustomMenu(
+                    isVisible = state.isMenuExpanded,
+                    menuItems = state.menuItems, onMenuItemClicked = { item ->
+                        when (item.id) {
+                            is AzkarDetailsMenuItems.ZEKR_FONT_SIZE -> {
+                                onIntent(ZekrDetailsIntent.ExpandDropdownMenu)
+                                onIntent(ZekrDetailsIntent.FontSizeSheetVisibility)
+                            }
+                        }
+                    }
+                )
+            }
         )
 
         Spacer(Modifier.height(20.dp))
@@ -133,24 +174,12 @@ fun ZekrDetailsScreen(
 
         )
 
-        Spacer(Modifier.height(20.dp))
+        Spacer(Modifier.height(24.dp))
 
-        // Main Zekr
-        Text(
-            text = "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ",
-            style = MaterialTheme.typography.headlineMedium,
-            textAlign = TextAlign.Center,
-            fontWeight = FontWeight.Bold,
-            color = AppColors.gray900Text
-        )
-
-        Spacer(Modifier.height(16.dp))
-
-        Text(
-            text = "من قالها مائة مرة حُطّت خطاياه وإن كانت مثل زبد البحر.",
-            textAlign = TextAlign.Center,
-            color = AppColors.gray500,
-            style = MaterialTheme.typography.bodyLarge
+        TextSlider(
+            pageSize = state.zekrPageSize,
+            fontSize = (state.zekrFontSize).sp,
+            longText = state.zekrDetails.text
         )
 
         Spacer(Modifier.height(40.dp))
@@ -162,14 +191,12 @@ fun ZekrDetailsScreen(
             total = state.zekrDetails.repeatCount,
             onClick = {
                 onIntent(ZekrDetailsIntent.IncrementZekrReadingCount)
-            }
-        )
+            })
 
         Spacer(Modifier.height(100.dp))
 
         ProgressCard(
-            progress = progress,
-            modifier = Modifier
+            progress = progress, modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
         )
@@ -177,8 +204,7 @@ fun ZekrDetailsScreen(
         Spacer(Modifier.height(40.dp))
 
         ControlPanel(
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             isPlaying = state.audioState.isPlaying,
             onFavorite = {},
             onPlay = {
@@ -190,8 +216,7 @@ fun ZekrDetailsScreen(
             },
             onReset = {},
             onShare = {},
-            onVolume = {}
-        )
+            onVolume = {})
 
     }
 }
@@ -207,9 +232,7 @@ private fun ZekrDetailsScreenPreview() {
         language = Locale.Builder().setLanguage("ar").build()
     ) {
         ZekrDetailsScreen(
-            state = ZekrDetailsState(),
-            onIntent = {}
-        )
+            state = ZekrDetailsState(), onIntent = {})
     }
 }
 

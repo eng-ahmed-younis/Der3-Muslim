@@ -28,7 +28,7 @@ class ZekrDetailsReducer @Inject constructor() : Reducer<ZekrDetailsAction, Zekr
 
 
             is ZekrDetailsAction.UpdateAudioState -> {
-                Log.i("ZekrDetailsReducer","isplaying ${action.state.isPlaying}")
+                Log.i("ZekrDetailsReducer", "isplaying ${action.state.isPlaying}")
                 state.copy(
                     audioState = action.state,
                     error = action.state.error // optional: keep error here too
@@ -37,6 +37,17 @@ class ZekrDetailsReducer @Inject constructor() : Reducer<ZekrDetailsAction, Zekr
 
             is ZekrDetailsAction.OnError -> state.copy(error = action.message)
 
+            is ZekrDetailsAction.ExpandDropdownMenu -> {
+                state.copy(isMenuExpanded = !state.isMenuExpanded)
+            }
+
+            is ZekrDetailsAction.UpdateDeaultFontSize -> {
+                state.copy(zekrFontSize = action.font)
+            }
+
+            ZekrDetailsAction.FontSizeSheetVisibility -> {
+                state.copy(fontSizeSheetVisibility = !state.fontSizeSheetVisibility)
+            }
         }
     }
 }

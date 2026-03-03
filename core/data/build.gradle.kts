@@ -1,7 +1,8 @@
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.kapt)
+ //   alias(libs.plugins.kotlin.android)
+//    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.serialization)
 }
 
@@ -32,8 +33,15 @@ android {
         targetCompatibility =
             JavaVersion.toVersion(BuildVersions.JAVA_VERSION)
     }
-    kotlinOptions {
-        jvmTarget = BuildVersions.JAVA_VERSION.toString()
+
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(
+                org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(
+                    BuildVersions.JAVA_VERSION.toString()
+                )
+            )
+        }
     }
 }
 
@@ -50,7 +58,8 @@ dependencies {
 
     //Hilt
     implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+  //  kapt(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
 
     // KotlinX Serialization

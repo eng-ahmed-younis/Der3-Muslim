@@ -3,6 +3,7 @@ package com.der3.home.presentations.zekr_details.mvi
 import androidx.compose.runtime.Stable
 import com.der3.home.domain.model.ZekrUiModel
 import com.der3.mvi.MviAction
+import com.der3.player.audio.model.AzkarAudioState
 
 @Stable
 sealed interface ZekrDetailsAction : MviAction {
@@ -14,4 +15,11 @@ sealed interface ZekrDetailsAction : MviAction {
 
     data class UpdateAudioState(val state: AzkarAudioState) : ZekrDetailsAction
     data class OnError(val message: String) : ZekrDetailsAction
+
+    data object ExpandDropdownMenu : ZekrDetailsAction
+
+    data class UpdateDeaultFontSize(val font: Int) : ZekrDetailsAction
+
+    data object FontSizeSheetVisibility : ZekrDetailsAction
+
 }
