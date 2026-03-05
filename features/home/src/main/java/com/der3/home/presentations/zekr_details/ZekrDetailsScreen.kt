@@ -116,7 +116,9 @@ fun ZekrDetailsScreen(
     FontSizeBottomSheet(
         isVisible = state.fontSizeSheetVisibility,
         currentFontSize = state.zekrFontSize.toFloat(),
-        onDismiss = {},
+        onDismiss = {
+            onIntent(ZekrDetailsIntent.FontSizeSheetVisibility(isVisible = false))
+        },
         onSave = { font ->
             onIntent(ZekrDetailsIntent.UpdateFontSize(updateFont = font.toInt()))
         },
@@ -141,7 +143,7 @@ fun ZekrDetailsScreen(
             trailingContent = {
                 IconButton(
                     onClick = {
-                        onIntent(ZekrDetailsIntent.ExpandDropdownMenu)
+                        onIntent(ZekrDetailsIntent.ExpandDropdownMenu(isExpand = true))
                     }
                 ) {
                     Icon(
@@ -153,11 +155,14 @@ fun ZekrDetailsScreen(
 
                 CustomMenu(
                     isVisible = state.isMenuExpanded,
+                    onDismiss = {
+                        onIntent(ZekrDetailsIntent.ExpandDropdownMenu(isExpand = false))
+                    },
                     menuItems = state.menuItems, onMenuItemClicked = { item ->
                         when (item.id) {
                             is AzkarDetailsMenuItems.ZEKR_FONT_SIZE -> {
-                                onIntent(ZekrDetailsIntent.ExpandDropdownMenu)
-                                onIntent(ZekrDetailsIntent.FontSizeSheetVisibility)
+                                onIntent(ZekrDetailsIntent.ExpandDropdownMenu(isExpand = false))
+                                onIntent(ZekrDetailsIntent.FontSizeSheetVisibility(isVisible = true))
                             }
                         }
                     }
