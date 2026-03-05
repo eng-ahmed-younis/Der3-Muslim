@@ -81,12 +81,12 @@ class ZekrDetailsViewModel @AssistedInject constructor(
                 // then UI can call ToggleAudio(audioPath)
             }
 
-            ZekrDetailsIntent.IncrementZekrReadingCount -> {
+            is ZekrDetailsIntent.IncrementZekrReadingCount -> {
                 onAction(action = ZekrDetailsAction.UpdateZekrReadingCount)
             }
 
-            ZekrDetailsIntent.ExpandDropdownMenu -> {
-                onAction(action = ZekrDetailsAction.ExpandDropdownMenu)
+            is ZekrDetailsIntent.ExpandDropdownMenu -> {
+                onAction(action = ZekrDetailsAction.ExpandDropdownMenu(expanded = intent.isExpand))
             }
 
             is ZekrDetailsIntent.UpdateFontSize -> {
@@ -94,8 +94,8 @@ class ZekrDetailsViewModel @AssistedInject constructor(
                 dataStoreRepository.zekrScreenDetailsFontSize = intent.updateFont
             }
 
-            ZekrDetailsIntent.FontSizeSheetVisibility -> {
-                onAction(action = FontSizeSheetVisibility)
+            is ZekrDetailsIntent.FontSizeSheetVisibility -> {
+                onAction(action = FontSizeSheetVisibility(visible = intent.isVisible))
             }
         }
     }

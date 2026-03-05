@@ -38,15 +38,15 @@ class ZekrDetailsReducer @Inject constructor() : Reducer<ZekrDetailsAction, Zekr
             is ZekrDetailsAction.OnError -> state.copy(error = action.message)
 
             is ZekrDetailsAction.ExpandDropdownMenu -> {
-                state.copy(isMenuExpanded = !state.isMenuExpanded)
+                state.copy(isMenuExpanded = action.expanded)
             }
 
             is ZekrDetailsAction.UpdateDeaultFontSize -> {
                 state.copy(zekrFontSize = action.font)
             }
 
-            ZekrDetailsAction.FontSizeSheetVisibility -> {
-                state.copy(fontSizeSheetVisibility = !state.fontSizeSheetVisibility)
+            is ZekrDetailsAction.FontSizeSheetVisibility -> {
+                state.copy(fontSizeSheetVisibility = action.visible)
             }
         }
     }

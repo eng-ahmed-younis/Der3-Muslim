@@ -16,10 +16,10 @@ sealed interface ZekrDetailsAction : MviAction {
     data class UpdateAudioState(val state: AzkarAudioState) : ZekrDetailsAction
     data class OnError(val message: String) : ZekrDetailsAction
 
-    data object ExpandDropdownMenu : ZekrDetailsAction
+    data class ExpandDropdownMenu(val expanded: Boolean) : ZekrDetailsAction
 
     data class UpdateDeaultFontSize(val font: Int) : ZekrDetailsAction
 
-    data object FontSizeSheetVisibility : ZekrDetailsAction
+    data class FontSizeSheetVisibility(val visible: Boolean) : ZekrDetailsAction
 
 }
