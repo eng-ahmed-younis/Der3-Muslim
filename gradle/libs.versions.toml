@@ -8,6 +8,7 @@ ksp = "2.3.2"
 
 # --- Serialization ---
 kotlinxSerializationJson = "1.10.0"
+savedState = "1.4.0"
 
 # --- Compose ---
 composeBom = "2024.09.00"
@@ -53,6 +54,7 @@ material = { group = "com.google.android.material", name = "material", version.r
 # --- Lifecycle ---
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+androidx-savedstate = { group = "androidx.savedstate", name = "savedstate-ktx", version.ref = "savedState" }
 
 # --- Activity ---
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }

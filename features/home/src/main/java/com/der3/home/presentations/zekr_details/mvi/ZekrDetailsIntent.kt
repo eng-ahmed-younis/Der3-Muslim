@@ -20,4 +20,9 @@ sealed interface ZekrDetailsIntent : MviIntent {
 
     data class UpdateFontSize(val updateFont: Int): ZekrDetailsIntent
 
+    data class ShareSheetVisibility(val isVisible: Boolean) : ZekrDetailsIntent
+
+    data object ShareAsText : ZekrDetailsIntent
+    data object ShareAsImage : ZekrDetailsIntent
+
 }

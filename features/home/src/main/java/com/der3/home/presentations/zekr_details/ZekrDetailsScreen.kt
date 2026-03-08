@@ -3,10 +3,12 @@ package com.der3.home.presentations.zekr_details
 import CategoryChip
 import CircularZekrCounter
 import ControlPanel
-import com.der3.ui.components.Der3TopAppBar
 import LoadingDialog
 import ProgressCard
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.background
+import com.der3.model.ShareType
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,7 +18,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -49,8 +50,10 @@ import com.der3.mvi.MviEffect
 import com.der3.screens.Screens
 import com.der3.ui.R
 import com.der3.ui.components.CustomMenu
+import com.der3.ui.components.Der3TopAppBar
 import com.der3.ui.components.ErrorDialog
 import com.der3.ui.components.FontSizeBottomSheet
+import com.der3.ui.components.ShareBottomSheet
 import com.der3.ui.components.TextSlider
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
@@ -58,6 +61,11 @@ import com.der3.utils.asString
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import java.util.Locale
+import com.der3.ui.components.captureComposable
+import com.der3.ui.components.saveBitmapToCache
+import com.der3.ui.components.ZekrShareCard
+import androidx.core.net.toUri
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -80,7 +88,55 @@ fun ZekrDetailsRoute(
     LaunchedEffect(Unit) {
         viewModel.effects.onEach {
             when (it) {
-                is MviEffect.Navigate -> onNavigate(it.screen)
+                is MviEffect.Navigate -> {
+                    onNavigate(it.screen)
+                }
+
+                is MviEffect.Share -> {
+                    val sendIntent: Intent = Intent().apply {
+                        action = Intent.ACTION_SEND
+                        putExtra(Intent.EXTRA_TEXT, it.text)
+                        it.imageUri?.let { uriString ->
+                            val uri = Uri.parse(uriString)
+                            putExtra(Intent.EXTRA_STREAM, uri)
+                            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        }
+                        type = when (it.type) {
+                            ShareType.TEXT_ONLY -> "text/plain"
+                            ShareType.IMAGE_ONLY -> "image/*"
+                            ShareType.TEXT_AND_IMAGE -> "image/*"
+                        }
+                    }
+                    val shareIntent = Intent.createChooser(sendIntent, null)
+                    context.startActivity(shareIntent)
+                }
+
+                is MviEffect.CaptureAndShareImage -> {
+                    scope.launch {
+                        val currentState = viewModel.viewState
+                        val bitmap = captureComposable(
+                            context = context,
+                            content = {
+                                ZekrShareCard(
+                                    text = currentState.zekrDetails.text,
+                                    count = currentState.currentCount,
+                                    total = currentState.zekrDetails.repeatCount
+                                )
+                            }
+                        )
+                        val uri = saveBitmapToCache(context, bitmap)
+                        uri?.let {
+                            val sendIntent: Intent = Intent().apply {
+                                action = Intent.ACTION_SEND
+                                putExtra(Intent.EXTRA_STREAM, it)
+                                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                type = "image/*"
+                            }
+                            context.startActivity(Intent.createChooser(sendIntent, null))
+                        }
+                    }
+                }
+
                 is MviEffect.OnErrorDialog -> {
                     errorMessage = it.error.asString(context)
                     errorType = it.error
@@ -90,7 +146,12 @@ fun ZekrDetailsRoute(
         }.launchIn(scope)
     }
 
-    ErrorDialog(visible = showErrorDialog, message = errorMessage, onRetry = {}, onDismiss = {})
+    ErrorDialog(
+        visible = showErrorDialog,
+        message = errorMessage,
+        onRetry = {},
+        onDismiss = {}
+    )
 
     ZekrDetailsScreen(
         state = viewModel.viewState, onIntent = viewModel::onIntent
@@ -112,6 +173,18 @@ fun ZekrDetailsScreen(
 
     LoadingDialog(visible = state.isLoading)
 
+    ShareBottomSheet(
+        isVisible = state.shareSheetVisibility,
+        onDismiss = {
+            onIntent(ZekrDetailsIntent.ShareSheetVisibility(isVisible = false))
+        },
+        onShareAsText = {
+            onIntent(ZekrDetailsIntent.ShareAsText)
+        },
+        onShareAsImage = {
+            onIntent(ZekrDetailsIntent.ShareAsImage)
+        }
+    )
 
     FontSizeBottomSheet(
         isVisible = state.fontSizeSheetVisibility,
@@ -220,7 +293,9 @@ fun ZekrDetailsScreen(
                 )
             },
             onReset = {},
-            onShare = {},
+            onShare = {
+                onIntent(ZekrDetailsIntent.ShareSheetVisibility(isVisible = true))
+            },
             onVolume = {})
 
     }
