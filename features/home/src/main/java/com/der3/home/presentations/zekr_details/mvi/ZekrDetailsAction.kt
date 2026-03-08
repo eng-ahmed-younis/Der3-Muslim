@@ -22,4 +22,6 @@ sealed interface ZekrDetailsAction : MviAction {
 
     data class FontSizeSheetVisibility(val visible: Boolean) : ZekrDetailsAction
 
+    data class ShareSheetVisibility(val visible: Boolean) : ZekrDetailsAction
+
 }

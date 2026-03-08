@@ -16,6 +16,7 @@ data class ZekrDetailsState (
     val zekrFontSize: Int = 0,
     val isMenuExpanded : Boolean = false,
     val fontSizeSheetVisibility: Boolean = false,
+    val shareSheetVisibility: Boolean = false,
     val menuItems : List<MenuItemData> = com.der3.home.utils.menuItems,
     val audioPath: String = "",
     val error: String? = null,

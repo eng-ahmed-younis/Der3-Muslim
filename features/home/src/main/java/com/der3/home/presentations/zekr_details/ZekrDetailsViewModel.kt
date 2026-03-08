@@ -97,7 +97,37 @@ class ZekrDetailsViewModel @AssistedInject constructor(
             is ZekrDetailsIntent.FontSizeSheetVisibility -> {
                 onAction(action = FontSizeSheetVisibility(visible = intent.isVisible))
             }
+
+            is ZekrDetailsIntent.ShareSheetVisibility -> {
+                onAction(action = ShareSheetVisibility(visible = intent.isVisible))
+            }
+
+            ZekrDetailsIntent.ShareAsText -> {
+                onAction(action = ShareSheetVisibility(visible = false))
+                shareAsText()
+            }
+
+            ZekrDetailsIntent.ShareAsImage -> {
+                onAction(action = ShareSheetVisibility(visible = false))
+                onEffect(MviEffect.CaptureAndShareImage)
+            }
         }
+    }
+
+    private fun shareAsText() {
+        val state = viewState
+        val zekr = state.zekrDetails
+        val currentCount = state.currentCount
+        val totalCount = zekr.repeatCount
+
+        val shareBody = buildString {
+            append("✨ *((${zekr.text})) (${if (totalCount > 1) "يفعلُ ذلك $totalCount مرَّاتٍ" else "مرة واحدة"})* ✨\n\n")
+            append("🔢 العدد المطلوب: $totalCount\n")
+            append("✅ تم قراءة: $currentCount\n\n")
+            append("📲 تمت المشاركة من تطبيق *درع المسلم*")
+        }
+
+        onEffect(MviEffect.Share(text = shareBody))
     }
 
     private fun getZekrDetails() {

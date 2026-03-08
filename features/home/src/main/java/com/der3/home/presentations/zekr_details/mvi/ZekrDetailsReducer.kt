@@ -48,6 +48,10 @@ class ZekrDetailsReducer @Inject constructor() : Reducer<ZekrDetailsAction, Zekr
             is ZekrDetailsAction.FontSizeSheetVisibility -> {
                 state.copy(fontSizeSheetVisibility = action.visible)
             }
+
+            is ZekrDetailsAction.ShareSheetVisibility -> {
+                state.copy(shareSheetVisibility = action.visible)
+            }
         }
     }
 }

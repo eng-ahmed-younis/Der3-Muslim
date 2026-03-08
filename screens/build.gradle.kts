@@ -63,4 +63,6 @@ dependencies {
     //Navigation
     implementation(libs.androidx.navigation.compose)
     implementation(libs.hilt.navigation.compose)
+
+    implementation(project(path = ":core:ui-model"))
 }

@@ -1,15 +1,94 @@
+# ===============================
+
+# Android Studio / IntelliJ
+
+# ===============================
+
+.idea/
 *.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
+*.ipr
+*.iws
+.idea/caches
+.idea/libraries
+.idea/modules.xml
+.idea/workspace.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+captures/
+
+# ===============================
+
+# Gradle
+
+# ===============================
+
+.gradle/
+build/
+**/build/
+
+# ===============================
+
+# Kotlin
+
+# ===============================
+
+.kotlin/
+kotlin-js-store/
+
+# ===============================
+
+# Local configuration
+
+# ===============================
+
 local.properties
+
+# ===============================
+
+# Android build outputs
+
+# ===============================
+
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+output-metadata.json
+
+# ===============================
+
+# Signing / security files
+
+# ===============================
+
+*.jks
+*.keystore
+
+# ===============================
+
+# Native build
+
+# ===============================
+
+.externalNativeBuild/
+.cxx/
+
+# ===============================
+
+# OS files
+
+# ===============================
+
+.DS_Store
+Thumbs.db
+
+# ===============================
+
+# Logs / temp
+
+# ===============================
+
+*.log
+*.tmp
+*.swp
