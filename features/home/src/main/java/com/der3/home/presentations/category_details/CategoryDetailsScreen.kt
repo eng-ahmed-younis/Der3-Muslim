@@ -19,7 +19,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.der3.data.params.CategoryDetailsParams
+import com.der3.shared.params.CategoryDetailsParams
 import com.der3.home.di.factory.CategoryDetailsViewModelFactory
 import com.der3.home.domain.model.ZekrUiModel
 import com.der3.home.presentations.category_details.mvi.CategoryDetailsIntent

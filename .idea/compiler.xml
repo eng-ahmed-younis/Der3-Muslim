@@ -2,7 +2,22 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="11">
+      <module name="Der3_Muslim.app" target="21" />
+      <module name="Der3_Muslim.buildSrc" target="21" />
+      <module name="Der3_Muslim.buildSrc.main" target="21" />
+      <module name="Der3_Muslim.buildSrc.test" target="21" />
+      <module name="Der3_Muslim.core.data_store" target="21" />
+      <module name="Der3_Muslim.core.mvi" target="21" />
+      <module name="Der3_Muslim.core.player" target="21" />
+      <module name="Der3_Muslim.core.shared" target="21" />
+      <module name="Der3_Muslim.core.ui" target="21" />
+      <module name="Der3_Muslim.core.utils" target="21" />
+      <module name="Der3_Muslim.features.home" target="21" />
+      <module name="Der3_Muslim.features.on_boarding" target="21" />
+      <module name="Der3_Muslim.features.splash" target="21" />
       <module name="Der3_Muslim.mvi" target="21" />
+      <module name="Der3_Muslim.navigation" target="21" />
+      <module name="Der3_Muslim.screens" target="21" />
       <module name="Der3_Muslim.utils" target="21" />
     </bytecodeTargetLevel>
   </component>

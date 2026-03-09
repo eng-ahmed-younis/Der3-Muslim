@@ -1,8 +1,8 @@
 package com.der3.home.data.mappers
 
-import com.der3.data.model.AzkarCategory
-import com.der3.data.model.AzkarItem
-import com.der3.data.provider.ZekrCategoriesProvider
+import com.der3.shared.domain.model.AzkarCategory
+import com.der3.shared.domain.model.AzkarItem
+import com.der3.shared.data.provider.ZekrCategoriesProvider
 import com.der3.home.domain.model.ZekrUiModel
 import com.der3.ui.models.CategoryUi
 

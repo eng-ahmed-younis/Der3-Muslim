@@ -2,8 +2,8 @@ package com.der3.home.presentations.category_details
 
 import android.content.Context
 import androidx.lifecycle.viewModelScope
-import com.der3.data.params.CategoryDetailsParams
-import com.der3.data.use_case.GetAzkarCategoryByIdUseCase
+import com.der3.shared.params.CategoryDetailsParams
+import com.der3.shared.domain.use_case.GetAzkarCategoryByIdUseCase
 import com.der3.home.data.mappers.toZekrUiModels
 import com.der3.home.di.factory.CategoryDetailsViewModelFactory
 import com.der3.home.presentations.category_details.mvi.CategoryDetailsAction

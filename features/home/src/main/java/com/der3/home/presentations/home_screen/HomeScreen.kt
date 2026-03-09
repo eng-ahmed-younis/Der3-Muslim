@@ -26,7 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.der3.data.provider.ZekrCategoriesProvider
+import com.der3.shared.data.provider.ZekrCategoriesProvider
 import com.der3.home.presentations.home_screen.components.CategoriesGrid
 import com.der3.home.presentations.home_screen.components.DailyNotificationCard
 import com.der3.home.presentations.home_screen.components.DailyZekrCard

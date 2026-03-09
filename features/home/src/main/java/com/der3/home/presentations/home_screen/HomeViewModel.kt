@@ -1,7 +1,7 @@
 package com.der3.home.presentations.home_screen
 
 import androidx.lifecycle.viewModelScope
-import com.der3.data.use_case.GetAzkarCategoriesUseCase
+import com.der3.shared.domain.use_case.GetAzkarCategoriesUseCase
 import com.der3.home.data.mappers.toUiCategories
 import com.der3.home.presentations.home_screen.mvi.HomeAction
 import com.der3.home.presentations.home_screen.mvi.HomeIntent
