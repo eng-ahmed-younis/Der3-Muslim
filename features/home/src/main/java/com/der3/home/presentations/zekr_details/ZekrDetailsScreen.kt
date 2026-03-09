@@ -9,10 +9,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.background
 import com.der3.model.ShareType
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -64,7 +61,6 @@ import java.util.Locale
 import com.der3.ui.components.captureComposable
 import com.der3.ui.components.saveBitmapToCache
 import com.der3.ui.components.ZekrShareCard
-import androidx.core.net.toUri
 import kotlinx.coroutines.launch
 
 
