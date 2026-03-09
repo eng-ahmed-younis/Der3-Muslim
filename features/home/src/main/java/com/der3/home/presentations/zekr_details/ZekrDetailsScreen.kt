@@ -50,6 +50,7 @@ import com.der3.ui.components.CustomMenu
 import com.der3.ui.components.Der3TopAppBar
 import com.der3.ui.components.ErrorDialog
 import com.der3.ui.components.FontSizeBottomSheet
+import com.der3.ui.components.VolumeBottomSheet
 import com.der3.ui.components.ShareBottomSheet
 import com.der3.ui.components.TextSlider
 import com.der3.ui.themes.AppColors
@@ -194,6 +195,21 @@ fun ZekrDetailsScreen(
         onReset = {}
     )
 
+    VolumeBottomSheet(
+        isVisible = state.volumeSheetVisibility,
+        currentVolume = state.currentVolume,
+        onDismiss = {
+            onIntent(ZekrDetailsIntent.VolumeSheetVisibility(isVisible = false))
+        },
+        onVolumeChange = { volume ->
+            onIntent(ZekrDetailsIntent.UpdateVolume(volume = volume))
+        },
+        onSave = { volume ->
+            onIntent(ZekrDetailsIntent.UpdateVolume(volume = volume))
+            onIntent(ZekrDetailsIntent.VolumeSheetVisibility(isVisible = false))
+        }
+    )
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -232,6 +248,10 @@ fun ZekrDetailsScreen(
                             is AzkarDetailsMenuItems.ZEKR_FONT_SIZE -> {
                                 onIntent(ZekrDetailsIntent.ExpandDropdownMenu(isExpand = false))
                                 onIntent(ZekrDetailsIntent.FontSizeSheetVisibility(isVisible = true))
+                            }
+                            is AzkarDetailsMenuItems.ZEKR_VOLUME -> {
+                                onIntent(ZekrDetailsIntent.ExpandDropdownMenu(isExpand = false))
+                                onIntent(ZekrDetailsIntent.VolumeSheetVisibility(isVisible = true))
                             }
                         }
                     }
@@ -288,11 +308,15 @@ fun ZekrDetailsScreen(
                     )
                 )
             },
-            onReset = {},
+            onReset = {
+                onIntent(ZekrDetailsIntent.ResetAudio)
+            },
             onShare = {
                 onIntent(ZekrDetailsIntent.ShareSheetVisibility(isVisible = true))
             },
-            onVolume = {})
+            onVolume = {
+                onIntent(ZekrDetailsIntent.VolumeSheetVisibility(isVisible = true))
+            })
 
     }
 }

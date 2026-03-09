@@ -8,6 +8,8 @@ import com.der3.data_store.api.DataStoreRepository
 import com.der3.home.data.mappers.toZekrUiModel
 import com.der3.home.di.factory.ZekrDetailsViewModelFactory
 import com.der3.home.domain.use_case.ObserveAzkarAudioStateUseCase
+import com.der3.home.domain.use_case.ResetAzkarAudioUseCase
+import com.der3.home.domain.use_case.SetAzkarVolumeUseCase
 import com.der3.home.domain.use_case.StopAzkarAudioUseCase
 import com.der3.home.domain.use_case.ToggleAzkarAudioUseCase
 import com.der3.home.presentations.zekr_details.mvi.ZekrDetailsAction
@@ -36,6 +38,8 @@ class ZekrDetailsViewModel @AssistedInject constructor(
     private val getAzkarItemByIdUseCase: GetAzkarItemByIdUseCase,
     private val toggleAudio: ToggleAzkarAudioUseCase,
     private val stopAudio: StopAzkarAudioUseCase,
+    private val resetAudio: ResetAzkarAudioUseCase,
+    private val setVolume: SetAzkarVolumeUseCase,
     private val observeAudioState: ObserveAzkarAudioStateUseCase,
     private val dataStoreRepository: DataStoreRepository
 ) : MviBaseViewModel<ZekrDetailsState, ZekrDetailsAction, ZekrDetailsIntent>(
@@ -76,6 +80,12 @@ class ZekrDetailsViewModel @AssistedInject constructor(
                 stopAudio.invoke()
             }
 
+            ZekrDetailsIntent.ResetAudio -> {
+                resetAudio.invoke(
+                    audioPath = viewState.zekrDetails.audioPath
+                )
+            }
+
             is ZekrDetailsIntent.LoadZekrDetails -> {
                 // load your zekr item here (repo/usecase) and keep its audio path
                 // then UI can call ToggleAudio(audioPath)
@@ -96,6 +106,15 @@ class ZekrDetailsViewModel @AssistedInject constructor(
 
             is ZekrDetailsIntent.FontSizeSheetVisibility -> {
                 onAction(action = FontSizeSheetVisibility(visible = intent.isVisible))
+            }
+
+            is ZekrDetailsIntent.VolumeSheetVisibility -> {
+                onAction(action = ZekrDetailsAction.VolumeSheetVisibility(visible = intent.isVisible))
+            }
+
+            is ZekrDetailsIntent.UpdateVolume -> {
+                onAction(action = ZekrDetailsAction.UpdateVolume(volume = intent.volume))
+                setVolume.invoke(intent.volume)
             }
 
             is ZekrDetailsIntent.ShareSheetVisibility -> {

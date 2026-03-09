@@ -8,8 +8,12 @@ import com.der3.home.domain.use_case.PlayAzkarAudioUseCase
 import com.der3.home.domain.use_case.PlayAzkarAudioUseCaseImpl
 import com.der3.home.domain.use_case.ReleaseAzkarAudioUseCase
 import com.der3.home.domain.use_case.ReleaseAzkarAudioUseCaseImpl
+import com.der3.home.domain.use_case.ResetAzkarAudioUseCase
+import com.der3.home.domain.use_case.ResetAzkarAudioUseCaseImpl
 import com.der3.home.domain.use_case.ResumeAzkarAudioUseCase
 import com.der3.home.domain.use_case.ResumeAzkarAudioUseCaseImpl
+import com.der3.home.domain.use_case.SetAzkarVolumeUseCase
+import com.der3.home.domain.use_case.SetAzkarVolumeUseCaseImpl
 import com.der3.home.domain.use_case.StopAzkarAudioUseCase
 import com.der3.home.domain.use_case.StopAzkarAudioUseCaseImpl
 import com.der3.home.domain.use_case.ToggleAzkarAudioUseCase
@@ -63,6 +67,18 @@ abstract class AudioUseCaseModule {
     abstract fun bindReleaseAzkarAudio(
         impl: ReleaseAzkarAudioUseCaseImpl
     ): ReleaseAzkarAudioUseCase
+
+    @Binds
+    @Singleton
+    abstract fun bindResetAzkarAudio(
+        impl: ResetAzkarAudioUseCaseImpl
+    ): ResetAzkarAudioUseCase
+
+    @Binds
+    @Singleton
+    abstract fun bindSetAzkarVolume(
+        impl: SetAzkarVolumeUseCaseImpl
+    ): SetAzkarVolumeUseCase
 
     @Binds
     @Singleton
