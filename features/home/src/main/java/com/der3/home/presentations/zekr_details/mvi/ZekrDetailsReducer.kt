@@ -49,6 +49,14 @@ class ZekrDetailsReducer @Inject constructor() : Reducer<ZekrDetailsAction, Zekr
                 state.copy(fontSizeSheetVisibility = action.visible)
             }
 
+            is ZekrDetailsAction.VolumeSheetVisibility -> {
+                state.copy(volumeSheetVisibility = action.visible)
+            }
+
+            is ZekrDetailsAction.UpdateVolume -> {
+                state.copy(currentVolume = action.volume)
+            }
+
             is ZekrDetailsAction.ShareSheetVisibility -> {
                 state.copy(shareSheetVisibility = action.visible)
             }

@@ -43,66 +43,42 @@ class AzkarAudioPlayer @Inject constructor(
 
         val assetPath = audioPath.removePrefix("/")
 
+        // If already playing this exact file, do nothing
         if (currentPath == assetPath && isAudioPlaying) return
 
-        if (currentPath != assetPath) stop()
+        // Always stop and release any existing player before starting a new one
+        stop()
 
         try {
             mediaPlayer = MediaPlayer().apply {
-
                 val afd = context.assets.openFd(assetPath)
-
-                setDataSource(
-                    afd.fileDescriptor,
-                    afd.startOffset,
-                    afd.length
-                )
-
+                setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
                 prepare()
                 start()
 
                 currentPath = assetPath
                 isAudioPlaying = true
-
                 emitState()
 
                 setOnCompletionListener {
                     isAudioPlaying = false
-                    currentPath = null
+                    // Keep currentPath so we know what was last played
                     emitState()
                     onPlaybackCompleted?.invoke()
                 }
 
                 setOnErrorListener { _, what, extra ->
                     isAudioPlaying = false
-
-                    val errorMsg =
-                        "MediaPlayer error: what=$what extra=$extra"
-
-                    _audioState.value = AzkarAudioState(
-                        isPlaying = false,
-                        currentPath = null,
-                        error = errorMsg
-                    )
-
+                    val errorMsg = "MediaPlayer error: what=$what extra=$extra"
+                    _audioState.value = AzkarAudioState(isPlaying = false, currentPath = currentPath, error = errorMsg)
                     onError?.invoke(errorMsg)
                     true
                 }
             }
-
         } catch (e: Exception) {
-
             isAudioPlaying = false
-            currentPath = null
-
             val errorMsg = e.message ?: "Unknown audio error"
-
-            _audioState.value = AzkarAudioState(
-                isPlaying = false,
-                currentPath = null,
-                error = errorMsg
-            )
-
+            _audioState.value = AzkarAudioState(isPlaying = false, currentPath = currentPath, error = errorMsg)
             onError?.invoke(errorMsg)
             release()
         }
@@ -123,9 +99,14 @@ class AzkarAudioPlayer @Inject constructor(
     // ─────────────────────────────────────────────
 
     override fun resume() {
-        mediaPlayer?.start()
-        isAudioPlaying = true
-        emitState()
+        if (mediaPlayer != null) {
+            mediaPlayer?.start()
+            isAudioPlaying = true
+            emitState()
+        } else if (currentPath != null) {
+            // If player was released but we have a path, restart it
+            play(currentPath!!)
+        }
     }
 
     // ─────────────────────────────────────────────
@@ -134,9 +115,9 @@ class AzkarAudioPlayer @Inject constructor(
 
     override fun stop() {
         mediaPlayer?.stop()
+        release() // This sets mediaPlayer = null
         isAudioPlaying = false
-        currentPath = null
-        release()
+        // Note: we don't clear currentPath here so reset/resume can use it
         emitState()
     }
 
@@ -161,6 +142,24 @@ class AzkarAudioPlayer @Inject constructor(
     override fun release() {
         mediaPlayer?.release()
         mediaPlayer = null
+    }
+
+    override fun reset() {
+        val path = currentPath
+        if (mediaPlayer != null) {
+            mediaPlayer?.seekTo(0)
+            if (!isAudioPlaying) {
+                mediaPlayer?.start()
+                isAudioPlaying = true
+                emitState()
+            }
+        } else if (path != null) {
+            play(path)
+        }
+    }
+
+    override fun setVolume(volume: Float) {
+        mediaPlayer?.setVolume(volume, volume)
     }
 
     // ─────────────────────────────────────────────

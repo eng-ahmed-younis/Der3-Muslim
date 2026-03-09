@@ -46,5 +46,14 @@ interface AudioPlayer {
     /** Release MediaPlayer resources */
     fun release()
 
+    /** Reset the audio player to the beginning of the track */
+    fun reset()
+
+    /**
+     * Set the volume of the audio player.
+     * @param volume Value between 0.0 and 1.0
+     */
+    fun setVolume(volume: Float)
+
     val audioState: StateFlow<AzkarAudioState>
 }

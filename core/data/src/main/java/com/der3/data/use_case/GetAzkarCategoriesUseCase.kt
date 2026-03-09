@@ -11,11 +11,10 @@ interface GetAzkarCategoriesUseCase {
     operator fun invoke(): Flow<List<AzkarCategory>>
 }
 
-class GetAzkarCategoriesUseCaseImpl @Inject constructor(
-    private val azkarRepository: AzkarRepository
-) : GetAzkarCategoriesUseCase{
-    override fun invoke(): Flow<List<AzkarCategory>> {
-        return azkarRepository.getAllCategories().flowOn(Dispatchers.IO)
+class GetAzkarCategoriesUseCaseImpl
+    @Inject
+    constructor(
+        private val azkarRepository: AzkarRepository,
+    ) : GetAzkarCategoriesUseCase {
+        override fun invoke(): Flow<List<AzkarCategory>> = azkarRepository.getAllCategories().flowOn(Dispatchers.IO)
     }
-
-}
