@@ -12,7 +12,7 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import com.der3.data.provider.ZekrCategoriesProvider
+import com.der3.shared.data.provider.ZekrCategoriesProvider
 import com.der3.ui.models.CategoryUi
 import com.der3.ui.themes.Der3MuslimTheme
 import java.util.Locale

@@ -2,8 +2,8 @@ package com.der3.home.presentations.zekr_details
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.der3.data.params.ZekrDetailsParams
-import com.der3.data.use_case.GetAzkarItemByIdUseCase
+import com.der3.shared.params.ZekrDetailsParams
+import com.der3.shared.domain.use_case.GetAzkarItemByIdUseCase
 import com.der3.data_store.api.DataStoreRepository
 import com.der3.home.data.mappers.toZekrUiModel
 import com.der3.home.di.factory.ZekrDetailsViewModelFactory

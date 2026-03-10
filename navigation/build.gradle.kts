@@ -73,5 +73,5 @@ dependencies {
     implementation(project(path = ":features:splash"))
     implementation(project(path = ":features:on_boarding"))
     implementation(project(path = ":features:home"))
-    implementation(project(path = ":core:data"))
+    implementation(project(":core:shared"))
 }

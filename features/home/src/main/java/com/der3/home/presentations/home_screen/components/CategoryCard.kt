@@ -30,7 +30,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import com.der3.data.provider.ZekrCategoriesProvider
+import com.der3.shared.data.provider.ZekrCategoriesProvider
 import com.der3.ui.R
 import com.der3.ui.models.PalletColors
 

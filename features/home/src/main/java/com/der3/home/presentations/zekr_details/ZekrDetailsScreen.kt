@@ -37,7 +37,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.der3.data.params.ZekrDetailsParams
+import com.der3.shared.params.ZekrDetailsParams
 import com.der3.home.di.factory.ZekrDetailsViewModelFactory
 import com.der3.home.presentations.zekr_details.mvi.ZekrDetailsIntent
 import com.der3.home.presentations.zekr_details.mvi.ZekrDetailsState

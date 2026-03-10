@@ -24,10 +24,10 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/core" />
-            <option value="$PROJECT_DIR$/core/data" />
             <option value="$PROJECT_DIR$/core/data_store" />
             <option value="$PROJECT_DIR$/core/mvi" />
             <option value="$PROJECT_DIR$/core/player" />
+            <option value="$PROJECT_DIR$/core/shared" />
             <option value="$PROJECT_DIR$/core/ui" />
             <option value="$PROJECT_DIR$/core/ui-model" />
             <option value="$PROJECT_DIR$/core/utils" />

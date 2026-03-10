@@ -1,14 +1,12 @@
 package com.der3.home.presentations.all_categories
 
 import androidx.lifecycle.viewModelScope
-import com.der3.data.use_case.GetAzkarCategoriesUseCase
-import com.der3.data.use_case.SearchAzkarCategoriesUseCase
+import com.der3.shared.domain.use_case.GetAzkarCategoriesUseCase
 import com.der3.home.data.mappers.toUiCategories
 import com.der3.home.presentations.all_categories.mvi.AllCategoryActions
 import com.der3.home.presentations.all_categories.mvi.AllCategoryIntent
 import com.der3.home.presentations.all_categories.mvi.AllCategoryReducer
 import com.der3.home.presentations.all_categories.mvi.AllCategoryState
-import com.der3.home.presentations.home_screen.mvi.HomeAction
 import com.der3.mvi.MviBaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
