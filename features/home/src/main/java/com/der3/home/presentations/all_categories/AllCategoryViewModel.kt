@@ -8,6 +8,8 @@ import com.der3.home.presentations.all_categories.mvi.AllCategoryIntent
 import com.der3.home.presentations.all_categories.mvi.AllCategoryReducer
 import com.der3.home.presentations.all_categories.mvi.AllCategoryState
 import com.der3.mvi.MviBaseViewModel
+import com.der3.mvi.MviEffect
+import com.der3.screens.Der3NavigationRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
@@ -35,6 +37,18 @@ class AllCategoryViewModel @Inject constructor(
             is AllCategoryIntent.UpdateSearchQuery -> {
                 onAction(AllCategoryActions.UpdateSearchQuery(intent.query))
                 searchCategories(intent.query)
+            }
+            is AllCategoryIntent.SelectCategory -> {
+                onEffect(
+                    MviEffect.Navigate(
+                        Der3NavigationRoute.CategoryDetailsScreen(
+                            categoryId = intent.category.id,
+                            categoryTitle = intent.category.title,
+                            categorySubtitle = intent.category.subtitle,
+                            categoryCount = intent.category.count
+                        )
+                    )
+                )
             }
         }
     }

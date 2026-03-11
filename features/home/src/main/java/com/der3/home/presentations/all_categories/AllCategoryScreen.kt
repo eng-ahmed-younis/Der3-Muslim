@@ -144,7 +144,7 @@ fun AllCategoryScreen(
                         .padding(vertical = 8.dp),
                     category = state.categories[index],
                     onClick = {
-                       // onIntent(AllCategoryIntent.SelectCategory(category))
+                        onIntent(AllCategoryIntent.SelectCategory(category))
                     }
                 )
             }

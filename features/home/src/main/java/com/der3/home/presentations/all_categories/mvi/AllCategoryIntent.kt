@@ -7,4 +7,5 @@ import com.der3.mvi.MviIntent
 sealed interface AllCategoryIntent : MviIntent {
 
     data class UpdateSearchQuery(val query: String) : AllCategoryIntent
+    data class SelectCategory(val category: com.der3.ui.models.CategoryUi) : AllCategoryIntent
 }
