@@ -41,22 +41,32 @@ class AzkarAudioPlayer @Inject constructor(
 
     override fun play(audioPath: String) {
 
-        val assetPath = audioPath.removePrefix("/")
+        val cleanPath = audioPath.removePrefix("/")
 
         // If already playing this exact file, do nothing
-        if (currentPath == assetPath && isAudioPlaying) return
+        if (currentPath == cleanPath && isAudioPlaying) return
 
         // Always stop and release any existing player before starting a new one
         stop()
 
         try {
-            mediaPlayer = MediaPlayer().apply {
-                val afd = context.assets.openFd(assetPath)
-                setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
-                prepare()
+            mediaPlayer = if (cleanPath.startsWith("raw/")) {
+                val resName = cleanPath.removePrefix("raw/").substringBefore(".")
+                val resId = context.resources.getIdentifier(resName, "raw", context.packageName)
+                if (resId == 0) throw Exception("Raw resource not found: $resName")
+                MediaPlayer.create(context, resId)
+            } else {
+                MediaPlayer().apply {
+                    val afd = context.assets.openFd(cleanPath)
+                    setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
+                    prepare()
+                }
+            }
+
+            mediaPlayer?.apply {
                 start()
 
-                currentPath = assetPath
+                currentPath = cleanPath
                 isAudioPlaying = true
                 emitState()
 

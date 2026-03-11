@@ -4,4 +4,5 @@ interface DataStoreRepository {
 
     var hasCompletedOnboarding: Boolean
     var zekrScreenDetailsFontSize: Int
+    var masbahaDataVersion: Int
 }
