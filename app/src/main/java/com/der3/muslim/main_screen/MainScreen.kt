@@ -42,6 +42,8 @@ fun MainScreen() {
 
     ModalNavigationDrawer(
         drawerState = drawerState,
+        // only enable gestures when the drawer is already open.
+        gesturesEnabled = drawerState.isOpen,
         drawerContent = {
             AzkarDrawer(
                 currentRoute = currentRoute.orEmpty(),
@@ -55,20 +57,6 @@ fun MainScreen() {
     ) {
         Scaffold(
             containerColor = AppColors.gray50,
-         /*   topBar = {
-                if (showBottomBar) {
-                    TopAppBar(
-                        title = { Text("تطبيق أذكار") },
-                        navigationIcon = {
-                            IconButton(
-                                onClick = { scope.launch { drawerState.open() } }
-                            ) {
-                                Icon(Icons.Default.Menu, null)
-                            }
-                        }
-                    )
-                }
-            },*/
             bottomBar = {
                 AnimatedVisibility(
                     visible = showBottomBar,

@@ -61,6 +61,12 @@ sealed interface Der3NavigationRoute : Screens {
     object SettingsScreen : Der3NavigationRoute
 
     @Serializable
+    object MasbahaScreen : Der3NavigationRoute
+
+    @Serializable
+    object MasbahaHistoryScreen : Der3NavigationRoute
+
+    @Serializable
     object AzkarScreen : Der3NavigationRoute
 
     @Serializable

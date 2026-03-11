@@ -1,8 +1,6 @@
 pluginManagement {
     repositories {
-        google {
-
-        }
+        google {}
         mavenCentral()
         gradlePluginPortal()
     }
@@ -19,6 +17,8 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Der3 Muslim"
+
+
 include(":app")
 include(":navigation")
 include(":features")
@@ -32,5 +32,6 @@ include(":features:on_boarding")
 include(":screens")
 include(":features:home")
 include(":core:utils")
-include(":core:data")
+include(":core:shared")
 include(":core:player")
+include(":features:sections")

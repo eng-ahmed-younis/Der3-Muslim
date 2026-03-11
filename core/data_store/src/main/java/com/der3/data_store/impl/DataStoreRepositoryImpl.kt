@@ -27,5 +27,14 @@ class DataStoreRepositoryImpl(private val dataStoreService: DataStoreService) : 
                 dataStoreService.set(DataStoreKeys.ZEKR_DETAILS_SCREEN_FONT_SIZE, value)
             }
         }
+    override var masbahaDataVersion: Int
+        get() = runBlocking (Dispatchers.IO) {
+            dataStoreService.get<Int>(DataStoreKeys.MASBAHA_DATA_VERSION, 0).first()
+        }
+        set(value) {
+            runBlocking (Dispatchers.IO) {
+                dataStoreService.set(DataStoreKeys.MASBAHA_DATA_VERSION, value)
+            }
+        }
 
 }

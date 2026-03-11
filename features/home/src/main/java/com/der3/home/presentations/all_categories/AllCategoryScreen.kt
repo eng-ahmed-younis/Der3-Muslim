@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.der3.data.provider.ZekrCategoriesProvider
+import com.der3.shared.data.provider.ZekrCategoriesProvider
 import com.der3.home.presentations.all_categories.components.CategoryRow
 import com.der3.home.presentations.all_categories.mvi.AllCategoryIntent
 import com.der3.home.presentations.all_categories.mvi.AllCategoryState
@@ -144,7 +144,7 @@ fun AllCategoryScreen(
                         .padding(vertical = 8.dp),
                     category = state.categories[index],
                     onClick = {
-                       // onIntent(AllCategoryIntent.SelectCategory(category))
+                        onIntent(AllCategoryIntent.SelectCategory(category))
                     }
                 )
             }
