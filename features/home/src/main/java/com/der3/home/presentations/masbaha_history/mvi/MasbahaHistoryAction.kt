@@ -13,4 +13,5 @@ sealed interface MasbahaHistoryAction : MviAction {
     data class OnFilterChanged(val filter: HistoryFilter) : MasbahaHistoryAction
     data class OnLoading(val isLoading: Boolean) : MasbahaHistoryAction
     data class OnError(val message: String) : MasbahaHistoryAction
+    data object OnHistoryCleared : MasbahaHistoryAction
 }

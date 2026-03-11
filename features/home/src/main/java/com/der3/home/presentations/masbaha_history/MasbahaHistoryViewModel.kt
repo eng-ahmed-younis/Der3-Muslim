@@ -49,7 +49,7 @@ class MasbahaHistoryViewModel @Inject constructor(
             onAction(MasbahaHistoryAction.OnLoading(true))
             try {
                 historyDao.clearHistory()
-                onAction(MasbahaHistoryAction.OnLoading(false))
+                onAction(MasbahaHistoryAction.OnHistoryCleared)
             } catch (e: Exception) {
                 onAction(MasbahaHistoryAction.OnError(e.message ?: "Unknown error"))
                 onEffect(MviEffect.OnErrorDialog(UiText.DynamicError(e.message ?: "Unknown error")))

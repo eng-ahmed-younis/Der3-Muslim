@@ -33,6 +33,9 @@
     <string name="reset_confirm">تصفير</string>
     <string name="save">حفظ</string>
     <string name="cancel">إلغاء</string>
+    <string name="clear">مسح</string>
+    <string name="clear_history">مسح السجل</string>
+    <string name="clear_history_confirmation_message">هل أنت متأكد من مسح سجل التسبيح بالكامل؟</string>
     <string name="new_target">الهدف الجديد</string>
     <string name="history_title">سجل التسبيح</string>
     <string name="history_summary_total">إجمالي التسبيحات</string>
@@ -44,9 +47,6 @@
     <string name="history_filter_week">الأسبوع</string>
     <string name="history_filter_month">الشهر</string>
     <string name="history_item_subtitle">تكرار فردي</string>
-    <string name="clear_history">حذف السجل</string>
-    <string name="clear_history_confirmation_message">هل أنت متأكد من حذف كل سجلات التسبيح؟ لا يمكن التراجع عن هذا الإجراء.</string>
-    <string name="clear">حذف</string>
 
     <string name="daily_notifications_title">التنبيهات اليومية</string>
     <string name="daily_notifications_header_subtitle">حافظ على وردك اليومي من خلال التنبيهات</string>

@@ -18,6 +18,12 @@ class MasbahaHistoryReducer @Inject constructor() : Reducer<MasbahaHistoryAction
                 error = action.message,
                 isLoading = false
             )
+            is MasbahaHistoryAction.OnHistoryCleared -> state.copy(
+                recentActivity = emptyList(),
+                totalTasbihCount = 0,
+                continuousDays = 0,
+                isLoading = false
+            )
         }
     }
 }
