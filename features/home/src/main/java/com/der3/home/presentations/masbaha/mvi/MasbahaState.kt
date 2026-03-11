@@ -12,7 +12,7 @@ data class MasbahaState(
     val currentCount: Int = 0,
     val targetCount: Int = 33,
     val autoSwitch: Boolean = true,
-    val isVibrationEnabled: Boolean = true,
+    val vibrationType: VibrationType = VibrationType.SHORT,
     val isSoundEnabled: Boolean = true,
     val error: String? = null
 ) : MviState {
@@ -21,4 +21,8 @@ data class MasbahaState(
     
     val progressPercentage: Int
         get() = (progress * 100).toInt()
+}
+
+enum class VibrationType {
+    SHORT, LONG, HEARTBEAT, NONE
 }

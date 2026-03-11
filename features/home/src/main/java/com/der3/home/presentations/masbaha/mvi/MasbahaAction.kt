@@ -12,6 +12,6 @@ sealed interface MasbahaAction : MviAction {
     data class SetSelectedAzkar(val azkar: MasbahaAzkar) : MasbahaAction
     data class UpdateTargetCount(val target: Int) : MasbahaAction
     data class UpdateAutoSwitch(val enabled: Boolean) : MasbahaAction
-    data class UpdateVibration(val enabled: Boolean) : MasbahaAction
+    data class UpdateVibration(val type: VibrationType) : MasbahaAction
     data class UpdateSound(val enabled: Boolean) : MasbahaAction
 }

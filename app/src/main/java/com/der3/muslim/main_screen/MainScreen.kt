@@ -42,7 +42,8 @@ fun MainScreen() {
 
     ModalNavigationDrawer(
         drawerState = drawerState,
-        gesturesEnabled = false,
+        // only enable gestures when the drawer is already open.
+        gesturesEnabled = drawerState.isOpen,
         drawerContent = {
             AzkarDrawer(
                 currentRoute = currentRoute.orEmpty(),

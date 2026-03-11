@@ -11,12 +11,15 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.der3.ui.R
 import com.der3.ui.themes.AppColors
@@ -29,50 +32,46 @@ fun AzkarAutoSelected(
     onAutoSwitchChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(
-            text = stringResource(id = R.string.select_zekr),
-            color = AppColors.green800,
-            style = MaterialTheme.typography.bodyLarge,
-            fontWeight = FontWeight.Bold
-        )
+
+    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
 
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f),
+            modifier = modifier
+                .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.End
-         //   horizontalArrangement = Alignment.CenterEnd
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(
-                text = stringResource(id = R.string.auto_change),
-                color = AppColors.gold500,
-                style = MaterialTheme.typography.bodyMedium
-            )
-
-            Spacer(modifier = Modifier.width(8.dp))
-
-            Switch(
-                modifier = Modifier.scale(0.7f),
-                checked = autoSwitch,
-                onCheckedChange = onAutoSwitchChange,
-                colors = SwitchDefaults.colors(
-                    checkedThumbColor = AppColors.white,
-                    checkedTrackColor = AppColors.green800,
-                    uncheckedThumbColor = AppColors.gray500,
-                    uncheckedTrackColor = AppColors.gray200,
-                    uncheckedBorderColor = AppColors.gray500
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Switch(
+                    modifier = Modifier.scale(0.8f),
+                    checked = autoSwitch,
+                    onCheckedChange = onAutoSwitchChange,
+                    colors = SwitchDefaults.colors(
+                        checkedThumbColor = AppColors.white,
+                        checkedTrackColor = AppColors.green800,
+                        uncheckedThumbColor = AppColors.gray500,
+                        uncheckedTrackColor = AppColors.gray200,
+                        uncheckedBorderColor = AppColors.gray500
+                    )
                 )
+                Text(
+                    text = stringResource(id = R.string.auto_change),
+                    color = AppColors.gold500,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+
+            Text(
+                text = stringResource(id = R.string.select_zekr),
+                color = AppColors.green800,
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Bold
             )
         }
     }
-
 }
 
 @Preview(showBackground = true)

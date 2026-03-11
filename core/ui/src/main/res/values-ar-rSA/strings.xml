@@ -35,7 +35,18 @@
     <string name="cancel">إلغاء</string>
     <string name="new_target">الهدف الجديد</string>
     <string name="history_title">السجل</string>
-
+    <string name="history_summary_total">إجمالي التسبيحات</string>
+    <string name="history_summary_count_suffix">تسبيحة</string>
+    <string name="history_continuous_days">أيام النشاط المتواصل: %d أيام</string>
+    <string name="history_recent_activity">النشاط الأخير</string>
+    <string name="history_view_all">مشاهدة الكل</string>
+    <string name="history_filter_today">اليوم</string>
+    <string name="history_filter_week">الأسبوع</string>
+    <string name="history_filter_month">الشهر</string>
+    <string name="history_item_subtitle">تكرار فردي</string>
+    <string name="clear_history">حذف السجل</string>
+    <string name="clear_history_confirmation_message">هل أنت متأكد من حذف كل سجلات التسبيح؟ لا يمكن التراجع عن هذا الإجراء.</string>
+    <string name="clear">حذف</string>
     <string name="daily_notifications_title">التنبيهات اليومية</string>
     <string name="daily_notifications_header_subtitle">حافظ على وردك اليومي من خلال التنبيهات</string>
     <string name="daily_notifications_add_custom">إضافة تنبيه مخصص</string>
