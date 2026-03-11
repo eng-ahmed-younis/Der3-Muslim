@@ -20,7 +20,7 @@
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/der3_muslim_title"
-            android:theme="@style/Theme.Der3Muslim">
+            android:theme="@style/Theme.App.Starting">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

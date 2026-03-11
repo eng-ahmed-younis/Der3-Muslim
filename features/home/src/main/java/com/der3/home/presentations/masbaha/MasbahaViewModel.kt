@@ -13,7 +13,9 @@ import com.der3.shared.domain.use_case.SyncMasbahaDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -40,7 +42,7 @@ class MasbahaViewModel @Inject constructor(
             is MasbahaIntent.SelectAzkar -> {
                 onAction(MasbahaAction.SetSelectedAzkar(intent.azkar))
             }
-            MasbahaIntent.IncrementCount -> {
+            is MasbahaIntent.IncrementCount -> {
                 if (viewState.isSoundEnabled) {
                     audioPlayer.play("raw/click.mp3")
                 }
@@ -56,13 +58,13 @@ class MasbahaViewModel @Inject constructor(
                 onAction(MasbahaAction.UpdateAutoSwitch(intent.enabled))
             }
             is MasbahaIntent.ToggleVibration -> {
-                onAction(MasbahaAction.UpdateVibration(intent.enabled))
+                onAction(MasbahaAction.UpdateVibration(intent.type))
             }
             is MasbahaIntent.ToggleSound -> {
                 onAction(MasbahaAction.UpdateSound(intent.enabled))
             }
-            MasbahaIntent.OpenHistory -> {
-                // TODO: Implement history screen navigation
+            is MasbahaIntent.OpenHistory -> {
+                onEffect(MviEffect.Navigate(com.der3.screens.Der3NavigationRoute.MasbahaHistoryScreen))
             }
         }
     }
@@ -71,17 +73,19 @@ class MasbahaViewModel @Inject constructor(
         // 1. Observe from Room immediately (Single Source of Truth)
         // This ensures the user sees local data instantly without waiting for network
         getMasbahaAzkarsUseCase()
+            .onStart {
+                onAction(MasbahaAction.OnLoading(true))
+                syncMasbahaDataUseCase()
+            }
             .onEach { azkars ->
                 onAction(MasbahaAction.OnAzkarsLoaded(azkars))
             }
             .catch { e ->
                 onAction(MasbahaAction.OnError(e.message ?: "Unknown Error"))
             }
+            .onCompletion {
+                onAction(MasbahaAction.OnLoading(false))
+            }
             .launchIn(viewModelScope)
-
-        // 2. Run Sync in background
-        viewModelScope.launch {
-            syncMasbahaDataUseCase()
-        }
     }
 }

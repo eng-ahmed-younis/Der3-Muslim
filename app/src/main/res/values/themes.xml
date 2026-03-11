@@ -2,4 +2,12 @@
 <resources>
 
     <style name="Theme.Der3Muslim" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <!--Created a "Starting" Theme: In themes.xml, I added a new theme Theme.App.Starting that disables
+    the system preview and makes the starting window transparent.-->
+    <style name="Theme.App.Starting" parent="Theme.Der3Muslim">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowDisablePreview">true</item>
+    </style>
 </resources>
