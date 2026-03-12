@@ -45,7 +45,7 @@ class MainSectionViewModel @Inject constructor(
                     SectionType.TASBEH -> Der3NavigationRoute.TasbeehScreen
                     SectionType.FAVORITES -> Der3NavigationRoute.FavouriteScreen
                     SectionType.DAILY_NOTIFICATIONS -> Der3NavigationRoute.DailyNotificationsScreen
-                 //   SectionType.PRAYERS_TIME -> Der3NavigationRoute.PrayTimeScreen
+                    SectionType.PRAYERS_TIME -> Der3NavigationRoute.PrayerTimesScreen
                     SectionType.QIBLA -> Der3NavigationRoute.QiblaScreen
                     else -> null
                 }

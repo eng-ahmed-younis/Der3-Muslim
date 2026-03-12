@@ -1,6 +1,5 @@
 package com.der3.home.presentations.masbaha_history
 
-import LoadingDialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -48,6 +47,7 @@ import com.der3.shared.data.source.local.entity.MasbahaHistoryEntity
 import com.der3.ui.R
 import com.der3.ui.components.Der3TopAppBar
 import com.der3.ui.components.ErrorDialog
+import com.der3.ui.components.LoadingDialog
 import com.der3.ui.style.ShiftSystemBarStyle
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme

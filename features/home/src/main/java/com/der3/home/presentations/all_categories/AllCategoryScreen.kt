@@ -1,7 +1,6 @@
 package com.der3.home.presentations.all_categories
 
 import com.der3.ui.components.Der3TopAppBar
-import LoadingDialog
 import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,6 +23,7 @@ import com.der3.home.presentations.all_categories.mvi.AllCategoryState
 import com.der3.mvi.MviEffect
 import com.der3.screens.Screens
 import com.der3.ui.R
+import com.der3.ui.components.LoadingDialog
 import com.der3.ui.components.ReminderNameField
 import com.der3.ui.style.ShiftSystemBarStyle
 import com.der3.ui.themes.AppColors

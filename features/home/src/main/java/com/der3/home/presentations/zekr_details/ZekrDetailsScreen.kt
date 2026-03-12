@@ -1,10 +1,5 @@
 package com.der3.home.presentations.zekr_details
 
-import CategoryChip
-import CircularZekrCounter
-import ControlPanel
-import LoadingDialog
-import ProgressCard
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.background
@@ -39,6 +34,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.der3.shared.params.ZekrDetailsParams
 import com.der3.home.di.factory.ZekrDetailsViewModelFactory
+import com.der3.home.presentations.zekr_details.components.CategoryChip
+import com.der3.home.presentations.zekr_details.components.ControlPanel
+import com.der3.home.presentations.zekr_details.components.ProgressCard
 import com.der3.home.presentations.zekr_details.mvi.ZekrDetailsIntent
 import com.der3.home.presentations.zekr_details.mvi.ZekrDetailsState
 import com.der3.home.utils.AzkarDetailsMenuItems
@@ -46,10 +44,12 @@ import com.der3.model.UiText
 import com.der3.mvi.MviEffect
 import com.der3.screens.Screens
 import com.der3.ui.R
+import com.der3.ui.components.CircularZekrCounter
 import com.der3.ui.components.CustomMenu
 import com.der3.ui.components.Der3TopAppBar
 import com.der3.ui.components.ErrorDialog
 import com.der3.ui.components.FontSizeBottomSheet
+import com.der3.ui.components.LoadingDialog
 import com.der3.ui.components.VolumeBottomSheet
 import com.der3.ui.components.ShareBottomSheet
 import com.der3.ui.components.TextSlider

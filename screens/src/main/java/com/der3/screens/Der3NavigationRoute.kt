@@ -21,6 +21,9 @@ sealed interface Der3NavigationRoute : Screens {
     @Serializable
     object FavouriteScreen : Der3NavigationRoute
 
+    @Serializable
+    object PrayerTimesScreen : Der3NavigationRoute
+
 
 
 

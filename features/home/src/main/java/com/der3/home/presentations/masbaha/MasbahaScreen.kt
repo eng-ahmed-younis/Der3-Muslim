@@ -1,6 +1,5 @@
 package com.der3.home.presentations.masbaha
 
-import LoadingDialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -50,6 +49,7 @@ import com.der3.shared.domain.model.MasbahaAzkar
 import com.der3.ui.R
 import com.der3.ui.components.Der3TopAppBar
 import com.der3.ui.components.ErrorDialog
+import com.der3.ui.components.LoadingDialog
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
 import com.der3.utils.asString

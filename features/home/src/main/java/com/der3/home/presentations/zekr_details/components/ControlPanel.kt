@@ -1,3 +1,5 @@
+package com.der3.home.presentations.zekr_details.components
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

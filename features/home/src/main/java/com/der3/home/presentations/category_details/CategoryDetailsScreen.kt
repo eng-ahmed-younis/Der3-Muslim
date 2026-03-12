@@ -1,6 +1,5 @@
 package com.der3.home.presentations.category_details
 
-import LoadingDialog
 import ReadingInfoCard
 import ZekrCard
 import androidx.compose.foundation.background
@@ -29,6 +28,7 @@ import com.der3.mvi.MviEffect
 import com.der3.screens.Screens
 import com.der3.ui.components.Der3TopAppBar
 import com.der3.ui.components.ErrorDialog
+import com.der3.ui.components.LoadingDialog
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
 import com.der3.utils.asString
