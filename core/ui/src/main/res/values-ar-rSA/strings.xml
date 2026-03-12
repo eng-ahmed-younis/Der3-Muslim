@@ -51,6 +51,8 @@
     <string name="daily_notifications_header_subtitle">حافظ على وردك اليومي من خلال التنبيهات</string>
     <string name="daily_notifications_add_custom">إضافة تنبيه مخصص</string>
 
+    <string name="sections_search_placeholder">ابحث عن قسم أو ميزة...</string>
+
     <!-- Existing keys (ensure these exist) -->
     <string name="azkar_morning">أذكار الصباح</string>
     <string name="azkar_evening">أذكار المساء</string>

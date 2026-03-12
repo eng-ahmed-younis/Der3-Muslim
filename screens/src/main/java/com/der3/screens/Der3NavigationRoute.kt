@@ -13,6 +13,9 @@ sealed interface Der3NavigationRoute : Screens {
     object SectionScreen : Der3NavigationRoute
 
     @Serializable
+    object QiblaScreen : Der3NavigationRoute
+
+    @Serializable
     object TasbeehScreen : Der3NavigationRoute
 
     @Serializable
@@ -71,5 +74,7 @@ sealed interface Der3NavigationRoute : Screens {
 
     @Serializable
     object AboutScreen : Der3NavigationRoute
+
+
 
 }
