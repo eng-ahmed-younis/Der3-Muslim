@@ -1,19 +1,26 @@
 package com.der3.muslim.main_screen.drawer
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.der3.muslim.main_screen.drawer.model.DrawerItem
 import com.der3.muslim.main_screen.drawer.model.drawerItems
 import com.der3.screens.Screens
 import com.der3.ui.themes.Der3MuslimTheme
+import androidx.compose.ui.platform.LocalConfiguration
+import java.util.Locale
 
 
 @Composable
@@ -22,31 +29,43 @@ fun AzkarDrawer(
     onItemClick: (Screens) -> Unit,
     items: List<DrawerItem>
 ) {
+    val configuration = LocalConfiguration.current
+    val drawerWidth = (configuration.screenWidthDp * 0.8).dp
 
     ModalDrawerSheet(
         modifier = Modifier
             .fillMaxHeight()
-            .width(300.dp),
-        drawerContainerColor = Color(0xFFF3F4F6)
-    ) {
-
-        DrawerHeader()
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        items.forEach { item ->
-            DrawerRow(
-                item = item,
-                // item.route::class.qualifiedName will return a full string path like: "com.der3.screens.Screens.MainScreen"
-                selected = currentRoute == item.route::class.qualifiedName,
-                onClick = { onItemClick(item.route) }
+            .width(drawerWidth),
+        drawerContainerColor = Color.White,
+            drawerShape = androidx.compose.foundation.shape.RoundedCornerShape(
+                topStart = 0.dp,
+                bottomStart = 0.dp,
+                topEnd = 24.dp,
+                bottomEnd = 24.dp
             )
+        ) {
+            DrawerHeader()
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Column(
+                modifier = Modifier
+                    .padding(horizontal = 12.dp)
+            ) {
+                items.forEach { item ->
+                    DrawerRow(
+                        item = item,
+                        selected = currentRoute == item.route::class.qualifiedName,
+                        onClick = { onItemClick(item.route) }
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            DrawerFooter(version = "2.4.0")
         }
 
-        Spacer(modifier = Modifier.weight(1f))
-
-        DrawerFooter(version = "2.4.0")
-    }
 }
 
 
@@ -54,7 +73,9 @@ fun AzkarDrawer(
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun AzkarDrawerPreview() {
-    Der3MuslimTheme {
+    Der3MuslimTheme(
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
         AzkarDrawer(
             currentRoute = "home",
             onItemClick = {},

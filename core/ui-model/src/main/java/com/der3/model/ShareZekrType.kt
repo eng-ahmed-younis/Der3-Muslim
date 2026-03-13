@@ -1,6 +1,6 @@
 package com.der3.model
 
-enum class ShareType {
+enum class ShareZekrType {
     TEXT_ONLY,
     IMAGE_ONLY,
     TEXT_AND_IMAGE

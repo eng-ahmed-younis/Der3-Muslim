@@ -9,7 +9,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.navigation.compose.*
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.LayoutDirection
+import com.der3.ui.themes.Der3MuslimTheme
 import com.der3.muslim.main_screen.bottom_bar.Der3BottomBar
 import com.der3.muslim.main_screen.bottom_bar.bottomTabs
 import com.der3.muslim.main_screen.drawer.AzkarDrawer
@@ -19,68 +23,82 @@ import com.der3.screens.Der3NavigationRoute
 import com.der3.ui.themes.AppColors
 import com.der3.ui.models.LocalDrawerState
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 @Composable
 fun MainScreen() {
 
-    val navController = rememberNavController()
-    val drawerState = LocalDrawerState.current
-    val scope = rememberCoroutineScope()
+    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
 
-    val currentBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = currentBackStackEntry?.destination?.route
-    
+        val navController = rememberNavController()
+        val drawerState = LocalDrawerState.current
+        val scope = rememberCoroutineScope()
 
-    val showBottomBar = when (currentRoute) {
-         Der3NavigationRoute.HomeScreen::class.qualifiedName,
-         Der3NavigationRoute.FavouriteScreen::class.qualifiedName,
-         Der3NavigationRoute.TasbeehScreen::class.qualifiedName,
-         Der3NavigationRoute.SectionScreen::class.qualifiedName -> true
-        else -> false
-    }
+        val currentBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentRoute = currentBackStackEntry?.destination?.route
 
-
-    ModalNavigationDrawer(
-        drawerState = drawerState,
-        // only enable gestures when the drawer is already open.
-        gesturesEnabled = drawerState.isOpen,
-        drawerContent = {
-            AzkarDrawer(
-                currentRoute = currentRoute.orEmpty(),
-                items = drawerItems,
-                onItemClick = { route ->
-                    scope.launch { drawerState.close() }
-                    navController.navigateTo(route)
-                }
-            )
+        val showBottomBar = when (currentRoute) {
+            Der3NavigationRoute.HomeScreen::class.qualifiedName,
+            Der3NavigationRoute.FavouriteScreen::class.qualifiedName,
+            Der3NavigationRoute.TasbeehScreen::class.qualifiedName,
+            Der3NavigationRoute.SectionScreen::class.qualifiedName -> true
+            else -> false
         }
-    ) {
-        Scaffold(
-            containerColor = AppColors.gray50,
-            bottomBar = {
-                AnimatedVisibility(
-                    visible = showBottomBar,
-                    enter = slideInVertically(
-                        initialOffsetY = { it },
-                        animationSpec = tween(400)
-                    ),
-                    exit = slideOutVertically(
-                        targetOffsetY = { it },
-                        animationSpec = tween(400)
-                    )
-                ) {
-                    Der3BottomBar(
-                        currentRoute = currentRoute ?: "",
-                        bottomTabs = bottomTabs,
-                        onTabClick = { route -> navController.navigateTo(route) }
-                    )
-                }
+
+        ModalNavigationDrawer(
+            drawerState = drawerState,
+            gesturesEnabled = drawerState.isOpen,
+            drawerContent = {
+                AzkarDrawer(
+                    currentRoute = currentRoute.orEmpty(),
+                    items = drawerItems,
+                    onItemClick = { route ->
+                        scope.launch { drawerState.close() }
+                        navController.navigateTo(route)
+                    }
+                )
             }
-        ) { padding ->
-            MainNavHost(
-                navController = navController,
-                modifier = Modifier.padding(padding)
-            )
+        ) {
+            Scaffold(
+                containerColor = AppColors.gray50,
+                bottomBar = {
+                    AnimatedVisibility(
+                        visible = showBottomBar,
+                        enter = slideInVertically(
+                            initialOffsetY = { it },
+                            animationSpec = tween(400)
+                        ),
+                        exit = slideOutVertically(
+                            targetOffsetY = { it },
+                            animationSpec = tween(400)
+                        )
+                    ) {
+                        Der3BottomBar(
+                            currentRoute = currentRoute ?: "",
+                            bottomTabs = bottomTabs,
+                            onTabClick = { route -> navController.navigateTo(route) }
+                        )
+                    }
+                }
+            ) { padding ->
+                MainNavHost(
+                    navController = navController,
+                    modifier = Modifier.padding(padding)
+                )
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MainScreenPreview() {
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    Der3MuslimTheme(
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
+        CompositionLocalProvider(LocalDrawerState provides drawerState) {
+            MainScreen()
         }
     }
 }

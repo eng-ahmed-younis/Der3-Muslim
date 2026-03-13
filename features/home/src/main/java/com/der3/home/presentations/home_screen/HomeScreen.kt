@@ -24,7 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.der3.shared.data.provider.ZekrCategoriesProvider
 import com.der3.home.presentations.home_screen.components.CategoriesGrid
 import com.der3.home.presentations.home_screen.components.DailyNotificationCard
@@ -77,8 +77,14 @@ fun HomeRoute(
     ErrorDialog(
         visible = showErrorDialog,
         message = errorMessage,
-        onRetry = {},
-        onDismiss = {}
+        onRetry = {
+            showErrorDialog = false
+            viewModel.onIntent(HomeIntent.Retry)
+        },
+        onDismiss = {
+            showErrorDialog = false
+            viewModel.onIntent(HomeIntent.DismissError)
+        }
     )
 
     HomeScreen(

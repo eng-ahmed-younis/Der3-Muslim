@@ -8,5 +8,6 @@ import com.der3.ui.models.CategoryUi
 @Immutable
 data class HomeState (
     val isLoading: Boolean = false,
-    val homeAzkarCategory : List<CategoryUi> = emptyList()
+    val homeAzkarCategory : List<CategoryUi> = emptyList(),
+    val error: String? = null
 ) : MviState

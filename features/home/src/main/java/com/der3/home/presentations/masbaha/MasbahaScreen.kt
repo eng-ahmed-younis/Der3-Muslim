@@ -62,6 +62,7 @@ fun MasbahaRoute(
     onNavigate: (Screens) -> Unit = {}
 ) {
     val viewModel: MasbahaViewModel = hiltViewModel<MasbahaViewModel>()
+    val state = viewModel.viewState
     val scope = rememberCoroutineScope()
     var errorMessage by remember { mutableStateOf<String?>(null) }
     var showErrorDialog by remember { mutableStateOf(false) }
@@ -83,13 +84,12 @@ fun MasbahaRoute(
     ErrorDialog(
         visible = showErrorDialog,
         message = errorMessage,
-        onRetry = {},
-        onDismiss = { showErrorDialog = false }
+        onRetry = { viewModel.onIntent(MasbahaIntent.Retry) },
+        onDismiss = { /* Optionally handle dismiss */ }
     )
 
-
     MasbahaScreen(
-        state = viewModel.viewState,
+        state = state,
         onIntent = { intent ->
             if (intent is MasbahaIntent.Back) {
                 onNavigate(Screens.Back())

@@ -4,7 +4,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -15,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -31,40 +34,54 @@ fun DrawerHeader() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color(0xFF1F6B2D))
-            .padding(vertical = 32.dp),
+            .background(Color(0xFF1B5E20))
+            .padding(vertical = 40.dp),
         contentAlignment = Alignment.Center
     ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        // Concentric circles effect can be simulated with nested boxes or a custom modifier, 
+        // but for now, let's focus on the layout and colors.
 
-            Image(
-                painter = painterResource(id = R.drawable.mosque),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                // colorFilter = ColorFilter.tint(Color(0xFF2E7D32)),
-                modifier = Modifier.size(100.dp)
-            )
-
-
-         //   Spacer(modifier = Modifier.height(16.dp))
-
-            Text(
-                text = "تطبيق أذكار",
-                color = AppColors.white,
-                fontSize = 28.sp,
-                fontFamily = FontFamily(Font(com.der3.ui.R.font.cairo_bold)),
-                fontWeight = FontWeight.Bold
-            )
-
-            Text(
-                text = "حصنك اليومي",
+            Box(
                 modifier = Modifier
-                    .offset(y = (-4).dp),
+                    .fillMaxWidth()
+                    .height(170.dp)
+                    .offset(y = ((-30).dp)),
+                contentAlignment = Alignment.Center
+            ){
+                Image(
+                    painter = painterResource(id = R.drawable.nav_header),
+                    contentDescription = "Nav Header",
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    contentScale = ContentScale.Inside
+                )
+            }
+
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 12.dp)
+                .offset(y = (65.dp)),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = stringResource(id = R.string.der3_muslim_title),
+                color = AppColors.white,
+                fontSize = 24.sp,
+                fontFamily = FontFamily(Font(R.font.cairo_bold)),
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(top = 12.dp)
+            )
+
+            Text(
+                text = stringResource(id = R.string.der3_muslim_subtitle),
                 color = AppColors.gold400,
-                fontFamily = FontFamily(Font(com.der3.ui.R.font.cairo_medium)),
-                fontSize = 14.sp
+                fontFamily = FontFamily(Font(R.font.cairo_medium)),
+                fontSize = 16.sp
             )
         }
+
     }
 }
 

@@ -3,7 +3,7 @@ package com.der3.home.presentations.zekr_details
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.background
-import com.der3.model.ShareType
+import com.der3.model.ShareZekrType
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -99,9 +99,9 @@ fun ZekrDetailsRoute(
                             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                         }
                         type = when (it.type) {
-                            ShareType.TEXT_ONLY -> "text/plain"
-                            ShareType.IMAGE_ONLY -> "image/*"
-                            ShareType.TEXT_AND_IMAGE -> "image/*"
+                            ShareZekrType.TEXT_ONLY -> "text/plain"
+                            ShareZekrType.IMAGE_ONLY -> "image/*"
+                            ShareZekrType.TEXT_AND_IMAGE -> "image/*"
                         }
                     }
                     val shareIntent = Intent.createChooser(sendIntent, null)

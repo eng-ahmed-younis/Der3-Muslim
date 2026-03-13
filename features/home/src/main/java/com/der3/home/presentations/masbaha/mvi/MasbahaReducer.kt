@@ -20,6 +20,7 @@ class MasbahaReducer @Inject constructor() : Reducer<MasbahaAction, MasbahaState
                 error = action.message,
                 isLoading = false
             )
+            MasbahaAction.DismissError -> state.copy(error = null)
             is MasbahaAction.UpdateCount -> {
                 // 1. Increment the current counter
                 var newCount = state.currentCount + 1

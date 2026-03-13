@@ -1,7 +1,9 @@
 package com.der3.navigation.builder
 
 import com.der3.home.presentations.category_details.AzkarDetailsRoute
+import com.der3.home.presentations.drawer.about_der3.AboutDer3Route
 import com.der3.home.presentations.zekr_details.ZekrDetailsRoute
+import com.der3.home.presentations.drawer.contact_us.ContactUsRoute
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -110,6 +112,18 @@ fun NavGraphBuilder.der3AppNavigation(rootNavController: NavHostController) {
 
     composable<Der3NavigationRoute.MasbahaHistoryScreen> {
         MasbahaHistoryRoute { screen ->
+            rootNavController.navigateTo(screen = screen)
+        }
+    }
+
+    composable<Der3NavigationRoute.AboutScreen> {
+        AboutDer3Route { screen ->
+            rootNavController.navigateTo(screen = screen)
+        }
+    }
+
+    composable<Der3NavigationRoute.ContactScreen> {
+        ContactUsRoute { screen ->
             rootNavController.navigateTo(screen = screen)
         }
     }

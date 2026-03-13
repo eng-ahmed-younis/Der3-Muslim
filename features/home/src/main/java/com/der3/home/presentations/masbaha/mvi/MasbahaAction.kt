@@ -7,6 +7,7 @@ sealed interface MasbahaAction : MviAction {
     data class OnLoading(val isLoading: Boolean) : MasbahaAction
     data class OnAzkarsLoaded(val azkars: List<MasbahaAzkar>) : MasbahaAction
     data class OnError(val message: String) : MasbahaAction
+    data object DismissError : MasbahaAction
     data object UpdateCount : MasbahaAction
     data object ResetCount : MasbahaAction
     data class SetSelectedAzkar(val azkar: MasbahaAzkar) : MasbahaAction

@@ -13,4 +13,6 @@ sealed interface MasbahaIntent : MviIntent {
     data class ToggleVibration(val type: VibrationType) : MasbahaIntent
     data class ToggleSound(val enabled: Boolean) : MasbahaIntent
     data object OpenHistory : MasbahaIntent
+    data object Retry : MasbahaIntent
+    data object DismissError : MasbahaIntent
 }

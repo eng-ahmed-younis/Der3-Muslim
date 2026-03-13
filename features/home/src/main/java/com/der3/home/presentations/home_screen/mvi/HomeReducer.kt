@@ -20,6 +20,12 @@ class HomeReducer : Reducer<HomeAction, HomeState> {
                     homeAzkarCategory = action.category
                 )
             }
+
+            HomeAction.ClearError -> {
+                state.copy(
+                    error = null
+                )
+            }
         }
     }
 }

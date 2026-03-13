@@ -56,21 +56,16 @@ class HomeViewModel @Inject constructor(
                     )
                 )
             }
+
+            HomeIntent.DismissError -> {
+                onAction(HomeAction.ClearError)
+            }
+
+            HomeIntent.Retry -> {
+                getAllAzkarCategories()
+            }
         }
     }
-
-    /*   private fun getAllAzkarCategories() {
-           getAllCategoriesUseCase.invoke()
-               .onStart {
-                   onAction(HomeAction.OnLoading(true))
-               }.onEach { categories ->
-                   onAction(HomeAction.LoadHomeAzkarCategory(category = categories))
-               }.onCompletion {
-                   onAction(HomeAction.OnLoading(false))
-               }.catch {
-
-               }.launchIn(viewModelScope)
-       }*/
 
     private fun getAllAzkarCategories() {
         getAllCategoriesUseCase.invoke()

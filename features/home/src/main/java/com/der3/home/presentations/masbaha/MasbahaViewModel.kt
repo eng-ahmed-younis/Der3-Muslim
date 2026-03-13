@@ -66,6 +66,13 @@ class MasbahaViewModel @Inject constructor(
             is MasbahaIntent.OpenHistory -> {
                 onEffect(MviEffect.Navigate(com.der3.screens.Der3NavigationRoute.MasbahaHistoryScreen))
             }
+            MasbahaIntent.Retry -> {
+                loadAzkars()
+            }
+
+            MasbahaIntent.DismissError -> {
+                onAction(MasbahaAction.DismissError)
+            }
         }
     }
 

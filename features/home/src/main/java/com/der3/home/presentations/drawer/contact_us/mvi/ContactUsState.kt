@@ -1,0 +1,15 @@
+package com.der3.home.presentations.drawer.contact_us.mvi
+
+import com.der3.mvi.MviState
+
+data class ContactUsState(
+    val isLoading: Boolean = false,
+    val error: String? = null,
+    val name: String = "",
+    val email: String = "",
+    val message: String = "",
+    val officialEmail: String = "contact@der3muslim.com",
+    val website: String = "https://der3muslim.com",
+    val telegram: String = "https://t.me/der3muslim",
+    val facebook: String = "https://facebook.com/der3muslim"
+) : MviState

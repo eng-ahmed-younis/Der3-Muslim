@@ -78,6 +78,12 @@ sealed interface Der3NavigationRoute : Screens {
     @Serializable
     object AboutScreen : Der3NavigationRoute
 
+    @Serializable
+    object RateScreen : Der3NavigationRoute
 
+    @Serializable
+    object ShareScreen : Der3NavigationRoute
 
+    @Serializable
+    object ContactScreen : Der3NavigationRoute
 }
