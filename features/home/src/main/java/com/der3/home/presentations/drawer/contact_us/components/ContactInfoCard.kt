@@ -29,7 +29,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
-import java.util.Locale
 
 
 @Composable
@@ -88,36 +87,15 @@ fun ContactInfoCard(
     }
 }
 
-@Preview(showBackground = true, name = "Arabic", locale = "ar")
+@Preview(showBackground = true, locale = "ar")
 @Composable
-fun ContactInfoCardPreviewAr() {
-    Der3MuslimTheme(
-        language = Locale.Builder().setLanguage("ar").build()
-    ) {
-        Box(modifier = Modifier.padding(16.dp)) {
-            ContactInfoCard(
-                title = "ارسل لنا بريداً",
-                subtitle = "support@der3muslim.com",
-                icon = Icons.Default.Email,
-                onClick = {}
-            )
-        }
-    }
-}
-
-@Preview(showBackground = true, name = "English")
-@Composable
-fun ContactInfoCardPreviewEn() {
-    Der3MuslimTheme(
-        language = Locale.Builder().setLanguage("en").build()
-    ) {
-        Box(modifier = Modifier.padding(16.dp)) {
-            ContactInfoCard(
-                title = "Send us an email",
-                subtitle = "support@der3muslim.com",
-                icon = Icons.Default.Email,
-                onClick = {}
-            )
-        }
+fun ContactInfoCardPreview() {
+    Der3MuslimTheme {
+        ContactInfoCard(
+            title = "ارسل لنا بريداً",
+            subtitle = "support@der3muslim.com",
+            icon = Icons.Default.Email,
+            onClick = {}
+        )
     }
 }

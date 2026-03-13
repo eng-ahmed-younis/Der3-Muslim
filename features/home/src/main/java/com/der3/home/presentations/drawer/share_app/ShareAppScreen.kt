@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Facebook
+import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material.icons.filled.ShieldMoon
@@ -222,7 +223,7 @@ fun ShareDer3AppScreen(
                             }
                         }
                         Icon(
-                            imageVector = Icons.Default.Share,
+                            imageVector = Icons.Default.QrCodeScanner,
                             contentDescription = null,
                             tint = colors.green800,
                             modifier = Modifier

@@ -103,6 +103,9 @@ fun ZekrDetailsRoute(
                             ShareZekrType.IMAGE_ONLY -> "image/*"
                             ShareZekrType.TEXT_AND_IMAGE -> "image/*"
                         }
+                        if (android.os.Build.VERSION.SDK_INT >= 36) {
+                            removeLaunchSecurityProtection()
+                        }
                     }
                     val shareIntent = Intent.createChooser(sendIntent, null)
                     context.startActivity(shareIntent)
@@ -128,6 +131,9 @@ fun ZekrDetailsRoute(
                                 putExtra(Intent.EXTRA_STREAM, it)
                                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                                 type = "image/*"
+                                if (android.os.Build.VERSION.SDK_INT >= 36) {
+                                    removeLaunchSecurityProtection()
+                                }
                             }
                             context.startActivity(Intent.createChooser(sendIntent, null))
                         }

@@ -44,7 +44,7 @@ fun DrawerRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 4.dp, vertical = 4.dp)
+            .padding( vertical = 4.dp)
             .clip(RoundedCornerShape(20.dp))
             .background(background)
             .clickable { onClick() }
@@ -56,7 +56,8 @@ fun DrawerRow(
             imageVector = item.icon,
             contentDescription = null,
             tint = if (selected) AppColors.green800 else AppColors.gray500,
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier
+                .size(24.dp)
         )
 
         Spacer(modifier = Modifier.width(16.dp))
@@ -64,9 +65,10 @@ fun DrawerRow(
 
         Text(
             text = stringResource(item.title),
-            modifier = Modifier.weight(1f),
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = if (selected) FontWeight.Bold else FontWeight.W600,
+            modifier = Modifier
+                .weight(1f),
+          //  style = MaterialTheme.typography.titleMedium,
+            fontWeight = if (selected) FontWeight.W800 else FontWeight.W600,
             color = if (selected) AppColors.green800 else AppColors.gray500,
             textAlign = androidx.compose.ui.text.style.TextAlign.Start
         )

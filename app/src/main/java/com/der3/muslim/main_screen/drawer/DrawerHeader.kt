@@ -34,8 +34,8 @@ fun DrawerHeader() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color(0xFF1B5E20))
-            .padding(vertical = 40.dp),
+            .background(Color(0xFF0F5F2F))
+            .padding(vertical = 30.dp),
         contentAlignment = Alignment.Center
     ) {
         // Concentric circles effect can be simulated with nested boxes or a custom modifier, 
@@ -44,8 +44,8 @@ fun DrawerHeader() {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(170.dp)
-                    .offset(y = ((-30).dp)),
+                    .height(130.dp)
+                    .offset(y = ((-20).dp)),
                 contentAlignment = Alignment.Center
             ){
                 Image(
@@ -61,24 +61,25 @@ fun DrawerHeader() {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 12.dp)
-                .offset(y = (65.dp)),
+                .padding(top = 4.dp)
+                .offset(y = (55.dp)),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 text = stringResource(id = R.string.der3_muslim_title),
                 color = AppColors.white,
-                fontSize = 24.sp,
+                fontSize = 20.sp,
                 fontFamily = FontFamily(Font(R.font.cairo_bold)),
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(top = 12.dp)
+                fontWeight = FontWeight.W600,
+                modifier = Modifier
+                    .padding(top = 2.dp)
             )
 
             Text(
                 text = stringResource(id = R.string.der3_muslim_subtitle),
                 color = AppColors.gold400,
                 fontFamily = FontFamily(Font(R.font.cairo_medium)),
-                fontSize = 16.sp
+                fontSize = 14.sp
             )
         }
 

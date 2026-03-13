@@ -12,6 +12,11 @@ object PlayStoreLink {
         return "https://play.google.com/store/apps/details?id=${context.packageName}"
     }
 
+    const val WATTS_APP_PACKAGE = "com.whatsapp"
+    const val TELEGRAM_PACKAGE = "org.telegram.messenger"
+    const val FACEBOOK_PACKAGE = "com.facebook.katana"
+    const val TWITTER_PACKAGE = "com.twitter.android"
+
 }
 val shareTypeItems = mutableListOf<ShareItem>().apply {
     add(

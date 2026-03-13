@@ -1,11 +1,9 @@
 package com.der3.home.presentations.drawer.contact_us.components
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -74,36 +72,17 @@ fun ContactTextField(
     }
 }
 
-@Preview(showBackground = true, name = "Arabic", locale = "ar")
+@Preview(showBackground = true, locale = "ar")
 @Composable
-fun ContactTextFieldPreviewAr() {
-    Der3MuslimTheme(
+fun ContactTextFieldPreview() {
+    Der3MuslimTheme (
         language = Locale.Builder().setLanguage("ar").build()
-    ) {
-        Box(modifier = Modifier.padding(16.dp)) {
-            ContactTextField(
-                label = "الاسم",
-                value = "",
-                onValueChange = {},
-                placeholder = "أدخل اسمك الكريم"
-            )
-        }
-    }
-}
-
-@Preview(showBackground = true, name = "English")
-@Composable
-fun ContactTextFieldPreviewEn() {
-    Der3MuslimTheme(
-        language = Locale.Builder().setLanguage("en").build()
-    ) {
-        Box(modifier = Modifier.padding(16.dp)) {
-            ContactTextField(
-                label = "Name",
-                value = "",
-                onValueChange = {},
-                placeholder = "Enter your name"
-            )
-        }
+    ){
+        ContactTextField(
+            label = "الاسم",
+            value = "",
+            onValueChange = {},
+            placeholder = "أدخل اسمك الكريم"
+        )
     }
 }

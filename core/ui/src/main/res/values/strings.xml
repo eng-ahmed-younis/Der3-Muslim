@@ -197,4 +197,9 @@
     <string name="copy_link_success">تم نسخ الرابط بنجاح</string>
     <string name="copy_link_button">نسخ رابط التحميل</string>
     <string name="share_app_description">ساهم في نشر الخير وكن شريكاً في الأجر من خلال مشاركة التطبيق مع عائلتك وأصدقائك.</string>
+    <string name="rate_dialog_title">هل أعجبك التطبيق؟</string>
+    <string name="rate_dialog_description">دعمك لنا بالتقييم يساعدنا على الاستمرار ونشر الخير.</string>
+    <string name="rate_now">قيم الآن</string>
+    <string name="rate_later">لاحقاً</string>
+    <string name="share_message">✨ *Der3 Muslim - Your Daily Sanctuary* ✨\n\nAssalamu Alaikum,\n\nI recommend using \"Der3 Muslim\" for your daily Azkar and Duas. It\'s beautifully designed and very easy to use. 🌱\n\n📥 Download it here:\n%s\n\n\"Whoever guides someone to goodness will have a reward like one who did it.\" ❤️</string>
 </resources>

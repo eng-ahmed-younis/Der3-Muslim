@@ -198,4 +198,9 @@
     <string name="copy_link_success">تم نسخ الرابط بنجاح</string>
     <string name="copy_link_button">نسخ رابط التحميل</string>
     <string name="share_app_description">ساهم في نشر الخير وكن شريكاً في الأجر من خلال مشاركة التطبيق مع عائلتك وأصدقائك.</string>
+    <string name="rate_dialog_title">هل أعجبك التطبيق؟</string>
+    <string name="rate_dialog_description">دعمك لنا بالتقييم يساعدنا على الاستمرار ونشر الخير.</string>
+    <string name="rate_now">قيم الآن</string>
+    <string name="rate_later">لاحقاً</string>
+    <string name="share_message">السلام عليكم ورحمة الله وبركاته،\n\nيسرني مشاركة تطبيق \"درع المسلم\" معكم. تطبيق رائع يضم أذكار المسلم اليومية بتصميم عصري وسهل الاستخدام.\n\nحمله الآن من متجر جوجل:\n%s\n\nالدال على الخير كفاعله.</string>
 </resources>
