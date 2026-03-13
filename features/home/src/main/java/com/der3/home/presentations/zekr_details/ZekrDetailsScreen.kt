@@ -107,7 +107,9 @@ fun ZekrDetailsRoute(
                             removeLaunchSecurityProtection()
                         }
                     }
-                    val shareIntent = Intent.createChooser(sendIntent, null)
+                    val shareIntent = Intent.createChooser(sendIntent, null).apply {
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    }
                     context.startActivity(shareIntent)
                 }
 
@@ -135,7 +137,10 @@ fun ZekrDetailsRoute(
                                     removeLaunchSecurityProtection()
                                 }
                             }
-                            context.startActivity(Intent.createChooser(sendIntent, null))
+                            val shareIntent = Intent.createChooser(sendIntent, null).apply {
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            }
+                            context.startActivity(shareIntent)
                         }
                     }
                 }
