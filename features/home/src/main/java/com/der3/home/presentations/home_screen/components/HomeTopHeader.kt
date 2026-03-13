@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -30,6 +31,7 @@ import com.der3.ui.themes.Der3MuslimTheme
 fun HomeTopHeader(
     modifier: Modifier = Modifier,
     backgroundColor: Color = AppColors.white,
+    onDrawerClick: () -> Unit,
     onNotificationClick: () -> Unit
 ) {
 
@@ -41,6 +43,24 @@ fun HomeTopHeader(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
+
+        // 🔹 Drawer Icon
+        IconButton(onClick = onDrawerClick) {
+            Box (
+                modifier = Modifier
+                    .size(40.dp)
+                    .background(AppColors.green50)
+                    .padding(8.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Menu,
+                    contentDescription = "Drawer",
+                    tint = AppColors.green800
+                )
+            }
+        }
+
 
         // 🔹 Title
         Text(
@@ -81,6 +101,7 @@ fun HomeTopHeader(
 fun HomeTopHeaderPreview() {
     Der3MuslimTheme {
         HomeTopHeader(
+            onDrawerClick = {},
             backgroundColor = AppColors.gray50,
             onNotificationClick = {}
         )

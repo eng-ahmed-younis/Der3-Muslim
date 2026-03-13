@@ -39,6 +39,7 @@ import com.der3.screens.Screens
 import com.der3.ui.R
 import com.der3.ui.components.ErrorDialog
 import com.der3.ui.components.LoadingDialog
+import com.der3.ui.models.LocalDrawerState
 import com.der3.ui.style.ShiftSystemBarStyle
 import com.der3.ui.themes.Der3MuslimTheme
 import java.util.Locale
@@ -46,6 +47,7 @@ import com.der3.ui.themes.AppColors
 import com.der3.utils.asString
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 @Composable
 fun HomeRoute(
@@ -92,6 +94,10 @@ fun HomeScreen(
     onIntent: (HomeIntent) -> Unit
 ) {
 
+    val drawerState = LocalDrawerState.current
+    val scope = rememberCoroutineScope()
+
+
     ShiftSystemBarStyle(
         statusBarColor = Color(0xFFF4F6F5),
         isStatusBarVisible = true,
@@ -113,6 +119,13 @@ fun HomeScreen(
         HomeTopHeader(
             modifier = Modifier,
             backgroundColor = AppColors.gray50,
+            onDrawerClick = {
+                if (drawerState.isOpen) {
+                    scope.launch { drawerState.close() }
+                } else {
+                    scope.launch { drawerState.open() }
+                }
+            },
             onNotificationClick = {
 
             }
