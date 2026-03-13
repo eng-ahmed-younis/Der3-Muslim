@@ -77,7 +77,7 @@ fun PrayerTimeItem(
             // Left side in RTL (End)
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    prayer.time.replace(" ص", "").replace(" م", ""),
+                    prayer.time.split(" ")[0],
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.W500,
                     fontSize = 14.sp,
@@ -113,6 +113,10 @@ fun getPrayerIcon(type: PrayerType): Int {
         PrayerType.ASR -> com.der3.ui.R.drawable.ic_asr
         PrayerType.MAGHRIB -> com.der3.ui.R.drawable.ic_maghrib
         PrayerType.ISHA -> com.der3.ui.R.drawable.ic_isha
+        PrayerType.IMSAK -> com.der3.ui.R.drawable.ic_fajr // Fallback
+        PrayerType.MIDNIGHT -> com.der3.ui.R.drawable.ic_isha // Fallback
+        PrayerType.FIRST_THIRD -> com.der3.ui.R.drawable.ic_isha // Fallback
+        PrayerType.LAST_THIRD -> com.der3.ui.R.drawable.ic_isha // Fallback
     }
 }
 

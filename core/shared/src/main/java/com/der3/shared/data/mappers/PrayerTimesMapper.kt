@@ -10,6 +10,9 @@ import com.der3.shared.data.dto.prayer.meta.MethodDto
 import com.der3.shared.data.dto.prayer.timings.PrayerTimesDto
 import com.der3.shared.data.dto.prayer.timings.TimingsDto
 import com.der3.shared.domain.model.prayer.*
+import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.jsonPrimitive
+import java.util.TimeZone
 
 fun PrayerTimesDto.toDomain(): PrayerTimes {
     return PrayerTimes(
@@ -20,17 +23,18 @@ fun PrayerTimesDto.toDomain(): PrayerTimes {
 }
 
 fun TimingsDto.toDomain(): Timings {
+    val cleanTime = { time: String -> time.replace(Regex("\\s*\\(.*\\)"), "").trim() }
     return Timings(
-        fajr = fajr.replace(" (UTC)", ""),
-        sunrise = sunrise.replace(" (UTC)", ""),
-        dhuhr = dhuhr.replace(" (UTC)", ""),
-        asr = asr.replace(" (UTC)", ""),
-        maghrib = maghrib.replace(" (UTC)", ""),
-        isha = isha.replace(" (UTC)", ""),
-        imsak = imsak.replace(" (UTC)", ""),
-        midnight = midnight.replace(" (UTC)", ""),
-        firstThird = firstThird?.replace(" (UTC)", ""),
-        lastThird = lastThird?.replace(" (UTC)", "")
+        fajr = cleanTime(fajr),
+        sunrise = cleanTime(sunrise),
+        dhuhr = cleanTime(dhuhr),
+        asr = cleanTime(asr),
+        maghrib = cleanTime(maghrib),
+        isha = cleanTime(isha),
+        imsak = cleanTime(imsak),
+        midnight = cleanTime(midnight),
+        firstThird = firstThird?.let { cleanTime(it) },
+        lastThird = lastThird?.let { cleanTime(it) }
     )
 }
 
@@ -88,30 +92,57 @@ fun List<PrayerTimesDto>.toDomain(): List<PrayerTimes> {
 }
 
 // Next Prayer mapper
-fun NextPrayerDto.toDomain(dateStr: String): NextPrayer {
+fun NextPrayerDto.toDomain(dateStr: String, timezone: String? = null): NextPrayer {
     val prayerName = timings.keys.firstOrNull() ?: "Unknown"
-    val prayerTime = timings.values.firstOrNull() ?: ""
+    val prayerTime = timings.values.firstOrNull()?.replace(Regex("\\s*\\(.*\\)"), "")?.trim() ?: ""
     
     return NextPrayer(
         name = prayerName,
-        time = prayerTime.replace(" (UTC)", ""),
-        remainingTime = calculateRemainingTime(prayerTime),
+        time = prayerTime,
+        remainingTime = calculateRemainingTime(prayerTime, timezone),
         date = dateStr
     )
 }
 
-private fun calculateRemainingTime(prayerTime: String): String {
-    // Implementation for calculating remaining time
-    return "00:00"
+private fun calculateRemainingTime(prayerTime: String, timezone: String?): String {
+    try {
+        val tz = timezone?.let { TimeZone.getTimeZone(it) } ?: TimeZone.getDefault()
+        val currentTime = java.util.Calendar.getInstance(tz)
+        val format = java.text.SimpleDateFormat("HH:mm", java.util.Locale.ENGLISH)
+        format.timeZone = tz
+        val prayerDate = format.parse(prayerTime.split(" ")[0]) ?: return "00:00:00"
+        
+        val prayerCalendar = java.util.Calendar.getInstance(tz).apply {
+            time = prayerDate
+            set(java.util.Calendar.YEAR, currentTime.get(java.util.Calendar.YEAR))
+            set(java.util.Calendar.MONTH, currentTime.get(java.util.Calendar.MONTH))
+            set(java.util.Calendar.DAY_OF_MONTH, currentTime.get(java.util.Calendar.DAY_OF_MONTH))
+        }
+
+        if (prayerCalendar.before(currentTime)) {
+            prayerCalendar.add(java.util.Calendar.DAY_OF_MONTH, 1)
+        }
+
+        val diff = prayerCalendar.timeInMillis - currentTime.timeInMillis
+        val hours = (diff / (1000 * 60 * 60)).toInt()
+        val minutes = ((diff / (1000 * 60)) % 60).toInt()
+        val seconds = ((diff / 1000) % 60).toInt()
+
+        return String.format("%02d:%02d:%02d", hours, minutes, seconds)
+    } catch (e: Exception) {
+        return "00:00:00"
+    }
 }
 
 // Methods mapper
 fun Map<String, MethodDetailDto>.toDomainMethods(): List<PrayerMethod> {
-    return map { (key, value) ->
+    return map { (_, value) ->
         PrayerMethod(
             id = value.id,
             name = value.name,
-            params = value.params
+            params = value.params.mapValues { entry ->
+                entry.value.jsonPrimitive.contentOrNull ?: entry.value.toString()
+            }
         )
     }.sortedBy { it.id }
 }

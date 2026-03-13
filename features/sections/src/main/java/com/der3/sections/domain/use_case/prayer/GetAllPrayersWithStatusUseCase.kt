@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 interface GetAllPrayersWithStatusUseCase {
-    operator fun invoke(latitude: Double, longitude: Double, method: Int): Flow<PrayerTimesResult<List<IPrayerRepository.PrayerWithStatus>>>
+    operator fun invoke(latitude: Double, longitude: Double, method: Int, school: Int): Flow<PrayerTimesResult<List<IPrayerRepository.PrayerWithStatus>>>
 }
 
 class GetAllPrayersWithStatusUseCaseImpl @Inject constructor(
@@ -19,11 +19,12 @@ class GetAllPrayersWithStatusUseCaseImpl @Inject constructor(
     override fun invoke(
         latitude: Double,
         longitude: Double,
-        method: Int
+        method: Int,
+        school: Int
     ): Flow<PrayerTimesResult<List<IPrayerRepository.PrayerWithStatus>>> = flow {
         emit(PrayerTimesResult.Loading)
 
-        val result = repository.getAllPrayersWithStatus(latitude, longitude, method)
+        val result = repository.getAllPrayersWithStatus(latitude, longitude, method, school)
         emit(result.toPrayerTimesResult())
     }
 }

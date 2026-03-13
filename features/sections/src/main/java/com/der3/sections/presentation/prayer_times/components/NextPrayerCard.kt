@@ -65,11 +65,14 @@ fun NextPrayerCard(prayer: PrayerDetails) {
                 verticalAlignment = Alignment.Bottom,
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                TimeUnit("01", "ساعة")
-                Text(":", color = Color.White, fontSize = 24.sp, modifier = Modifier.padding(bottom = 20.dp))
-                TimeUnit("12", "دقيقة")
-                Text(":", color = Color.White, fontSize = 24.sp, modifier = Modifier.padding(bottom = 20.dp))
-                TimeUnit("45", "ثانية")
+                val times = prayer.remainingTime.split(":")
+                if (times.size == 3) {
+                    TimeUnit(times[0], "ساعة")
+                    Text(":", color = Color.White, fontSize = 24.sp, modifier = Modifier.padding(bottom = 20.dp))
+                    TimeUnit(times[1], "دقيقة")
+                    Text(":", color = Color.White, fontSize = 24.sp, modifier = Modifier.padding(bottom = 20.dp))
+                    TimeUnit(times[2], "ثانية")
+                }
             }
             
             Spacer(modifier = Modifier.height(12.dp))

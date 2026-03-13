@@ -79,7 +79,8 @@ interface IPrayerRepository {
     fun observeNextPrayer(
         latitude: Double,
         longitude: Double,
-        method: Int
+        method: Int,
+        school: Int = 0
     ): Flow<Result<NextPrayerInfo>>
 
     /**
@@ -137,7 +138,8 @@ interface IPrayerRepository {
     suspend fun getCurrentPrayer(
         latitude: Double,
         longitude: Double,
-        method: Int
+        method: Int,
+        school: Int = 0
     ): Result<CurrentPrayerInfo>
 
     /**
@@ -146,7 +148,8 @@ interface IPrayerRepository {
     suspend fun getAllPrayersWithStatus(
         latitude: Double,
         longitude: Double,
-        method: Int
+        method: Int,
+        school: Int = 0
     ): Result<List<PrayerWithStatus>>
 
 

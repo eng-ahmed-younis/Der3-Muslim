@@ -37,4 +37,44 @@ class DataStoreRepositoryImpl(private val dataStoreService: DataStoreService) : 
             }
         }
 
+    override var is24HourFormat: Boolean
+        get() = runBlocking(Dispatchers.IO) {
+            dataStoreService.get<Boolean>(DataStoreKeys.IS_24_HOUR_FORMAT, false).first()
+        }
+        set(value) {
+            runBlocking(Dispatchers.IO) {
+                dataStoreService.set(DataStoreKeys.IS_24_HOUR_FORMAT, value)
+            }
+        }
+
+    override var latitude: Double
+        get() = runBlocking(Dispatchers.IO) {
+            dataStoreService.get<Double>(DataStoreKeys.LATITUDE, 21.4225).first()
+        }
+        set(value) {
+            runBlocking(Dispatchers.IO) {
+                dataStoreService.set(DataStoreKeys.LATITUDE, value)
+            }
+        }
+
+    override var longitude: Double
+        get() = runBlocking(Dispatchers.IO) {
+            dataStoreService.get<Double>(DataStoreKeys.LONGITUDE, 39.8262).first()
+        }
+        set(value) {
+            runBlocking(Dispatchers.IO) {
+                dataStoreService.set(DataStoreKeys.LONGITUDE, value)
+            }
+        }
+
+    override var locationName: String?
+        get() = runBlocking(Dispatchers.IO) {
+            dataStoreService.get<String>(DataStoreKeys.LOCATION_NAME, "مكة المكرمة").first()
+        }
+        set(value) {
+            runBlocking(Dispatchers.IO) {
+                dataStoreService.set(DataStoreKeys.LOCATION_NAME, value ?: "مكة المكرمة")
+            }
+        }
+
 }

@@ -24,13 +24,21 @@ data class NextPrayerInfo(
         get() = calculateRemainingTime()
 
     val remainingMinutes: Int
-        get() = calculateRemainingMinutes()
+        get() = (calculateRemainingSeconds() / 60).toInt()
 
     val isPassed: Boolean
         get() = checkIfPassed()
 
     val prayerOrder: Int
-        get() = getPrayerOrder()
+        get() = when (prayerName.lowercase()) {
+            "fajr" -> 1
+            "sunrise" -> 2
+            "dhuhr" -> 3
+            "asr" -> 4
+            "maghrib" -> 5
+            "isha" -> 6
+            else -> 0
+        }
 
     val formattedRemainingTime: String
         get() = when {
@@ -47,36 +55,36 @@ data class NextPrayerInfo(
         get() = prayerOrder
 
     // Private helper methods
-    private fun calculateRemainingMinutes(): Int {
+    private fun calculateRemainingSeconds(): Long {
         val now = Calendar.getInstance()
-        val currentMinutes = now.get(Calendar.HOUR_OF_DAY) * 60 + now.get(Calendar.MINUTE)
+        val currentMillis = now.timeInMillis
 
         val timeParts = prayerTime.split(":")
         if (timeParts.size != 2) return -1
 
-        val prayerMinutes = try {
-            timeParts[0].toInt() * 60 + timeParts[1].toInt()
-        } catch (e: NumberFormatException) {
-            return -1
+        val prayerCalendar = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, timeParts[0].toInt())
+            set(Calendar.MINUTE, timeParts[1].toInt())
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
         }
 
-        var diff = prayerMinutes - currentMinutes
-        if (diff < 0) {
-            diff += 24 * 60 // Add 24 hours if prayer has passed today
+        if (prayerCalendar.before(now)) {
+            prayerCalendar.add(Calendar.DAY_OF_MONTH, 1)
         }
 
-        return diff
+        return (prayerCalendar.timeInMillis - currentMillis) / 1000
     }
 
     private fun calculateRemainingTime(): String {
-        val minutes = calculateRemainingMinutes()
-        return when {
-            minutes <= 0 -> "00:00"
-            else -> {
-                val hours = minutes / 60
-                val mins = minutes % 60
-                String.format("%02d:%02d", hours, mins)
-            }
+        val totalSeconds = calculateRemainingSeconds()
+        return if (totalSeconds <= 0) {
+            "00:00:00"
+        } else {
+            val hours = totalSeconds / 3600
+            val minutes = (totalSeconds % 3600) / 60
+            val seconds = totalSeconds % 60
+            String.format(java.util.Locale.ENGLISH, "%02d:%02d:%02d", hours, minutes, seconds)
         }
     }
 
@@ -94,18 +102,6 @@ data class NextPrayerInfo(
         }
 
         return currentMinutes > prayerMinutes
-    }
-
-    private fun getPrayerOrder(): Int {
-        return when (prayerName.lowercase()) {
-            "fajr" -> 1
-            "sunrise" -> 2
-            "dhuhr" -> 3
-            "asr" -> 4
-            "maghrib" -> 5
-            "isha" -> 6
-            else -> 0
-        }
     }
 
     companion object {

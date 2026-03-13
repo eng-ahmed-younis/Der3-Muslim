@@ -100,6 +100,27 @@
     <string name="zekr_details_title">تفاصيل الذكر</string>
     <string name="zekr_details_quran_verse">الَّذِينَ آمَنُوا وَتَطْمَئِنُّ قُلُوبُهُم بِذِكْرِ اللَّهِ ۗ أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ</string>
 
+    <!-- Prayer Times & Dialogs -->
+    <string name="prayer_times_settings">إعدادات الحساب</string>
+    <string name="calculation_method">طريقة الحساب</string>
+    <string name="juridical_school">المذهب الفقهي</string>
+    <string name="time_format">نظام الوقت</string>
+    <string name="time_format_12h">12 ساعة</string>
+    <string name="time_format_24h">24 ساعة</string>
+    <string name="shafii_hanbali_maliki">شافعي، حنبلي، مالكي</string>
+    <string name="hanafi">حنفي</string>
+    <string name="monthly_calendar">التقويم الشهري</string>
+    <string name="day">اليوم</string>
+    <string name="fajr">فجر</string>
+    <string name="sunrise">شروق</string>
+    <string name="dhuhr">ظهر</string>
+    <string name="asr">عصر</string>
+    <string name="maghrib">مغرب</string>
+    <string name="isha">عشاء</string>
+    <string name="close">إغلاق</string>
+    <string name="location_settings">إعدادات الموقع</string>
+    <string name="search_city">ابحث عن مدينة...</string>
+    <string name="other_times">أوقات أخرى</string>
 
     // for info card
 

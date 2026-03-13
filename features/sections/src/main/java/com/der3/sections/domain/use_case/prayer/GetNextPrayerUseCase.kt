@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 interface GetNextPrayerUseCase {
-    operator fun invoke(latitude: Double, longitude: Double, method: Int): Flow<PrayerTimesResult<NextPrayerInfo>>
+    operator fun invoke(latitude: Double, longitude: Double, method: Int, school: Int): Flow<PrayerTimesResult<NextPrayerInfo>>
 }
 
 class GetNextPrayerUseCaseImpl @Inject constructor(
@@ -19,9 +19,10 @@ class GetNextPrayerUseCaseImpl @Inject constructor(
     override fun invoke(
         latitude: Double,
         longitude: Double,
-        method: Int
+        method: Int,
+        school: Int
     ): Flow<PrayerTimesResult<NextPrayerInfo>> {
-        return repository.observeNextPrayer(latitude, longitude, method)
+        return repository.observeNextPrayer(latitude, longitude, method, school)
             .map { result ->
                 when (result) {
                     is IPrayerRepository.Result.Success -> PrayerTimesResult.Success(result.data)

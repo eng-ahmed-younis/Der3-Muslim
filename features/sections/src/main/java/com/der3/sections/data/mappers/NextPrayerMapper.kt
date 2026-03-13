@@ -11,7 +11,7 @@ fun NextPrayerDto.toNextPrayerInfo(
     methodId: Int? = null
 ): NextPrayerInfo {
     val prayerName = timings.keys.firstOrNull() ?: "Unknown"
-    val prayerTime = timings.values.firstOrNull()?.replace(" (UTC)", "") ?: ""
+    val prayerTime = timings.values.firstOrNull()?.replace(Regex("\\s*\\(.*\\)"), "")?.trim() ?: ""
 
     return NextPrayerInfoBuilder()
         .setPrayerName(prayerName)
@@ -30,7 +30,7 @@ fun List<Pair<String, String>>.toNextPrayerInfoList(
     return map { (name, time) ->
         NextPrayerInfoBuilder()
             .setPrayerName(name)
-            .setPrayerTime(time.replace(" (UTC)", ""))
+            .setPrayerTime(time.replace(Regex("\\s*\\(.*\\)"), "").trim())
             .setGregorianDate(gregorianDate)
             .setHijriDate(hijriDate)
             .build()

@@ -1,6 +1,7 @@
 package com.der3.shared.data.dto.prayer.base
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonElement
 
 @Serializable
 data class MethodsResponseDto(
@@ -13,5 +14,5 @@ data class MethodsResponseDto(
 data class MethodDetailDto(
     val id: Int,
     val name: String,
-    val params: Map<String, String>
+    val params: Map<String, JsonElement>
 )

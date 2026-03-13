@@ -353,7 +353,8 @@ class PrayerRepositoryImpl @Inject constructor(
     override fun observeNextPrayer(
         latitude: Double,
         longitude: Double,
-        method: Int
+        method: Int,
+        school: Int
     ): Flow<IPrayerRepository.Result<NextPrayerInfo>> = flow {
         while (true) {
             try {
@@ -362,7 +363,7 @@ class PrayerRepositoryImpl @Inject constructor(
                     longitude = longitude,
                     date = "today",
                     method = method,
-                    school = 0,
+                    school = school,
                     tune = null,
                     timezone = null
                 )
@@ -398,7 +399,8 @@ class PrayerRepositoryImpl @Inject constructor(
     override suspend fun getCurrentPrayer(
         latitude: Double,
         longitude: Double,
-        method: Int
+        method: Int,
+        school: Int
     ): IPrayerRepository.Result<IPrayerRepository.CurrentPrayerInfo> {
         return try {
             val response = service.getPrayerTimesByLocation(
@@ -406,7 +408,7 @@ class PrayerRepositoryImpl @Inject constructor(
                 longitude = longitude,
                 date = "today",
                 method = method,
-                school = 0,
+                school = school,
                 tune = null,
                 timezone = null,
                 iso8601 = false
@@ -430,7 +432,8 @@ class PrayerRepositoryImpl @Inject constructor(
     override suspend fun getAllPrayersWithStatus(
         latitude: Double,
         longitude: Double,
-        method: Int
+        method: Int,
+        school: Int
     ): IPrayerRepository.Result<List<IPrayerRepository.PrayerWithStatus>> {
         return try {
             val response = service.getPrayerTimesByLocation(
@@ -438,7 +441,7 @@ class PrayerRepositoryImpl @Inject constructor(
                 longitude = longitude,
                 date = "today",
                 method = method,
-                school = 0,
+                school = school,
                 tune = null,
                 timezone = null,
                 iso8601 = false
@@ -651,13 +654,19 @@ class PrayerRepositoryImpl @Inject constructor(
     }
 
     private fun getPrayerList(timings: TimingsDto): List<Pair<String, String>> {
+        val cleanTime = { time: String -> time.replace(Regex("\\s*\\(.*\\)"), "").trim() }
+        
         return listOf(
-            "Fajr" to timings.fajr.replace(" (UTC)", ""),
-            "Sunrise" to timings.sunrise.replace(" (UTC)", ""),
-            "Dhuhr" to timings.dhuhr.replace(" (UTC)", ""),
-            "Asr" to timings.asr.replace(" (UTC)", ""),
-            "Maghrib" to timings.maghrib.replace(" (UTC)", ""),
-            "Isha" to timings.isha.replace(" (UTC)", "")
+            "Imsak" to cleanTime(timings.imsak),
+            "Fajr" to cleanTime(timings.fajr),
+            "Sunrise" to cleanTime(timings.sunrise),
+            "Dhuhr" to cleanTime(timings.dhuhr),
+            "Asr" to cleanTime(timings.asr),
+            "Maghrib" to cleanTime(timings.maghrib),
+            "Isha" to cleanTime(timings.isha),
+            "Midnight" to cleanTime(timings.midnight),
+            "Firstthird" to cleanTime(timings.firstThird ?: "00:00"),
+            "Lastthird" to cleanTime(timings.lastThird ?: "00:00")
         )
     }
 

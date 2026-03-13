@@ -104,7 +104,7 @@ object NetworkClientModule {
             header("User-Agent", "PrayerTimesApp/1.0")
 
             // Add compression support
-            header("Accept-Encoding", "gzip, zstd")
+         //   header("Accept-Encoding", "gzip")
         }
 
 
