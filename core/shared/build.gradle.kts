@@ -1,9 +1,9 @@
 plugins {
     alias(libs.plugins.android.library)
- //   alias(libs.plugins.kotlin.android)
-//    alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.serialization)
+    id("kotlin-parcelize")
+    alias(libs.plugins.secrets.gradle.plugin)
 }
 
 android {
@@ -18,6 +18,10 @@ android {
         consumerProguardFiles("consumer-rules.pro")
     }
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -25,8 +29,25 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
+            buildConfigField(
+                "String",
+                "BASE_URL",
+                "\"${project.findProperty("BASE_URL")}\""
+            )
+
+        }
+
+        debug {
+            buildConfigField(
+                "String",
+                "BASE_URL",
+                "\"${project.findProperty("BASE_URL")}\""
+            )
         }
     }
+
+
     compileOptions {
         sourceCompatibility =
             JavaVersion.toVersion(BuildVersions.JAVA_VERSION)
@@ -43,6 +64,11 @@ android {
             )
         }
     }
+}
+
+secrets {
+    propertiesFileName = "secrets.properties"
+    defaultPropertiesFileName = "secrets.defaults.properties"
 }
 
 dependencies {
@@ -75,6 +101,16 @@ dependencies {
     implementation(project(":core:data_store"))
     implementation(project(":core:ui"))
 
-    // Firebase
+    // ktor
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.cio) // CIO engine
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.ktor.client.okhttp)
+    implementation(libs.ktor.client.logging)
+
+    // chucker
+    debugImplementation (libs.library)
+    releaseImplementation (libs.library.no.op)
 
 }

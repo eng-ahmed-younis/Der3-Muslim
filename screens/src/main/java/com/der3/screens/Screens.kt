@@ -46,9 +46,4 @@ interface Screens {
         val keepScreen: KClass<out Screens>
     ) : Screens
 
-    @Serializable
-    object Qibla : Screens
-
-    @Serializable
-    object PrayerTimes : Screens
 }

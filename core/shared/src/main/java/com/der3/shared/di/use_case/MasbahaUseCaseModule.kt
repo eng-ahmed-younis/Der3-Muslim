@@ -1,4 +1,4 @@
-package com.der3.shared.di
+package com.der3.shared.di.use_case
 
 import com.der3.shared.domain.use_case.GetMasbahaAzkarsUseCase
 import com.der3.shared.domain.use_case.GetMasbahaAzkarsUseCaseImpl

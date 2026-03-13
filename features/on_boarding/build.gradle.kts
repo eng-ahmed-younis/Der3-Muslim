@@ -69,6 +69,9 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
 
+    // Compose Icons
+    implementation(libs.androidx.compose.material.icons.core)
+
     // Testing
     testImplementation(libs.junit)
 
@@ -84,7 +87,6 @@ dependencies {
 
     //Hilt
     implementation(libs.hilt.android)
-   // kapt(libs.hilt.compiler)
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
 

@@ -1,4 +1,4 @@
-package com.der3.shared.di
+package com.der3.shared.di.database
 
 import android.content.Context
 import androidx.room.Room

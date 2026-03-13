@@ -9,4 +9,7 @@ plugins {
     alias(libs.plugins.hilt.android) apply false
   //  alias(libs.plugins.hilt.android) apply false  // declare here
     alias(libs.plugins.ksp) apply false
+
+    alias(libs.plugins.secrets.gradle.plugin) apply false
+
 }

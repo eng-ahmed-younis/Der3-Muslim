@@ -1,4 +1,4 @@
-package com.der3.shared.di
+package com.der3.shared.di.database
 
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
