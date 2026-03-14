@@ -5,4 +5,5 @@ object DataBaseUtils {
     const val DATABASE_VERSION = 1
 
     const val MASBAHA_AZKAR_TABLE = "masbaha_azkar_table"
+    const val FAVORITES_TABLE = "favorites_table"
 }

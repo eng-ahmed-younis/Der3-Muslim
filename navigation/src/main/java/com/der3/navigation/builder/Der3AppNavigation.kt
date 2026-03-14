@@ -4,13 +4,14 @@ import com.der3.home.presentations.category_details.AzkarDetailsRoute
 import com.der3.home.presentations.drawer.about_der3.AboutDer3Route
 import com.der3.home.presentations.zekr_details.ZekrDetailsRoute
 import com.der3.home.presentations.drawer.contact_us.ContactUsRoute
+import com.der3.home.presentations.favorite.FavoritesRoute
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.der3.shared.params.CategoryDetailsParams
 import com.der3.shared.params.ZekrDetailsParams
-import com.der3.home.presentations.all_categories.AllCategoriesRoute
+import com.der3.home.presentations.all_categories.AzkarCategoryRoute
 import com.der3.home.presentations.custom_reminder.AddCustomReminderRoute
 import com.der3.home.presentations.daily_notification.DailyNotificationsRoute
 import com.der3.home.presentations.home_screen.HomeRoute
@@ -49,8 +50,8 @@ fun NavGraphBuilder.der3AppNavigation(rootNavController: NavHostController) {
         }
     }
 
-    composable<Der3NavigationRoute.AllCategoriesScreen> {
-        AllCategoriesRoute { screen ->
+    composable<Der3NavigationRoute.AllAzkarCategoriesScreen> {
+        AzkarCategoryRoute { screen ->
             rootNavController.navigateTo(screen = screen)
         }
     }
@@ -129,7 +130,8 @@ fun NavGraphBuilder.der3AppNavigation(rootNavController: NavHostController) {
     }
 
     composable<Der3NavigationRoute.FavouriteScreen> {
-        // TODO: Implement Favourite Screen and Route
-        // For now, it stays empty or shows a placeholder
+        FavoritesRoute { screen ->
+            rootNavController.navigateTo(screen = screen)
+        }
     }
 }

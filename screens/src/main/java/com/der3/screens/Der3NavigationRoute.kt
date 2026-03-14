@@ -46,7 +46,7 @@ sealed interface Der3NavigationRoute : Screens {
 
     // home screens
     @Serializable
-    object AllCategoriesScreen : Der3NavigationRoute
+    object AllAzkarCategoriesScreen : Der3NavigationRoute
 
     @Serializable
     data class CategoryDetailsScreen(

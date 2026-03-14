@@ -41,6 +41,10 @@ class QiblaViewModel @Inject constructor(
                 onAction(QiblaAction.OnLoading(false))
             }
             is QiblaIntent.OnBackClick -> onEffect(MviEffect.Navigate(Screens.Back()))
+            is QiblaIntent.Retry -> {
+                onAction(QiblaAction.OnLoading(true))
+                // Retry logic here if needed, or just clear loading
+            }
             is QiblaIntent.OnLocationChanged -> updateLocationInfo(intent.latitude, intent.longitude)
             is QiblaIntent.OnDirectionUpdated -> {
                 // Adjust compass rotation with magnetic declination

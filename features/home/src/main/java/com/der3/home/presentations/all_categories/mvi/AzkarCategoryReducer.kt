@@ -3,34 +3,34 @@ package com.der3.home.presentations.all_categories.mvi
 import com.der3.mvi.Reducer
 import javax.inject.Inject
 
-class AllCategoryReducer @Inject constructor() : Reducer<AllCategoryActions,AllCategoryState> {
+class AzkarCategoryReducer @Inject constructor() : Reducer<AzkarCategoryActions,AzkarCategoryState> {
 
 
     override fun reduce(
-        action: AllCategoryActions,
-        state: AllCategoryState
-    ): AllCategoryState {
+        action: AzkarCategoryActions,
+        state: AzkarCategoryState
+    ): AzkarCategoryState {
         return when(action){
-            is AllCategoryActions.UpdateSearchQuery -> {
+            is AzkarCategoryActions.UpdateSearchQuery -> {
                 state.copy(searchQuery = action.query)
             }
 
-            is AllCategoryActions.LoadAllAzkarCategory -> {
+            is AzkarCategoryActions.LoadAllAzkarCategory -> {
                 state.copy(
                     categories = action.category,
                     cachedCategories = action.category
                 )
             }
 
-            is AllCategoryActions.OnLoading -> {
+            is AzkarCategoryActions.OnLoading -> {
                 state.copy(isLoading = action.isLoading)
             }
 
-            is AllCategoryActions.LoadSearchAzkarCategory -> {
+            is AzkarCategoryActions.LoadSearchAzkarCategory -> {
                 state.copy(categories = action.category)
             }
 
-            AllCategoryActions.SearchQueryEmpty -> {
+            AzkarCategoryActions.SearchQueryEmpty -> {
                 state.copy(categories = state.cachedCategories)
             }
         }

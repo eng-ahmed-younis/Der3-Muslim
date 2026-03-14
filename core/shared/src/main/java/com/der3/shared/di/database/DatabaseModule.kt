@@ -2,9 +2,10 @@ package com.der3.shared.di.database
 
 import android.content.Context
 import androidx.room.Room
-import com.der3.shared.data.source.local.MasbahaDatabase
+import com.der3.shared.data.source.local.Der3MuslimDatabase
 import com.der3.shared.data.source.local.dao.MasbahaAzkarDao
 import com.der3.shared.data.source.local.dao.MasbahaHistoryDao
+import com.der3.shared.data.source.local.dao.FavoritesDao
 import com.der3.shared.utils.DataBaseUtils
 import dagger.Module
 import dagger.Provides
@@ -19,25 +20,31 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideMasbahaDatabase(
+    fun provideDer3MuslimDatabase(
         @ApplicationContext context: Context
-    ): MasbahaDatabase {
+    ): Der3MuslimDatabase {
         return Room.databaseBuilder(
             context,
-            MasbahaDatabase::class.java,
+            Der3MuslimDatabase::class.java,
             DataBaseUtils.DATABASE_NAME
         ).build()
     }
 
     @Provides
     @Singleton
-    fun provideMasbahaAzkarDao(database: MasbahaDatabase): MasbahaAzkarDao {
+    fun provideMasbahaAzkarDao(database: Der3MuslimDatabase): MasbahaAzkarDao {
         return database.masbahaAzkarDao()
     }
 
     @Provides
     @Singleton
-    fun provideMasbahaHistoryDao(database: MasbahaDatabase): MasbahaHistoryDao {
+    fun provideMasbahaHistoryDao(database: Der3MuslimDatabase): MasbahaHistoryDao {
         return database.masbahaHistoryDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideFavoritesDao(database: Der3MuslimDatabase): FavoritesDao {
+        return database.favoritesDao()
     }
 }

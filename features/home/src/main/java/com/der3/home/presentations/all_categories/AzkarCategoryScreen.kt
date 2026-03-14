@@ -18,8 +18,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.der3.shared.data.provider.ZekrCategoriesProvider
 import com.der3.home.presentations.all_categories.components.CategoryRow
-import com.der3.home.presentations.all_categories.mvi.AllCategoryIntent
-import com.der3.home.presentations.all_categories.mvi.AllCategoryState
+import com.der3.home.presentations.all_categories.mvi.AzkarCategoryIntent
+import com.der3.home.presentations.all_categories.mvi.AzkarCategoryState
 import com.der3.mvi.MviEffect
 import com.der3.screens.Screens
 import com.der3.ui.R
@@ -35,7 +35,7 @@ import kotlinx.coroutines.flow.onEach
 import java.util.Locale
 
 @Composable
-fun AllCategoriesRoute(
+fun AzkarCategoryRoute(
     onNavigate: (Screens) -> Unit = {}
 ) {
 
@@ -62,7 +62,7 @@ fun AllCategoriesRoute(
         useDarkNavigationBarIcons = false
     )
 
-    AllCategoryScreen(
+    AzkarCategoryScreen(
         state = viewModel.viewState,
         onNavigate = onNavigate,
         onIntent = viewModel::onIntent
@@ -74,10 +74,10 @@ fun AllCategoriesRoute(
 
 @OptIn(FlowPreview::class)
 @Composable
-fun AllCategoryScreen(
-    state: AllCategoryState,
+fun AzkarCategoryScreen(
+    state: AzkarCategoryState,
     onNavigate: (Screens) -> Unit = {},
-    onIntent: (AllCategoryIntent) -> Unit = {}
+    onIntent: (AzkarCategoryIntent) -> Unit = {}
 ) {
 
 
@@ -88,7 +88,7 @@ fun AllCategoryScreen(
             .debounce(300)
             .distinctUntilChanged()
             .collect {
-                onIntent(AllCategoryIntent.UpdateSearchQuery(it))
+                onIntent(AzkarCategoryIntent.UpdateSearchQuery(it))
             }
     }
 
@@ -144,7 +144,7 @@ fun AllCategoryScreen(
                         .padding(vertical = 8.dp),
                     category = state.categories[index],
                     onClick = {
-                        onIntent(AllCategoryIntent.SelectCategory(category))
+                        onIntent(AzkarCategoryIntent.SelectCategory(category))
                     }
                 )
             }
@@ -164,12 +164,12 @@ fun AllCategoryScreen(
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun AllCategoryScreenPreview() {
+fun AzkarCategoryScreenPreview() {
     Der3MuslimTheme(
         language = Locale.Builder().setLanguage("ar").build()
     ) {
-        AllCategoryScreen(
-            state = AllCategoryState(
+        AzkarCategoryScreen(
+            state = AzkarCategoryState(
                 isLoading = true,
                 categories = ZekrCategoriesProvider.categories
             ),

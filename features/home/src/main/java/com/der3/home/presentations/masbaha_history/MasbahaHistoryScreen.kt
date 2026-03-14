@@ -131,7 +131,7 @@ fun MasbahaHistoryScreen(
                         showClearDialog = false
                     }
                 ) {
-                    Text(stringResource(id = R.string.clear), color = Color.Red)
+                    Text(stringResource(R.string.clear), color = Color.Red)
                 }
             },
             dismissButton = {

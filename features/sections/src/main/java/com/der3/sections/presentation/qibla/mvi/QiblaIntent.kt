@@ -6,6 +6,7 @@ sealed interface QiblaIntent : MviIntent {
     object StartCompass : QiblaIntent
     object StopCompass : QiblaIntent
     object OnBackClick : QiblaIntent
+    object Retry : QiblaIntent
     data class OnLocationChanged(val latitude: Double, val longitude: Double) : QiblaIntent
     data class OnDirectionUpdated(val qiblaDirection: Float, val compassRotation: Float) : QiblaIntent
 }

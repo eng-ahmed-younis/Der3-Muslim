@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -42,6 +43,7 @@ import com.der3.ui.components.LoadingDialog
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
 import com.der3.ui.R
+import com.der3.utils.asString
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import java.util.Locale
@@ -52,24 +54,42 @@ fun PrayerTimeRoute(
 ) {
     val viewModel = hiltViewModel<PrayerTimeViewModel>()
     val state = viewModel.viewState
+    val scope = rememberCoroutineScope()
+    var errorMessage by remember { mutableStateOf<String?>(null) }
+    var showErrorDialog by remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
-    LoadingDialog(visible = state.isLoading)
-
-    ErrorDialog(
-        visible = state.error != null,
-        message = state.error,
-        onRetry = { viewModel.onIntent(PrayerTimeIntent.LoadPrayerTimes) },
-        onDismiss = { viewModel.onIntent(PrayerTimeIntent.DismissError) }
-    )
 
     LaunchedEffect(Unit) {
         viewModel.effects.onEach {
             when (it) {
                 is MviEffect.Navigate -> onNavigate(it.screen)
+                is MviEffect.OnErrorDialog -> {
+                    errorMessage = it.error.asString(context)
+                    showErrorDialog = true
+                }
                 else -> {}
             }
-        }.launchIn(this)
+        }.launchIn(scope)
     }
+
+
+    LoadingDialog(visible = state.isLoading)
+
+    ErrorDialog(
+        visible = showErrorDialog || state.error != null,
+        message = errorMessage ?: state.error,
+        onRetry = {
+            viewModel.onIntent(PrayerTimeIntent.LoadPrayerTimes)
+            showErrorDialog = false
+            errorMessage = null
+        },
+        onDismiss = {
+            viewModel.onIntent(PrayerTimeIntent.DismissError)
+            showErrorDialog = false
+            errorMessage = null
+        }
+    )
 
     PrayerTimeScreen(
         state = state,

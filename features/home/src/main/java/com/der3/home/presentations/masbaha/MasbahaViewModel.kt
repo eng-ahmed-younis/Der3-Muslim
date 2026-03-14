@@ -36,9 +36,6 @@ class MasbahaViewModel @Inject constructor(
 
     override fun handleIntent(intent: MasbahaIntent) {
         when (intent) {
-            MasbahaIntent.Back -> {
-                onEffect(MviEffect.Navigate(com.der3.screens.Screens.Back()))
-            }
             is MasbahaIntent.SelectAzkar -> {
                 onAction(MasbahaAction.SetSelectedAzkar(intent.azkar))
             }

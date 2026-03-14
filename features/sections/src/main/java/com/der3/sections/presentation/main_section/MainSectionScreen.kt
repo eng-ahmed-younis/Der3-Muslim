@@ -31,11 +31,17 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -51,9 +57,11 @@ import com.der3.sections.presentation.main_section.mvi.MainSectionIntent
 import com.der3.sections.presentation.main_section.mvi.MainSectionState
 import com.der3.ui.R
 import com.der3.ui.components.Der3TopAppBar
+import com.der3.ui.components.ErrorDialog
 import com.der3.ui.models.CategoryUi
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
+import com.der3.utils.asString
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import java.util.Locale
@@ -63,15 +71,35 @@ fun MainSectionRoute(
     onNavigate: (Screens) -> Unit = {}
 ) {
     val viewModel = hiltViewModel<MainSectionViewModel>()
+    val state = viewModel.viewState
+    val scope = rememberCoroutineScope()
+    var errorMessage by remember { mutableStateOf<String?>(null) }
+    var showErrorDialog by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+
 
     LaunchedEffect(Unit) {
         viewModel.effects.onEach {
             when (it) {
                 is MviEffect.Navigate -> onNavigate(it.screen)
-                else -> {}
+                is MviEffect.OnErrorDialog -> {
+                    errorMessage = it.error.asString(context)
+                    showErrorDialog = true
+                }
             }
-        }.launchIn(this)
+        }.launchIn(scope)
     }
+
+    ErrorDialog(
+        visible = showErrorDialog,
+        message = errorMessage,
+        onRetry = {
+            viewModel.onIntent(MainSectionIntent.Retry)
+            showErrorDialog = false
+        },
+        onDismiss = { showErrorDialog = false }
+    )
+
 
     MainSectionScreen(
         state = viewModel.viewState,
@@ -92,8 +120,7 @@ fun MainSectionScreen(
         Der3TopAppBar(
             title = stringResource(id = R.string.sections_title),
             backgroundColor = AppColors.gray50,
-            showBackButton = true,
-            onBackClick = { onIntent(MainSectionIntent.OnBackClick) }
+            showBackButton = false,
         )
 
         Column(

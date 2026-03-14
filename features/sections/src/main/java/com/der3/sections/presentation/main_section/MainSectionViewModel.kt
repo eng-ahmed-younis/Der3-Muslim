@@ -36,12 +36,13 @@ class MainSectionViewModel @Inject constructor(
     override fun handleIntent(intent: MainSectionIntent) {
         when (intent) {
             is MainSectionIntent.LoadSections -> loadSections()
+            is MainSectionIntent.Retry -> loadSections()
             is MainSectionIntent.UpdateSearchQuery -> {
                 onAction(MainSectionAction.OnSearchQueryUpdated(intent.query))
             }
             is MainSectionIntent.OnSectionClick -> {
                 val route = when (intent.type) {
-                    SectionType.ZIKR -> Der3NavigationRoute.AllCategoriesScreen
+                    SectionType.ZIKR -> Der3NavigationRoute.AllAzkarCategoriesScreen
                     SectionType.TASBEH -> Der3NavigationRoute.TasbeehScreen
                     SectionType.FAVORITES -> Der3NavigationRoute.FavouriteScreen
                     SectionType.DAILY_NOTIFICATIONS -> Der3NavigationRoute.DailyNotificationsScreen
@@ -51,9 +52,7 @@ class MainSectionViewModel @Inject constructor(
                 }
                 route?.let { onEffect(MviEffect.Navigate(screen = route)) }
             }
-            is MainSectionIntent.OnBackClick -> {
-                onEffect(MviEffect.Navigate(Screens.Back()))
-            }
+
         }
     }
 

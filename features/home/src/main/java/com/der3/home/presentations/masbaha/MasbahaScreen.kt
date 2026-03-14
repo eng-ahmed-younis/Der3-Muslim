@@ -90,13 +90,7 @@ fun MasbahaRoute(
 
     MasbahaScreen(
         state = state,
-        onIntent = { intent ->
-            if (intent is MasbahaIntent.Back) {
-                onNavigate(Screens.Back())
-            } else {
-                viewModel.onIntent(intent)
-            }
-        }
+        onIntent = viewModel::onIntent
     )
 }
 
@@ -144,10 +138,8 @@ fun MasbahaScreen(
             title = stringResource(id = R.string.electronic_rosary_title),
             backgroundColor = AppColors.gray50,
             titleColor = AppColors.green800,
+            showBackButton = false,
             navigationIconColor = AppColors.green800,
-            onBackClick = {
-                onIntent(MasbahaIntent.Back)
-            },
             trailingContent = {
                 Box {
                     IconButton(onClick = { showMenu = !showMenu }) {

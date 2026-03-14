@@ -40,7 +40,7 @@ class HomeViewModel @Inject constructor(
             }
 
             HomeIntent.NavigateToAllCategories -> {
-                onEffect(Navigate(screen = Der3NavigationRoute.AllCategoriesScreen))
+                onEffect(Navigate(screen = Der3NavigationRoute.AllAzkarCategoriesScreen))
 
             }
 

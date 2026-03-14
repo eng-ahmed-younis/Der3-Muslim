@@ -57,6 +57,7 @@
     <string name="daily_notifications_add_custom">إضافة تنبيه مخصص</string>
 
     <string name="sections_search_placeholder">ابحث عن قسم أو ميزة...</string>
+    <string name="favorites_search_placeholder">ابحث في أذكارك المفضلة...</string>
 
     <!-- Existing keys (ensure these exist) -->
     <string name="azkar_morning">أذكار الصباح</string>
@@ -202,4 +203,11 @@
     <string name="rate_now">قيم الآن</string>
     <string name="rate_later">لاحقاً</string>
     <string name="share_message">✨ *Der3 Muslim - Your Daily Sanctuary* ✨\n\nAssalamu Alaikum,\n\nI recommend using \"Der3 Muslim\" for your daily Azkar and Duas. It\'s beautifully designed and very easy to use. 🌱\n\n📥 Download it here:\n%s\n\n\"Whoever guides someone to goodness will have a reward like one who did it.\" ❤️</string>
+    <string name="favorites_empty_title">لا توجد أذكار مفضلة بعد</string>
+    <string name="favorites_empty_desc">ابدأ بإضافة الأذكار التي تهمك للوصول إليها بسرعة وسهولة في أي وقت.</string>
+    <string name="browse_azkar">تصفح الأذكار</string>
+    <string name="remove_from_favorites">إزالة من المفضلة</string>
+    <string name="play_audio">تشغيل</string>
+    <string name="swipe_to_delete">اسحب للحذف</string>
+    <string name="repeat_label">تكرار: %s</string>
 </resources>

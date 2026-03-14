@@ -3,10 +3,10 @@ package com.der3.home.presentations.all_categories
 import androidx.lifecycle.viewModelScope
 import com.der3.shared.domain.use_case.GetAzkarCategoriesUseCase
 import com.der3.home.data.mappers.toUiCategories
-import com.der3.home.presentations.all_categories.mvi.AllCategoryActions
-import com.der3.home.presentations.all_categories.mvi.AllCategoryIntent
-import com.der3.home.presentations.all_categories.mvi.AllCategoryReducer
-import com.der3.home.presentations.all_categories.mvi.AllCategoryState
+import com.der3.home.presentations.all_categories.mvi.AzkarCategoryActions
+import com.der3.home.presentations.all_categories.mvi.AzkarCategoryIntent
+import com.der3.home.presentations.all_categories.mvi.AzkarCategoryReducer
+import com.der3.home.presentations.all_categories.mvi.AzkarCategoryState
 import com.der3.mvi.MviBaseViewModel
 import com.der3.mvi.MviEffect
 import com.der3.screens.Der3NavigationRoute
@@ -23,22 +23,22 @@ import javax.inject.Inject
 @HiltViewModel
 class AllCategoryViewModel @Inject constructor(
     private val getAllCategoriesUseCase: GetAzkarCategoriesUseCase,
-) : MviBaseViewModel<AllCategoryState, AllCategoryActions, AllCategoryIntent>(
-    initialState = AllCategoryState(),
-    reducer = AllCategoryReducer()
+) : MviBaseViewModel<AzkarCategoryState, AzkarCategoryActions, AzkarCategoryIntent>(
+    initialState = AzkarCategoryState(),
+    reducer = AzkarCategoryReducer()
 ) {
 
     init {
         getAllAzkarCategories()
     }
 
-    override fun handleIntent(intent: AllCategoryIntent) {
+    override fun handleIntent(intent: AzkarCategoryIntent) {
         when (intent) {
-            is AllCategoryIntent.UpdateSearchQuery -> {
-                onAction(AllCategoryActions.UpdateSearchQuery(intent.query))
+            is AzkarCategoryIntent.UpdateSearchQuery -> {
+                onAction(AzkarCategoryActions.UpdateSearchQuery(intent.query))
                 searchCategories(intent.query)
             }
-            is AllCategoryIntent.SelectCategory -> {
+            is AzkarCategoryIntent.SelectCategory -> {
                 onEffect(
                     MviEffect.Navigate(
                         Der3NavigationRoute.CategoryDetailsScreen(
@@ -55,23 +55,23 @@ class AllCategoryViewModel @Inject constructor(
 
     private fun getAllAzkarCategories() {
         getAllCategoriesUseCase.invoke()
-            .onStart { onAction(AllCategoryActions.OnLoading(true)) }
+            .onStart { onAction(AzkarCategoryActions.OnLoading(true)) }
             .map { it.toUiCategories() }
-            .onEach { onAction(AllCategoryActions.LoadAllAzkarCategory(category = it)) }
-            .onCompletion { onAction(AllCategoryActions.OnLoading(false)) }
-            .catch { onAction(AllCategoryActions.OnLoading(false)) }
+            .onEach { onAction(AzkarCategoryActions.LoadAllAzkarCategory(category = it)) }
+            .onCompletion { onAction(AzkarCategoryActions.OnLoading(false)) }
+            .catch { onAction(AzkarCategoryActions.OnLoading(false)) }
             .launchIn(viewModelScope)
     }
 
     private fun searchCategories(query: String) {
         if (query.isBlank()) {
-            onAction(AllCategoryActions.SearchQueryEmpty)
+            onAction(AzkarCategoryActions.SearchQueryEmpty)
             return
         }
         val filtered = viewState.cachedCategories.filter { category ->
             category.title.normalizeArabic().contains(query.trim().normalizeArabic())
         }
-        onAction(AllCategoryActions.LoadSearchAzkarCategory(category = filtered))
+        onAction(AzkarCategoryActions.LoadSearchAzkarCategory(category = filtered))
     }
 }
 
