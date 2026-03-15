@@ -208,6 +208,14 @@
     <string name="browse_azkar">تصفح الأذكار</string>
     <string name="remove_from_favorites">إزالة من المفضلة</string>
     <string name="play_audio">تشغيل</string>
+    <string name="pause_audio">إيقاف مؤقت</string>
     <string name="swipe_to_delete">اسحب للحذف</string>
     <string name="repeat_label">تكرار: %s</string>
+    <string name="recycle_bin_title">سلة المحذوفات</string>
+    <string name="recycle_bin_info">سيتم حذف العناصر الموجودة في سلة المحذوفات نهائيًا بعد مرور 30 يومًا من تاريخ الحذف. يمكنك استعادتها إلى قائمة المفضلة في أي وقت قبل ذلك.</string>
+    <string name="empty_recycle_bin">إفراغ السلة الآن</string>
+    <string name="restore">استعادة</string>
+    <string name="delete_permanently">حذف نهائي</string>
+    <string name="deleted_since">تم الحذف منذ %s</string>
+    <string name="recycle_bin_empty">سلة المحذوفات فارغة</string>
 </resources>

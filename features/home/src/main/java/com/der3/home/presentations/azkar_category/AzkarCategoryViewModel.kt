@@ -1,12 +1,12 @@
-package com.der3.home.presentations.all_categories
+package com.der3.home.presentations.azkar_category
 
 import androidx.lifecycle.viewModelScope
 import com.der3.shared.domain.use_case.GetAzkarCategoriesUseCase
 import com.der3.home.data.mappers.toUiCategories
-import com.der3.home.presentations.all_categories.mvi.AzkarCategoryActions
-import com.der3.home.presentations.all_categories.mvi.AzkarCategoryIntent
-import com.der3.home.presentations.all_categories.mvi.AzkarCategoryReducer
-import com.der3.home.presentations.all_categories.mvi.AzkarCategoryState
+import com.der3.home.presentations.azkar_category.mvi.AzkarCategoryActions
+import com.der3.home.presentations.azkar_category.mvi.AzkarCategoryIntent
+import com.der3.home.presentations.azkar_category.mvi.AzkarCategoryReducer
+import com.der3.home.presentations.azkar_category.mvi.AzkarCategoryState
 import com.der3.mvi.MviBaseViewModel
 import com.der3.mvi.MviEffect
 import com.der3.screens.Der3NavigationRoute
@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
+import com.der3.shared.utils.normalizeArabic
 import javax.inject.Inject
 
 
@@ -75,11 +76,3 @@ class AllCategoryViewModel @Inject constructor(
     }
 }
 
-private fun String.normalizeArabic(): String {
-    return this
-        .replace(Regex("[\u064B-\u065F\u0670]"), "")
-        .replace(Regex("[إأآا]"), "ا")
-        .replace('ة', 'ه')
-        .replace('ى', 'ي')
-        .trim()
-}

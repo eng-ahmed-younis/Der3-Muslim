@@ -1,4 +1,4 @@
-package com.der3.shared.domain.use_case
+package com.der3.shared.domain.use_case.fav
 
 import com.der3.shared.domain.repo.FavoritesRepository
 import kotlinx.coroutines.flow.Flow

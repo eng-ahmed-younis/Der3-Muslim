@@ -1,4 +1,4 @@
-package com.der3.home.presentations.all_categories.mvi
+package com.der3.home.presentations.azkar_category.mvi
 
 import com.der3.mvi.Reducer
 import javax.inject.Inject

@@ -86,4 +86,7 @@ sealed interface Der3NavigationRoute : Screens {
 
     @Serializable
     object ContactScreen : Der3NavigationRoute
+
+    @Serializable
+    object RecycleBinScreen : Der3NavigationRoute
 }

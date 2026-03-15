@@ -57,8 +57,18 @@ class ZekrDetailsReducer @Inject constructor() : Reducer<ZekrDetailsAction, Zekr
                 state.copy(currentVolume = action.volume)
             }
 
+            is ZekrDetailsAction.UpdateFavorite -> {
+                state.copy(
+                    zekrDetails = state.zekrDetails.copy(isFavorite = action.isFavorite)
+                )
+            }
+
             is ZekrDetailsAction.ShareSheetVisibility -> {
                 state.copy(shareSheetVisibility = action.visible)
+            }
+
+            ZekrDetailsAction.ClearError -> {
+                state.copy(error = null)
             }
         }
     }

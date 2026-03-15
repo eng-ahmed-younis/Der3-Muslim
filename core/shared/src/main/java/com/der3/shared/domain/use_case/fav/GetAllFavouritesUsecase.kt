@@ -1,4 +1,4 @@
-package com.der3.shared.domain.use_case
+package com.der3.shared.domain.use_case.fav
 
 import com.der3.shared.data.source.local.entity.FavoriteEntity
 import com.der3.shared.domain.repo.FavoritesRepository

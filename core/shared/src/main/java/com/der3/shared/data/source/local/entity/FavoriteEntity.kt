@@ -7,6 +7,7 @@ import com.der3.shared.utils.DataBaseUtils
 @Entity(tableName = DataBaseUtils.FAVORITES_TABLE)
 data class FavoriteEntity(
     @PrimaryKey val id: Int,
+    val categoryId: Int,
     val text: String,
     val audioPath: String,
     val repeatCount: Int,

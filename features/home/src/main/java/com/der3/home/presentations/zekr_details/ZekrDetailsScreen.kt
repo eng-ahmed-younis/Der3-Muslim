@@ -31,7 +31,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.der3.shared.params.ZekrDetailsParams
 import com.der3.home.di.factory.ZekrDetailsViewModelFactory
 import com.der3.home.presentations.zekr_details.components.CategoryChip
@@ -155,10 +155,18 @@ fun ZekrDetailsRoute(
     }
 
     ErrorDialog(
-        visible = showErrorDialog,
-        message = errorMessage,
-        onRetry = {},
-        onDismiss = {}
+        visible = showErrorDialog || viewModel.viewState.error != null,
+        message = errorMessage ?: viewModel.viewState.error,
+        onRetry = {
+            viewModel.onIntent(ZekrDetailsIntent.Retry)
+            showErrorDialog = false
+            errorMessage = null
+        },
+        onDismiss = {
+            viewModel.onIntent(ZekrDetailsIntent.DismissError)
+            showErrorDialog = false
+            errorMessage = null
+        }
     )
 
     ZekrDetailsScreen(
@@ -225,11 +233,7 @@ fun ZekrDetailsScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(AppColors.gray50)
-            .verticalScroll(scrollState),
-        horizontalAlignment = Alignment.CenterHorizontally,
-
-        ) {
-
+    ) {
         Der3TopAppBar(
             title = stringResource(R.string.zekr_details_title),
             backgroundColor = AppColors.gray50,
@@ -260,6 +264,7 @@ fun ZekrDetailsScreen(
                                 onIntent(ZekrDetailsIntent.ExpandDropdownMenu(isExpand = false))
                                 onIntent(ZekrDetailsIntent.FontSizeSheetVisibility(isVisible = true))
                             }
+
                             is AzkarDetailsMenuItems.ZEKR_VOLUME -> {
                                 onIntent(ZekrDetailsIntent.ExpandDropdownMenu(isExpand = false))
                                 onIntent(ZekrDetailsIntent.VolumeSheetVisibility(isVisible = true))
@@ -270,48 +275,61 @@ fun ZekrDetailsScreen(
             }
         )
 
-        Spacer(Modifier.height(20.dp))
-
-
-        // Category Badge
-        CategoryChip(
-            text = stringResource(R.string.zekr_details_quran_verse)
-
-        )
-
-        Spacer(Modifier.height(24.dp))
-
-        TextSlider(
-            pageSize = state.zekrPageSize,
-            fontSize = (state.zekrFontSize).sp,
-            longText = state.zekrDetails.text
-        )
-
-        Spacer(Modifier.height(40.dp))
-
-        // Circular Counter
-        CircularZekrCounter(
-            progress = progress,
-            count = state.currentCount,
-            total = state.zekrDetails.repeatCount,
-            onClick = {
-                onIntent(ZekrDetailsIntent.IncrementZekrReadingCount)
-            })
-
-        Spacer(Modifier.height(100.dp))
-
-        ProgressCard(
-            progress = progress, modifier = Modifier
+        Column(
+            modifier = Modifier
+                .weight(1f)
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-        )
+                .verticalScroll(scrollState),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
 
-        Spacer(Modifier.height(40.dp))
+            Spacer(Modifier.height(20.dp))
+
+
+            // Category Badge
+            CategoryChip(
+                text = state.zekrDetails.categoryName ?: stringResource(R.string.zekr_details_quran_verse)
+            )
+
+            Spacer(Modifier.height(24.dp))
+
+            TextSlider(
+                pageSize = state.zekrPageSize,
+                fontSize = (state.zekrFontSize).sp,
+                longText = state.zekrDetails.text
+            )
+
+            Spacer(Modifier.height(40.dp))
+
+            // Circular Counter
+            CircularZekrCounter(
+                progress = progress,
+                count = state.currentCount,
+                total = state.zekrDetails.repeatCount,
+                onClick = {
+                    onIntent(ZekrDetailsIntent.IncrementZekrReadingCount)
+                })
+
+            Spacer(Modifier.height(60.dp))
+
+            ProgressCard(
+                progress = progress, modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+            )
+
+            Spacer(Modifier.height(40.dp))
+        }
 
         ControlPanel(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(bottom = 24.dp)
+                .fillMaxWidth(0.92f),
             isPlaying = state.audioState.isPlaying,
-            onFavorite = {},
+            audioProgress = state.audioState.progress,
+            isFavorite = state.zekrDetails.isFavorite,
+            onFavorite = { onIntent(ZekrDetailsIntent.ToggleFavorite) },
             onPlay = {
                 onIntent(
                     ZekrDetailsIntent.ToggleAudio(
@@ -327,8 +345,8 @@ fun ZekrDetailsScreen(
             },
             onVolume = {
                 onIntent(ZekrDetailsIntent.VolumeSheetVisibility(isVisible = true))
-            })
-
+            }
+        )
     }
 }
 

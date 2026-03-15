@@ -1,8 +1,16 @@
 package com.der3.home.presentations.favorite.components
 
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,6 +26,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -30,8 +39,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -50,10 +61,31 @@ import com.der3.ui.themes.Der3MuslimTheme
 fun FavoriteZekrCard(
     modifier: Modifier = Modifier,
     zekr: ZekrUiModel,
+    isPlaying: Boolean = false,
     onRemove: () -> Unit,
     onPlay: () -> Unit,
     onClick: () -> Unit
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+    val scale by animateFloatAsState(if (isPressed) 0.98f else 1f, label = "card_scale")
+
+    val infiniteTransition = rememberInfiniteTransition(label = "playback_pulsate")
+    val pulsateScale by infiniteTransition.animateFloat(
+        initialValue = 1f,
+        targetValue = 1.05f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(1000),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "pulsate"
+    )
+
+    val cardBackgroundColor by animateColorAsState(
+        targetValue = if (isPlaying) AppColors.green25.copy(alpha = 0.5f) else Color.White,
+        label = "card_bg_color"
+    )
+
     val dismissState = rememberSwipeToDismissBoxState(
         confirmValueChange = {
             if (it == SwipeToDismissBoxValue.EndToStart) {
@@ -71,9 +103,10 @@ fun FavoriteZekrCard(
         backgroundContent = {
             val color by animateColorAsState(
                 when (dismissState.targetValue) {
-                    SwipeToDismissBoxValue.EndToStart -> Color.Red.copy(alpha = 0.8f)
+                    SwipeToDismissBoxValue.EndToStart -> AppColors.gold600
                     else -> Color.Transparent
-                }, label = "dismiss_background_color"
+                },
+                label = "dismiss_background_color"
             )
             Box(
                 modifier = Modifier
@@ -86,19 +119,24 @@ fun FavoriteZekrCard(
                 Icon(
                     imageVector = Icons.Default.Delete,
                     contentDescription = null,
-                    tint = Color.White
+                    tint = AppColors.gold600
                 )
             }
         },
         modifier = modifier
+            .scale(scale)
     ) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable { onClick() },
+                .clickable(
+                    interactionSource = interactionSource,
+                    indication = null,
+                    onClick = onClick
+                ),
             shape = RoundedCornerShape(24.dp),
-            colors = CardDefaults.cardColors(containerColor = Color.White),
-            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+            colors = CardDefaults.cardColors(containerColor = cardBackgroundColor),
+            elevation = CardDefaults.cardElevation(defaultElevation = if (isPlaying) 4.dp else 2.dp)
         ) {
             Column(
                 modifier = Modifier
@@ -139,11 +177,11 @@ fun FavoriteZekrCard(
                         )
                     }
                 }
-                zekr.category?.let {
+                zekr.categoryName?.let {
                     Spacer(modifier = Modifier.height(12.dp))
 
                     Text(
-                        text = zekr.category,
+                        text = zekr.categoryName,
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Start,
                         fontSize = 18.sp,
@@ -175,8 +213,9 @@ fun FavoriteZekrCard(
 
                     Row(
                         modifier = Modifier
+                            .scale(if (isPlaying) pulsateScale else 1f)
                             .background(
-                                color = AppColors.green800,
+                                color = if (isPlaying) AppColors.green900 else AppColors.green800,
                                 shape = RoundedCornerShape(16.dp)
                             )
                             .clickable { onPlay() }
@@ -187,14 +226,14 @@ fun FavoriteZekrCard(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
-                            imageVector = Icons.Default.PlayArrow,
-                            contentDescription = stringResource(id = R.string.play_audio),
+                            imageVector = if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
+                            contentDescription = stringResource(id = if (isPlaying) R.string.pause_audio else R.string.play_audio),
                             tint = AppColors.white,
                             modifier = Modifier.size(20.dp)
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
-                            text = stringResource(id = R.string.play_audio),
+                            text = stringResource(id = if (isPlaying) R.string.pause_audio else R.string.play_audio),
                             color = AppColors.white,
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Bold

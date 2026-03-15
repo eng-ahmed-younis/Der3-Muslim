@@ -4,9 +4,11 @@ import android.content.Context
 import com.der3.shared.data.repo.AzkarRepositoryImpl
 import com.der3.shared.data.repo.FavoritesRepositoryImpl
 import com.der3.shared.data.repo.MasbahaRepositoryImpl
+import com.der3.shared.data.repo.RecycleBinRepositoryImpl
 import com.der3.shared.domain.repo.AzkarRepository
 import com.der3.shared.domain.repo.FavoritesRepository
 import com.der3.shared.domain.repo.MasbahaRepository
+import com.der3.shared.domain.repo.RecycleBinRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -30,6 +32,12 @@ abstract class RepositoryModule {
     abstract fun bindFavoritesRepository(
         impl: FavoritesRepositoryImpl
     ): FavoritesRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindRecycleBinRepository(
+        impl: RecycleBinRepositoryImpl
+    ): RecycleBinRepository
 
     companion object {
         @Provides

@@ -26,10 +26,14 @@ internal val lightColors = Colors(
 
     blueGray400 = Color(0xFF9BA9BD),
 
+    gold700 = Color(0xFFB8963D),
     gold600 = Color(0xFFC8A951),
     gold500 = Color(0xFFC5A059),
     gold400 = Color(0xFFFFC107),
-    white = Color(0xFFFFFFFF)
+    white = Color(0xFFFFFFFF),
+
+    red900 = Color(0xFFB91C1C),
+    red50 = Color(0xFFFDECEC)
 )
 
 
@@ -53,10 +57,14 @@ internal val darkColors = Colors(
 
     blueGray400 = Color(0xFF9BA9BD),
 
+    gold700 = Color(0xFFB8963D),
     gold600 = Color(0xFFC8A951),
     gold500 = Color(0xFFC5A059),
     gold400 = Color(0xFFFFC107),
-    white = Color(0xFFFFFFFF)
+    white = Color(0xFFFFFFFF),
+
+    red900 = Color(0xFFB91C1C),
+    red50 = Color(0xFFFDECEC)
 )
 
 
@@ -71,6 +79,7 @@ data class Colors(
     val green50: Color,
     val green25: Color,
 
+    val gold700: Color,
     val gold600: Color,
     val gold500: Color,
     val gold400: Color,
@@ -83,5 +92,8 @@ data class Colors(
     val blueGray400: Color,
     val gray100: Color,
     val gray200: Color,
-    val gray50: Color
+    val gray50: Color,
+
+    val red900: Color,
+    val red50: Color
 )

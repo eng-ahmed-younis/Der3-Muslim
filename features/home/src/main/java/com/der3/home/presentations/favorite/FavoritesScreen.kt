@@ -1,5 +1,9 @@
 package com.der3.home.presentations.favorite
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -10,6 +14,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,11 +27,18 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.SwipeToDismissBox
+import androidx.compose.material3.SwipeToDismissBoxDefaults
+import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -79,6 +95,7 @@ fun FavoritesRoute(
                     errorMessage = it.error.asString(context)
                     showErrorDialog = true
                 }
+
                 else -> {}
             }
         }.launchIn(scope)
@@ -129,7 +146,50 @@ fun FavoritesScreen(
         Der3TopAppBar(
             title = stringResource(R.string.favorites_title),
             showBackButton = false,
-            backgroundColor = AppColors.gray50
+            backgroundColor = AppColors.gray50,
+            trailingContent = {
+                var showMenu by remember { mutableStateOf(false) }
+
+                Box {
+                    IconButton(onClick = { showMenu = true }) {
+                        Icon(
+                            imageVector = Icons.Default.MoreVert,
+                            contentDescription = null,
+                            tint = AppColors.green800
+                        )
+                    }
+
+                    DropdownMenu(
+                        expanded = showMenu,
+                        onDismissRequest = { showMenu = false },
+                        modifier = Modifier
+                            .background(AppColors.white)
+                            .width(180.dp)
+                    ) {
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    text = stringResource(R.string.recycle_bin_title),
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = AppColors.green900
+                                )
+                            },
+                            onClick = {
+                                showMenu = false
+                                onIntent(FavoritesIntent.OpenRecycleBin)
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = Icons.Default.Delete,
+                                    contentDescription = null,
+                                    tint = AppColors.green800,
+                                    modifier = Modifier.size(20.dp)
+                                )
+                            }
+                        )
+                    }
+                }
+            }
         )
 
         Column(
@@ -214,11 +274,21 @@ fun FavoritesScreen(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     items(state.filteredFavorites, key = { it.id }) { zekr ->
+                        val isCurrentPlaying = state.isPlaying && state.currentPlayingPath == zekr.audioPath
+
                         FavoriteZekrCard(
                             zekr = zekr,
+                            isPlaying = isCurrentPlaying,
                             onRemove = { onIntent(FavoritesIntent.RemoveFromFavorite(zekr.id)) },
                             onPlay = { onIntent(FavoritesIntent.ToggleAudio(zekr.audioPath)) },
-                            onClick = { onIntent(FavoritesIntent.OnZekrClick(zekr.id)) }
+                            onClick = {
+                                onIntent(
+                                    FavoritesIntent.OnZekrClick(
+                                        zekrId = zekr.id,
+                                        categoryId = zekr.categoryId ?: -1
+                                    )
+                                )
+                            }
                         )
                     }
                 }

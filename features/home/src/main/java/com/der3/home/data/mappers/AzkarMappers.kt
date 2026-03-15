@@ -62,7 +62,8 @@ fun FavoriteEntity.toZekrUiModel(): ZekrUiModel {
     return ZekrUiModel(
         id = this.id,
         text = this.text,
-        category = this.categoryName,
+        categoryName = this.categoryName,
+        categoryId = this.categoryId,
         repeatCount = this.repeatCount,
         audioPath = this.audioPath,
         isFavorite = true

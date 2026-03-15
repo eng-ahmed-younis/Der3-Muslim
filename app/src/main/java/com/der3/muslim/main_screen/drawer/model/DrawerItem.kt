@@ -2,6 +2,7 @@ package com.der3.muslim.main_screen.drawer.model
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
@@ -50,5 +51,10 @@ val drawerItems = listOf(
         title = R.string.contact_title,
         icon = Icons.Default.Email,
         route = Der3NavigationRoute.ContactScreen
+    ),
+    DrawerItem(
+        title = R.string.recycle_bin_title,
+        icon = Icons.Default.Delete,
+        route = Der3NavigationRoute.RecycleBinScreen
     ),
 )

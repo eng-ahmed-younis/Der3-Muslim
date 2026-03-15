@@ -9,4 +9,5 @@ sealed class FavoritesAction : MviAction {
     data class OnFavoritesLoaded(val favorites: List<ZekrUiModel>) : FavoritesAction()
     data class OnSearchQueryChanged(val query: String) : FavoritesAction()
     data class OnError(val error: String?) : FavoritesAction()
+    data class OnPlaybackStateChanged(val isPlaying: Boolean, val currentPath: String?) : FavoritesAction()
 }

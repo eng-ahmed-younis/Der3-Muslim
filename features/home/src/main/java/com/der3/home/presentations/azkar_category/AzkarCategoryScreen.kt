@@ -1,4 +1,4 @@
-package com.der3.home.presentations.all_categories
+package com.der3.home.presentations.azkar_category
 
 import com.der3.ui.components.Der3TopAppBar
 import android.util.Log
@@ -17,9 +17,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.der3.shared.data.provider.ZekrCategoriesProvider
-import com.der3.home.presentations.all_categories.components.CategoryRow
-import com.der3.home.presentations.all_categories.mvi.AzkarCategoryIntent
-import com.der3.home.presentations.all_categories.mvi.AzkarCategoryState
+import com.der3.home.presentations.azkar_category.components.CategoryRow
+import com.der3.home.presentations.azkar_category.mvi.AzkarCategoryIntent
+import com.der3.home.presentations.azkar_category.mvi.AzkarCategoryState
 import com.der3.mvi.MviEffect
 import com.der3.screens.Screens
 import com.der3.ui.R

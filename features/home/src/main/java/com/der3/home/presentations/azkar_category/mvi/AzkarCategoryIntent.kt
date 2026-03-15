@@ -1,4 +1,4 @@
-package com.der3.home.presentations.all_categories.mvi
+package com.der3.home.presentations.azkar_category.mvi
 
 import androidx.compose.runtime.Stable
 import com.der3.mvi.MviIntent

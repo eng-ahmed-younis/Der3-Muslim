@@ -7,9 +7,16 @@ import androidx.lifecycle.LifecycleOwner
 import com.der3.player.audio.api.AudioPlayer
 import com.der3.player.audio.model.AzkarAudioState
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -20,6 +27,8 @@ class AzkarAudioPlayer @Inject constructor(
 
     private var mediaPlayer: MediaPlayer? = null
     private var currentPath: String? = null
+    private var progressJob: Job? = null
+    private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
     // ─────────────────────────────────────────────
     // Reactive State
@@ -68,10 +77,12 @@ class AzkarAudioPlayer @Inject constructor(
 
                 currentPath = cleanPath
                 isAudioPlaying = true
+                startProgressUpdate()
                 emitState()
 
                 setOnCompletionListener {
                     isAudioPlaying = false
+                    stopProgressUpdate()
                     // Keep currentPath so we know what was last played
                     emitState()
                     onPlaybackCompleted?.invoke()
@@ -79,6 +90,7 @@ class AzkarAudioPlayer @Inject constructor(
 
                 setOnErrorListener { _, what, extra ->
                     isAudioPlaying = false
+                    stopProgressUpdate()
                     val errorMsg = "MediaPlayer error: what=$what extra=$extra"
                     _audioState.value = AzkarAudioState(isPlaying = false, currentPath = currentPath, error = errorMsg)
                     onError?.invoke(errorMsg)
@@ -87,6 +99,7 @@ class AzkarAudioPlayer @Inject constructor(
             }
         } catch (e: Exception) {
             isAudioPlaying = false
+            stopProgressUpdate()
             val errorMsg = e.message ?: "Unknown audio error"
             _audioState.value = AzkarAudioState(isPlaying = false, currentPath = currentPath, error = errorMsg)
             onError?.invoke(errorMsg)
@@ -101,6 +114,7 @@ class AzkarAudioPlayer @Inject constructor(
     override fun pause() {
         mediaPlayer?.pause()
         isAudioPlaying = false
+        stopProgressUpdate()
         emitState()
     }
 
@@ -112,6 +126,7 @@ class AzkarAudioPlayer @Inject constructor(
         if (mediaPlayer != null) {
             mediaPlayer?.start()
             isAudioPlaying = true
+            startProgressUpdate()
             emitState()
         } else if (currentPath != null) {
             // If player was released but we have a path, restart it
@@ -125,6 +140,7 @@ class AzkarAudioPlayer @Inject constructor(
 
     override fun stop() {
         mediaPlayer?.stop()
+        stopProgressUpdate()
         release() // This sets mediaPlayer = null
         isAudioPlaying = false
         // Note: we don't clear currentPath here so reset/resume can use it
@@ -191,7 +207,24 @@ class AzkarAudioPlayer @Inject constructor(
     private fun emitState() {
         _audioState.value = AzkarAudioState(
             isPlaying = isAudioPlaying,
-            currentPath = currentPath
+            currentPath = currentPath,
+            currentPosition = mediaPlayer?.currentPosition?.toLong() ?: 0L,
+            duration = mediaPlayer?.duration?.toLong() ?: 0L
         )
+    }
+
+    private fun startProgressUpdate() {
+        progressJob?.cancel()
+        progressJob = scope.launch {
+            while (isActive) {
+                emitState()
+                delay(100)
+            }
+        }
+    }
+
+    private fun stopProgressUpdate() {
+        progressJob?.cancel()
+        progressJob = null
     }
 }

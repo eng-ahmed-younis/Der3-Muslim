@@ -6,6 +6,7 @@ import com.der3.shared.data.source.local.Der3MuslimDatabase
 import com.der3.shared.data.source.local.dao.MasbahaAzkarDao
 import com.der3.shared.data.source.local.dao.MasbahaHistoryDao
 import com.der3.shared.data.source.local.dao.FavoritesDao
+import com.der3.shared.data.source.local.dao.RecycleBinDao
 import com.der3.shared.utils.DataBaseUtils
 import dagger.Module
 import dagger.Provides
@@ -27,7 +28,7 @@ object DatabaseModule {
             context,
             Der3MuslimDatabase::class.java,
             DataBaseUtils.DATABASE_NAME
-        ).build()
+        ).fallbackToDestructiveMigration(true).build()
     }
 
     @Provides
@@ -46,5 +47,11 @@ object DatabaseModule {
     @Singleton
     fun provideFavoritesDao(database: Der3MuslimDatabase): FavoritesDao {
         return database.favoritesDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideRecycleBinDao(database: Der3MuslimDatabase): RecycleBinDao {
+        return database.recycleBinDao()
     }
 }

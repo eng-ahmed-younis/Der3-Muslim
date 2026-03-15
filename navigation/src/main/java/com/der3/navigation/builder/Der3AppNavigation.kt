@@ -1,6 +1,6 @@
 package com.der3.navigation.builder
 
-import com.der3.home.presentations.category_details.AzkarDetailsRoute
+import com.der3.home.presentations.category_details.CategoryDetailsRoute
 import com.der3.home.presentations.drawer.about_der3.AboutDer3Route
 import com.der3.home.presentations.zekr_details.ZekrDetailsRoute
 import com.der3.home.presentations.drawer.contact_us.ContactUsRoute
@@ -9,9 +9,10 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.der3.home.presentations.recycle_bin.RecycleBinRoute
 import com.der3.shared.params.CategoryDetailsParams
 import com.der3.shared.params.ZekrDetailsParams
-import com.der3.home.presentations.all_categories.AzkarCategoryRoute
+import com.der3.home.presentations.azkar_category.AzkarCategoryRoute
 import com.der3.home.presentations.custom_reminder.AddCustomReminderRoute
 import com.der3.home.presentations.daily_notification.DailyNotificationsRoute
 import com.der3.home.presentations.home_screen.HomeRoute
@@ -83,7 +84,7 @@ fun NavGraphBuilder.der3AppNavigation(rootNavController: NavHostController) {
         )
 
 
-        AzkarDetailsRoute(
+        CategoryDetailsRoute(
             params = screenParams
         ) { screen ->
             rootNavController.navigateTo(screen = screen)
@@ -131,6 +132,12 @@ fun NavGraphBuilder.der3AppNavigation(rootNavController: NavHostController) {
 
     composable<Der3NavigationRoute.FavouriteScreen> {
         FavoritesRoute { screen ->
+            rootNavController.navigateTo(screen = screen)
+        }
+    }
+
+    composable<Der3NavigationRoute.RecycleBinScreen> {
+        RecycleBinRoute { screen ->
             rootNavController.navigateTo(screen = screen)
         }
     }

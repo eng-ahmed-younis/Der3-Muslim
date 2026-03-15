@@ -1,4 +1,4 @@
-package com.der3.home.presentations.all_categories.components
+package com.der3.home.presentations.azkar_category.components
 
 
 import androidx.compose.foundation.background

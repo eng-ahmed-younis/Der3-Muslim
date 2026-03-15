@@ -12,9 +12,10 @@ import com.der3.model.UiText
 import com.der3.mvi.MviBaseViewModel
 import com.der3.mvi.MviEffect
 import com.der3.screens.Der3NavigationRoute
-import com.der3.screens.Screens
-import com.der3.shared.domain.use_case.GetAllFavouritesUsecase
-import com.der3.shared.domain.use_case.RemoveFromFavoriteUseCase
+import com.der3.shared.data.source.local.entity.RecycleBinEntity
+import com.der3.shared.domain.use_case.fav.GetAllFavouritesUsecase
+import com.der3.shared.domain.use_case.fav.RemoveFromFavoriteUseCase
+import com.der3.shared.domain.use_case.recycler.InsertToRecycleBinUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
@@ -26,9 +27,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FavoritesViewModel @Inject constructor(
-    private val getAllFavorites: GetAllFavouritesUsecase,
-    private val removeFromFavorite: RemoveFromFavoriteUseCase,
-    private val toggleAudio: ToggleAzkarAudioUseCase,
+    private val getAllFavoritesUseCase: GetAllFavouritesUsecase,
+    private val removeFavoriteUseCase: RemoveFromFavoriteUseCase,
+    private val insertToRecycleBinUseCase: InsertToRecycleBinUseCase,
+    private val toggleAudioUseCase: ToggleAzkarAudioUseCase,
     private val observeAudioState: ObserveAzkarAudioStateUseCase,
     private val reducer: FavoritesReducer
 ) : MviBaseViewModel<FavoritesState, FavoritesAction, FavoritesIntent>(
@@ -38,9 +40,11 @@ class FavoritesViewModel @Inject constructor(
 
     init {
         loadFavorites()
-        
+
         observeAudioState()
-            .onEach { /* can handle audio state if needed */ }
+            .onEach { state ->
+                onAction(FavoritesAction.OnPlaybackStateChanged(state.isPlaying, state.currentPath))
+            }
             .launchIn(viewModelScope)
     }
 
@@ -52,33 +56,34 @@ class FavoritesViewModel @Inject constructor(
             }
 
             is FavoritesIntent.RemoveFromFavorite -> {
-                viewModelScope.launch {
-                    try {
-                        onAction(FavoritesAction.OnLoading(true))
-                        removeFromFavorite(intent.zekrId)
-                        onAction(FavoritesAction.OnLoading(false))
-                    } catch (e: Exception) {
-                        onAction(FavoritesAction.OnLoading(false))
-                        onEffect(MviEffect.OnErrorDialog(UiText.DynamicError(e.message ?: "Error removing favorite")))
-                    }
-                }
+                removeFromFavorite(intent.zekrId)
             }
+
             is FavoritesIntent.ToggleAudio -> {
-                toggleAudio.invoke(intent.audioPath)
+                toggleAudioUseCase.invoke(intent.audioPath)
             }
 
             is FavoritesIntent.OnSearchQueryChanged -> {
                 onAction(FavoritesAction.OnSearchQueryChanged(intent.query))
             }
+
             is FavoritesIntent.OnZekrClick -> {
-                onEffect(MviEffect.Navigate(Der3NavigationRoute.ZekrDetailsScreen(
-                    zekrId = intent.zekrId,
-                    categoryId = -1 // Use -1 or a special ID to indicate it's from Favorites
-                )))
+                onEffect(
+                    MviEffect.Navigate(
+                        Der3NavigationRoute.ZekrDetailsScreen(
+                            zekrId = intent.zekrId,
+                            categoryId = intent.categoryId
+                        )
+                    )
+                )
             }
 
             FavoritesIntent.NavigateToAzkar -> {
                 onEffect(MviEffect.Navigate(screen = Der3NavigationRoute.AllAzkarCategoriesScreen))
+            }
+
+            FavoritesIntent.OpenRecycleBin -> {
+                onEffect(MviEffect.Navigate(screen = Der3NavigationRoute.RecycleBinScreen))
             }
         }
 
@@ -86,7 +91,7 @@ class FavoritesViewModel @Inject constructor(
 
 
     private fun loadFavorites() {
-        getAllFavorites()
+        getAllFavoritesUseCase()
             .onStart {
                 onAction(FavoritesAction.OnLoading(true))
             }
@@ -100,5 +105,39 @@ class FavoritesViewModel @Inject constructor(
                 onAction(FavoritesAction.OnLoading(false))
             }
             .launchIn(viewModelScope)
+    }
+
+
+    private fun removeFromFavorite(zekrId: Int) {
+        viewModelScope.launch {
+            try {
+                onAction(FavoritesAction.OnLoading(true))
+                val favorite = viewState.favorites.find { it.id == zekrId }
+                removeFavoriteUseCase.invoke(id = zekrId)
+                favorite?.let { fav ->
+                    insertToRecycleBinUseCase.invoke(
+                        item = RecycleBinEntity(
+                            id = fav.id,
+                            categoryId = fav.categoryId ?: -1,
+                            text = fav.text,
+                            audioPath = fav.audioPath,
+                            repeatCount = fav.repeatCount,
+                            categoryName = fav.categoryName,
+                            deletedAt = System.currentTimeMillis()
+                        )
+                    )
+                }
+                onAction(FavoritesAction.OnLoading(false))
+            } catch (e: Exception) {
+                onAction(FavoritesAction.OnLoading(false))
+                onEffect(
+                    MviEffect.OnErrorDialog(
+                        UiText.DynamicError(
+                            e.message ?: "Error removing favorite"
+                        )
+                    )
+                )
+            }
+        }
     }
 }

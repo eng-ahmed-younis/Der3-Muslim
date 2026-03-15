@@ -9,5 +9,7 @@ data class FavoritesState(
     val favorites: List<ZekrUiModel> = emptyList(),
     val filteredFavorites: List<ZekrUiModel> = emptyList(),
     val searchQuery: String = "",
-    val error: String? = null
+    val error: String? = null,
+    val isPlaying: Boolean = false,
+    val currentPlayingPath: String? = null
 ) : MviState

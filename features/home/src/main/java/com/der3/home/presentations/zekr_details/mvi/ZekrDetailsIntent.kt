@@ -25,9 +25,13 @@ sealed interface ZekrDetailsIntent : MviIntent {
 
     data class UpdateVolume(val volume: Float) : ZekrDetailsIntent
 
+    data object ToggleFavorite : ZekrDetailsIntent
+
     data class ShareSheetVisibility(val isVisible: Boolean) : ZekrDetailsIntent
 
     data object ShareAsText : ZekrDetailsIntent
     data object ShareAsImage : ZekrDetailsIntent
 
+    data object Retry : ZekrDetailsIntent
+    data object DismissError : ZekrDetailsIntent
 }
