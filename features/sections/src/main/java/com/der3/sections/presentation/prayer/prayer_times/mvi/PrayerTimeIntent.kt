@@ -1,6 +1,7 @@
-package com.der3.sections.presentation.prayer_times.mvi
+package com.der3.sections.presentation.prayer.prayer_times.mvi
 
 import com.der3.mvi.MviIntent
+import com.der3.sections.domain.model.PrayerType
 
 sealed interface PrayerTimeIntent : MviIntent {
     object LoadPrayerTimes : PrayerTimeIntent

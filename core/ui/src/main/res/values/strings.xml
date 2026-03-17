@@ -217,5 +217,31 @@
     <string name="restore">استعادة</string>
     <string name="delete_permanently">حذف نهائي</string>
     <string name="deleted_since">تم الحذف منذ %s</string>
-    <string name="recycle_bin_empty">سلة المحذوفات فارغة</string>
+    <string name="recycle_bin_empty">Recycle Bin is empty</string>
+
+    <string name="calculation_method_desc">A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. If not specified, it defaults to the closest authority based on the location or co-ordinates specified in the API call. This parameter accepts values from 0-23 and 99, as specified below:</string>
+    <string name="calculation_method_0">Jafari / Shia Ithna-Ashari</string>
+    <string name="calculation_method_1">University of Islamic Sciences, Karachi</string>
+    <string name="calculation_method_2">Islamic Society of North America (ISNA)</string>
+    <string name="calculation_method_3">Muslim World League</string>
+    <string name="calculation_method_4">Umm Al-Qura University, Makkah</string>
+    <string name="calculation_method_5">Egyptian General Authority of Survey</string>
+    <string name="calculation_method_7">Institute of Geophysics, University of Tehran</string>
+    <string name="calculation_method_8">Gulf Region</string>
+    <string name="calculation_method_9">Kuwait</string>
+    <string name="calculation_method_10">Qatar</string>
+    <string name="calculation_method_11">Majlis Ugama Islam Singapura, Singapore</string>
+    <string name="calculation_method_12">Union Organization islamic de France</string>
+    <string name="calculation_method_13">Diyanet İşleri Başkanlığı, Turkey</string>
+    <string name="calculation_method_14">Spiritual Administration of Muslims of Russia</string>
+    <string name="calculation_method_15">Moonsighting Committee Worldwide</string>
+    <string name="calculation_method_16">Dubai (experimental)</string>
+    <string name="calculation_method_17">Jabatan Kemajuan Islam Malaysia (JAKIM)</string>
+    <string name="calculation_method_18">Tunisia</string>
+    <string name="calculation_method_19">Algeria</string>
+    <string name="calculation_method_20">KEMENAG - Kementerian Agama Republik Indonesia</string>
+    <string name="calculation_method_21">Morocco</string>
+    <string name="calculation_method_22">Comunidade Islamica de Lisboa</string>
+    <string name="calculation_method_23">Ministry of Awqaf, Islamic Affairs and Holy Places, Jordan</string>
+    <string name="calculation_method_99">Custom</string>
 </resources>

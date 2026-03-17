@@ -1,4 +1,4 @@
-package com.der3.sections.presentation.prayer_times.mvi
+package com.der3.sections.presentation.prayer.prayer_times.mvi
 
 import com.der3.mvi.Reducer
 import javax.inject.Inject
@@ -29,7 +29,7 @@ class PrayerTimeReducer @Inject constructor() : Reducer<PrayerTimeAction, Prayer
             is PrayerTimeAction.OnLoading -> state.copy(isLoading = action.isLoading)
             is PrayerTimeAction.OnError -> state.copy(error = action.message, isLoading = false)
             is PrayerTimeAction.ClearError -> state.copy(error = null)
-            is PrayerTimeAction.OnCalculationMethodsLoaded -> state.copy(calculationMethods = action.methods)
+        //    is PrayerTimeAction.OnCalculationMethodsLoaded -> state.copy(calculationMethods = action.methods)
             is PrayerTimeAction.OnMethodChanged -> state.copy(selectedMethodId = action.methodId)
             is PrayerTimeAction.OnSchoolChanged -> state.copy(selectedSchoolId = action.schoolId)
             is PrayerTimeAction.OnTimeFormatChanged -> state.copy(is24HourFormat = action.is24Hour)

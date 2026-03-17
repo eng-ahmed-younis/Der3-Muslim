@@ -6,7 +6,7 @@ import androidx.navigation.compose.composable
 import com.der3.navigation.NavigationManager.navigateTo
 import com.der3.screens.Der3NavigationRoute
 import com.der3.sections.presentation.main_section.MainSectionRoute
-import com.der3.sections.presentation.prayer_times.PrayerTimeRoute
+import com.der3.sections.presentation.prayer.prayer_times.PrayerTimeRoute
 import com.der3.sections.presentation.qibla.QiblaRoute
 
 

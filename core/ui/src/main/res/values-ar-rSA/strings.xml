@@ -219,4 +219,30 @@
     <string name="delete_permanently">حذف نهائي</string>
     <string name="deleted_since">تم الحذف منذ %s</string>
     <string name="recycle_bin_empty">سلة المحذوفات فارغة</string>
+
+    <string name="calculation_method_desc">طريقة لحساب أوقات الصلاة. تُحدد هذه الطرق مختلف المدارس الفكرية حول كيفية حساب الأوقات. إذا لم يتم تحديد وقت الصلاة، فسيتم استخدام أقرب مرجع ديني بناءً على الموقع أو الإحداثيات المحددة في طلب واجهة برمجة التطبيقات (API). تقبل هذه المعلمة القيم من 0-23 و99، كما هو محدد أدناه:</string>
+    <string name="calculation_method_0">الجعفري / شيعة الاثنا عشري</string>
+    <string name="calculation_method_1">جامعة العلوم الإسلامية كراتشي</string>
+    <string name="calculation_method_2">الجمعية الإسلامية بأمريكا الشمالية</string>
+    <string name="calculation_method_3">رابطة العالم الإسلامي</string>
+    <string name="calculation_method_4">جامعة أم القرى بمكة المكرمة</string>
+    <string name="calculation_method_5">الهيئة المصرية العامة للمساحة</string>
+    <string name="calculation_method_7">معهد الجيوفيزياء جامعة طهران</string>
+    <string name="calculation_method_8">منطقة الخليج</string>
+    <string name="calculation_method_9">الكويت</string>
+    <string name="calculation_method_10">قطر</string>
+    <string name="calculation_method_11">مجلس أوغاما الإسلام، سنغافورة، سنغافورة</string>
+    <string name="calculation_method_12">منظمة الاتحاد الإسلامي الفرنسي</string>
+    <string name="calculation_method_13">ديانت إشليري باشكانليغي، تركيا</string>
+    <string name="calculation_method_14">الإدارة الروحية لمسلمي روسيا</string>
+    <string name="calculation_method_15">لجنة رؤية الهلال العالمية (وتتطلب أيضًا معلمة الشفق)</string>
+    <string name="calculation_method_16">دبي (تجريبي)</string>
+    <string name="calculation_method_17">جابتان كيماجوان إسلام ماليزيا (جاكيم)</string>
+    <string name="calculation_method_18">تونس</string>
+    <string name="calculation_method_19">الجزائر</string>
+    <string name="calculation_method_20">كيميناج - كيمنتريان أجاما جمهورية اندونيسيا</string>
+    <string name="calculation_method_21">المغرب</string>
+    <string name="calculation_method_22">الجماعة الإسلامية في لشبونة</string>
+    <string name="calculation_method_23">وزارة الأوقاف والشؤون والمقدسات الإسلامية الأردن</string>
+    <string name="calculation_method_99">مخصص</string>
 </resources>

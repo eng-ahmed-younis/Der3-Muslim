@@ -139,16 +139,7 @@ fun RecycleBinScreen(
             showBackButton = true,
             backgroundColor = AppColors.white,
             titleColor = AppColors.gray900Text,
-            navigationIconColor = AppColors.gray900Text,
-            trailingContent = {
-                IconButton(onClick = { /* Handle more */ }) {
-                    Icon(
-                        imageVector = Icons.Default.MoreVert,
-                        contentDescription = null,
-                        tint = AppColors.gray900Text,
-                    )
-                }
-            }
+            navigationIconColor = AppColors.gray900Text
         )
 
         Column(

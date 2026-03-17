@@ -1,7 +1,8 @@
-package com.der3.sections.presentation.prayer_times.mvi
+package com.der3.sections.presentation.prayer.prayer_times.mvi
 
 import androidx.compose.runtime.Immutable
 import com.der3.mvi.MviState
+import com.der3.sections.domain.model.PrayerDetails
 import com.der3.shared.data.dto.prayer.timings.PrayerTimesDto
 
 @Immutable
@@ -12,7 +13,6 @@ data class PrayerTimeState(
     val gregorianDate: String = "",
     val nextPrayer: PrayerDetails? = null,
     val prayerTimes: List<PrayerDetails> = emptyList(),
-    val calculationMethods: List<CalculationMethod> = emptyList(),
     val selectedMethodId: Int = 4, // Default Umm Al-Qura
     val selectedSchoolId: Int = 0, // 0: Shafi, 1: Hanafi
     val is24HourFormat: Boolean = false,
@@ -22,23 +22,6 @@ data class PrayerTimeState(
     val error: String? = null
 ) : MviState
 
-data class CalculationMethod(
-    val id: Int,
-    val name: String,
-    val description: String? = null
-)
 
-@Immutable
-data class PrayerDetails(
-    val name: String,
-    val time: String,
-    val remainingTime: String = "00:00:00",
-    val isNext: Boolean = false,
-    val isPassed: Boolean = false,
-    val notificationEnabled: Boolean = true,
-    val type: PrayerType
-)
 
-enum class PrayerType {
-    FAJR, SUNRISE, DHUHR, ASR, MAGHRIB, ISHA, IMSAK, MIDNIGHT, FIRST_THIRD, LAST_THIRD
-}
+

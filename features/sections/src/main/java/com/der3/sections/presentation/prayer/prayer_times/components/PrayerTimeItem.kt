@@ -1,4 +1,4 @@
-package com.der3.sections.presentation.prayer_times.components
+package com.der3.sections.presentation.prayer.prayer_times.components
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -16,8 +16,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.der3.sections.presentation.prayer_times.mvi.PrayerDetails
-import com.der3.sections.presentation.prayer_times.mvi.PrayerType
+import com.der3.sections.domain.model.PrayerDetails
+import com.der3.sections.domain.model.PrayerType
+import com.der3.ui.R
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
 import java.util.Locale
@@ -107,16 +108,16 @@ fun PrayerTimeItem(
 
 fun getPrayerIcon(type: PrayerType): Int {
     return when (type) {
-        PrayerType.FAJR -> com.der3.ui.R.drawable.ic_fajr
-        PrayerType.SUNRISE -> com.der3.ui.R.drawable.ic_sunrise
-        PrayerType.DHUHR -> com.der3.ui.R.drawable.ic_dhuhr
-        PrayerType.ASR -> com.der3.ui.R.drawable.ic_asr
-        PrayerType.MAGHRIB -> com.der3.ui.R.drawable.ic_maghrib
-        PrayerType.ISHA -> com.der3.ui.R.drawable.ic_isha
-        PrayerType.IMSAK -> com.der3.ui.R.drawable.ic_fajr // Fallback
-        PrayerType.MIDNIGHT -> com.der3.ui.R.drawable.ic_isha // Fallback
-        PrayerType.FIRST_THIRD -> com.der3.ui.R.drawable.ic_isha // Fallback
-        PrayerType.LAST_THIRD -> com.der3.ui.R.drawable.ic_isha // Fallback
+        PrayerType.FAJR -> R.drawable.ic_fajr
+        PrayerType.SUNRISE -> R.drawable.ic_sunrise
+        PrayerType.DHUHR -> R.drawable.ic_dhuhr
+        PrayerType.ASR -> R.drawable.ic_asr
+        PrayerType.MAGHRIB -> R.drawable.ic_maghrib
+        PrayerType.ISHA -> R.drawable.ic_isha
+        PrayerType.IMSAK -> R.drawable.ic_fajr // Fallback
+        PrayerType.MIDNIGHT -> R.drawable.ic_isha // Fallback
+        PrayerType.FIRST_THIRD -> R.drawable.ic_isha // Fallback
+        PrayerType.LAST_THIRD -> R.drawable.ic_isha // Fallback
     }
 }
 

@@ -1,4 +1,4 @@
-package com.der3.sections.presentation.prayer_times.components
+package com.der3.sections.presentation.prayer.prayer_times.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,8 +11,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.der3.sections.presentation.prayer_times.mvi.PrayerDetails
-import com.der3.sections.presentation.prayer_times.mvi.PrayerType
+import com.der3.sections.domain.model.PrayerDetails
+import com.der3.sections.domain.model.PrayerType
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
 

@@ -1,14 +1,11 @@
-package com.der3.sections.presentation.prayer_times
+package com.der3.sections.presentation.prayer.prayer_times
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.LocationOn
@@ -23,20 +20,21 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.der3.mvi.MviEffect
 import com.der3.screens.Screens
-import com.der3.sections.presentation.prayer_times.components.CalculationMethodDialog
-import com.der3.sections.presentation.prayer_times.components.LocationSelectionDialog
-import com.der3.sections.presentation.prayer_times.components.MonthlyCalendarDialog
-import com.der3.sections.presentation.prayer_times.components.NextPrayerCard
-import com.der3.sections.presentation.prayer_times.components.PrayerTimeItem
-import com.der3.sections.presentation.prayer_times.mvi.*
+import com.der3.sections.domain.model.PrayerDetails
+import com.der3.sections.domain.model.PrayerType
+import com.der3.sections.presentation.prayer.prayer_times.components.AppBarActions
+import com.der3.sections.presentation.prayer.prayer_times.components.CalculationMethodDialog
+import com.der3.sections.presentation.prayer.prayer_times.components.LocationSelectionDialog
+import com.der3.sections.presentation.prayer.prayer_times.components.MonthlyCalendarDialog
+import com.der3.sections.presentation.prayer.prayer_times.components.NextPrayerCard
+import com.der3.sections.presentation.prayer.prayer_times.components.PrayerTimeItem
+import com.der3.sections.presentation.prayer.prayer_times.mvi.PrayerTimeIntent
+import com.der3.sections.presentation.prayer.prayer_times.mvi.PrayerTimeState
 import com.der3.ui.components.Der3TopAppBar
 import com.der3.ui.components.ErrorDialog
 import com.der3.ui.components.LoadingDialog
@@ -141,48 +139,12 @@ fun PrayerTimeScreen(
             showBackButton = true,
             onBackClick = { onIntent(PrayerTimeIntent.Back) },
             trailingContent = {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    IconButton(onClick = { 
-                        onIntent(PrayerTimeIntent.LoadMonthlyCalendar)
-                        showCalendarDialog = true 
-                    }) {
-                        Icon(
-                            imageVector = Icons.Default.CalendarMonth,
-                            contentDescription = "Calendar",
-                            tint = AppColors.gray500
-                        )
-                    }
-                    IconButton(onClick = { showLocationDialog = true }) {
-                        Icon(
-                            imageVector = Icons.Default.LocationOn,
-                            contentDescription = "Location",
-                            tint = AppColors.gray500
-                        )
-                    }
-                    IconButton(onClick = { showMethodDialog = true }) {
-                        Icon(
-                            imageVector = Icons.Default.Settings,
-                            contentDescription = "Settings",
-                            tint = AppColors.gray500
-                        )
-                    }
-                    IconButton(onClick = { onIntent(PrayerTimeIntent.OpenQibla) }) {
-                        Box(
-                            modifier = Modifier
-                                .size(32.dp)
-                                .clip(CircleShape)
-                                .background(AppColors.gold500.copy(alpha = 0.2f)),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Icon(
-                                painter = painterResource(id = com.der3.ui.R.drawable.ic_qibla),
-                                contentDescription = "Qibla",
-                                tint = AppColors.gold600,
-                                modifier = Modifier.size(20.dp)
-                            )
-                        }
-                    }
-                }
+                AppBarActions(
+                    onIntent = onIntent,
+                    onShowCalendar = { showCalendarDialog = true },
+                    onShowLocation = { showLocationDialog = true },
+                    onShowMethod = { showMethodDialog = true }
+                )
             }
         )
 
@@ -304,7 +266,12 @@ fun PrayerTimeScreenPreview() {
                 locationName = "الرياض، المملكة العربية السعودية",
                 hijriDate = "الأربعاء 15 رمضان 1445 هـ",
                 gregorianDate = "27 مارس 2024",
-                nextPrayer = PrayerDetails("العصر", "03:45 م", isNext = true, type = PrayerType.ASR),
+                nextPrayer = PrayerDetails(
+                    "العصر",
+                    "03:45 م",
+                    isNext = true,
+                    type = PrayerType.ASR
+                ),
                 prayerTimes = listOf(
                     PrayerDetails("الفجر", "04:42 ص", isPassed = true, type = PrayerType.FAJR),
                     PrayerDetails("الشروق", "06:01 ص", isPassed = true, type = PrayerType.SUNRISE),

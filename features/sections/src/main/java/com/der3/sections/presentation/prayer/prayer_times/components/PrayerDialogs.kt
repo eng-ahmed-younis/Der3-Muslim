@@ -1,4 +1,4 @@
-package com.der3.sections.presentation.prayer_times.components
+package com.der3.sections.presentation.prayer.prayer_times.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -23,9 +23,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import com.der3.sections.presentation.prayer_times.mvi.CalculationMethod
-import com.der3.sections.presentation.prayer_times.mvi.PrayerTimeIntent
-import com.der3.sections.presentation.prayer_times.mvi.PrayerTimeState
+import com.der3.sections.domain.model.CalculationMethodUi
+import com.der3.sections.presentation.prayer.prayer_times.mvi.PrayerTimeIntent
+import com.der3.sections.presentation.prayer.prayer_times.mvi.PrayerTimeState
+import com.der3.sections.presentation.utils.prayer.CalculationMethodsList
 import com.der3.shared.data.dto.prayer.timings.PrayerTimesDto
 import com.der3.ui.themes.AppColors
 import com.der3.utils.TimeFormatUtils
@@ -65,7 +66,7 @@ fun CalculationMethodDialog(
                         SectionHeader(title = stringResource(R.string.calculation_method))
                     }
 
-                    items(state.calculationMethods) { method ->
+                    items(CalculationMethodsList.items) { method ->
                         MethodItem(
                             method = method,
                             isSelected = method.id == state.selectedMethodId,
@@ -333,7 +334,7 @@ private fun SectionHeader(title: String) {
 
 @Composable
 private fun MethodItem(
-    method: CalculationMethod,
+    method: CalculationMethodUi,
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
@@ -365,7 +366,7 @@ private fun MethodItem(
             }
             Spacer(modifier = Modifier.width(16.dp))
             Text(
-                text = method.name,
+                text = stringResource(method.nameResId),
                 style = MaterialTheme.typography.bodyLarge,
                 color = if (isSelected) AppColors.green900 else AppColors.gray900Text,
                 fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal

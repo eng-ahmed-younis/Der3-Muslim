@@ -1,7 +1,10 @@
-package com.der3.sections.presentation.prayer_times.mvi
+package com.der3.sections.presentation.prayer.prayer_times.mvi
 
 import com.der3.mvi.MviAction
+import com.der3.sections.domain.model.PrayerDetails
+import com.der3.sections.domain.model.PrayerType
 import com.der3.shared.data.dto.prayer.timings.PrayerTimesDto
+import com.der3.shared.domain.model.prayer.CalculationMethod
 
 sealed interface PrayerTimeAction : MviAction {
     data class OnPrayerTimesLoaded(
@@ -14,7 +17,7 @@ sealed interface PrayerTimeAction : MviAction {
     data class OnLoading(val isLoading: Boolean) : PrayerTimeAction
     data class OnError(val message: String?) : PrayerTimeAction
     data object ClearError : PrayerTimeAction
-    data class OnCalculationMethodsLoaded(val methods: List<CalculationMethod>) : PrayerTimeAction
+  //  data class OnCalculationMethodsLoaded(val methods: List<CalculationMethod>) : PrayerTimeAction
     data class OnMethodChanged(val methodId: Int) : PrayerTimeAction
     data class OnSchoolChanged(val schoolId: Int) : PrayerTimeAction
     data class OnTimeFormatChanged(val is24Hour: Boolean) : PrayerTimeAction

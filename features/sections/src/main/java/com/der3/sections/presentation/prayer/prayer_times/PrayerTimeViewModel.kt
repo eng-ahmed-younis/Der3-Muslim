@@ -1,4 +1,4 @@
-package com.der3.sections.presentation.prayer_times
+package com.der3.sections.presentation.prayer.prayer_times
 
 import androidx.lifecycle.viewModelScope
 import com.der3.mvi.MviBaseViewModel
@@ -11,14 +11,13 @@ import com.der3.sections.domain.model.PrayerStatus
 import com.der3.sections.domain.model.PrayerTimesResult
 import com.der3.sections.domain.repository.IPrayerRepository
 import com.der3.sections.domain.use_case.prayer.GetCombinedPrayerInfoUseCase
-import com.der3.sections.presentation.prayer_times.mvi.CalculationMethod
-import com.der3.sections.presentation.prayer_times.mvi.PrayerDetails
-import com.der3.sections.presentation.prayer_times.mvi.PrayerTimeAction
-import com.der3.sections.presentation.prayer_times.mvi.PrayerTimeIntent
-import com.der3.sections.presentation.prayer_times.mvi.PrayerTimeReducer
-import com.der3.sections.presentation.prayer_times.mvi.PrayerTimeState
-import com.der3.sections.presentation.prayer_times.mvi.PrayerType
+import com.der3.sections.presentation.prayer.prayer_times.mvi.PrayerTimeAction
+import com.der3.sections.presentation.prayer.prayer_times.mvi.PrayerTimeIntent
+import com.der3.sections.presentation.prayer.prayer_times.mvi.PrayerTimeReducer
+import com.der3.sections.presentation.prayer.prayer_times.mvi.PrayerTimeState
 import com.der3.data_store.api.DataStoreRepository
+import com.der3.sections.domain.model.PrayerDetails
+import com.der3.sections.domain.model.PrayerType
 import com.der3.utils.TimeFormatUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -43,7 +42,6 @@ class PrayerTimeViewModel @Inject constructor(
 
     init {
         loadSettings()
-        loadCalculationMethods()
         startCountdownTicker()
     }
 
@@ -57,22 +55,6 @@ class PrayerTimeViewModel @Inject constructor(
         onAction(PrayerTimeAction.OnLocationChanged(lat, lng, locationName))
         
         loadPrayerTimes(lat, lng, locationName)
-    }
-
-    private fun loadCalculationMethods() {
-        viewModelScope.launch {
-            try {
-                val response = prayerTimeService.getCalculationMethods()
-                if (response.code == 200) {
-                    val methods = response.data.map { (key, detail) ->
-                        CalculationMethod(id = detail.id, name = detail.name ?: key)
-                    }
-                    onAction(PrayerTimeAction.OnCalculationMethodsLoaded(methods))
-                }
-            } catch (e: Exception) {
-                // Silently fail or handle error
-            }
-        }
     }
 
     private fun startCountdownTicker() {
