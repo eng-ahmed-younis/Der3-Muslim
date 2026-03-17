@@ -9,12 +9,11 @@ plugins {
 
 android {
     namespace = "com.der3.sections"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = BuildVersions.COMPILE_SDK
+
 
     defaultConfig {
-        minSdk = 24
+        minSdk = BuildVersions.MIN_SDK
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -30,9 +29,10 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.toVersion(BuildVersions.JAVA_VERSION)
+        targetCompatibility = JavaVersion.toVersion(BuildVersions.JAVA_VERSION)
     }
+
 }
 
 dependencies {

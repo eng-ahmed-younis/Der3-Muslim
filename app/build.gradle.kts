@@ -1,14 +1,11 @@
 plugins {
     alias(libs.plugins.android.application)
- //   alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.google.services)
     alias(libs.plugins.secrets.gradle.plugin)
-
- //   alias(libs.plugins.kotlin.kapt)
 }
 
 android {
@@ -39,18 +36,21 @@ android {
         }
     }
 
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.toVersion(BuildVersions.JAVA_VERSION)
+        targetCompatibility = JavaVersion.toVersion(BuildVersions.JAVA_VERSION)
     }
 
-    //noinspection WrongGradleMethod
     kotlin {
         compilerOptions {
-            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+            jvmTarget.set(
+                org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(
+                    BuildVersions.JAVA_VERSION.toString()
+                )
+            )
         }
     }
-
 
 
     buildFeatures {

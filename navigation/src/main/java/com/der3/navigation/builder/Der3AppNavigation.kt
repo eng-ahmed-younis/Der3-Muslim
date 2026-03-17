@@ -22,6 +22,7 @@ import com.der3.sections.presentation.main_section.MainSectionRoute
 import com.der3.navigation.NavigationManager.navigateTo
 import com.der3.on_boarding.presentation.screens.OnBoardingRoute
 import com.der3.screens.Der3NavigationRoute
+import com.der3.shared.params.MasbahaParams
 import com.der3.splash.presentation.IslamicSplashRoute
 
 
@@ -106,8 +107,15 @@ fun NavGraphBuilder.der3AppNavigation(rootNavController: NavHostController) {
         }
     }
 
-    composable<Der3NavigationRoute.TasbeehScreen> {
-        MasbahaRoute { screen ->
+    composable<Der3NavigationRoute.TasbeehScreen> { backStackEntry ->
+        val params: Der3NavigationRoute.TasbeehScreen = backStackEntry.toRoute()
+        val masbahaParams = MasbahaParams(
+            openFromSection = params.openFromSection
+        )
+
+        MasbahaRoute(
+            params = masbahaParams
+        ) { screen ->
             rootNavController.navigateTo(screen = screen)
         }
     }

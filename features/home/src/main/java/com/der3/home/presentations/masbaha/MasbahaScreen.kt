@@ -35,17 +35,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.der3.home.di.factory.MasbahaViewModelFactory
+import com.der3.home.di.factory.ZekrDetailsViewModelFactory
 import com.der3.home.presentations.masbaha.components.AzkarAutoSelected
 import com.der3.home.presentations.masbaha.components.MasbahaActionButton
 import com.der3.home.presentations.masbaha.components.ResetMasbahaDialog
 import com.der3.home.presentations.masbaha.components.TargetDialog
 import com.der3.home.presentations.masbaha.mvi.MasbahaIntent
 import com.der3.home.presentations.masbaha.mvi.MasbahaState
+import com.der3.home.presentations.zekr_details.ZekrDetailsViewModel
 import com.der3.home.utils.performTasbeehHaptic
 import com.der3.model.TasbeehHapticType
 import com.der3.mvi.MviEffect
 import com.der3.screens.Screens
 import com.der3.shared.domain.model.MasbahaAzkar
+import com.der3.shared.params.MasbahaParams
 import com.der3.ui.R
 import com.der3.ui.components.Der3TopAppBar
 import com.der3.ui.components.ErrorDialog
@@ -59,9 +63,15 @@ import java.util.Locale
 
 @Composable
 fun MasbahaRoute(
+    params: MasbahaParams,
     onNavigate: (Screens) -> Unit = {}
 ) {
-    val viewModel: MasbahaViewModel = hiltViewModel<MasbahaViewModel>()
+
+    val viewModel: MasbahaViewModel =
+        hiltViewModel<MasbahaViewModel, MasbahaViewModelFactory> { factory ->
+            factory.create(params)
+        }
+
     val state = viewModel.viewState
     val scope = rememberCoroutineScope()
     var errorMessage by remember { mutableStateOf<String?>(null) }
@@ -138,7 +148,10 @@ fun MasbahaScreen(
             title = stringResource(id = R.string.electronic_rosary_title),
             backgroundColor = AppColors.gray50,
             titleColor = AppColors.green800,
-            showBackButton = false,
+            showBackButton = if (state.showBackButton) true else false,
+            onBackClick = {
+                onIntent(MasbahaIntent.OnBackClick)
+            },
             navigationIconColor = AppColors.green800,
             trailingContent = {
                 Box {

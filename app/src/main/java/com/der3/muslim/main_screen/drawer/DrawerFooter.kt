@@ -26,6 +26,7 @@ fun DrawerFooter(
     modifier: Modifier = Modifier,
     version: String
 ) {
+
     Column(
         modifier = modifier
             .fillMaxWidth()

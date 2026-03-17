@@ -67,6 +67,9 @@ class MasbahaReducer @Inject constructor() : Reducer<MasbahaAction, MasbahaState
             is MasbahaAction.UpdateAutoSwitch -> state.copy(autoSwitch = action.enabled)
             is MasbahaAction.UpdateVibration -> state.copy(vibrationType = action.type)
             is MasbahaAction.UpdateSound -> state.copy(isSoundEnabled = action.enabled)
+            is MasbahaAction.SetShowBackButton -> {
+                state.copy(showBackButton = action.show)
+            }
         }
     }
 }

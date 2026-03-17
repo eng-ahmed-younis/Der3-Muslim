@@ -1,4 +1,4 @@
-package com.der3.shared.domain.use_case
+package com.der3.shared.domain.use_case.masbaha
 
 import com.der3.shared.domain.model.MasbahaAzkar
 import com.der3.shared.domain.repo.MasbahaRepository

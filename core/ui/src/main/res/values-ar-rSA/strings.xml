@@ -220,6 +220,12 @@
     <string name="deleted_since">تم الحذف منذ %s</string>
     <string name="recycle_bin_empty">سلة المحذوفات فارغة</string>
 
+    <!-- Internet Connection Dialog -->
+    <string name="internet_required_title">اتصال بالإنترنت مطلوب</string>
+    <string name="internet_required_message">يرجى التأكد من الاتصال بالإنترنت لتتمكن من الوصول إلى أحدث الأذكار، أوقات الصلاة الدقيقة، وكافة ميزات التطبيق الإيمانية.</string>
+    <string name="activate_connection">تفعيل الاتصال</string>
+    <string name="try_later">حاول لاحقاً</string>
+
     <string name="calculation_method_desc">طريقة لحساب أوقات الصلاة. تُحدد هذه الطرق مختلف المدارس الفكرية حول كيفية حساب الأوقات. إذا لم يتم تحديد وقت الصلاة، فسيتم استخدام أقرب مرجع ديني بناءً على الموقع أو الإحداثيات المحددة في طلب واجهة برمجة التطبيقات (API). تقبل هذه المعلمة القيم من 0-23 و99، كما هو محدد أدناه:</string>
     <string name="calculation_method_0">الجعفري / شيعة الاثنا عشري</string>
     <string name="calculation_method_1">جامعة العلوم الإسلامية كراتشي</string>

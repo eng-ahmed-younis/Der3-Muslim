@@ -18,4 +18,7 @@ interface MasbahaAzkarDao {
 
     @Query("DELETE FROM masbaha_azkar_table")
     suspend fun deleteAllAzkars()
+
+    @Query("SELECT COUNT(*) FROM masbaha_azkar_table")
+    fun getAzkarCount(): Flow<Int>
 }

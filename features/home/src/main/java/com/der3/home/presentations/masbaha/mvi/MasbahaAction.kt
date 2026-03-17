@@ -15,4 +15,6 @@ sealed interface MasbahaAction : MviAction {
     data class UpdateAutoSwitch(val enabled: Boolean) : MasbahaAction
     data class UpdateVibration(val type: VibrationType) : MasbahaAction
     data class UpdateSound(val enabled: Boolean) : MasbahaAction
+
+    data class SetShowBackButton(val show: Boolean) : MasbahaAction
 }

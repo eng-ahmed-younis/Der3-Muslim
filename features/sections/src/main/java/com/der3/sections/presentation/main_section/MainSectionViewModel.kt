@@ -43,7 +43,7 @@ class MainSectionViewModel @Inject constructor(
             is MainSectionIntent.OnSectionClick -> {
                 val route = when (intent.type) {
                     SectionType.ZIKR -> Der3NavigationRoute.AllAzkarCategoriesScreen
-                    SectionType.TASBEH -> Der3NavigationRoute.TasbeehScreen
+                    SectionType.TASBEH -> Der3NavigationRoute.TasbeehScreen(openFromSection = true)
                     SectionType.FAVORITES -> Der3NavigationRoute.FavouriteScreen
                     SectionType.DAILY_NOTIFICATIONS -> Der3NavigationRoute.DailyNotificationsScreen
                     SectionType.PRAYERS_TIME -> Der3NavigationRoute.PrayerTimesScreen

@@ -14,7 +14,9 @@ data class MasbahaState(
     val autoSwitch: Boolean = true,
     val vibrationType: VibrationType = VibrationType.SHORT,
     val isSoundEnabled: Boolean = true,
-    val error: String? = null
+    val error: String? = null,
+    val clickAudioPath: String = "raw/click.mp3",
+    val showBackButton: Boolean = false
 ) : MviState {
     val progress: Float
         get() = if (targetCount > 0) currentCount.toFloat() / targetCount else 0f

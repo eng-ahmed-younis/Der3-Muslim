@@ -100,6 +100,7 @@ dependencies {
 
     implementation(project(":core:data_store"))
     implementation(project(":core:ui"))
+    implementation(project(":core:ui-model"))
 
     // ktor
     implementation(libs.ktor.client.core)

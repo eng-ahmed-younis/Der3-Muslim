@@ -8,18 +8,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.der3.muslim.main_screen.drawer.model.DrawerItem
 import com.der3.muslim.main_screen.drawer.model.drawerItems
+import com.der3.muslim.utils.getAppVersionName
 import com.der3.screens.Screens
 import com.der3.ui.themes.Der3MuslimTheme
-import androidx.compose.ui.platform.LocalConfiguration
 import java.util.Locale
 
 
@@ -30,6 +29,7 @@ fun AzkarDrawer(
     items: List<DrawerItem>
 ) {
     val configuration = LocalConfiguration.current
+    val context = LocalContext.current
     val drawerWidth = (configuration.screenWidthDp * 0.8).dp
 
     ModalDrawerSheet(
@@ -63,7 +63,7 @@ fun AzkarDrawer(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            DrawerFooter(version = "2.4.0")
+            DrawerFooter(version = context.getAppVersionName() ?: "unknown")
         }
 
 }

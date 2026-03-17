@@ -16,7 +16,9 @@ sealed interface Der3NavigationRoute : Screens {
     object QiblaScreen : Der3NavigationRoute
 
     @Serializable
-    object TasbeehScreen : Der3NavigationRoute
+    data class TasbeehScreen (
+        val openFromSection: Boolean
+    ): Der3NavigationRoute
 
     @Serializable
     object FavouriteScreen : Der3NavigationRoute

@@ -8,12 +8,11 @@ plugins {
 
 android {
     namespace = "com.der3.utils"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = BuildVersions.COMPILE_SDK
+
 
     defaultConfig {
-        minSdk = 24
+        minSdk = BuildVersions.MIN_SDK
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")

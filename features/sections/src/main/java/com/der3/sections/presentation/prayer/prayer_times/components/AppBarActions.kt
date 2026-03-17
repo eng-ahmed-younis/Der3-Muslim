@@ -22,10 +22,6 @@ import com.der3.ui.R
 import com.der3.ui.themes.AppColors
 
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.width
 import androidx.compose.ui.tooling.preview.Preview
 import com.der3.ui.themes.Der3MuslimTheme
 
@@ -39,60 +35,47 @@ fun AppBarActions(
 ) {
     Row(
         modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(4.dp)
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        IconButton(
-            onClick = {
-                onIntent(PrayerTimeIntent.LoadMonthlyCalendar)
-                onShowCalendar()
-            },
-            modifier = Modifier.size(36.dp)
-        ) {
+        IconButton(onClick = {
+            onIntent(PrayerTimeIntent.LoadMonthlyCalendar)
+            onShowCalendar()
+        }) {
             Icon(
                 imageVector = Icons.Default.CalendarMonth,
                 contentDescription = "Calendar",
-                tint = AppColors.gray500,
-                modifier = Modifier.size(24.dp)
+                tint = AppColors.gray500
             )
         }
-        IconButton(
-            onClick = onShowLocation,
-            modifier = Modifier.size(36.dp)
-        ) {
+        IconButton(onClick = onShowLocation) {
             Icon(
                 imageVector = Icons.Default.LocationOn,
                 contentDescription = "Location",
-                tint = AppColors.gray500,
-                modifier = Modifier.size(24.dp)
+                tint = AppColors.gray500
             )
         }
-        IconButton(
-            onClick = onShowMethod,
-            modifier = Modifier.size(36.dp)
-        ) {
+        IconButton(onClick = onShowMethod) {
             Icon(
                 imageVector = Icons.Default.Settings,
                 contentDescription = "Settings",
-                tint = AppColors.gray500,
-                modifier = Modifier.size(24.dp)
+                tint = AppColors.gray500
             )
         }
-        Spacer(modifier = Modifier.width(12.dp))
-        Box(
-            modifier = Modifier
-                .size(40.dp)
-                .clip(CircleShape)
-                .background(AppColors.gold500.copy(alpha = 0.12f))
-                .clickable { onIntent(PrayerTimeIntent.OpenQibla) },
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_qibla),
-                contentDescription = "Qibla",
-                tint = AppColors.gold700,
-                modifier = Modifier.size(24.dp)
-            )
+        IconButton(onClick = { onIntent(PrayerTimeIntent.OpenQibla) }) {
+            Box(
+                modifier = Modifier
+                    .size(32.dp)
+                    .clip(CircleShape)
+                    .background(AppColors.gold500.copy(alpha = 0.2f)),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_qibla),
+                    contentDescription = "Qibla",
+                    tint = AppColors.gold600,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
         }
     }
 }
