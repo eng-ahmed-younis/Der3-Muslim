@@ -15,4 +15,11 @@ sealed interface MasbahaIntent : MviIntent {
     data object OpenHistory : MasbahaIntent
     data object Retry : MasbahaIntent
     data object DismissError : MasbahaIntent
+
+    data class ShowInternetRequiredDialog(val show: Boolean): MasbahaIntent
+
+    data object OpenNetworkSettings : MasbahaIntent
+
+    data object RefreshAfterBack : MasbahaIntent
+
 }

@@ -80,6 +80,7 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.firestore)
+    implementation(libs.firebase.messaging)
 
     // Compose UI
     implementation(libs.androidx.compose.ui)
@@ -103,15 +104,17 @@ dependencies {
     //Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
-   // kapt(libs.hilt.compiler)
 
+    // google icons
     implementation(libs.androidx.compose.material.icons.core)
     implementation(libs.androidx.compose.material.icons.extended)
 
     //Navigation
     implementation(libs.androidx.navigation.compose)
 
+    // modules
     implementation(project(path = ":core:ui"))
+    implementation(project(":core:shared"))
     implementation(project(path = ":core:utils"))
     implementation(project(path = ":core:ui-model"))
     implementation(project(path = ":core:player"))

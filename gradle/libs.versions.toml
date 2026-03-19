@@ -57,6 +57,7 @@ kotlinxCoroutinesPlayServices = "1.10.2"
 # --- Core ---
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktorSerializationKotlinxJson" }
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktorClientContentNegotiation" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktorSerializationKotlinxJson" }

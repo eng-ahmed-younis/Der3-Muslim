@@ -221,9 +221,14 @@
 
     <!-- Internet Connection Dialog -->
     <string name="internet_required_title">اتصال بالإنترنت مطلوب</string>
-    <string name="internet_required_message">Please make sure you are connected to the internet to access the latest Azkar, accurate prayer times, and all the spiritual features of the application.</string>
+    <string name="internet_required_message">يرجى التأكد من الاتصال بالإنترنت لتتمكن من الوصول إلى أحدث الأذكار، أوقات الصلاة الدقيقة، وكافة ميزات التطبيق الإيمانية.</string>
     <string name="activate_connection">تفعيل الاتصال</string>
     <string name="try_later">حاول لاحقاً</string>
+
+    <string name="notification_permission_title">تفعيل التنبيهات</string>
+    <string name="notification_permission_message">يحتاج التطبيق إلى إذن إرسال التنبيهات لضمان وصول أذكار الصباح والمساء والتنبيهات المخصصة لك في وقتها.</string>
+    <string name="notification_permission_settings">الذهاب للإعدادات</string>
+    <string name="notification_permission_cancel">إغلاق التطبيق</string>
 
     <string name="calculation_method_desc">A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. If not specified, it defaults to the closest authority based on the location or co-ordinates specified in the API call. This parameter accepts values from 0-23 and 99, as specified below:</string>
     <string name="calculation_method_0">Jafari / Shia Ithna-Ashari</string>

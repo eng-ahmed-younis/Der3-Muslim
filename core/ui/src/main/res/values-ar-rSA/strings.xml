@@ -226,6 +226,11 @@
     <string name="activate_connection">تفعيل الاتصال</string>
     <string name="try_later">حاول لاحقاً</string>
 
+    <string name="notification_permission_title">تفعيل التنبيهات</string>
+    <string name="notification_permission_message">يحتاج التطبيق إلى إذن إرسال التنبيهات لضمان وصول أذكار الصباح والمساء والتنبيهات المخصصة لك في وقتها.</string>
+    <string name="notification_permission_settings">الذهاب للإعدادات</string>
+    <string name="notification_permission_cancel">إغلاق التطبيق</string>
+
     <string name="calculation_method_desc">طريقة لحساب أوقات الصلاة. تُحدد هذه الطرق مختلف المدارس الفكرية حول كيفية حساب الأوقات. إذا لم يتم تحديد وقت الصلاة، فسيتم استخدام أقرب مرجع ديني بناءً على الموقع أو الإحداثيات المحددة في طلب واجهة برمجة التطبيقات (API). تقبل هذه المعلمة القيم من 0-23 و99، كما هو محدد أدناه:</string>
     <string name="calculation_method_0">الجعفري / شيعة الاثنا عشري</string>
     <string name="calculation_method_1">جامعة العلوم الإسلامية كراتشي</string>

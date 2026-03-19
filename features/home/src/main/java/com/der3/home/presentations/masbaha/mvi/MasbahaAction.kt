@@ -2,6 +2,8 @@ package com.der3.home.presentations.masbaha.mvi
 
 import com.der3.mvi.MviAction
 import com.der3.shared.domain.model.MasbahaAzkar
+import com.der3.utils.connectivity.NetworkState
+import com.der3.utils.connectivity.NetworkStatus
 
 sealed interface MasbahaAction : MviAction {
     data class OnLoading(val isLoading: Boolean) : MasbahaAction
@@ -17,4 +19,8 @@ sealed interface MasbahaAction : MviAction {
     data class UpdateSound(val enabled: Boolean) : MasbahaAction
 
     data class SetShowBackButton(val show: Boolean) : MasbahaAction
+
+
+    data class OnNetworkStatusChanged(val status: NetworkState):MasbahaAction
+    data class ShowInternetRequiredDialog(val show: Boolean): MasbahaAction
 }

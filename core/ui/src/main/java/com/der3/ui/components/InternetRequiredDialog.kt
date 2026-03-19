@@ -38,113 +38,116 @@ import com.der3.ui.themes.Der3MuslimTheme
 @Composable
 fun InternetRequiredDialog(
     modifier: Modifier = Modifier,
+    visibility: Boolean = false,
     title: String = stringResource(R.string.internet_required_title),
-    message: String ,
+    message: String,
     onActivateClick: () -> Unit,
     onTryLaterClick: () -> Unit,
     onDismiss: () -> Unit = {}
 ) {
-    Dialog(onDismissRequest = onDismiss) {
-        Surface(
-            shape = RoundedCornerShape(24.dp),
-            color = Color.White,
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-        ) {
-            Column(
-                modifier = Modifier
-                    .padding(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+    if (visibility) {
+        Dialog(onDismissRequest = onDismiss) {
+            Surface(
+                shape = RoundedCornerShape(24.dp),
+                color = Color.White,
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
             ) {
-                // Icon Stack
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier.size(100.dp)
+                Column(
+                    modifier = Modifier
+                        .padding(24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
+                    // Icon Stack
                     Box(
-                        modifier = Modifier
-                            .size(100.dp)
-                            .background(
-                                color = Color(0xFFF9F6EE),
-                                shape = CircleShape
-                            )
-                    )
-                    Icon(
-                        imageVector = Icons.Default.Language,
-                        contentDescription = null,
-                        modifier = Modifier.size(48.dp),
-                        tint = Color(0xFFC5A059)
-                    )
-                    
-                    // Wifi Off icon with white background
-                    Box(
-                        modifier = Modifier
-                            .align(Alignment.TopEnd)
-                            .size(32.dp)
-                            .background(Color.White, CircleShape)
-                            .padding(4.dp),
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier.size(100.dp)
                     ) {
+                        Box(
+                            modifier = Modifier
+                                .size(100.dp)
+                                .background(
+                                    color = Color(0xFFF9F6EE),
+                                    shape = CircleShape
+                                )
+                        )
                         Icon(
-                            imageVector = Icons.Default.WifiOff,
+                            imageVector = Icons.Default.Language,
                             contentDescription = null,
-                            modifier = Modifier.size(20.dp),
-                            tint = Color(0xFF1B5F21)
+                            modifier = Modifier.size(48.dp),
+                            tint = Color(0xFFC5A059)
+                        )
+
+                        // Wifi Off icon with white background
+                        Box(
+                            modifier = Modifier
+                                .align(Alignment.TopEnd)
+                                .size(32.dp)
+                                .background(Color.White, CircleShape)
+                                .padding(4.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.WifiOff,
+                                contentDescription = null,
+                                modifier = Modifier.size(20.dp),
+                                tint = Color(0xFF1B5F21)
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    Text(
+                        text = title,
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold,
+                        color = AppColors.gray900Text,
+                        textAlign = TextAlign.Center
+                    )
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    Text(
+                        text = message,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = AppColors.gray900Text.copy(alpha = 0.6f),
+                        textAlign = TextAlign.Center,
+                        lineHeight = 20.sp
+                    )
+
+                    Spacer(modifier = Modifier.height(32.dp))
+
+                    Button(
+                        onClick = onActivateClick,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(56.dp),
+                        shape = RoundedCornerShape(12.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFF1B5F21)
+                        )
+                    ) {
+                        Text(
+                            text = stringResource(R.string.activate_connection),
+                            style = MaterialTheme.typography.titleMedium,
+                            color = Color.White
                         )
                     }
-                }
 
-                Spacer(modifier = Modifier.height(24.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
 
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold,
-                    color = AppColors.gray900Text,
-                    textAlign = TextAlign.Center
-                )
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                Text(
-                    text = message,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = AppColors.gray900Text.copy(alpha = 0.6f),
-                    textAlign = TextAlign.Center,
-                    lineHeight = 20.sp
-                )
-
-                Spacer(modifier = Modifier.height(32.dp))
-
-                Button(
-                    onClick = onActivateClick,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp),
-                    shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF1B5F21)
-                    )
-                ) {
-                    Text(
-                        text = stringResource(R.string.activate_connection),
-                        style = MaterialTheme.typography.titleMedium,
-                        color = Color.White
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                TextButton(
-                    onClick = onTryLaterClick,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(
-                        text = stringResource(R.string.try_later),
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = Color(0xFF9BA9BD)
-                    )
+                    TextButton(
+                        onClick = onTryLaterClick,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(
+                            text = stringResource(R.string.try_later),
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = Color(0xFF9BA9BD)
+                        )
+                    }
                 }
             }
         }
@@ -157,6 +160,7 @@ fun InternetRequiredDialogPreview() {
     Der3MuslimTheme {
         InternetRequiredDialog(
             modifier = Modifier,
+            visibility = true,
             title = stringResource(R.string.internet_required_title),
             message = stringResource(R.string.internet_required_message),
             onActivateClick = {},

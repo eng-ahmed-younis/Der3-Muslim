@@ -70,6 +70,14 @@ class MasbahaReducer @Inject constructor() : Reducer<MasbahaAction, MasbahaState
             is MasbahaAction.SetShowBackButton -> {
                 state.copy(showBackButton = action.show)
             }
+
+            is MasbahaAction.OnNetworkStatusChanged -> {
+                state.copy(networkState = action.status)
+            }
+
+            is MasbahaAction.ShowInternetRequiredDialog -> {
+                state.copy(showInternetRequiredDialog = action.show)
+            }
         }
     }
 }

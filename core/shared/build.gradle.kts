@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.library)
+    alias(libs.plugins.hilt.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.serialization)
     id("kotlin-parcelize")
@@ -83,9 +84,14 @@ dependencies {
     implementation(libs.androidx.compose.material.icons.core)
     implementation(libs.androidx.compose.material.icons.extended)
 
+    // Firebase BoM
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.messaging)
+
     //Hilt
     implementation(libs.hilt.android)
-  //  kapt(libs.hilt.compiler)
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
 
@@ -97,10 +103,6 @@ dependencies {
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
-
-    implementation(project(":core:data_store"))
-    implementation(project(":core:ui"))
-    implementation(project(":core:ui-model"))
 
     // ktor
     implementation(libs.ktor.client.core)
@@ -114,4 +116,8 @@ dependencies {
     debugImplementation (libs.library)
     releaseImplementation (libs.library.no.op)
 
+
+    implementation(project(":core:data_store"))
+    implementation(project(":core:ui"))
+    implementation(project(":core:ui-model"))
 }
