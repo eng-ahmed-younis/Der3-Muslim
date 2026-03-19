@@ -1,6 +1,6 @@
 package com.der3.muslim.main_screen
 
-import MainNavHost
+import com.der3.navigation.MainNavHost
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInVertically
