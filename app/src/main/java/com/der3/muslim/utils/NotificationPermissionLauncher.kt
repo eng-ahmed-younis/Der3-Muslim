@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import com.der3.shared.service.notification.NotificationPermission
+import com.der3.shared.service.fcm.notification.NotificationPermission
 import com.der3.ui.R
 import com.der3.ui.themes.AppColors
 

@@ -5,8 +5,10 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" /> <!-- Android 13+ -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
@@ -47,19 +49,12 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <!--  خدمة استقبال التنبيهات (Firebase Cloud Messaging)
-         تسمح هذه الخدمة للتطبيق باستقبال الرسائل والتنبيهات من سيرفر Firebase حتى لو كان التطبيق مغلقاً.
-         -->
+
         <service
-            android:name="com.der3.shared.service.fcm.Der3FirebaseMessagingService"
-            android:directBootAware="true"
+            android:name="com.der3.shared.service.fcm.Der3MuslimFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
-                <!-- استقبال الرسائل المرسلة من خوادم Google (المعيار القديم والجديد) -->
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <!-- الحدث الرئيسي لمعالجة الرسائل الجديدة وتحديث الـ Token الخاص بالجهاز -->
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
-                <!-- الحدث الرئيسي لمعالجة الرسائل الجديدة وتحديث الـ Token الخاص بالجهاز -->
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>

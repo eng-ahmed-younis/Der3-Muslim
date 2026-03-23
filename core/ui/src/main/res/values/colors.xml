@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="green900">#0D2B11</color>
+    <color name="green800">#1B5F21</color>
+    <color name="green700">#1F6B2D</color>
+    <color name="notification_color">#EA4335</color> <!-- Gmail Red for icon/accents -->
+    <color name="notification_title_color">#202124</color> <!-- Gmail Dark Grey for titles -->
+    <color name="notification_body_color">#5F6368</color> <!-- Gmail Medium Grey for body -->
+</resources>

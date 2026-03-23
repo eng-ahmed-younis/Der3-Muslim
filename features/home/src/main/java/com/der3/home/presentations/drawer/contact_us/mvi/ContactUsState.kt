@@ -8,7 +8,7 @@ data class ContactUsState(
     val name: String = "",
     val email: String = "",
     val message: String = "",
-    val officialEmail: String = "contact@der3muslim.com",
+    val officialEmail: String = "der3.muslim@gmail.com",
     val website: String = "https://der3muslim.com",
     val telegram: String = "https://t.me/der3muslim",
     val facebook: String = "https://facebook.com/der3muslim"

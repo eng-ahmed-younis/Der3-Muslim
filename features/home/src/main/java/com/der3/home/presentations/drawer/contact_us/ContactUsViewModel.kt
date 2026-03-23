@@ -15,6 +15,7 @@ import com.der3.screens.Screens
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
+import androidx.core.net.toUri
 
 @HiltViewModel
 class ContactUsViewModel @Inject constructor(
@@ -83,8 +84,8 @@ class ContactUsViewModel @Inject constructor(
 
     private fun sendEmail() {
         val intent = Intent(Intent.ACTION_SENDTO).apply {
-            data = Uri.parse("mailto:")
-            putExtra(Intent.EXTRA_EMAIL, arrayOf("support@der3muslim.com"))
+            data = "mailto:".toUri()
+            putExtra(Intent.EXTRA_EMAIL, arrayOf("der3.muslim@gmail.com"))
             putExtra(Intent.EXTRA_SUBJECT, "Inquiry from Der3 Muslim App")
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }

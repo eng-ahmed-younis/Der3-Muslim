@@ -1,4 +1,4 @@
-package com.der3.shared.service.notification
+package com.der3.shared.service.fcm.notification
 
 import android.Manifest
 import android.content.Context
