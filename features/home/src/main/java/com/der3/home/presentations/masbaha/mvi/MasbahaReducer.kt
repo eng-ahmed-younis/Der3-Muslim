@@ -20,6 +20,7 @@ class MasbahaReducer @Inject constructor() : Reducer<MasbahaAction, MasbahaState
                 error = action.message,
                 isLoading = false
             )
+            MasbahaAction.DismissError -> state.copy(error = null)
             is MasbahaAction.UpdateCount -> {
                 // 1. Increment the current counter
                 var newCount = state.currentCount + 1
@@ -66,6 +67,17 @@ class MasbahaReducer @Inject constructor() : Reducer<MasbahaAction, MasbahaState
             is MasbahaAction.UpdateAutoSwitch -> state.copy(autoSwitch = action.enabled)
             is MasbahaAction.UpdateVibration -> state.copy(vibrationType = action.type)
             is MasbahaAction.UpdateSound -> state.copy(isSoundEnabled = action.enabled)
+            is MasbahaAction.SetShowBackButton -> {
+                state.copy(showBackButton = action.show)
+            }
+
+            is MasbahaAction.OnNetworkStatusChanged -> {
+                state.copy(networkState = action.status)
+            }
+
+            is MasbahaAction.ShowInternetRequiredDialog -> {
+                state.copy(showInternetRequiredDialog = action.show)
+            }
         }
     }
 }

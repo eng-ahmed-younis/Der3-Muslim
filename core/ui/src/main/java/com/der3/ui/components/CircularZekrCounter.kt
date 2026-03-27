@@ -1,3 +1,5 @@
+package com.der3.ui.components
+
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

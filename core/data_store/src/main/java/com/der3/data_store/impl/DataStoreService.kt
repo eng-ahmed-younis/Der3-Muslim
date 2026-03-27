@@ -3,6 +3,7 @@ package com.der3.data_store.impl
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.doublePreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
@@ -54,6 +55,13 @@ class DataStoreService @Inject constructor(
                 }
             }
 
+            is Double -> {
+                val preferencesKey = doublePreferencesKey(key)
+                dataStore.edit { preferences ->
+                    preferences[preferencesKey] = value
+                }
+            }
+
             else -> throw UnsupportedOperationException("Data store type not implemented type")
         }
     }
@@ -98,6 +106,13 @@ class DataStoreService @Inject constructor(
                 }
             }
 
+            Double::class -> {
+                val preferencesKey = doublePreferencesKey(key)
+                dataStore.data.map { preferences ->
+                    preferences[preferencesKey] as? T ?: defaultValue
+                }
+            }
+
             else -> throw UnsupportedOperationException("Data store type not implemented type")
         }
     }
@@ -116,6 +131,7 @@ class DataStoreService @Inject constructor(
                 stringPreferencesKey(key),
                 intPreferencesKey(key),
                 booleanPreferencesKey(key),
+                doublePreferencesKey(key),
                 longPreferencesKey(key),
                 floatPreferencesKey(key)
             ).forEach { prefKey ->

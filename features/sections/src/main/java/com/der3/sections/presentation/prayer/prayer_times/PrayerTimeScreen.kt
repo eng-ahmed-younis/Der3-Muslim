@@ -1,0 +1,286 @@
+package com.der3.sections.presentation.prayer.prayer_times
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.der3.mvi.MviEffect
+import com.der3.screens.Screens
+import com.der3.sections.domain.model.PrayerDetails
+import com.der3.sections.domain.model.PrayerType
+import com.der3.sections.presentation.prayer.prayer_times.components.AppBarActions
+import com.der3.sections.presentation.prayer.prayer_times.components.CalculationMethodDialog
+import com.der3.sections.presentation.prayer.prayer_times.components.LocationSelectionDialog
+import com.der3.sections.presentation.prayer.prayer_times.components.MonthlyCalendarDialog
+import com.der3.sections.presentation.prayer.prayer_times.components.NextPrayerCard
+import com.der3.sections.presentation.prayer.prayer_times.components.PrayerTimeItem
+import com.der3.sections.presentation.prayer.prayer_times.mvi.PrayerTimeIntent
+import com.der3.sections.presentation.prayer.prayer_times.mvi.PrayerTimeState
+import com.der3.ui.components.Der3TopAppBar
+import com.der3.ui.components.ErrorDialog
+import com.der3.ui.components.LoadingDialog
+import com.der3.ui.themes.AppColors
+import com.der3.ui.themes.Der3MuslimTheme
+import com.der3.ui.R
+import com.der3.utils.asString
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import java.util.Locale
+
+@Composable
+fun PrayerTimeRoute(
+    onNavigate: (Screens) -> Unit = {}
+) {
+    val viewModel = hiltViewModel<PrayerTimeViewModel>()
+    val state = viewModel.viewState
+    val scope = rememberCoroutineScope()
+    var errorMessage by remember { mutableStateOf<String?>(null) }
+    var showErrorDialog by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+
+
+    LaunchedEffect(Unit) {
+        viewModel.effects.onEach {
+            when (it) {
+                is MviEffect.Navigate -> onNavigate(it.screen)
+                is MviEffect.OnErrorDialog -> {
+                    errorMessage = it.error.asString(context)
+                    showErrorDialog = true
+                }
+                else -> {}
+            }
+        }.launchIn(scope)
+    }
+
+
+    LoadingDialog(visible = state.isLoading)
+
+    ErrorDialog(
+        visible = showErrorDialog || state.error != null,
+        message = errorMessage ?: state.error,
+        onRetry = {
+            viewModel.onIntent(PrayerTimeIntent.LoadPrayerTimes)
+            showErrorDialog = false
+            errorMessage = null
+        },
+        onDismiss = {
+            viewModel.onIntent(PrayerTimeIntent.DismissError)
+            showErrorDialog = false
+            errorMessage = null
+        }
+    )
+
+    PrayerTimeScreen(
+        state = state,
+        onIntent = viewModel::onIntent
+    )
+}
+
+@Composable
+fun PrayerTimeScreen(
+    state: PrayerTimeState,
+    onIntent: (PrayerTimeIntent) -> Unit = {}
+) {
+    var showMethodDialog by remember { mutableStateOf(false) }
+    var showLocationDialog by remember { mutableStateOf(false) }
+    var showCalendarDialog by remember { mutableStateOf(false) }
+
+    if (showMethodDialog) {
+        CalculationMethodDialog(
+            state = state,
+            onIntent = onIntent,
+            onDismiss = { showMethodDialog = false }
+        )
+    }
+
+    if (showLocationDialog) {
+        LocationSelectionDialog(
+            state = state,
+            onIntent = onIntent,
+            onDismiss = { showLocationDialog = false }
+        )
+    }
+
+    if (showCalendarDialog) {
+        MonthlyCalendarDialog(
+            state = state,
+            onDismiss = { showCalendarDialog = false }
+        )
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(AppColors.gray50)
+    ) {
+        Der3TopAppBar(
+            title = "أوقات الصلاة",
+            subtitle = state.locationName,
+            backgroundColor = Color.Transparent,
+            showBackButton = true,
+            onBackClick = { onIntent(PrayerTimeIntent.Back) },
+            trailingContent = {
+                AppBarActions(
+                    onIntent = onIntent,
+                    onShowCalendar = { showCalendarDialog = true },
+                    onShowLocation = { showLocationDialog = true },
+                    onShowMethod = { showMethodDialog = true }
+                )
+            }
+        )
+
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            item {
+                Column(
+                    modifier = Modifier.padding(vertical = 8.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        state.hijriDate,
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = AppColors.green900
+                    )
+                    Text(
+                        state.gregorianDate,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = AppColors.gray500
+                    )
+                }
+            }
+
+            item {
+                state.nextPrayer?.let { next ->
+                    NextPrayerCard(next)
+                }
+            }
+
+            items(state.prayerTimes) { prayer ->
+                if (prayer.type in listOf(PrayerType.FAJR, PrayerType.SUNRISE, PrayerType.DHUHR, PrayerType.ASR, PrayerType.MAGHRIB, PrayerType.ISHA)) {
+                    PrayerTimeItem(
+                        prayer = prayer,
+                        onToggleNotification = { onIntent(PrayerTimeIntent.ToggleNotification(prayer.type)) }
+                    )
+                }
+            }
+
+            item {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp)
+                ) {
+                    Text(
+                        stringResource(R.string.other_times),
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = AppColors.green900,
+                        modifier = Modifier.padding(bottom = 12.dp, start = 4.dp)
+                    )
+                    
+                    val otherTimes = state.prayerTimes.filter { 
+                        it.type !in listOf(PrayerType.FAJR, PrayerType.SUNRISE, PrayerType.DHUHR, PrayerType.ASR, PrayerType.MAGHRIB, PrayerType.ISHA) 
+                    }
+                    
+                    otherTimes.chunked(2).forEach { rowItems ->
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            rowItems.forEach { other ->
+                                Surface(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .padding(vertical = 6.dp),
+                                    shape = RoundedCornerShape(16.dp),
+                                    color = Color.White,
+                                    tonalElevation = 2.dp,
+                                    shadowElevation = 1.dp
+                                ) {
+                                    Column(
+                                        modifier = Modifier.padding(16.dp),
+                                        horizontalAlignment = Alignment.CenterHorizontally
+                                    ) {
+                                        Text(
+                                            text = other.name,
+                                            style = MaterialTheme.typography.bodySmall,
+                                            color = AppColors.gray500,
+                                            fontWeight = FontWeight.Medium
+                                        )
+                                        Spacer(modifier = Modifier.height(4.dp))
+                                        Text(
+                                            text = other.time,
+                                            style = MaterialTheme.typography.titleMedium,
+                                            fontWeight = FontWeight.Bold,
+                                            color = AppColors.green800
+                                        )
+                                    }
+                                }
+                            }
+                            if (rowItems.size == 1) {
+                                Spacer(modifier = Modifier.weight(1f))
+                            }
+                        }
+                    }
+                }
+            }
+            
+            item { Spacer(modifier = Modifier.height(20.dp)) }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PrayerTimeScreenPreview() {
+    Der3MuslimTheme(
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
+        PrayerTimeScreen(
+            state = PrayerTimeState(
+                locationName = "الرياض، المملكة العربية السعودية",
+                hijriDate = "الأربعاء 15 رمضان 1445 هـ",
+                gregorianDate = "27 مارس 2024",
+                nextPrayer = PrayerDetails(
+                    "العصر",
+                    "03:45 م",
+                    isNext = true,
+                    type = PrayerType.ASR
+                ),
+                prayerTimes = listOf(
+                    PrayerDetails("الفجر", "04:42 ص", isPassed = true, type = PrayerType.FAJR),
+                    PrayerDetails("الشروق", "06:01 ص", isPassed = true, type = PrayerType.SUNRISE),
+                    PrayerDetails("الظهر", "12:05 م", isPassed = true, type = PrayerType.DHUHR),
+                    PrayerDetails("العصر", "03:45 م", isNext = true, type = PrayerType.ASR),
+                    PrayerDetails("المغرب", "06:12 م", type = PrayerType.MAGHRIB),
+                    PrayerDetails("العشاء", "07:42 م", type = PrayerType.ISHA)
+                )
+            )
+        )
+    }
+}

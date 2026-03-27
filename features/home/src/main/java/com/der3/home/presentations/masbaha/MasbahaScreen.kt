@@ -1,6 +1,5 @@
 package com.der3.home.presentations.masbaha
 
-import LoadingDialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -36,20 +35,29 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import com.der3.home.di.factory.MasbahaViewModelFactory
+import com.der3.home.di.factory.ZekrDetailsViewModelFactory
 import com.der3.home.presentations.masbaha.components.AzkarAutoSelected
 import com.der3.home.presentations.masbaha.components.MasbahaActionButton
 import com.der3.home.presentations.masbaha.components.ResetMasbahaDialog
 import com.der3.home.presentations.masbaha.components.TargetDialog
 import com.der3.home.presentations.masbaha.mvi.MasbahaIntent
 import com.der3.home.presentations.masbaha.mvi.MasbahaState
+import com.der3.home.presentations.zekr_details.ZekrDetailsViewModel
 import com.der3.home.utils.performTasbeehHaptic
 import com.der3.model.TasbeehHapticType
 import com.der3.mvi.MviEffect
 import com.der3.screens.Screens
 import com.der3.shared.domain.model.MasbahaAzkar
+import com.der3.shared.params.MasbahaParams
 import com.der3.ui.R
 import com.der3.ui.components.Der3TopAppBar
 import com.der3.ui.components.ErrorDialog
+import com.der3.ui.components.InternetRequiredDialog
+import com.der3.ui.components.LoadingDialog
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
 import com.der3.utils.asString
@@ -59,13 +67,22 @@ import java.util.Locale
 
 @Composable
 fun MasbahaRoute(
+    params: MasbahaParams,
     onNavigate: (Screens) -> Unit = {}
 ) {
-    val viewModel: MasbahaViewModel = hiltViewModel<MasbahaViewModel>()
+
+    val viewModel: MasbahaViewModel =
+        hiltViewModel<MasbahaViewModel, MasbahaViewModelFactory> { factory ->
+            factory.create(params)
+        }
+
+    val state = viewModel.viewState
     val scope = rememberCoroutineScope()
     var errorMessage by remember { mutableStateOf<String?>(null) }
     var showErrorDialog by remember { mutableStateOf(false) }
     val context = LocalContext.current
+    val lifecycleOwner = LocalLifecycleOwner.current
+
 
 
     LaunchedEffect(Unit) {
@@ -83,20 +100,49 @@ fun MasbahaRoute(
     ErrorDialog(
         visible = showErrorDialog,
         message = errorMessage,
-        onRetry = {},
-        onDismiss = { showErrorDialog = false }
+        onRetry = {
+            showErrorDialog = false
+            viewModel.onIntent(MasbahaIntent.Retry)
+        },
+        onDismiss = {
+            showErrorDialog = false
+            viewModel.onIntent(MasbahaIntent.DismissError)
+        }
+    )
+
+    InternetRequiredDialog(
+        visibility = state.showInternetRequiredDialog,
+        message = stringResource(id = R.string.internet_required_message),
+        onActivateClick = {
+            viewModel.onIntent(MasbahaIntent.OpenNetworkSettings)
+            viewModel.onIntent(MasbahaIntent.ShowInternetRequiredDialog(show = false))
+        },
+        onTryLaterClick = {
+            viewModel.onIntent(MasbahaIntent.ShowInternetRequiredDialog(show = false))
+        },
+        onDismiss = {
+            viewModel.onIntent(MasbahaIntent.ShowInternetRequiredDialog(show = false))
+        }
     )
 
 
-    MasbahaScreen(
-        state = viewModel.viewState,
-        onIntent = { intent ->
-            if (intent is MasbahaIntent.Back) {
-                onNavigate(Screens.Back())
-            } else {
-                viewModel.onIntent(intent)
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                viewModel.onIntent(MasbahaIntent.RefreshAfterBack)
             }
         }
+
+        lifecycleOwner.lifecycle.addObserver(observer)
+
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
+
+    MasbahaScreen(
+        state = state,
+        onIntent = viewModel::onIntent
     )
 }
 
@@ -144,10 +190,11 @@ fun MasbahaScreen(
             title = stringResource(id = R.string.electronic_rosary_title),
             backgroundColor = AppColors.gray50,
             titleColor = AppColors.green800,
-            navigationIconColor = AppColors.green800,
+            showBackButton = if (state.showBackButton) true else false,
             onBackClick = {
-                onIntent(MasbahaIntent.Back)
+                onIntent(MasbahaIntent.OnBackClick)
             },
+            navigationIconColor = AppColors.green800,
             trailingContent = {
                 Box {
                     IconButton(onClick = { showMenu = !showMenu }) {

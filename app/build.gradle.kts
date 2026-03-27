@@ -1,13 +1,11 @@
 plugins {
     alias(libs.plugins.android.application)
- //   alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.google.services)
-
- //   alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.secrets.gradle.plugin)
 }
 
 android {
@@ -38,18 +36,21 @@ android {
         }
     }
 
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.toVersion(BuildVersions.JAVA_VERSION)
+        targetCompatibility = JavaVersion.toVersion(BuildVersions.JAVA_VERSION)
     }
 
-    //noinspection WrongGradleMethod
     kotlin {
         compilerOptions {
-            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+            jvmTarget.set(
+                org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(
+                    BuildVersions.JAVA_VERSION.toString()
+                )
+            )
         }
     }
-
 
 
     buildFeatures {
@@ -79,6 +80,7 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.firestore)
+    implementation(libs.firebase.messaging)
 
     // Compose UI
     implementation(libs.androidx.compose.ui)
@@ -102,16 +104,19 @@ dependencies {
     //Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
-   // kapt(libs.hilt.compiler)
 
+    // google icons
     implementation(libs.androidx.compose.material.icons.core)
     implementation(libs.androidx.compose.material.icons.extended)
 
     //Navigation
     implementation(libs.androidx.navigation.compose)
 
+    // modules
     implementation(project(path = ":core:ui"))
+    implementation(project(path = ":core:shared"))
     implementation(project(path = ":core:utils"))
+    implementation(project(path = ":core:data_store"))
     implementation(project(path = ":core:ui-model"))
     implementation(project(path = ":core:player"))
     implementation(project(path = ":features:splash"))

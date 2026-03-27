@@ -22,6 +22,10 @@ import com.der3.mvi.MviBaseViewModel
 import com.der3.mvi.MviEffect
 import com.der3.mvi.MviEffect.Navigate
 import com.der3.screens.Screens.Back
+import com.der3.shared.data.source.local.entity.FavoriteEntity
+import com.der3.shared.domain.use_case.fav.AddToFavoriteUseCase
+import com.der3.shared.domain.use_case.fav.IsFavoriteUseCase
+import com.der3.shared.domain.use_case.fav.RemoveFromFavoriteUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,17 +35,21 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.launch
 
 @HiltViewModel(assistedFactory = ZekrDetailsViewModelFactory::class)
 class ZekrDetailsViewModel @AssistedInject constructor(
     @Assisted private val params: ZekrDetailsParams,
     private val getAzkarItemByIdUseCase: GetAzkarItemByIdUseCase,
-    private val toggleAudio: ToggleAzkarAudioUseCase,
-    private val stopAudio: StopAzkarAudioUseCase,
-    private val resetAudio: ResetAzkarAudioUseCase,
-    private val setVolume: SetAzkarVolumeUseCase,
-    private val observeAudioState: ObserveAzkarAudioStateUseCase,
-    private val dataStoreRepository: DataStoreRepository
+    private val toggleAzkarAudioUseCase: ToggleAzkarAudioUseCase,
+    private val stopAzkarAudioUseCase: StopAzkarAudioUseCase,
+    private val resetAzkarAudioUseCase: ResetAzkarAudioUseCase,
+    private val setAzkarVolumeUseCase: SetAzkarVolumeUseCase,
+    private val observeAzkarAudioStateUseCase: ObserveAzkarAudioStateUseCase,
+    private val dataStoreRepository: DataStoreRepository,
+    private val addToFavoriteUseCase: AddToFavoriteUseCase,
+    private val removeFromFavoriteUseCase: RemoveFromFavoriteUseCase,
+    private val isFavoriteUseCase: IsFavoriteUseCase
 ) : MviBaseViewModel<ZekrDetailsState, ZekrDetailsAction, ZekrDetailsIntent>(
     initialState = ZekrDetailsState(),
     reducer = ZekrDetailsReducer()
@@ -49,8 +57,9 @@ class ZekrDetailsViewModel @AssistedInject constructor(
 
     init {
         getZekrDetails()
+        observeFavoriteStatus()
         // Observe audio player state and push it into MVI state
-        observeAudioState()
+        observeAzkarAudioStateUseCase()
             .onEach { state ->
                 Log.i("ZekrDetailsReducer", "init isplaying ${state.isPlaying}")
                 onAction(ZekrDetailsAction.UpdateAudioState(state))
@@ -66,22 +75,22 @@ class ZekrDetailsViewModel @AssistedInject constructor(
 
             ZekrDetailsIntent.Back -> {
                 // optional: stop audio when leaving
-                stopAudio.invoke()
+                stopAzkarAudioUseCase.invoke()
                 onEffect(Navigate(Back()))
             }
 
             is ZekrDetailsIntent.ToggleAudio -> {
                 Log.i("ZekrDetailsViewModel", "ToggleAudio: ${intent.audioPath}")
-                toggleAudio.invoke(intent.audioPath)
+                toggleAzkarAudioUseCase.invoke(intent.audioPath)
                 // no need to manually update state here because observeAudioState() will emit
             }
 
             ZekrDetailsIntent.StopAudio -> {
-                stopAudio.invoke()
+                stopAzkarAudioUseCase.invoke()
             }
 
             ZekrDetailsIntent.ResetAudio -> {
-                resetAudio.invoke(
+                resetAzkarAudioUseCase.invoke(
                     audioPath = viewState.zekrDetails.audioPath
                 )
             }
@@ -114,7 +123,7 @@ class ZekrDetailsViewModel @AssistedInject constructor(
 
             is ZekrDetailsIntent.UpdateVolume -> {
                 onAction(action = ZekrDetailsAction.UpdateVolume(volume = intent.volume))
-                setVolume.invoke(intent.volume)
+                setAzkarVolumeUseCase.invoke(intent.volume)
             }
 
             is ZekrDetailsIntent.ShareSheetVisibility -> {
@@ -130,6 +139,48 @@ class ZekrDetailsViewModel @AssistedInject constructor(
                 onAction(action = ShareSheetVisibility(visible = false))
                 onEffect(MviEffect.CaptureAndShareImage)
             }
+
+            ZekrDetailsIntent.Retry -> {
+                getZekrDetails()
+            }
+
+            ZekrDetailsIntent.DismissError -> {
+                onAction(ZekrDetailsAction.ClearError)
+            }
+
+            ZekrDetailsIntent.ToggleFavorite -> {
+                toggleFavoriteStatus()
+            }
+        }
+    }
+
+    private fun observeFavoriteStatus() {
+        isFavoriteUseCase.invoke(params.zekrId)
+            .onEach { isFavorite ->
+                onAction(ZekrDetailsAction.UpdateFavorite(isFavorite))
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun toggleFavoriteStatus() {
+        viewModelScope.launch {
+            val zekr = viewState.zekrDetails
+            val isCurrentlyFavorite = zekr.isFavorite
+            if (isCurrentlyFavorite) {
+                removeFromFavoriteUseCase.invoke(zekr.id)
+            } else {
+                addToFavoriteUseCase.invoke(
+                    FavoriteEntity(
+                        id = zekr.id,
+                        text = zekr.text,
+                        audioPath = zekr.audioPath,
+                        repeatCount = zekr.repeatCount,
+                        categoryName = zekr.categoryName,
+                        categoryId = zekr.categoryId ?: -1
+                    )
+                )
+            }
+            onAction(ZekrDetailsAction.UpdateFavorite(!isCurrentlyFavorite))
         }
     }
 
@@ -184,6 +235,6 @@ class ZekrDetailsViewModel @AssistedInject constructor(
 
     override fun onCleared() {
         super.onCleared()
-        stopAudio.invoke()
+        stopAzkarAudioUseCase.invoke()
     }
 }

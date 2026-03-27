@@ -1,6 +1,5 @@
 package com.der3.home.presentations.home_screen
 
-import LoadingDialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,7 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.der3.shared.data.provider.ZekrCategoriesProvider
 import com.der3.home.presentations.home_screen.components.CategoriesGrid
 import com.der3.home.presentations.home_screen.components.DailyNotificationCard
@@ -39,16 +38,16 @@ import com.der3.mvi.MviEffect
 import com.der3.screens.Screens
 import com.der3.ui.R
 import com.der3.ui.components.ErrorDialog
+import com.der3.ui.components.LoadingDialog
+import com.der3.ui.models.LocalDrawerState
 import com.der3.ui.style.ShiftSystemBarStyle
 import com.der3.ui.themes.Der3MuslimTheme
 import java.util.Locale
 import com.der3.ui.themes.AppColors
-import com.der3.ui.models.LocalDrawerState
 import com.der3.utils.asString
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-
 
 @Composable
 fun HomeRoute(
@@ -78,8 +77,14 @@ fun HomeRoute(
     ErrorDialog(
         visible = showErrorDialog,
         message = errorMessage,
-        onRetry = {},
-        onDismiss = {}
+        onRetry = {
+            showErrorDialog = false
+            viewModel.onIntent(HomeIntent.Retry)
+        },
+        onDismiss = {
+            showErrorDialog = false
+            viewModel.onIntent(HomeIntent.DismissError)
+        }
     )
 
     HomeScreen(
@@ -94,8 +99,10 @@ fun HomeScreen(
     state: HomeState,
     onIntent: (HomeIntent) -> Unit
 ) {
+
     val drawerState = LocalDrawerState.current
     val scope = rememberCoroutineScope()
+
 
     ShiftSystemBarStyle(
         statusBarColor = Color(0xFFF4F6F5),
@@ -120,17 +127,13 @@ fun HomeScreen(
             backgroundColor = AppColors.gray50,
             onDrawerClick = {
                 if (drawerState.isOpen) {
-                    scope.launch {
-                        drawerState.close()
-                    }
+                    scope.launch { drawerState.close() }
                 } else {
-                    scope.launch {
-                        drawerState.open()
-                    }
+                    scope.launch { drawerState.open() }
                 }
             },
             onNotificationClick = {
-
+                onIntent(HomeIntent.NavigateToNotifications)
             }
         )
 

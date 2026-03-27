@@ -14,4 +14,6 @@ sealed interface HomeAction  : MviAction {
     data class LoadHomeAzkarCategory(
         val category:List<CategoryUi>
     ) : HomeAction
+
+    data object ClearError : HomeAction
 }

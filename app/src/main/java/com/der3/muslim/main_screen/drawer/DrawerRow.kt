@@ -7,12 +7,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,12 +25,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.der3.muslim.main_screen.drawer.model.DrawerItem
 import com.der3.screens.Der3NavigationRoute
 import com.der3.ui.R
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
+import java.util.Locale
 
 @Composable
 fun DrawerRow(
@@ -42,28 +44,35 @@ fun DrawerRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 6.dp)
-            .clip(RoundedCornerShape(50))
+            .padding( vertical = 4.dp)
+            .clip(RoundedCornerShape(20.dp))
             .background(background)
             .clickable { onClick() }
-            .padding(vertical = 14.dp, horizontal = 20.dp),
+            .padding(vertical = 12.dp, horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
 
         Icon(
             imageVector = item.icon,
             contentDescription = null,
-            tint = if (selected) AppColors.green700 else AppColors.green500
+            tint = if (selected) AppColors.green800 else AppColors.gray500,
+            modifier = Modifier
+                .size(24.dp)
         )
 
         Spacer(modifier = Modifier.width(16.dp))
 
+
         Text(
             text = stringResource(item.title),
-            fontSize = 16.sp,
-            fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
-            color = if (selected) Color(0xFF1F6B2D) else Color.DarkGray
+            modifier = Modifier
+                .weight(1f),
+          //  style = MaterialTheme.typography.titleMedium,
+            fontWeight = if (selected) FontWeight.W800 else FontWeight.W600,
+            color = if (selected) AppColors.green800 else AppColors.gray500,
+            textAlign = androidx.compose.ui.text.style.TextAlign.Start
         )
+
     }
 }
 
@@ -71,7 +80,9 @@ fun DrawerRow(
 @Preview(showBackground = true, name = "Drawer Row States")
 @Composable
 private fun DrawerRowPreview() {
-    Der3MuslimTheme {
+    Der3MuslimTheme(
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
         Column(modifier = Modifier.padding(10.dp)) {
             // State: Selected
             DrawerRow(

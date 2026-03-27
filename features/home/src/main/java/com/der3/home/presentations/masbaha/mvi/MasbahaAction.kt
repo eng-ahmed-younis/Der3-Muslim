@@ -2,11 +2,14 @@ package com.der3.home.presentations.masbaha.mvi
 
 import com.der3.mvi.MviAction
 import com.der3.shared.domain.model.MasbahaAzkar
+import com.der3.utils.connectivity.NetworkState
+import com.der3.utils.connectivity.NetworkStatus
 
 sealed interface MasbahaAction : MviAction {
     data class OnLoading(val isLoading: Boolean) : MasbahaAction
     data class OnAzkarsLoaded(val azkars: List<MasbahaAzkar>) : MasbahaAction
     data class OnError(val message: String) : MasbahaAction
+    data object DismissError : MasbahaAction
     data object UpdateCount : MasbahaAction
     data object ResetCount : MasbahaAction
     data class SetSelectedAzkar(val azkar: MasbahaAzkar) : MasbahaAction
@@ -14,4 +17,10 @@ sealed interface MasbahaAction : MviAction {
     data class UpdateAutoSwitch(val enabled: Boolean) : MasbahaAction
     data class UpdateVibration(val type: VibrationType) : MasbahaAction
     data class UpdateSound(val enabled: Boolean) : MasbahaAction
+
+    data class SetShowBackButton(val show: Boolean) : MasbahaAction
+
+
+    data class OnNetworkStatusChanged(val status: NetworkState):MasbahaAction
+    data class ShowInternetRequiredDialog(val show: Boolean): MasbahaAction
 }

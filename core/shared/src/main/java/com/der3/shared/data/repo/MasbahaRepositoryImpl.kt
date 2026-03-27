@@ -30,6 +30,10 @@ class MasbahaRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun getLocalAzkarSize(): Flow<Int> {
+        return localDataSource.getAzkarCount()
+    }
+
     override suspend fun updateLocalAzkars(azkars: List<MasbahaAzkar>) {
         localDataSource.insertAzkars(azkars.map { it.toEntity() })
     }

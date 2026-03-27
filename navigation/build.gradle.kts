@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.android.library)
-  //  alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.kotlin.compose)
 }
@@ -73,5 +72,6 @@ dependencies {
     implementation(project(path = ":features:splash"))
     implementation(project(path = ":features:on_boarding"))
     implementation(project(path = ":features:home"))
+    implementation(project(path = ":features:sections"))
     implementation(project(":core:shared"))
 }

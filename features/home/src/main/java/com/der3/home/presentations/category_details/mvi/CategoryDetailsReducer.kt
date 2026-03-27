@@ -14,7 +14,8 @@ class CategoryDetailsReducer @Inject constructor() : Reducer<CategoryDetailsActi
             is CategoryDetailsAction.OnCategoryLoaded -> {
                 state.copy(
                     azkarItems = action.azkars,
-                    zakeTextList = action.azkars.map { it.text }
+                    zakeTextList = action.azkars.map { it.text },
+                    isLoading = false
                 )
             }
 

@@ -1,9 +1,10 @@
 plugins {
     alias(libs.plugins.android.library)
- //   alias(libs.plugins.kotlin.android)
-//    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.hilt.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.serialization)
+    id("kotlin-parcelize")
+    alias(libs.plugins.secrets.gradle.plugin)
 }
 
 android {
@@ -18,6 +19,10 @@ android {
         consumerProguardFiles("consumer-rules.pro")
     }
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -25,8 +30,25 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
+            buildConfigField(
+                "String",
+                "BASE_URL",
+                "\"${project.findProperty("BASE_URL")}\""
+            )
+
+        }
+
+        debug {
+            buildConfigField(
+                "String",
+                "BASE_URL",
+                "\"${project.findProperty("BASE_URL")}\""
+            )
         }
     }
+
+
     compileOptions {
         sourceCompatibility =
             JavaVersion.toVersion(BuildVersions.JAVA_VERSION)
@@ -45,6 +67,11 @@ android {
     }
 }
 
+secrets {
+    propertiesFileName = "secrets.properties"
+    defaultPropertiesFileName = "secrets.defaults.properties"
+}
+
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -57,9 +84,15 @@ dependencies {
     implementation(libs.androidx.compose.material.icons.core)
     implementation(libs.androidx.compose.material.icons.extended)
 
+    // Firebase BoM
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.database)
+    implementation(libs.firebase.messaging)
+
     //Hilt
     implementation(libs.hilt.android)
-  //  kapt(libs.hilt.compiler)
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
 
@@ -72,9 +105,23 @@ dependencies {
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
 
+    // ktor
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.cio) // CIO engine
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.ktor.client.okhttp)
+    implementation(libs.ktor.client.logging)
+
+    // chucker
+    debugImplementation (libs.library)
+    releaseImplementation (libs.library.no.op)
+
+    // Image loading
+    implementation(libs.coil.compose)
+
+
     implementation(project(":core:data_store"))
     implementation(project(":core:ui"))
-
-    // Firebase
-
+    implementation(project(":core:ui-model"))
 }
