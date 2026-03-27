@@ -114,8 +114,9 @@ dependencies {
 
     // modules
     implementation(project(path = ":core:ui"))
-    implementation(project(":core:shared"))
+    implementation(project(path = ":core:shared"))
     implementation(project(path = ":core:utils"))
+    implementation(project(path = ":core:data_store"))
     implementation(project(path = ":core:ui-model"))
     implementation(project(path = ":core:player"))
     implementation(project(path = ":features:splash"))

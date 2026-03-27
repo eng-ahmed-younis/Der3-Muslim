@@ -49,21 +49,21 @@ class DataStoreRepositoryImpl(private val dataStoreService: DataStoreService) : 
 
     override var latitude: Double
         get() = runBlocking(Dispatchers.IO) {
-            dataStoreService.get<Double>(DataStoreKeys.LATITUDE, 21.4225).first()
+            dataStoreService.get<Double>(DataStoreKeys.SAVED_LOCATION_LATITUDE, 21.4225).first()
         }
         set(value) {
             runBlocking(Dispatchers.IO) {
-                dataStoreService.set(DataStoreKeys.LATITUDE, value)
+                dataStoreService.set(DataStoreKeys.SAVED_LOCATION_LATITUDE, value)
             }
         }
 
     override var longitude: Double
         get() = runBlocking(Dispatchers.IO) {
-            dataStoreService.get<Double>(DataStoreKeys.LONGITUDE, 39.8262).first()
+            dataStoreService.get<Double>(DataStoreKeys.SAVED_LOCATION_LONGITUDE, 39.8262).first()
         }
         set(value) {
             runBlocking(Dispatchers.IO) {
-                dataStoreService.set(DataStoreKeys.LONGITUDE, value)
+                dataStoreService.set(DataStoreKeys.SAVED_LOCATION_LONGITUDE, value)
             }
         }
 
@@ -77,4 +77,14 @@ class DataStoreRepositoryImpl(private val dataStoreService: DataStoreService) : 
             }
         }
 
+
+    override var appStyle: String
+        get() = runBlocking(Dispatchers.IO) {
+            dataStoreService.get<String>(DataStoreKeys.APP_STYLE, "system").first()
+        }
+        set(value) {
+            runBlocking(Dispatchers.IO) {
+                dataStoreService.set(DataStoreKeys.APP_STYLE, value ?: "system")
+            }
+        }
 }

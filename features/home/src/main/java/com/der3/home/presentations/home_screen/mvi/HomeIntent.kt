@@ -16,4 +16,6 @@ sealed interface HomeIntent  : MviIntent {
     data object DismissError : HomeIntent
 
     data object Retry : HomeIntent
+
+    data object NavigateToNotifications : HomeIntent
 }

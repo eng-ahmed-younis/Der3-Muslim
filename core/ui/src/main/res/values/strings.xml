@@ -52,6 +52,14 @@
     <string name="history_filter_month">الشهر</string>
     <string name="history_item_subtitle">تكرار فردي</string>
 
+    <string name="notification_history_title">التنبيهات</string>
+    <string name="notification_today">اليوم</string>
+    <string name="notification_yesterday">بالأمس</string>
+    <string name="notification_aya_of_the_day">آية اليوم</string>
+    <string name="notification_empty_state">لا توجد تنبيهات أخرى</string>
+    <string name="notification_error_title">حدث خطأ ما</string>
+    <string name="notification_retry_button">إعادة المحاولة</string>
+
     <string name="daily_notifications_title">التنبيهات اليومية</string>
     <string name="daily_notifications_header_subtitle">حافظ على وردك اليومي من خلال التنبيهات</string>
     <string name="daily_notifications_add_custom">إضافة تنبيه مخصص</string>

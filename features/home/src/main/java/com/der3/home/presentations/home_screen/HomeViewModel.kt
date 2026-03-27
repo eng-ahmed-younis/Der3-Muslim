@@ -64,6 +64,10 @@ class HomeViewModel @Inject constructor(
             HomeIntent.Retry -> {
                 getAllAzkarCategories()
             }
+
+            HomeIntent.NavigateToNotifications -> {
+                onEffect(Navigate(screen = Der3NavigationRoute.NotificationScreen))
+            }
         }
     }
 

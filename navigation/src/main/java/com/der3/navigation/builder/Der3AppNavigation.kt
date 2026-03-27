@@ -9,6 +9,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.der3.home.presentations.notification.NotificationRoute
 import com.der3.home.presentations.recycle_bin.RecycleBinRoute
 import com.der3.shared.params.CategoryDetailsParams
 import com.der3.shared.params.ZekrDetailsParams
@@ -65,6 +66,12 @@ fun NavGraphBuilder.der3AppNavigation(rootNavController: NavHostController) {
     composable<Der3NavigationRoute.DailyNotificationsScreen> {
         DailyNotificationsRoute { screen ->
             rootNavController.navigateTo(screen = screen)
+        }
+    }
+
+    composable<Der3NavigationRoute.NotificationScreen> {
+        NotificationRoute{ screens ->
+            rootNavController.navigateTo(screen = screens)
         }
     }
 

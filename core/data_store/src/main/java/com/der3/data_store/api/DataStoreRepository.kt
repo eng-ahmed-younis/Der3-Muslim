@@ -9,4 +9,5 @@ interface DataStoreRepository {
     var latitude: Double
     var longitude: Double
     var locationName: String?
+    var appStyle: String
 }

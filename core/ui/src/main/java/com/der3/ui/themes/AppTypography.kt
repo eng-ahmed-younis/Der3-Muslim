@@ -1,3 +1,4 @@
+package com.der3.ui.themes
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -12,7 +13,7 @@ val CairoFont = FontFamily(
     Font(R.font.cairo_bold, FontWeight.Bold)
 )
 
-val AppTypography = Typography(
+val appTypography = Typography(
 
     bodyLarge = TextStyle(
         fontFamily = CairoFont,

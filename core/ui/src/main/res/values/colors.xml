@@ -6,4 +6,9 @@
     <color name="notification_color">#EA4335</color> <!-- Gmail Red for icon/accents -->
     <color name="notification_title_color">#202124</color> <!-- Gmail Dark Grey for titles -->
     <color name="notification_body_color">#5F6368</color> <!-- Gmail Medium Grey for body -->
+
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+
 </resources>

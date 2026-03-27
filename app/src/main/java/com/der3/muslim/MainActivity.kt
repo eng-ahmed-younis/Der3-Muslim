@@ -10,6 +10,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.runtime.collectAsState
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
@@ -26,18 +27,15 @@ import java.util.*
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
-        // 2. إعداد FCM والاشتراك في المواضيع
-        MessagingServiceConfig.setupFCM()
-
         enableEdgeToEdge()
         setContent {
             Der3MuslimTheme(
+                style = viewModel.appStyleFlow.collectAsState().value,
                 language = Locale.Builder().setLanguage("ar").build()
             ) {
                 MainScreen()

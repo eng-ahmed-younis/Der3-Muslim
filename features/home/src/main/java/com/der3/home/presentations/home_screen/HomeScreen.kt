@@ -133,7 +133,7 @@ fun HomeScreen(
                 }
             },
             onNotificationClick = {
-
+                onIntent(HomeIntent.NavigateToNotifications)
             }
         )
 
