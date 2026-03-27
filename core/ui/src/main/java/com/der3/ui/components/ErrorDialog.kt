@@ -11,8 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -56,43 +55,36 @@ fun ErrorDialog(
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
-                        .size(120.dp)
+                        .size(80.dp)
                         .background(
-                            color = Color(0xFFF3EFE6),
+                            color = AppColors.green50,
                             shape = CircleShape
                         )
                 ) {
-                    Text(
-                        text = "🌙",
-                        fontSize = 48.sp
-                    )
-
-                    Text(
-                        text = "📶",
-                        fontSize = 20.sp,
-                        color = Color.Red,
-                        modifier = Modifier
-                            .align(Alignment.BottomStart)
-                            .padding(18.dp)
+                    Icon(
+                        painter = painterResource(id = R.drawable.star_shine),
+                        contentDescription = null,
+                        modifier = Modifier.size(40.dp),
+                        tint = AppColors.green800
                     )
                 }
 
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Text(
-                    text = title?: "حدث خطأ غير متوقع",
+                    text = title ?: "حدث خطأ غير متوقع",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
-                    fontFamily = FontFamily(Font(R.font.cairo_bold))
+                    color = AppColors.green900
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
 
                 Text(
-                    text = message?: "حدث خطأ غير متوقع، يرجى المحاولة مرة أخرى",
+                    text = message ?: "حدث خطأ غير متوقع، يرجى المحاولة مرة أخرى",
                     fontSize = 14.sp,
-                    color = Color.Gray,
+                    color = AppColors.gray500,
                     textAlign = TextAlign.Center,
                     lineHeight = 20.sp
                 )
@@ -106,14 +98,14 @@ fun ErrorDialog(
                         .height(52.dp),
                     shape = RoundedCornerShape(16.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF1B5E20)
+                        containerColor = AppColors.green800
                     )
                 ) {
                     Text(
-                        text = retryText?: "إعادة المحاولة",
+                        text = retryText ?: "إعادة المحاولة",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
-                        color = AppColors.white
+                        color = Color.White
                     )
                     Spacer(modifier = Modifier.width(8.dp))
 
@@ -124,15 +116,17 @@ fun ErrorDialog(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(14.dp))
+                Spacer(modifier = Modifier.height(8.dp))
 
-                TextButton(onClick = onDismiss) {
+                TextButton(
+                    onClick = onDismiss,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
                     Text(
+                        text = dismissText ?: "إغلاق",
                         fontSize = 16.sp,
-                        text = dismissText?: "إغلاق",
-                        fontWeight = FontWeight.W600,
-                        fontFamily = FontFamily(Font(R.font.cairo_medium)),
-                        color = AppColors.gray500
+                        fontWeight = FontWeight.Medium,
+                        color = AppColors.gray400
                     )
                 }
             }

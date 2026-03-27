@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Place
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,9 +24,12 @@ import java.util.Locale
 fun Der3TopAppBar(
     modifier: Modifier = Modifier,
     title: String,
+    subtitle: String? = null,
     backgroundColor: Color,
     titleColor: Color = AppColors.gray900Text,
+    subtitleColor: Color = AppColors.gray500,
     navigationIconColor: Color = AppColors.gray900Text,
+    navigationIcon: ImageVector = Icons.AutoMirrored.Filled.ArrowBack,
     showBackButton: Boolean = true,
     onBackClick: () -> Unit = {},
     trailingContent: @Composable (() -> Unit)? = null
@@ -34,16 +39,16 @@ fun Der3TopAppBar(
         modifier = modifier
             .fillMaxWidth()
             .background(backgroundColor)
-            .padding(horizontal = 10.dp, vertical = 12.dp),
+            .padding(horizontal = 10.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
 
-        // 🔹 Back Button
+        // 🔹 Navigation Icon
         if (showBackButton) {
             IconButton(onClick = onBackClick) {
                 Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Back",
+                    imageVector = navigationIcon,
+                    contentDescription = "Navigation",
                     tint = navigationIconColor
                 )
             }
@@ -51,10 +56,10 @@ fun Der3TopAppBar(
             Spacer(modifier = Modifier.size(48.dp))
         }
 
-        // 🔹 Title
-        Row(
+        // 🔹 Title & Subtitle
+        Column(
             modifier = Modifier.weight(1f),
-            horizontalArrangement = Arrangement.Center
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 text = title,
@@ -62,12 +67,30 @@ fun Der3TopAppBar(
                 fontWeight = FontWeight.Bold,
                 color = titleColor
             )
+            if (subtitle != null) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = subtitle,
+                        fontSize = 12.sp,
+                        color = subtitleColor
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Icon(
+                        imageVector = Icons.Default.Place,
+                        contentDescription = null,
+                        tint = AppColors.green500,
+                        modifier = Modifier.size(12.dp)
+                    )
+                }
+            }
         }
 
         // 🔹 Trailing Content
-
-        trailingContent?.invoke()
-
+        if (trailingContent != null) {
+            trailingContent()
+        } else {
+            Spacer(modifier = Modifier.size(48.dp))
+        }
     }
 }
 

@@ -4,6 +4,7 @@ import com.der3.shared.domain.model.AzkarCategory
 import com.der3.shared.domain.model.AzkarItem
 import com.der3.shared.data.provider.ZekrCategoriesProvider
 import com.der3.home.domain.model.ZekrUiModel
+import com.der3.shared.data.source.local.entity.FavoriteEntity
 import com.der3.ui.models.CategoryUi
 
 
@@ -48,11 +49,23 @@ fun AzkarCategory.toZekrUiModels(): List<ZekrUiModel>? {
     }
 }
 
-fun AzkarItem.toZekrUiModel(): ZekrUiModel{
+fun AzkarItem.toZekrUiModel(): ZekrUiModel {
     return ZekrUiModel(
         id = this.id,
         text = this.text,
         repeatCount = this.count,
         audioPath = this.audioPath
+    )
+}
+
+fun FavoriteEntity.toZekrUiModel(): ZekrUiModel {
+    return ZekrUiModel(
+        id = this.id,
+        text = this.text,
+        categoryName = this.categoryName,
+        categoryId = this.categoryId,
+        repeatCount = this.repeatCount,
+        audioPath = this.audioPath,
+        isFavorite = true
     )
 }

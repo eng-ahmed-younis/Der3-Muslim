@@ -31,7 +31,7 @@ val bottomTabs = listOf(
         icon = Icons.Default.Dashboard
     ),
     BottomTab(
-        route = Der3NavigationRoute.TasbeehScreen,
+        route = Der3NavigationRoute.TasbeehScreen(openFromSection = false),
         label = R.string.electronic_rosary_title,
         icon = Icons.Default.Fingerprint
     ),

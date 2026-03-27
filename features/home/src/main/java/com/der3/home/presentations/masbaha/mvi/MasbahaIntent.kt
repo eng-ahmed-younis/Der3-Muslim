@@ -4,7 +4,7 @@ import com.der3.mvi.MviIntent
 import com.der3.shared.domain.model.MasbahaAzkar
 
 sealed interface MasbahaIntent : MviIntent {
-    data object Back : MasbahaIntent
+    data object OnBackClick : MasbahaIntent
     data class SelectAzkar(val azkar: MasbahaAzkar) : MasbahaIntent
     data object IncrementCount : MasbahaIntent
     data object ResetCount : MasbahaIntent
@@ -13,4 +13,13 @@ sealed interface MasbahaIntent : MviIntent {
     data class ToggleVibration(val type: VibrationType) : MasbahaIntent
     data class ToggleSound(val enabled: Boolean) : MasbahaIntent
     data object OpenHistory : MasbahaIntent
+    data object Retry : MasbahaIntent
+    data object DismissError : MasbahaIntent
+
+    data class ShowInternetRequiredDialog(val show: Boolean): MasbahaIntent
+
+    data object OpenNetworkSettings : MasbahaIntent
+
+    data object RefreshAfterBack : MasbahaIntent
+
 }

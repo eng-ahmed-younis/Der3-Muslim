@@ -40,7 +40,7 @@ class HomeViewModel @Inject constructor(
             }
 
             HomeIntent.NavigateToAllCategories -> {
-                onEffect(Navigate(screen = Der3NavigationRoute.AllCategoriesScreen))
+                onEffect(Navigate(screen = Der3NavigationRoute.AllAzkarCategoriesScreen))
 
             }
 
@@ -56,21 +56,20 @@ class HomeViewModel @Inject constructor(
                     )
                 )
             }
+
+            HomeIntent.DismissError -> {
+                onAction(HomeAction.ClearError)
+            }
+
+            HomeIntent.Retry -> {
+                getAllAzkarCategories()
+            }
+
+            HomeIntent.NavigateToNotifications -> {
+                onEffect(Navigate(screen = Der3NavigationRoute.NotificationScreen))
+            }
         }
     }
-
-    /*   private fun getAllAzkarCategories() {
-           getAllCategoriesUseCase.invoke()
-               .onStart {
-                   onAction(HomeAction.OnLoading(true))
-               }.onEach { categories ->
-                   onAction(HomeAction.LoadHomeAzkarCategory(category = categories))
-               }.onCompletion {
-                   onAction(HomeAction.OnLoading(false))
-               }.catch {
-
-               }.launchIn(viewModelScope)
-       }*/
 
     private fun getAllAzkarCategories() {
         getAllCategoriesUseCase.invoke()

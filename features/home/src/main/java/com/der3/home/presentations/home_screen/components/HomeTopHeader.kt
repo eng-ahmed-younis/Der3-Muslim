@@ -70,9 +70,6 @@ fun HomeTopHeader(
             color = Color(0xFF1B5E20)
         )
 
-
-
-
         // 🔹 Notification Icon
         IconButton(onClick = onNotificationClick) {
             Box (

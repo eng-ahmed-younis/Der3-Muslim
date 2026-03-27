@@ -10,6 +10,8 @@ interface MasbahaRepository {
 
     // Local
     fun getLocalAzkars(): Flow<List<MasbahaAzkar>>
+
+    fun getLocalAzkarSize(): Flow<Int>
     suspend fun updateLocalAzkars(azkars: List<MasbahaAzkar>)
     suspend fun clearLocalAzkars()
 }

@@ -1,6 +1,5 @@
 package com.der3.home.presentations.category_details
 
-import LoadingDialog
 import ReadingInfoCard
 import ZekrCard
 import androidx.compose.foundation.background
@@ -29,6 +28,7 @@ import com.der3.mvi.MviEffect
 import com.der3.screens.Screens
 import com.der3.ui.components.Der3TopAppBar
 import com.der3.ui.components.ErrorDialog
+import com.der3.ui.components.LoadingDialog
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
 import com.der3.utils.asString
@@ -40,7 +40,7 @@ import kotlinx.coroutines.flow.onEach
 import java.util.Locale
 
 @Composable
-fun AzkarDetailsRoute(
+fun CategoryDetailsRoute(
     params: CategoryDetailsParams,
     onNavigate: (Screens) -> Unit,
 ){
@@ -81,7 +81,7 @@ fun AzkarDetailsRoute(
     )
 
 
-    AzkarDetailsScreen(
+    CategoryDetailsScreen(
         state = viewModel.viewState,
         onIntent = viewModel::onIntent
     )
@@ -91,7 +91,7 @@ fun AzkarDetailsRoute(
 
 
 @Composable
-fun AzkarDetailsScreen(
+fun CategoryDetailsScreen(
     state: CategoryDetailsState,
     onIntent: (CategoryDetailsIntent) -> Unit
 ) {
@@ -137,7 +137,9 @@ fun AzkarDetailsScreen(
                 ZekrCard(
                     zekr = zekr,
                     onPlayZekrSound = {},
-                    onFavoriteClick = {},
+                    onFavoriteClick = {
+                        onIntent(CategoryDetailsIntent.OnFavoriteClick(zekr))
+                    },
                     onBookmarkClick = {},
                     onZekrClick = {
                         onIntent(CategoryDetailsIntent.OnZekrClick(zekr.id))
@@ -153,7 +155,7 @@ fun AzkarDetailsScreen(
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-private fun AzkarDetailsScreenPreview() {
+private fun CategoryDetailsScreenPreview() {
 
      val mockAzkar = listOf(
          ZekrUiModel(
@@ -178,7 +180,7 @@ private fun AzkarDetailsScreenPreview() {
     Der3MuslimTheme(
         language = Locale.Builder().setLanguage("ar").build()
     ) {
-        AzkarDetailsScreen(
+        CategoryDetailsScreen(
             state = CategoryDetailsState(
                 azkarItems = mockAzkar
             ),

@@ -12,4 +12,10 @@ sealed interface HomeIntent  : MviIntent {
     data object NavigateToAllCategories : HomeIntent
 
     data class NavigateToAzkarDetails(val category: CategoryUi) : HomeIntent
+
+    data object DismissError : HomeIntent
+
+    data object Retry : HomeIntent
+
+    data object NavigateToNotifications : HomeIntent
 }

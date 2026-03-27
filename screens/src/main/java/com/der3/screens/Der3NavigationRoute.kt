@@ -13,10 +13,18 @@ sealed interface Der3NavigationRoute : Screens {
     object SectionScreen : Der3NavigationRoute
 
     @Serializable
-    object TasbeehScreen : Der3NavigationRoute
+    object QiblaScreen : Der3NavigationRoute
+
+    @Serializable
+    data class TasbeehScreen (
+        val openFromSection: Boolean
+    ): Der3NavigationRoute
 
     @Serializable
     object FavouriteScreen : Der3NavigationRoute
+
+    @Serializable
+    object PrayerTimesScreen : Der3NavigationRoute
 
 
 
@@ -24,6 +32,9 @@ sealed interface Der3NavigationRoute : Screens {
     // daily notifications
     @Serializable
     object DailyNotificationsScreen : Der3NavigationRoute
+
+    @Serializable
+    object NotificationScreen : Der3NavigationRoute
 
     @Serializable
     object AddCustomReminderScreen : Der3NavigationRoute
@@ -40,7 +51,7 @@ sealed interface Der3NavigationRoute : Screens {
 
     // home screens
     @Serializable
-    object AllCategoriesScreen : Der3NavigationRoute
+    object AllAzkarCategoriesScreen : Der3NavigationRoute
 
     @Serializable
     data class CategoryDetailsScreen(
@@ -72,4 +83,15 @@ sealed interface Der3NavigationRoute : Screens {
     @Serializable
     object AboutScreen : Der3NavigationRoute
 
+    @Serializable
+    object RateScreen : Der3NavigationRoute
+
+    @Serializable
+    object ShareScreen : Der3NavigationRoute
+
+    @Serializable
+    object ContactScreen : Der3NavigationRoute
+
+    @Serializable
+    object RecycleBinScreen : Der3NavigationRoute
 }

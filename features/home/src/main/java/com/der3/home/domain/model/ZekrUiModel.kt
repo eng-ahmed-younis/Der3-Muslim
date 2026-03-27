@@ -4,6 +4,8 @@ data class ZekrUiModel(
     val id: Int,
     val text: String,
     val audioPath: String,
+    val categoryName: String? = null,
+    val categoryId: Int? = null,
     val repeatCount: Int,
     val isFavorite: Boolean = false,
     val isBookmarked: Boolean = false
@@ -15,6 +17,7 @@ data class ZekrUiModel(
             audioPath = "mock",
             repeatCount = -1,
             isFavorite = false,
+            categoryName = "mock",
             isBookmarked = false
         )
     }

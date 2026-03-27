@@ -42,7 +42,7 @@ fun Der3MuslimTheme(
 
     CompositionLocalProvider(
         LocalCurrentColor provides colors,
-       // LocalAppTypography provides typography,
+        LocalAppTypography provides appTypography,
       //  LocalAppRoundedCornerShape provides roundShapes,
         LocalAppLanguage provides language,
         LocalLayoutDirection provides direction,

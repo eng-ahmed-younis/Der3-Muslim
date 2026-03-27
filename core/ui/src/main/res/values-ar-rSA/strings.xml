@@ -3,6 +3,7 @@
     <string name="app_name">درع المسلم</string>
     <string name="der3_muslim_title_Capitalize">DER3 Al-MUSLIM</string>
     <string name="der3_muslim_title">درع المسلم</string>
+    <string name="der3_muslim_subtitle">حصنك اليومي</string>
     <string name="home_title">الرئيسية</string>
     <string name="favorites_title">المفضلات</string>
     <string name="azkar_title">الأذكار</string>
@@ -23,7 +24,10 @@
     <string name="target_unlimited">مفتوح</string>
     <string name="settings_title">الإعدادات</string>
     <string name="about_title">عن التطبيق</string>
-    <string name="version_title">الإصدار</string>
+    <string name="rate_title">تقييم التطبيق</string>
+    <string name="share_title">مشاركة التطبيق</string>
+    <string name="contact_title">تواصل معنا</string>
+    <string name="version_title">الإصدار الحالي</string>
     <string name="home_view_all_action">عرض الكل</string>
     <string name="home_categories_title">التصنيفات</string>
     <string name="auto_change">تغيير تلقائي</string>
@@ -47,9 +51,20 @@
     <string name="history_filter_week">الأسبوع</string>
     <string name="history_filter_month">الشهر</string>
     <string name="history_item_subtitle">تكرار فردي</string>
+    <string name="notification_history_title">التنبيهات</string>
+    <string name="notification_today">اليوم</string>
+    <string name="notification_yesterday">بالأمس</string>
+    <string name="notification_aya_of_the_day">آية اليوم</string>
+    <string name="notification_empty_state">لا توجد تنبيهات أخرى</string>
+    <string name="notification_error_title">حدث خطأ ما</string>
+    <string name="notification_retry_button">إعادة المحاولة</string>
+
     <string name="daily_notifications_title">التنبيهات اليومية</string>
     <string name="daily_notifications_header_subtitle">حافظ على وردك اليومي من خلال التنبيهات</string>
     <string name="daily_notifications_add_custom">إضافة تنبيه مخصص</string>
+
+    <string name="sections_search_placeholder">ابحث عن قسم أو ميزة...</string>
+    <string name="favorites_search_placeholder">ابحث في أذكارك المفضلة...</string>
 
     <!-- Existing keys (ensure these exist) -->
     <string name="azkar_morning">أذكار الصباح</string>
@@ -98,6 +113,27 @@
     <string name="zekr_details_title">تفاصيل الذكر</string>
     <string name="zekr_details_quran_verse">الَّذِينَ آمَنُوا وَتَطْمَئِنُّ قُلُوبُهُم بِذِكْرِ اللَّهِ ۗ أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ</string>
 
+    <!-- Prayer Times & Dialogs -->
+    <string name="prayer_times_settings">إعدادات الحساب</string>
+    <string name="calculation_method">طريقة الحساب</string>
+    <string name="juridical_school">المذهب الفقهي</string>
+    <string name="time_format">نظام الوقت</string>
+    <string name="time_format_12h">12 ساعة</string>
+    <string name="time_format_24h">24 ساعة</string>
+    <string name="shafii_hanbali_maliki">شافعي، حنبلي، مالكي</string>
+    <string name="hanafi">حنفي</string>
+    <string name="monthly_calendar">التقويم الشهري</string>
+    <string name="day">اليوم</string>
+    <string name="fajr">فجر</string>
+    <string name="sunrise">شروق</string>
+    <string name="dhuhr">ظهر</string>
+    <string name="asr">عصر</string>
+    <string name="maghrib">مغرب</string>
+    <string name="isha">عشاء</string>
+    <string name="close">إغلاق</string>
+    <string name="location_settings">إعدادات الموقع</string>
+    <string name="search_city">ابحث عن مدينة...</string>
+    <string name="other_times">أوقات أخرى</string>
 
     // for info card
 
@@ -131,4 +167,101 @@
         <item quantity="other">%d ذكر</item>
     </plurals>
 
+    <string name="about_description">درع المسلم هو رفيقك الروحي الذي يرافقك في كل لحظة، مصمم بدقة ليمنحك تجربة إيمانية غنية بالسكينة والطمأنينة. يضم التطبيق مجموعة متكاملة من الأذكار والأدعية المختارة بعناية من كتاب حصن المسلم، ليكون حصناً لك في يومك وليلتك، ووسيلة لتعزيز اتصالك بالخالق في كل وقت وحين.</string>
+    <string name="rate_subtitle">ادعمنا بتقييمك على المتجر</string>
+    <string name="share_subtitle">انشر الخير مع أصدقائك</string>
+    <string name="contact_subtitle">يسعدنا سماع اقتراحاتك</string>
+    <string name="website_title">الموقع الإلكتروني</string>
+    <string name="website_subtitle">زوروا موقعنا للمزيد</string>
+    <string name="privacy_title">سياسة الخصوصية</string>
+    <string name="privacy_subtitle">تعرف على كيفية حماية بياناتك</string>
+    <string name="follow_us">تابعنا على</string>
+    <string name="made_with_love">صنع بكل حب لدعم المسلم في كل مكان</string>
+    <string name="all_rights_reserved">جميع الحقوق محفوظة © ٢٠٢٤</string>
+
+    <!-- Contact Us -->
+    <string name="contact_us_header_title">نسعد بخدمتكم</string>
+    <string name="contact_us_header_description">فريق تطبيق درع المسلم متاح دائماً للإجابة على استفساراتكم واقتراحاتكم لتطوير التطبيق بما يخدم الأمة الإسلامية.</string>
+    <string name="contact_name_label">الاسم</string>
+    <string name="contact_name_hint">أدخل اسمك الكريم</string>
+    <string name="contact_email_label">البريد الإلكتروني</string>
+    <string name="contact_email_hint">email@example.com</string>
+    <string name="contact_message_label">الرسالة</string>
+    <string name="contact_message_hint">كيف يمكننا مساعدتك؟</string>
+    <string name="contact_send_button">إرسال</string>
+    <string name="contact_email_card_title">ارسل لنا بريداً</string>
+    <string name="contact_email_card_subtitle">support@der3muslim.com</string>
+    <string name="contact_website_card_title">زيارة موقعنا</string>
+    <string name="contact_website_card_subtitle">www.der3muslim.com</string>
+    <string name="contact_follow_us">تابعنا على منصات التواصل</string>
+
+    <!-- Share App -->
+    <string name="share_app_title">مشاركة التطبيق</string>
+    <string name="share_app_card_title">حمل تطبيق درع\nالمسلم</string>
+    <string name="share_app_card_subtitle">DER3 MUSLIM • DIGITAL\nSANCTUARY</string>
+    <string name="share_app_via_label">شارك عبر</string>
+    <string name="whatsapp">واتساب</string>
+    <string name="telegram">تلجرام</string>
+    <string name="facebook">فيسبوك</string>
+    <string name="twitter">تويتر</string>
+    <string name="copy_link_success">تم نسخ الرابط بنجاح</string>
+    <string name="copy_link_button">نسخ رابط التحميل</string>
+    <string name="share_app_description">ساهم في نشر الخير وكن شريكاً في الأجر من خلال مشاركة التطبيق مع عائلتك وأصدقائك.</string>
+    <string name="rate_dialog_title">هل أعجبك التطبيق؟</string>
+    <string name="rate_dialog_description">دعمك لنا بالتقييم يساعدنا على الاستمرار ونشر الخير.</string>
+    <string name="rate_now">قيم الآن</string>
+    <string name="rate_later">لاحقاً</string>
+    <string name="share_message">السلام عليكم ورحمة الله وبركاته،\n\nيسرني مشاركة تطبيق \"درع المسلم\" معكم. تطبيق رائع يضم أذكار المسلم اليومية بتصميم عصري وسهل الاستخدام.\n\nحمله الآن من متجر جوجل:\n%s\n\nالدال على الخير كفاعله.</string>
+    <string name="favorites_empty_title">لا توجد أذكار مفضلة بعد</string>
+    <string name="favorites_empty_desc">ابدأ بإضافة الأذكار التي تهمك للوصول إليها بسرعة وسهولة في أي وقت.</string>
+    <string name="browse_azkar">تصفح الأذكار</string>
+    <string name="remove_from_favorites">إزالة من المفضلة</string>
+    <string name="play_audio">تشغيل</string>
+    <string name="pause_audio">إيقاف مؤقت</string>
+    <string name="swipe_to_delete">اسحب للحذف</string>
+    <string name="repeat_label">تكرار: %s</string>
+    <string name="recycle_bin_title">سلة المحذوفات</string>
+    <string name="recycle_bin_info">سيتم حذف العناصر الموجودة في سلة المحذوفات نهائيًا بعد مرور 30 يومًا من تاريخ الحذف. يمكنك استعادتها إلى قائمة المفضلة في أي وقت قبل ذلك.</string>
+    <string name="empty_recycle_bin">إفراغ السلة الآن</string>
+    <string name="restore">استعادة</string>
+    <string name="delete_permanently">حذف نهائي</string>
+    <string name="deleted_since">تم الحذف منذ %s</string>
+    <string name="recycle_bin_empty">سلة المحذوفات فارغة</string>
+
+    <!-- Internet Connection Dialog -->
+    <string name="internet_required_title">اتصال بالإنترنت مطلوب</string>
+    <string name="internet_required_message">يرجى التأكد من الاتصال بالإنترنت لتتمكن من الوصول إلى أحدث الأذكار، أوقات الصلاة الدقيقة، وكافة ميزات التطبيق الإيمانية.</string>
+    <string name="activate_connection">تفعيل الاتصال</string>
+    <string name="try_later">حاول لاحقاً</string>
+
+    <string name="notification_permission_title">تفعيل التنبيهات</string>
+    <string name="notification_permission_message">يحتاج التطبيق إلى إذن إرسال التنبيهات لضمان وصول أذكار الصباح والمساء والتنبيهات المخصصة لك في وقتها.</string>
+    <string name="notification_permission_settings">الذهاب للإعدادات</string>
+    <string name="notification_permission_cancel">إغلاق التطبيق</string>
+
+    <string name="calculation_method_desc">طريقة لحساب أوقات الصلاة. تُحدد هذه الطرق مختلف المدارس الفكرية حول كيفية حساب الأوقات. إذا لم يتم تحديد وقت الصلاة، فسيتم استخدام أقرب مرجع ديني بناءً على الموقع أو الإحداثيات المحددة في طلب واجهة برمجة التطبيقات (API). تقبل هذه المعلمة القيم من 0-23 و99، كما هو محدد أدناه:</string>
+    <string name="calculation_method_0">الجعفري / شيعة الاثنا عشري</string>
+    <string name="calculation_method_1">جامعة العلوم الإسلامية كراتشي</string>
+    <string name="calculation_method_2">الجمعية الإسلامية بأمريكا الشمالية</string>
+    <string name="calculation_method_3">رابطة العالم الإسلامي</string>
+    <string name="calculation_method_4">جامعة أم القرى بمكة المكرمة</string>
+    <string name="calculation_method_5">الهيئة المصرية العامة للمساحة</string>
+    <string name="calculation_method_7">معهد الجيوفيزياء جامعة طهران</string>
+    <string name="calculation_method_8">منطقة الخليج</string>
+    <string name="calculation_method_9">الكويت</string>
+    <string name="calculation_method_10">قطر</string>
+    <string name="calculation_method_11">مجلس أوغاما الإسلام، سنغافورة، سنغافورة</string>
+    <string name="calculation_method_12">منظمة الاتحاد الإسلامي الفرنسي</string>
+    <string name="calculation_method_13">ديانت إشليري باشكانليغي، تركيا</string>
+    <string name="calculation_method_14">الإدارة الروحية لمسلمي روسيا</string>
+    <string name="calculation_method_15">لجنة رؤية الهلال العالمية (وتتطلب أيضًا معلمة الشفق)</string>
+    <string name="calculation_method_16">دبي (تجريبي)</string>
+    <string name="calculation_method_17">جابتان كيماجوان إسلام ماليزيا (جاكيم)</string>
+    <string name="calculation_method_18">تونس</string>
+    <string name="calculation_method_19">الجزائر</string>
+    <string name="calculation_method_20">كيميناج - كيمنتريان أجاما جمهورية اندونيسيا</string>
+    <string name="calculation_method_21">المغرب</string>
+    <string name="calculation_method_22">الجماعة الإسلامية في لشبونة</string>
+    <string name="calculation_method_23">وزارة الأوقاف والشؤون والمقدسات الإسلامية الأردن</string>
+    <string name="calculation_method_99">مخصص</string>
 </resources>
