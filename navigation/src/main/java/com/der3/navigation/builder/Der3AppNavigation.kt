@@ -1,9 +1,9 @@
 package com.der3.navigation.builder
 
 import com.der3.home.presentations.category_details.CategoryDetailsRoute
-import com.der3.home.presentations.drawer.about_der3.AboutDer3Route
+import com.der3.home.presentations.side_menu.about_der3.AboutDer3Route
 import com.der3.home.presentations.zekr_details.ZekrDetailsRoute
-import com.der3.home.presentations.drawer.contact_us.ContactUsRoute
+import com.der3.home.presentations.side_menu.contact_us.ContactUsRoute
 import com.der3.home.presentations.favorite.FavoritesRoute
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
