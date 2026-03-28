@@ -33,6 +33,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import com.der3.shared.data.provider.ZekrCategoriesProvider
 import com.der3.ui.R
 import com.der3.ui.models.PalletColors
+import com.der3.ui.themes.AppColors
 
 @Composable
 fun CategoryCard(
@@ -41,16 +42,12 @@ fun CategoryCard(
     onCategoryClick: (CategoryUi) -> Unit
 ) {
 
-    // Pick random color ONCE per composition
-    val bgColor = remember {
-        PalletColors.iconBackgroundColors.random()
-    }
 
     Card(
         modifier = modifier
             .clickable(onClick = { onCategoryClick(category) }),
         shape = RoundedCornerShape(28.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = AppColors.white),
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
 
@@ -87,7 +84,8 @@ fun CategoryCard(
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Center,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = AppColors.gray900Text
             )
 
             Spacer(Modifier.height(4.dp))
@@ -99,7 +97,8 @@ fun CategoryCard(
                 overflow = TextOverflow.Ellipsis,
                 fontWeight = FontWeight.W600,
                 textAlign = TextAlign.Center,
-                fontFamily = FontFamily(Font(R.font.cairo_medium))
+                fontFamily = FontFamily(Font(R.font.cairo_medium)),
+                color = AppColors.gray500
             )
         }
     }

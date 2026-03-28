@@ -1,5 +1,6 @@
 package com.der3.home.presentations.azkar_category
 
+import android.content.res.Configuration
 import com.der3.ui.components.Der3TopAppBar
 import android.util.Log
 import androidx.compose.runtime.Composable
@@ -13,7 +14,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.der3.shared.data.provider.ZekrCategoriesProvider
@@ -27,6 +30,7 @@ import com.der3.ui.components.LoadingDialog
 import com.der3.ui.components.ReminderNameField
 import com.der3.ui.style.ShiftSystemBarStyle
 import com.der3.ui.themes.AppColors
+import com.der3.ui.themes.isStatusBarDark
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -53,12 +57,12 @@ fun AzkarCategoryRoute(
     }
 
     ShiftSystemBarStyle(
-        statusBarColor = AppColors.gray50,
+        statusBarColor = AppColors.screenBackground,
         isStatusBarVisible = true,
-        useDarkStatusBarIcons = true,
+        useDarkStatusBarIcons = isStatusBarDark,
         isEdgeToEdgeEnabled = true,
         isNavigationBarVisible = false,
-        navigationBarColor = AppColors.gray50,
+        navigationBarColor = AppColors.screenBackground,
         useDarkNavigationBarIcons = false
     )
 
@@ -98,11 +102,11 @@ fun AzkarCategoryScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(AppColors.gray50)
+            .background(AppColors.screenBackground)
     ) {
         Der3TopAppBar(
             title = stringResource(id = R.string.home_categories_title),
-            backgroundColor = AppColors.gray50,
+            backgroundColor = AppColors.screenBackground,
             titleColor = AppColors.gray900Text,
             navigationIconColor = AppColors.gray900Text,
             //actionIconColor = AppColors.green800,
@@ -118,10 +122,10 @@ fun AzkarCategoryScreen(
             label = stringResource(id = R.string.reminder_name_hint),
             value = searchText,
             iconAction = Icons.Default.Search,
-            borderColor = AppColors.gray500,
+            borderColor = AppColors.gray100,
             backgroundColor = AppColors.white,
-            labelColor = AppColors.gray500,
-            iconActionColor = AppColors.gray500,
+            labelColor = AppColors.gray400,
+            iconActionColor = AppColors.green800,
             onValueChange = {
                 Log.d("AllCategoryScreen", "onValueChange: $it")
                 searchText = it
@@ -131,6 +135,9 @@ fun AzkarCategoryScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
+                .background(
+                    color = AppColors.screenBackground,
+                )
                 .heightIn(
                     min = (state.categories.size * 100).dp,
                     max = ((state.categories.size + 3) * 100).dp
@@ -162,18 +169,44 @@ fun AzkarCategoryScreen(
 }
 
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true, showSystemUi = true, name = "Light Mode")
 @Composable
-fun AzkarCategoryScreenPreview() {
+fun AzkarCategoryScreenLightPreview() {
     Der3MuslimTheme(
         language = Locale.Builder().setLanguage("ar").build()
     ) {
-        AzkarCategoryScreen(
-            state = AzkarCategoryState(
-                isLoading = true,
-                categories = ZekrCategoriesProvider.categories
-            ),
-            onIntent = {}
-        )
+        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+            AzkarCategoryScreen(
+                state = AzkarCategoryState(
+                    isLoading = false,
+                    categories = ZekrCategoriesProvider.categories
+                ),
+                onIntent = {}
+            )
+        }
+    }
+}
+
+@Preview(
+    showBackground = true,
+    showSystemUi = true,
+    name = "Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun AzkarCategoryScreenDarkPreview() {
+    Der3MuslimTheme(
+        style = com.der3.model.AppStyle.DARK,
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
+        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+            AzkarCategoryScreen(
+                state = AzkarCategoryState(
+                    isLoading = false,
+                    categories = ZekrCategoriesProvider.categories
+                ),
+                onIntent = {}
+            )
+        }
     }
 }

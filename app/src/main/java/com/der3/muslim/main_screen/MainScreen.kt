@@ -39,11 +39,11 @@ fun MainScreen() {
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry?.destination?.route
 
-    val showBottomBar = when (currentRoute) {
-        Der3NavigationRoute.HomeScreen::class.qualifiedName,
-        Der3NavigationRoute.FavouriteScreen::class.qualifiedName,
-        Der3NavigationRoute.TasbeehScreen::class.qualifiedName,
-        Der3NavigationRoute.SectionScreen::class.qualifiedName -> true
+    val showBottomBar = when {
+        currentRoute == Der3NavigationRoute.HomeScreen::class.qualifiedName -> true
+        currentRoute == Der3NavigationRoute.FavouriteScreen::class.qualifiedName -> true
+        currentRoute == Der3NavigationRoute.SectionScreen::class.qualifiedName -> true
+        currentRoute?.startsWith(Der3NavigationRoute.TasbeehScreen::class.qualifiedName ?: "") == true -> true
         else -> false
     }
 

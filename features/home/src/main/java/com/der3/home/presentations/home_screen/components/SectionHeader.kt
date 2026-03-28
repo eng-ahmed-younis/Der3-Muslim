@@ -40,7 +40,7 @@ fun SectionHeader(
             fontWeight = FontWeight.Bold,
             fontFamily = FontFamily(Font(R.font.cairo_bold)),
             fontSize = 18.sp,
-            color = AppColors.green800
+            color = AppColors.gray900Text
         )
 
         Text(

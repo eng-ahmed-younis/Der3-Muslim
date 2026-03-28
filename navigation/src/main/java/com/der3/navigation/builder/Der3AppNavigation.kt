@@ -1,5 +1,6 @@
 package com.der3.navigation.builder
 
+import com.der3.home.presentations.side_menu.setting.SettingRoute
 import com.der3.home.presentations.category_details.CategoryDetailsRoute
 import com.der3.home.presentations.side_menu.about_der3.AboutDer3Route
 import com.der3.home.presentations.zekr_details.ZekrDetailsRoute
@@ -147,6 +148,12 @@ fun NavGraphBuilder.der3AppNavigation(rootNavController: NavHostController) {
 
     composable<Der3NavigationRoute.FavouriteScreen> {
         FavoritesRoute { screen ->
+            rootNavController.navigateTo(screen = screen)
+        }
+    }
+
+    composable<Der3NavigationRoute.SettingsScreen> {
+        SettingRoute { screen ->
             rootNavController.navigateTo(screen = screen)
         }
     }

@@ -25,6 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.der3.muslim.main_screen.drawer.model.DrawerItem
 import com.der3.screens.Der3NavigationRoute
 import com.der3.ui.R
@@ -67,6 +68,7 @@ fun DrawerRow(
             text = stringResource(item.title),
             modifier = Modifier
                 .weight(1f),
+            fontSize = 16.sp,
           //  style = MaterialTheme.typography.titleMedium,
             fontWeight = if (selected) FontWeight.W800 else FontWeight.W600,
             color = if (selected) AppColors.green800 else AppColors.gray500,

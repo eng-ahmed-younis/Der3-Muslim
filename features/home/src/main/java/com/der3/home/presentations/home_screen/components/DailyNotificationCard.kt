@@ -1,5 +1,6 @@
 package com.der3.home.presentations.home_screen.components
 
+import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -50,11 +51,11 @@ fun DailyNotificationCard(
         modifier = modifier,
         shape = RoundedCornerShape(28.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFE8F3EA)
+            containerColor = AppColors.white
         ),
         border = BorderStroke(
-            width = 1.dp,
-            color = AppColors.green100
+            width = 0.5.dp,
+            color = AppColors.gray200
         )
     ) {
 
@@ -70,15 +71,14 @@ fun DailyNotificationCard(
                 modifier = Modifier
                     .size(56.dp)
                     .background(
-                        AppColors.green800,
+                        AppColors.gold700,
                         shape = RoundedCornerShape(20.dp)
                     ),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     painter = painterResource(R.drawable.notifications_active),
-                        //Icons.Default.Notifications,
-                    null,
+                    contentDescription = null,
                     tint = Color.White
                 )
             }
@@ -92,7 +92,8 @@ fun DailyNotificationCard(
                     text = "التنبيهات اليومية",
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,
-                    fontFamily = FontFamily(Font(R.font.cairo_bold))
+                    fontFamily = FontFamily(Font(R.font.cairo_bold)),
+                    color = AppColors.gray900Text
                 )
 
                 Text(
@@ -108,7 +109,7 @@ fun DailyNotificationCard(
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                 contentDescription = null,
-                tint = AppColors.green800,
+                tint = AppColors.gold700,
                 modifier = Modifier
                     .clickable {
                         onClick()
@@ -118,9 +119,25 @@ fun DailyNotificationCard(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, name = "Daily Notification Card Light")
 @Composable
 fun DailyNotificationCardPreview() {
+    Der3MuslimTheme(
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
+        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+            DailyNotificationCard()
+        }
+    }
+}
+
+@Preview(
+    showBackground = true,
+    name = "Daily Notification Card Dark",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun DailyNotificationCardDarkPreview() {
     Der3MuslimTheme(
         language = Locale.Builder().setLanguage("ar").build()
     ) {

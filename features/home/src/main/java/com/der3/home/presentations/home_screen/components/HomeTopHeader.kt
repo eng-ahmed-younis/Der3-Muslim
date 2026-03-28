@@ -26,14 +26,25 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.der3.ui.R
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
+import com.der3.ui.themes.isStatusBarDark
 
 @Composable
 fun HomeTopHeader(
     modifier: Modifier = Modifier,
-    backgroundColor: Color = AppColors.white,
+    darkTheme: Boolean = false,
+    backgroundColor: Color = AppColors.screenBackground,
     onDrawerClick: () -> Unit,
     onNotificationClick: () -> Unit
 ) {
+
+
+    val (iconBg, iconColor) = if (darkTheme) {
+        AppColors.gray900Text.copy(alpha = 0.15f) to AppColors.gray900Text
+    } else {
+        AppColors.green50 to AppColors.green800
+    }
+
+
 
     Row(
         modifier = modifier
@@ -49,14 +60,14 @@ fun HomeTopHeader(
             Box (
                 modifier = Modifier
                     .size(40.dp)
-                    .background(AppColors.green50)
+                    .background(iconBg)
                     .padding(8.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = Icons.Default.Menu,
                     contentDescription = "Drawer",
-                    tint = AppColors.green800
+                    tint = iconColor
                 )
             }
         }
@@ -67,7 +78,7 @@ fun HomeTopHeader(
             text = stringResource(id = R.string.azkar_title),
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
-            color = Color(0xFF1B5E20)
+            color = AppColors.gray900Text
         )
 
         // 🔹 Notification Icon
@@ -75,14 +86,16 @@ fun HomeTopHeader(
             Box (
                 modifier = Modifier
                     .size(40.dp)
-                    .background(AppColors.green50)
+                    .background(
+                        color = iconBg
+                    )
                     .padding(8.dp),
                 contentAlignment = Alignment.Center
             ){
                 Icon(
                     imageVector = Icons.Default.Notifications,
                     contentDescription = "Notifications",
-                    tint = AppColors.green800
+                    tint = iconColor
                 )
 
                 Box(
@@ -102,6 +115,7 @@ fun HomeTopHeaderPreview() {
     Der3MuslimTheme {
         HomeTopHeader(
             onDrawerClick = {},
+            darkTheme = true,
             backgroundColor = AppColors.gray50,
             onNotificationClick = {}
         )

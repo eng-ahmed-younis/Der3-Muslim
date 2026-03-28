@@ -9,7 +9,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
+import androidx.lifecycle.viewModelScope
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
@@ -22,7 +25,17 @@ class MainViewModel @Inject constructor(
 
 
     init {
-        appStyle.value = getSystemTheme()
+        observeAppStyle()
+    }
+
+    private fun observeAppStyle() {
+        dataStoreRepository.appStyleFlow.onEach {
+            appStyle.value = when (it) {
+                AppStyle.LIGHT.value -> AppStyle.LIGHT
+                AppStyle.DARK.value -> AppStyle.DARK
+                else -> AppStyle.SYSTEM
+            }
+        }.launchIn(viewModelScope)
     }
 
     fun getSystemTheme(): AppStyle {

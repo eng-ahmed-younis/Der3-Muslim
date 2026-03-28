@@ -1,5 +1,6 @@
 package com.der3.home.presentations.home_screen
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -44,6 +45,7 @@ import com.der3.ui.style.ShiftSystemBarStyle
 import com.der3.ui.themes.Der3MuslimTheme
 import java.util.Locale
 import com.der3.ui.themes.AppColors
+import com.der3.ui.themes.isStatusBarDark
 import com.der3.utils.asString
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -105,9 +107,9 @@ fun HomeScreen(
 
 
     ShiftSystemBarStyle(
-        statusBarColor = Color(0xFFF4F6F5),
+        statusBarColor = AppColors.screenBackground,
         isStatusBarVisible = true,
-        useDarkStatusBarIcons = true,
+        useDarkStatusBarIcons = isStatusBarDark,
         isEdgeToEdgeEnabled = true,
         isNavigationBarVisible = false,
         navigationBarColor = AppColors.gray50,
@@ -119,12 +121,13 @@ fun HomeScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(AppColors.green25)
+            .background(AppColors.screenBackground)
     ) {
 
         HomeTopHeader(
             modifier = Modifier,
-            backgroundColor = AppColors.gray50,
+            backgroundColor = AppColors.screenBackground,
+            darkTheme = !isStatusBarDark,
             onDrawerClick = {
                 if (drawerState.isOpen) {
                     scope.launch { drawerState.close() }
@@ -144,7 +147,9 @@ fun HomeScreen(
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
 
-            item { DailyZekrCard() }
+            item {
+                DailyZekrCard()
+            }
 
             item {
                 SectionHeader(
@@ -176,7 +181,12 @@ fun HomeScreen(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(
+    showBackground = true,
+    showSystemUi = true,
+    name = "Home Screen",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
 @Composable
 fun HomeScreenPreview() {
     Der3MuslimTheme(
@@ -185,7 +195,7 @@ fun HomeScreenPreview() {
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
             HomeScreen(
                 state = HomeState(
-                    isLoading = true,
+                    isLoading = false,
                     homeAzkarCategory = ZekrCategoriesProvider.categories
                 ),
                 onIntent = {}

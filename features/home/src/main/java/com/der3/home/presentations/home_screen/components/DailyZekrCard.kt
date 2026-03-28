@@ -1,5 +1,6 @@
 package com.der3.home.presentations.home_screen.components
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,12 +25,19 @@ import com.der3.ui.themes.Der3MuslimTheme
 import java.util.Locale
 
 @Composable
-fun DailyZekrCard() {
+fun DailyZekrCard(
+    modifier: Modifier = Modifier,
+    title: String = "لا إله إلا الله وحده لا شريك له",
+    description: String = "له الملك وله الحمد وهو على كل شيء قدير",
+    containerColor: Color? = null
+) {
+    val finalContainerColor = containerColor ?: AppColors.green800
 
     Card(
+        modifier = modifier,
         shape = RoundedCornerShape(28.dp),
         colors = CardDefaults.cardColors(
-            containerColor = AppColors.green800
+            containerColor = finalContainerColor
         ),
         elevation = CardDefaults.cardElevation(8.dp)
     ) {
@@ -42,14 +50,14 @@ fun DailyZekrCard() {
 
             Text(
                 text = "ذكر اليوم",
-                color = Color(0xFFB8E6C1),
+                color = Color.White.copy(alpha = 0.7f),
                 fontSize = 14.sp
             )
 
             Spacer(Modifier.height(12.dp))
 
             Text(
-                text = "لا إله إلا الله وحده لا شريك له",
+                text = title,
                 color = Color.White,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold
@@ -58,15 +66,15 @@ fun DailyZekrCard() {
             Spacer(Modifier.height(8.dp))
 
             Text(
-                text = "له الملك وله الحمد وهو على كل شيء قدير",
-                color = Color.White,
+                text = description,
+                color = Color.White.copy(alpha = 0.9f),
                 fontSize = 14.sp
             )
         }
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, name = "Daily Zekr Card Green Light")
 @Composable
 fun DailyZekrCardPreview() {
     Der3MuslimTheme(
@@ -74,6 +82,58 @@ fun DailyZekrCardPreview() {
     ) {
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
             DailyZekrCard()
+        }
+    }
+}
+
+@Preview(
+    showBackground = true,
+    name = "Daily Zekr Card Green Dark",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun DailyZekrCardDarkPreview() {
+    Der3MuslimTheme(
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
+        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+            DailyZekrCard()
+        }
+    }
+}
+
+@Preview(showBackground = true, name = "Daily Zekr Card Gold Light")
+@Composable
+fun DailyZekrCardGoldPreview() {
+    Der3MuslimTheme(
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
+        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+            DailyZekrCard(
+                containerColor = AppColors.gold600,
+                title = "سبحان الله وبحمده",
+                description = "مئة مرة حطت خطاياه وإن كانت مثل زبد البحر"
+            )
+        }
+    }
+}
+
+@Preview(
+    showBackground = true,
+    name = "Daily Zekr Card Gold Dark",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun DailyZekrCardGoldDarkPreview() {
+    Der3MuslimTheme(
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
+        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+            DailyZekrCard(
+                containerColor = AppColors.gold600,
+                title = "سبحان الله وبحمده",
+                description = "مئة مرة حطت خطاياه وإن كانت مثل زبد البحر"
+            )
         }
     }
 }

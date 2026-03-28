@@ -107,7 +107,7 @@ fun ContactUsRoute(
     )
 
     ShiftSystemBarStyle(
-        statusBarColor = AppColors.green25,
+        statusBarColor = AppColors.screenBackground,
         isStatusBarVisible = true,
         useDarkStatusBarIcons = true,
         isEdgeToEdgeEnabled = true,
@@ -128,7 +128,7 @@ fun ContactUsScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(AppColors.green25)
+            .background(AppColors.screenBackground)
     ) {
         Der3TopAppBar(
             title = stringResource(id = R.string.contact_title),

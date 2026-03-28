@@ -39,7 +39,7 @@ fun MasbahaActionButton(
         onClick = onClick,
         modifier = modifier
             .height(56.dp)
-            .border(1.dp, AppColors.gray200, RoundedCornerShape(28.dp)),
+            .border(1.dp, AppColors.gray100, RoundedCornerShape(28.dp)),
         colors = ButtonDefaults.buttonColors(
             containerColor = AppColors.white,
             contentColor = AppColors.green800
@@ -70,7 +70,7 @@ fun MasbahaToggleActionButton(
         onClick = { onToggle(!enabled) },
         modifier = modifier
             .height(56.dp)
-            .border(1.dp, AppColors.gray200, RoundedCornerShape(28.dp)),
+            .border(1.dp, AppColors.gray100, RoundedCornerShape(28.dp)),
         colors = ButtonDefaults.buttonColors(
             containerColor = AppColors.white,
             contentColor = if (enabled) AppColors.green800 else AppColors.gray500

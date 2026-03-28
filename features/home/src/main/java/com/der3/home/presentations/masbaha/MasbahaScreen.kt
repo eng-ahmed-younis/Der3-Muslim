@@ -1,6 +1,8 @@
 package com.der3.home.presentations.masbaha
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
+import com.der3.model.AppStyle
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -39,7 +41,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.der3.home.di.factory.MasbahaViewModelFactory
-import com.der3.home.di.factory.ZekrDetailsViewModelFactory
 import com.der3.home.presentations.masbaha.components.AzkarAutoSelected
 import com.der3.home.presentations.masbaha.components.MasbahaActionButton
 import com.der3.home.presentations.masbaha.components.ResetMasbahaDialog
@@ -58,8 +59,11 @@ import com.der3.ui.components.Der3TopAppBar
 import com.der3.ui.components.ErrorDialog
 import com.der3.ui.components.InternetRequiredDialog
 import com.der3.ui.components.LoadingDialog
+import com.der3.ui.style.ShiftSystemBarStyle
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
+import com.der3.ui.themes.isDarkTheme
+import com.der3.ui.themes.isStatusBarDark
 import com.der3.utils.asString
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -140,6 +144,14 @@ fun MasbahaRoute(
         }
     }
 
+    ShiftSystemBarStyle(
+        statusBarColor = AppColors.screenBackground,
+        isStatusBarVisible = true,
+        useDarkStatusBarIcons = isStatusBarDark,
+        isEdgeToEdgeEnabled = true,
+        isNavigationBarVisible = false
+    )
+
     MasbahaScreen(
         state = state,
         onIntent = viewModel::onIntent
@@ -181,15 +193,16 @@ fun MasbahaScreen(
 
     Column(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .background(color = AppColors.screenBackground),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         var showMenu by remember { mutableStateOf(false) }
 
         Der3TopAppBar(
             title = stringResource(id = R.string.electronic_rosary_title),
-            backgroundColor = AppColors.gray50,
-            titleColor = AppColors.green800,
+            backgroundColor = AppColors.screenBackground,
+            titleColor = AppColors.gray900Text,
             showBackButton = if (state.showBackButton) true else false,
             onBackClick = {
                 onIntent(MasbahaIntent.OnBackClick)
@@ -201,7 +214,7 @@ fun MasbahaScreen(
                         Icon(
                             imageVector = Icons.Default.MoreVert,
                             contentDescription = "More",
-                            tint = AppColors.green800
+                            tint = AppColors.gray900Text
                         )
                     }
                     DropdownMenu(
@@ -213,7 +226,12 @@ fun MasbahaScreen(
                         onDismissRequest = { showMenu = false }
                     ) {
                         DropdownMenuItem(
-                            text = { Text(stringResource(id = R.string.history_title)) },
+                            text = {
+                                Text(
+                                    text = stringResource(id = R.string.history_title),
+                                    color = AppColors.gray900Text,
+                                )
+                                   },
                             onClick = {
                                 showMenu = false
                                 onIntent(MasbahaIntent.OpenHistory)
@@ -222,7 +240,7 @@ fun MasbahaScreen(
                                 Icon(
                                     imageVector = Icons.Default.History,
                                     contentDescription = null,
-                                    tint = AppColors.gold600
+                                    tint = AppColors.gray900Text
                                 )
                             }
                         )
@@ -260,13 +278,23 @@ fun MasbahaScreen(
             ) {
                 items(state.azkars) { azkar ->
                     val isSelected = state.selectedAzkar?.id == azkar.id
+                    val chipBackgroundColor = when {
+                        isSelected && isDarkTheme -> AppColors.gold500
+                        isSelected -> AppColors.green800
+                        else -> AppColors.white
+                    }
+                    val chipContentColor = when {
+                        isSelected && isDarkTheme -> AppColors.white
+                        isSelected -> AppColors.white
+                        else -> if (isDarkTheme) AppColors.green800 else AppColors.green700
+                    }
                     Box(
                         modifier = Modifier
                             .clip(RoundedCornerShape(24.dp))
-                            .background(if (isSelected) AppColors.green800 else AppColors.white)
+                            .background(chipBackgroundColor)
                             .border(
                                 width = 1.dp,
-                                color = if (isSelected) AppColors.green800 else AppColors.green50,
+                                color = if (isSelected) chipBackgroundColor else if (isDarkTheme) AppColors.gray100 else AppColors.green50,
                                 shape = RoundedCornerShape(24.dp)
                             )
                             .clickable { onIntent(MasbahaIntent.SelectAzkar(azkar)) }
@@ -277,7 +305,7 @@ fun MasbahaScreen(
                             modifier = Modifier
                                 .padding(horizontal = 2.dp),
                             text = azkar.text ?: "",
-                            color = if (isSelected) AppColors.white else AppColors.green700,
+                            color = chipContentColor,
                             fontWeight = FontWeight.Bold
                         )
                     }
@@ -299,7 +327,7 @@ fun MasbahaScreen(
                 }
                 Text(
                     text = "${stringResource(id = R.string.target_label)}: $targetText",
-                    color = AppColors.green800,
+                    color = if (isDarkTheme) AppColors.gold500 else AppColors.green800,
                     style = MaterialTheme.typography.bodyMedium
                 )
 
@@ -324,21 +352,22 @@ fun MasbahaScreen(
                     .height(8.dp)
                     .padding(horizontal = 16.dp)
                     .clip(RoundedCornerShape(4.dp)),
-                color = AppColors.green800,
+                color = if (isDarkTheme) AppColors.gold500 else AppColors.green800,
                 trackColor = AppColors.gray200,
             )
 
             Spacer(modifier = Modifier.height(48.dp))
 
+            val tasbeehMainCenterColor = if (isDarkTheme) AppColors.gold600 else AppColors.green800
             Box(
                 modifier = Modifier
                     .size(280.dp)
-                    .background(color = AppColors.green800.copy(alpha = 0.05f), shape = CircleShape)
+                    .background(color = tasbeehMainCenterColor.copy(alpha = 0.05f), shape = CircleShape)
                     .padding(20.dp)
-                    .background(color = AppColors.green800.copy(alpha = 0.1f), shape = CircleShape)
+                    .background(color = tasbeehMainCenterColor.copy(alpha = 0.1f), shape = CircleShape)
                     .padding(20.dp)
                     .clip(CircleShape)
-                    .background(color = AppColors.green800)
+                    .background(color = tasbeehMainCenterColor)
                     .clickable {
                         val hapticType = when (state.vibrationType) {
                             com.der3.home.presentations.masbaha.mvi.VibrationType.NONE -> TasbeehHapticType.NONE
@@ -361,6 +390,7 @@ fun MasbahaScreen(
                     Text(
                         text = stringResource(id = R.string.press_to_praise),
                         color = AppColors.white.copy(alpha = 0.8f),
+                        fontWeight = FontWeight.W800,
                         fontSize = 16.sp
                     )
                 }
@@ -398,7 +428,7 @@ fun MasbahaScreen(
                     .padding(horizontal = 16.dp),
                 shape = RoundedCornerShape(28.dp),
                 color = AppColors.white,
-                border = androidx.compose.foundation.BorderStroke(1.dp, AppColors.gray200)
+                border = androidx.compose.foundation.BorderStroke(1.dp, AppColors.gray100)
             ) {
                 Row(
                     modifier = Modifier
@@ -412,7 +442,7 @@ fun MasbahaScreen(
                         onCheckedChange = { onIntent(MasbahaIntent.ToggleSound(it)) },
                         colors = SwitchDefaults.colors(
                             checkedThumbColor = AppColors.white,
-                            checkedTrackColor = AppColors.green800,
+                            checkedTrackColor = if (isDarkTheme) AppColors.gold500 else AppColors.green800,
                             uncheckedThumbColor = AppColors.gray500,
                             uncheckedTrackColor = AppColors.gray200,
                             uncheckedBorderColor = AppColors.gray500
@@ -421,14 +451,14 @@ fun MasbahaScreen(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
                             text = stringResource(id = R.string.sound_alert),
-                            color = AppColors.green800,
+                            color = if (isDarkTheme) AppColors.gold500 else AppColors.green800,
                             fontWeight = FontWeight.Bold
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.VolumeUp,
                             contentDescription = null,
-                            tint = AppColors.green800
+                            tint = if (isDarkTheme) AppColors.gold500 else AppColors.green800
                         )
                     }
                 }
@@ -443,7 +473,7 @@ fun MasbahaScreen(
                     .padding(horizontal = 16.dp),
                 shape = RoundedCornerShape(20.dp),
                 color = AppColors.white,
-                border = androidx.compose.foundation.BorderStroke(1.dp, AppColors.gray200)
+                border = androidx.compose.foundation.BorderStroke(1.dp, AppColors.gray100)
             ) {
                 Column(
                     modifier = Modifier.padding(16.dp),
@@ -452,14 +482,14 @@ fun MasbahaScreen(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
                             text = stringResource(id = R.string.vibration),
-                            color = AppColors.green800,
+                            color = if (isDarkTheme) AppColors.gold500 else AppColors.green800,
                             fontWeight = FontWeight.Bold
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Icon(
                             imageVector = Icons.Default.Vibration,
                             contentDescription = null,
-                            tint = AppColors.green800
+                            tint = if (isDarkTheme) AppColors.gold500 else AppColors.green800
                         )
                     }
 
@@ -516,14 +546,24 @@ fun VibrationTypeItem(
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
+    val backgroundColor = when {
+        isSelected && isDarkTheme -> AppColors.gold500
+        isSelected -> AppColors.green800
+        else -> AppColors.white
+    }
+    val contentColor = when {
+        isSelected -> AppColors.white
+        else -> if (isDarkTheme) AppColors.green800 else AppColors.gray500
+    }
+
     Surface(
         onClick = onClick,
         modifier = modifier.height(60.dp),
         shape = RoundedCornerShape(12.dp),
-        color = if (isSelected) AppColors.green800 else AppColors.white,
+        color = backgroundColor,
         border = if (isSelected) null else androidx.compose.foundation.BorderStroke(
             1.dp,
-            AppColors.gray200
+            if (isDarkTheme) AppColors.gray100 else AppColors.gray200
         )
     ) {
         Column(
@@ -534,12 +574,12 @@ fun VibrationTypeItem(
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                tint = if (isSelected) AppColors.white else AppColors.green800,
+                tint = if (isSelected) AppColors.white else if (isDarkTheme) AppColors.green800 else AppColors.green800,
                 modifier = Modifier.size(20.dp)
             )
             Text(
                 text = text,
-                color = if (isSelected) AppColors.white else AppColors.gray500,
+                color = contentColor,
                 fontSize = 11.sp,
                 fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
             )
@@ -548,10 +588,11 @@ fun VibrationTypeItem(
 }
 
 
-@Preview(showSystemUi = true, showBackground = true)
+@Preview(showSystemUi = true, showBackground = true, name = "Masbaha Light")
 @Composable
 fun MasbahaScreenPreview() {
     Der3MuslimTheme(
+        style = AppStyle.LIGHT,
         language = Locale.Builder().setLanguage("ar").build()
     ) {
         MasbahaScreen(
@@ -559,14 +600,39 @@ fun MasbahaScreenPreview() {
                 azkars = listOf(
                     MasbahaAzkar(1, "سبحان الله", 33),
                     MasbahaAzkar(2, "الحمد لله", 33),
-                    MasbahaAzkar(3, "الله أكبر", 33),
-                    MasbahaAzkar(4, "سبحان الله", 33),
-                    MasbahaAzkar(5, "الحمد لله", 33),
-                    MasbahaAzkar(6, "الله أكبر", 33)
+                    MasbahaAzkar(3, "الله أكبر", 33)
                 ),
                 currentCount = 21,
                 targetCount = 33,
-                selectedAzkar = MasbahaAzkar(id = 3)
+                selectedAzkar = MasbahaAzkar(id = 3, text = "سبحان الله")
+            ),
+            onIntent = {}
+        )
+    }
+}
+
+@Preview(
+    showSystemUi = true,
+    showBackground = true,
+    name = "Masbaha Dark",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun MasbahaScreenDarkPreview() {
+    Der3MuslimTheme(
+        style = AppStyle.DARK,
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
+        MasbahaScreen(
+            state = MasbahaState(
+                azkars = listOf(
+                    MasbahaAzkar(1, "سبحان الله", 33),
+                    MasbahaAzkar(2, "الحمد لله", 33),
+                    MasbahaAzkar(3, "الله أكبر", 33)
+                ),
+                currentCount = 21,
+                targetCount = 33,
+                selectedAzkar = MasbahaAzkar(id = 3, text = "سبحان الله")
             ),
             onIntent = {}
         )
