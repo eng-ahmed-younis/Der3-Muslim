@@ -36,7 +36,9 @@ internal val lightColors = Colors(
     red50 = Color(0xFFFDECEC),
 
 
-    screenBackground = Color(0xFFF4F6F5)
+    screenBackground = Color(0xFFF4F6F5),
+    cardColor = Color(0xFFFFFFFF),
+    dailyCardColor = Color(0xFF344955)
 )
 
 
@@ -50,7 +52,7 @@ internal val darkColors = Colors(
     green50 = Color(0xFF0D2B11),
     green25 = Color(0xFF071408),
 
-    gray900Text = Color(0xFFF1F5F9),
+    gray900Text = Color(0xFFFCFDFE),
     gray500 = Color(0xFF9CA3AF),
     gray400 = Color(0xFF6B7280),
     gray300 = Color(0xFF4B5563),
@@ -64,13 +66,17 @@ internal val darkColors = Colors(
     gold600 = Color(0xFFC8A951),
     gold500 = Color(0xFFC5A059),
     gold400 = Color(0xFFFFE66D),
-    white = Color(0xFF1E1E1E),
+    white = Color(0xFF151C15),
 
     red900 = Color(0xFFEF4444),
     red50 = Color(0xFF450A0A),
 
 
-    screenBackground = Color(0xFF121212)
+   // screenBackground = Color(0xFF121212)
+    screenBackground = Color(0xFF1B1F23),
+    cardColor = Color(0xFF2A2F34),
+    dailyCardColor = Color(0xFF344955)
+
 )
 //121212
 
@@ -103,5 +109,7 @@ data class Colors(
     val red900: Color,
     val red50: Color,
 
-    val screenBackground: Color
+    val screenBackground: Color,
+    val cardColor:Color,
+    val dailyCardColor:Color
 )

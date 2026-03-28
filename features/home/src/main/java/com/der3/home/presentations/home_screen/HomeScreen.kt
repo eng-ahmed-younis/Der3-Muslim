@@ -34,6 +34,7 @@ import com.der3.home.presentations.home_screen.components.HomeTopHeader
 import com.der3.home.presentations.home_screen.components.SectionHeader
 import com.der3.home.presentations.home_screen.mvi.HomeIntent
 import com.der3.home.presentations.home_screen.mvi.HomeState
+import com.der3.model.AppStyle
 import com.der3.model.UiText
 import com.der3.mvi.MviEffect
 import com.der3.screens.Screens
@@ -127,7 +128,6 @@ fun HomeScreen(
         HomeTopHeader(
             modifier = Modifier,
             backgroundColor = AppColors.screenBackground,
-            darkTheme = !isStatusBarDark,
             onDrawerClick = {
                 if (drawerState.isOpen) {
                     scope.launch { drawerState.close() }
@@ -181,15 +181,35 @@ fun HomeScreen(
     }
 }
 
+@Preview(name = "Light Mode", showBackground = true, showSystemUi = true)
+@Composable
+fun HomeScreenLightPreview() {
+    Der3MuslimTheme(
+        style = AppStyle.LIGHT,
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
+        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+            HomeScreen(
+                state = HomeState(
+                    isLoading = false,
+                    homeAzkarCategory = ZekrCategoriesProvider.categories
+                ),
+                onIntent = {}
+            )
+        }
+    }
+}
+
 @Preview(
+    name = "Dark Mode",
     showBackground = true,
     showSystemUi = true,
-    name = "Home Screen",
     uiMode = Configuration.UI_MODE_NIGHT_YES
 )
 @Composable
-fun HomeScreenPreview() {
+fun HomeScreenDarkPreview() {
     Der3MuslimTheme(
+        style = AppStyle.DARK,
         language = Locale.Builder().setLanguage("ar").build()
     ) {
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {

@@ -56,7 +56,7 @@ fun CategoryRow(
             .heightIn(min = 90.dp , max = 100.dp)
             .clickable { onClick() },
         shape = RoundedCornerShape(22.dp),
-        colors = CardDefaults.cardColors(containerColor = AppColors.white),
+        colors = CardDefaults.cardColors(containerColor = AppColors.cardColor),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
     ) {
         Row(

@@ -29,7 +29,7 @@ fun Der3BottomBar(
 ) {
     NavigationBar (
         modifier = modifier,
-        containerColor = AppColors.white,
+        containerColor = AppColors.screenBackground,
         tonalElevation = 8.dp
     ){
         bottomTabs.forEach { tab ->

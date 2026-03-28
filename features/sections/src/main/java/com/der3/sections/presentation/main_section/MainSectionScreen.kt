@@ -1,5 +1,6 @@
 package com.der3.sections.presentation.main_section
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -16,7 +17,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
@@ -39,17 +39,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.der3.model.AppStyle
 import com.der3.mvi.MviEffect
 import com.der3.screens.Screens
 import com.der3.sections.presentation.main_section.model.Section
@@ -58,9 +59,10 @@ import com.der3.sections.presentation.main_section.mvi.MainSectionState
 import com.der3.ui.R
 import com.der3.ui.components.Der3TopAppBar
 import com.der3.ui.components.ErrorDialog
-import com.der3.ui.models.CategoryUi
+import com.der3.ui.style.ShiftSystemBarStyle
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
+import com.der3.ui.themes.isStatusBarDark
 import com.der3.utils.asString
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -100,6 +102,13 @@ fun MainSectionRoute(
         onDismiss = { showErrorDialog = false }
     )
 
+    ShiftSystemBarStyle(
+        statusBarColor = AppColors.screenBackground,
+        isStatusBarVisible = true,
+        useDarkStatusBarIcons = !isStatusBarDark,
+        isEdgeToEdgeEnabled = true,
+        isNavigationBarVisible = false
+    )
 
     MainSectionScreen(
         state = viewModel.viewState,
@@ -115,11 +124,11 @@ fun MainSectionScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(AppColors.gray50)
+            .background(AppColors.screenBackground)
     ) {
         Der3TopAppBar(
             title = stringResource(id = R.string.sections_title),
-            backgroundColor = AppColors.gray50,
+            backgroundColor = AppColors.screenBackground,
             showBackButton = false,
         )
 
@@ -127,6 +136,7 @@ fun MainSectionScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 16.dp)
+
         ) {
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -139,16 +149,18 @@ fun MainSectionScreen(
                     .height(56.dp),
                 textStyle = TextStyle(
                     textAlign = TextAlign.Start,
-                    fontWeight = FontWeight.W600,
-                    fontSize = 16.sp
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 16.sp,
+                    fontFamily = FontFamily(Font(R.font.cairo))
                 ),
                 placeholder = {
                     Text(
                         text = stringResource(id = R.string.sections_search_placeholder),
-                        color = AppColors.gray500,
+                        color = AppColors.gray400,
                         textAlign = TextAlign.Start,
-                        fontWeight = FontWeight.W600,
-                        fontSize = 14.sp
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 16.sp,
+                        fontFamily = FontFamily(Font(R.font.cairo))
                     )
                 },
                 leadingIcon = {
@@ -160,33 +172,25 @@ fun MainSectionScreen(
                 },
                 trailingIcon = {
                     if (state.searchQuery.isNotEmpty()) {
-                        Box(
-                            modifier = Modifier
-                                .padding(horizontal = 16.dp, vertical = 8.dp)
-                                .size(32.dp)
-                                .clip(CircleShape)
-                                .background(AppColors.green400.copy(alpha = 0.3f))
-                                .clickable { onIntent(MainSectionIntent.UpdateSearchQuery("")) },
-                            contentAlignment = Alignment.Center
-                        ) {
+                        IconButton(onClick = { onIntent(MainSectionIntent.UpdateSearchQuery("")) }) {
                             Icon(
                                 imageVector = Icons.Default.Clear,
                                 contentDescription = null,
                                 tint = AppColors.gray500,
-                                modifier = Modifier
-                                    .size(20.dp)
-                                    .padding(4.dp),
-
-                                )
+                                modifier = Modifier.size(20.dp)
+                            )
                         }
                     }
                 },
-                shape = RoundedCornerShape(12.dp),
+                shape = RoundedCornerShape(20.dp),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color.Transparent,
-                    unfocusedBorderColor = Color.Transparent,
-                    focusedContainerColor = AppColors.green400.copy(alpha = 0.3f),
-                    unfocusedContainerColor = AppColors.green400.copy(alpha = 0.3f)
+                    focusedBorderColor = AppColors.gray100,
+                    unfocusedBorderColor = AppColors.gray100,
+                    focusedContainerColor = AppColors.cardColor,
+                    unfocusedContainerColor = AppColors.cardColor,
+                    cursorColor = AppColors.green800,
+                    focusedTextColor = AppColors.green800,
+                    unfocusedTextColor = AppColors.green800
                 ),
                 singleLine = true
             )
@@ -229,7 +233,7 @@ fun SectionCard(
             .height(160.dp)
             .clickable { onClick() },
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = AppColors.cardColor),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(
@@ -278,15 +282,36 @@ fun SectionCard(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(name = "Light Mode", showBackground = true, showSystemUi = true)
 @Composable
-fun MainSectionScreenPreview() {
+fun MainSectionScreenLightPreview() {
     Der3MuslimTheme(
+        style = AppStyle.LIGHT,
         language = Locale.Builder().setLanguage("ar").build()
     ) {
         MainSectionScreen(
             state = MainSectionState(
-                searchQuery = "h"
+                searchQuery = ""
+            )
+        )
+    }
+}
+
+@Preview(
+    name = "Dark Mode",
+    showBackground = true,
+    showSystemUi = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun MainSectionScreenDarkPreview() {
+    Der3MuslimTheme(
+        style = AppStyle.DARK,
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
+        MainSectionScreen(
+            state = MainSectionState(
+                searchQuery = ""
             )
         )
     }

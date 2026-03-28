@@ -1,7 +1,7 @@
 package com.der3.home.presentations.category_details
 
-import ReadingInfoCard
-import ZekrCard
+import com.der3.ui.components.ReadingInfoCard
+import com.der3.home.presentations.category_details.components.ZekrCard
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -29,8 +29,10 @@ import com.der3.screens.Screens
 import com.der3.ui.components.Der3TopAppBar
 import com.der3.ui.components.ErrorDialog
 import com.der3.ui.components.LoadingDialog
+import com.der3.ui.style.ShiftSystemBarStyle
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
+import com.der3.ui.themes.isStatusBarDark
 import com.der3.utils.asString
 import com.der3.utils.estimateReadingTimeInMinutes
 import com.der3.utils.toMinutesText
@@ -44,10 +46,7 @@ fun CategoryDetailsRoute(
     params: CategoryDetailsParams,
     onNavigate: (Screens) -> Unit,
 ){
-
-
-    val viewModel: CategoryDetailsViewModel =
-        hiltViewModel<CategoryDetailsViewModel, CategoryDetailsViewModelFactory> { factory ->
+    val viewModel: CategoryDetailsViewModel = hiltViewModel<CategoryDetailsViewModel, CategoryDetailsViewModelFactory> { factory ->
             factory.create(params)
         }
 
@@ -81,6 +80,16 @@ fun CategoryDetailsRoute(
     )
 
 
+    ShiftSystemBarStyle(
+        statusBarColor = AppColors.screenBackground,
+        isStatusBarVisible = true,
+        useDarkStatusBarIcons = isStatusBarDark,
+        isEdgeToEdgeEnabled = true,
+        isNavigationBarVisible = false,
+        navigationBarColor = AppColors.screenBackground,
+        useDarkNavigationBarIcons = false
+    )
+
     CategoryDetailsScreen(
         state = viewModel.viewState,
         onIntent = viewModel::onIntent
@@ -101,17 +110,13 @@ fun CategoryDetailsScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(AppColors.gray50)
+            .background(AppColors.screenBackground,)
     ) {
 
         Der3TopAppBar(
             title = state.categoryTitle,
-            backgroundColor = AppColors.gray50,
+            backgroundColor = AppColors.screenBackground,
             onBackClick = { onIntent(CategoryDetailsIntent.OnBackClick) },
-          /*  actionIcon = Icons.Default.Share,
-            onActionClick = {
-                onIntent(CategoryDetailsIntent.OnShareClick(state.azkarItems.first()))
-            }*/
         )
 
         LazyColumn(
@@ -153,9 +158,13 @@ fun CategoryDetailsScreen(
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(
+    showBackground = true,
+    showSystemUi = true,
+    name = "Light Mode"
+)
 @Composable
-private fun CategoryDetailsScreenPreview() {
+private fun CategoryDetailsScreenLightPreview() {
 
      val mockAzkar = listOf(
          ZekrUiModel(
@@ -182,7 +191,51 @@ private fun CategoryDetailsScreenPreview() {
     ) {
         CategoryDetailsScreen(
             state = CategoryDetailsState(
-                azkarItems = mockAzkar
+                azkarItems = mockAzkar,
+                categoryTitle = "أذكار الصباح"
+            ),
+            onIntent = {}
+        )
+    }
+}
+
+@Preview(
+    showBackground = true,
+    showSystemUi = true,
+    name = "Dark Mode",
+    uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+private fun CategoryDetailsScreenDarkPreview() {
+
+    val mockAzkar = listOf(
+        ZekrUiModel(
+            id = 1,
+            text = "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ وَالْحَمْدُ لِلَّهِ",
+            audioPath = "",
+            repeatCount = 1,
+            isFavorite = false,
+            isBookmarked = false
+        ),
+        ZekrUiModel(
+            id = 2,
+            text = "اللّهُـمَّ بِكَ أَصْـبَحْنا وَبِكَ أَمْسَـينا",
+            audioPath = "",
+            repeatCount = 1,
+            isFavorite = false,
+            isBookmarked = false
+        ),
+
+    )
+
+    Der3MuslimTheme(
+        style = com.der3.model.AppStyle.DARK,
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
+        CategoryDetailsScreen(
+            state = CategoryDetailsState(
+                azkarItems = mockAzkar,
+                categoryTitle = "أذكار الصباح"
             ),
             onIntent = {}
         )

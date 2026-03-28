@@ -1,5 +1,6 @@
 package com.der3.splash.presentation
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -34,6 +35,7 @@ import com.der3.ui.R
 import com.der3.ui.style.ShiftSystemBarStyle
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
+import com.der3.ui.themes.isDarkTheme
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -80,20 +82,21 @@ fun IslamicSplashScreen(
     state: IslamicSplashState,
     onIntent: (IslamicSplashIntent) -> Unit,
 ) {
+    val backgroundColor = if (isDarkTheme) AppColors.screenBackground else AppColors.green900
 
     ShiftSystemBarStyle(
-        statusBarColor = AppColors.green900,
+        statusBarColor = backgroundColor,
         isStatusBarVisible = true,
         isEdgeToEdgeEnabled = true,
         useDarkStatusBarIcons = false,
-        navigationBarColor = AppColors.green900,
+        navigationBarColor = backgroundColor,
         useDarkNavigationBarIcons = false
     )
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(AppColors.green900),
+            .background(backgroundColor),
         contentAlignment = Alignment.Center
     ) {
 
@@ -118,7 +121,7 @@ fun IslamicSplashScreen(
                 text = stringResource(R.string.der3_muslim_title_Capitalize),
                 modifier = Modifier
                     .fillMaxWidth(),
-                color = AppColors.white,
+                color = if (isDarkTheme) AppColors.gray900Text else AppColors.white,
                 fontSize = 30.sp,
                 letterSpacing = 1.6.sp,
                 textAlign = TextAlign.Center,
@@ -142,18 +145,30 @@ fun IslamicSplashScreen(
 }
 
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true, showSystemUi = true, name = "Light Mode")
 @Composable
-fun IslamicSplashScreenPreview() {
-    Der3MuslimTheme {
-        ShiftSystemBarStyle(
-            statusBarColor = AppColors.green900,
-            isStatusBarVisible = true,
-            useDarkStatusBarIcons = false,
-            navigationBarColor = AppColors.green900,
-            useDarkNavigationBarIcons = false
+fun IslamicSplashScreenLightPreview() {
+    Der3MuslimTheme(
+        style = com.der3.model.AppStyle.LIGHT
+    ) {
+        IslamicSplashScreen(
+            state = IslamicSplashState(),
+            onIntent = {}
         )
+    }
+}
 
+@Preview(
+    showBackground = true,
+    showSystemUi = true,
+    name = "Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun IslamicSplashScreenDarkPreview() {
+    Der3MuslimTheme(
+        style = com.der3.model.AppStyle.DARK
+    ) {
         IslamicSplashScreen(
             state = IslamicSplashState(),
             onIntent = {}

@@ -58,6 +58,7 @@ import com.der3.ui.components.LoadingDialog
 import com.der3.ui.style.ShiftSystemBarStyle
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
+import com.der3.ui.themes.isStatusBarDark
 import com.der3.utils.asString
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -106,12 +107,12 @@ fun RecycleBinRoute(
     )
 
     ShiftSystemBarStyle(
-        statusBarColor = AppColors.white,
+        statusBarColor = AppColors.screenBackground,
         isStatusBarVisible = true,
-        useDarkStatusBarIcons = true,
+        useDarkStatusBarIcons = isStatusBarDark,
         isEdgeToEdgeEnabled = true,
         isNavigationBarVisible = false,
-        navigationBarColor = AppColors.gray50,
+        navigationBarColor = AppColors.screenBackground,
         useDarkNavigationBarIcons = false
     )
 
@@ -129,7 +130,7 @@ fun RecycleBinScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(AppColors.white)
+            .background(AppColors.screenBackground)
     ) {
         Der3TopAppBar(
             title = stringResource(R.string.recycle_bin_title),
@@ -137,7 +138,7 @@ fun RecycleBinScreen(
                 onIntent(RecycleBinIntent.Back)
             },
             showBackButton = true,
-            backgroundColor = AppColors.white,
+            backgroundColor = AppColors.screenBackground,
             titleColor = AppColors.gray900Text,
             navigationIconColor = AppColors.gray900Text
         )
@@ -237,7 +238,7 @@ fun RecycleBinScreen(
                 ) {
                     Button(
                         onClick = { onIntent(RecycleBinIntent.EmptyBin) },
-                        colors = ButtonDefaults.buttonColors(containerColor  = AppColors.red50),
+                        colors = ButtonDefaults.buttonColors(containerColor  = AppColors.gold700.copy(alpha = 0.15f)),
                         shape = RoundedCornerShape(24.dp),
                         modifier = Modifier
                             .fillMaxWidth(0.8f)
@@ -247,13 +248,13 @@ fun RecycleBinScreen(
                             Icon(
                                 imageVector = Icons.Default.Delete,
                                 contentDescription = null,
-                                tint = AppColors.red900.copy(alpha = 0.9f),
+                                tint = AppColors.gold700,
                                 modifier = Modifier.size(20.dp)
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
                                 text = stringResource(R.string.empty_recycle_bin),
-                                color = AppColors.red900.copy(alpha = 0.9f),
+                                color = AppColors.gold700,
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 16.sp
                             )
@@ -273,7 +274,7 @@ fun RecycleBinScreenPreview() {
     ) {
         RecycleBinScreen(
             state = RecycleBinState(
-               /* items = listOf(
+               items = listOf(
                     DeletedZekrUiModel(
                         zekr = ZekrUiModel(
                             id = 1,
@@ -284,7 +285,7 @@ fun RecycleBinScreenPreview() {
                         ),
                         deletedSince = "يومين"
                     )
-                )*/
+                )
             ),
             onIntent = {}
         )

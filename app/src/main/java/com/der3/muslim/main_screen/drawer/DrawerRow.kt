@@ -1,5 +1,6 @@
 package com.der3.muslim.main_screen.drawer
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -22,10 +23,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.der3.model.AppStyle
 import com.der3.muslim.main_screen.drawer.model.DrawerItem
 import com.der3.screens.Der3NavigationRoute
 import com.der3.ui.R
@@ -40,12 +45,12 @@ fun DrawerRow(
     onClick: () -> Unit
 ) {
     val background =
-        if (selected) AppColors.green50 else Color.Transparent
+        if (selected) AppColors.gold700.copy(alpha = 0.15f) else Color.Transparent
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding( vertical = 4.dp)
+            .padding(vertical = 4.dp)
             .clip(RoundedCornerShape(20.dp))
             .background(background)
             .clickable { onClick() }
@@ -56,7 +61,7 @@ fun DrawerRow(
         Icon(
             imageVector = item.icon,
             contentDescription = null,
-            tint = if (selected) AppColors.green800 else AppColors.gray500,
+            tint = if (selected) AppColors.gold700 else AppColors.gray500,
             modifier = Modifier
                 .size(24.dp)
         )
@@ -69,23 +74,62 @@ fun DrawerRow(
             modifier = Modifier
                 .weight(1f),
             fontSize = 16.sp,
-          //  style = MaterialTheme.typography.titleMedium,
-            fontWeight = if (selected) FontWeight.W800 else FontWeight.W600,
-            color = if (selected) AppColors.green800 else AppColors.gray500,
-            textAlign = androidx.compose.ui.text.style.TextAlign.Start
+            fontFamily = FontFamily(Font(R.font.cairo)),
+            fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
+            color = if (selected) AppColors.gold700 else AppColors.gray500,
+            textAlign = TextAlign.Start
         )
 
     }
 }
 
 
-@Preview(showBackground = true, name = "Drawer Row States")
+
+@Preview(showBackground = true, name = "Light Mode")
 @Composable
-private fun DrawerRowPreview() {
+private fun DrawerRowLightPreview() {
     Der3MuslimTheme(
+        style = AppStyle.LIGHT,
         language = Locale.Builder().setLanguage("ar").build()
     ) {
-        Column(modifier = Modifier.padding(10.dp)) {
+        Column(modifier = Modifier.padding(10.dp).background(AppColors.screenBackground)) {
+            // State: Selected
+            DrawerRow(
+                item = DrawerItem(
+                    title = R.string.home_title,
+                    icon = Icons.Default.Home,
+                    route = Der3NavigationRoute.HomeScreen
+                ),
+                selected = true,
+                onClick = {}
+            )
+
+            // State: Unselected
+            DrawerRow(
+                item = DrawerItem(
+                    title = R.string.settings_title,
+                    icon = Icons.Default.Settings,
+                    route = Der3NavigationRoute.SettingsScreen
+                ),
+                selected = false,
+                onClick = {}
+            )
+        }
+    }
+}
+
+@Preview(
+    showBackground = true,
+    name = "Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+private fun DrawerRowDarkPreview() {
+    Der3MuslimTheme(
+        style = AppStyle.DARK,
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
+        Column(modifier = Modifier.padding(10.dp).background(AppColors.screenBackground)) {
             // State: Selected
             DrawerRow(
                 item = DrawerItem(

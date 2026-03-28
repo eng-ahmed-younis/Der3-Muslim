@@ -1,32 +1,37 @@
 package com.der3.on_boarding.presentation.screens
 
-import android.R.attr.scaleX
+import android.content.res.Configuration
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.unit.fontscaling.MathUtils.lerp
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
+import com.der3.model.AppStyle
 import com.der3.mvi.MviEffect
-
-import com.der3.on_boarding.presentation.screens.mvi.*
+import com.der3.on_boarding.presentation.screens.mvi.OnBoardingIntent
+import com.der3.on_boarding.presentation.screens.mvi.OnBoardingState
 import com.der3.on_boarding.presentation.screens.pages.GetStartedPage
 import com.der3.on_boarding.presentation.screens.pages.KeyFeaturePage
 import com.der3.on_boarding.presentation.screens.pages.WelcomePage
 import com.der3.screens.Screens
 import com.der3.ui.style.ShiftSystemBarStyle
 import com.der3.ui.themes.AppColors
+import com.der3.ui.themes.Der3MuslimTheme
+import com.der3.ui.themes.isDarkTheme
+import com.der3.ui.themes.isStatusBarDark
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
-import kotlin.math.absoluteValue
+import java.util.Locale
 
 @Composable
 fun OnBoardingRoute(
@@ -63,13 +68,14 @@ fun OnBoardingScreen(
     onIntent: (OnBoardingIntent) -> Unit,
 ) {
 
+    val isDark = isDarkTheme
     ShiftSystemBarStyle(
-        statusBarColor = AppColors.gray50,
+        statusBarColor = AppColors.screenBackground,
         isStatusBarVisible = true,
-        isEdgeToEdgeEnabled = true,
-        useDarkStatusBarIcons = true,
-        navigationBarColor = AppColors.gray50,
-        useDarkNavigationBarIcons = false
+        isEdgeToEdgeEnabled = !isStatusBarDark,
+        useDarkStatusBarIcons = !isDark,
+        navigationBarColor = AppColors.screenBackground,
+        useDarkNavigationBarIcons = !isDark
     )
 
 
@@ -112,6 +118,9 @@ fun OnBoardingScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .background(
+                    color = AppColors.screenBackground
+                )
                 .graphicsLayer {
                     translationX = pageOffset * size.width
                 }
@@ -168,5 +177,37 @@ fun OnBoardingScreen(
                 )
             }
         }
+    }
+}
+
+@Preview(showBackground = true, name = "Light Mode")
+@Composable
+private fun OnBoardingScreenLightPreview() {
+    Der3MuslimTheme(
+        style = AppStyle.LIGHT,
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
+        OnBoardingScreen(
+            state = OnBoardingState(currentPage = 0, totalPages = 3),
+            onIntent = {}
+        )
+    }
+}
+
+@Preview(
+    showBackground = true,
+    name = "Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+private fun OnBoardingScreenDarkPreview() {
+    Der3MuslimTheme(
+        style = AppStyle.DARK,
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
+        OnBoardingScreen(
+            state = OnBoardingState(currentPage = 0, totalPages = 3),
+            onIntent = {}
+        )
     }
 }

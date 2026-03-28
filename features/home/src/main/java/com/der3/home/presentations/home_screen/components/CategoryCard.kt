@@ -30,6 +30,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import com.der3.model.AppStyle
 import com.der3.shared.data.provider.ZekrCategoriesProvider
 import com.der3.ui.R
 import com.der3.ui.models.PalletColors
@@ -47,7 +48,9 @@ fun CategoryCard(
         modifier = modifier
             .clickable(onClick = { onCategoryClick(category) }),
         shape = RoundedCornerShape(28.dp),
-        colors = CardDefaults.cardColors(containerColor = AppColors.white),
+        colors = CardDefaults.cardColors(
+            containerColor = AppColors.cardColor
+        ),
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
 
@@ -104,10 +107,21 @@ fun CategoryCard(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(name = "Light Mode", showBackground = true)
 @Composable
-fun CategoryCardPreview() {
-    Der3MuslimTheme {
+fun CategoryCardLightPreview() {
+    Der3MuslimTheme(style = AppStyle.LIGHT) {
+        CategoryCard(
+            category = ZekrCategoriesProvider.categories.first(),
+            onCategoryClick = {}
+        )
+    }
+}
+
+@Preview(name = "Dark Mode", showBackground = true)
+@Composable
+fun CategoryCardDarkPreview() {
+    Der3MuslimTheme(style = AppStyle.DARK) {
         CategoryCard(
             category = ZekrCategoriesProvider.categories.first(),
             onCategoryClick = {}

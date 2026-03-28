@@ -1,5 +1,6 @@
 package com.der3.ui.components
 
+import android.content.res.Configuration
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -23,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.der3.model.AppStyle
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
 
@@ -82,7 +84,7 @@ fun TextSlider(
                     .padding(vertical = 4.dp),
                 shape = RoundedCornerShape(24.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = AppColors.gray50
+                    containerColor = AppColors.cardColor
                 ),
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
             ) {
@@ -101,7 +103,7 @@ fun TextSlider(
                             textAlign = TextAlign.Center,
                             fontSize = fontSize
                         ),
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = AppColors.gray900Text
                     )
                 }
             }
@@ -117,7 +119,7 @@ fun TextSlider(
                 Text(
                     text = "${pagerState.currentPage + 1} / ${pages.size}",
                     style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = AppColors.gray900Text,
                     fontWeight = FontWeight.Bold
                 )
 
@@ -154,15 +156,36 @@ fun TextSlider(
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true, name = "Light Mode")
 @Composable
-fun TextSliderPreview() {
-    Der3MuslimTheme {
-        TextSlider(
-            longText = "هذا نص تجريبي لعرض المكون. " +
-                    "يمكن استخدامه لعرض الأذكار أو النصوص الطويلة " +
-                    "التي يتم تقسيمها إلى صفحات متعددة لتسهيل القراءة. " +
-                    "هذا نص طويل بما يكفي ليتم تقسيمه إلى صفحتين أو أكثر بناءً على حجم الصفحة المحدد في المكون."
-        )
+fun TextSliderLightPreview() {
+    Der3MuslimTheme(style = AppStyle.LIGHT) {
+        Box(modifier = Modifier.background(AppColors.screenBackground).padding(16.dp)) {
+            TextSlider(
+                longText = "هذا نص تجريبي لعرض المكون. " +
+                        "يمكن استخدامه لعرض الأذكار أو النصوص الطويلة " +
+                        "التي يتم تقسيمها إلى صفحات متعددة لتسهيل القراءة."+
+                        "التي يتم تقسيمها إلى صفحات متعددة لتسهيل القراءة."
+            )
+        }
+    }
+}
+
+@Preview(
+    showBackground = true,
+    name = "Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun TextSliderDarkPreview() {
+    Der3MuslimTheme(style = AppStyle.DARK) {
+        Box(modifier = Modifier.background(AppColors.screenBackground).padding(16.dp)) {
+            TextSlider(
+                longText = "هذا نص تجريبي لعرض المكون. " +
+                        "يمكن استخدامه لعرض الأذكار أو النصوص الطويلة " +
+                        "التي يتم تقسيمها إلى صفحات متعددة لتسهيل القراءة."+
+                        "التي يتم تقسيمها إلى صفحات متعددة لتسهيل القراءة."
+            )
+        }
     }
 }

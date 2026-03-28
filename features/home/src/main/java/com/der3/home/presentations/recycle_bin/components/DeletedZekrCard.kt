@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.der3.home.domain.model.DeletedZekrUiModel
 import com.der3.home.domain.model.ZekrUiModel
+import com.der3.model.AppStyle
 import com.der3.ui.R
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
@@ -48,7 +49,7 @@ fun DeletedZekrCard(
             .fillMaxWidth(),
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(
-            containerColor = AppColors.green25
+            containerColor = AppColors.cardColor
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
@@ -56,9 +57,9 @@ fun DeletedZekrCard(
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.Top
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                // Text Column - On the Right (Start) in RTL
+                // Category Column
                 Column(
                     modifier = Modifier.weight(1f), horizontalAlignment = Alignment.Start
                 ) {
@@ -66,55 +67,58 @@ fun DeletedZekrCard(
                         Text(
                             text = it,
                             color = AppColors.gold600,
-                            fontSize = 12.sp,
+                            fontSize = 13.sp,
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Start
                         )
                     }
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = item.zekr.text,
-                        color = AppColors.green900,
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Start,
-                        lineHeight = 26.sp
-                    )
                 }
 
-                Spacer(modifier = Modifier.width(16.dp))
-
-                // Buttons Row - On the Left (End) in RTL
+                // Buttons Row
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     IconButton(
                         onClick = onRestore,
                         modifier = Modifier.size(40.dp),
-                        colors = IconButtonDefaults.iconButtonColors(containerColor = AppColors.green25)
+                        colors = IconButtonDefaults.iconButtonColors(containerColor = AppColors.gold700.copy(alpha = 0.2f))
                     ) {
                         Icon(
                             imageVector = Icons.Default.History,
                             contentDescription = null,
-                            tint = AppColors.green800,
+                            tint = AppColors.gold700,
                             modifier = Modifier.size(20.dp)
                         )
                     }
+
                     Spacer(modifier = Modifier.width(8.dp))
+
                     IconButton(
                         onClick = onDeletePermanently,
                         modifier = Modifier.size(40.dp),
                         colors = IconButtonDefaults.iconButtonColors(
-                            containerColor = AppColors.white
+                            containerColor = AppColors.gold700.copy(alpha = 0.2f)
                         )
                     ) {
                         Icon(
                             imageVector = Icons.Default.Delete,
                             contentDescription = null,
-                            tint = AppColors.red900.copy(alpha = 0.8f),
+                            tint = AppColors.gold700,
                             modifier = Modifier.size(20.dp)
                         )
                     }
                 }
             }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Text(
+                text = item.zekr.text,
+                color = AppColors.gray900Text,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Start,
+                lineHeight = 26.sp,
+                modifier = Modifier.fillMaxWidth()
+            )
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -130,7 +134,7 @@ fun DeletedZekrCard(
             ) {
                 Text(
                     text = stringResource(R.string.deleted_since, item.deletedSince),
-                    color = AppColors.gray400,
+                    color = AppColors.gold700,
                     fontSize = 14.sp,
                     textAlign = TextAlign.End
                 )
@@ -138,7 +142,7 @@ fun DeletedZekrCard(
                 Icon(
                     imageVector = Icons.Default.AccessTime,
                     contentDescription = null,
-                    tint = AppColors.gray400,
+                    tint = AppColors.gold700,
                     modifier = Modifier.size(16.dp)
                 )
             }
@@ -146,21 +150,42 @@ fun DeletedZekrCard(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(name = "Light Mode", showBackground = true)
 @Composable
-fun DeletedZekrCardPreview() {
+fun DeletedZekrCardLightPreview() {
     Der3MuslimTheme(
+        style = AppStyle.LIGHT,
         language = java.util.Locale.Builder().setLanguage("ar").build()
     ) {
         DeletedZekrCard(
             item = DeletedZekrUiModel(
-            zekr = ZekrUiModel(
-                id = 1,
-                text = "أَصْبَحْنَا وَأَصْبَحَ المُلْكُ للهِ، وَالحَمْدُ للهِ",
-                categoryName = "أذكار الصباح",
-                repeatCount = 1,
-                audioPath = ""
-            ), deletedSince = "يومين"
-        ), onRestore = {}, onDeletePermanently = {})
+                zekr = ZekrUiModel(
+                    id = 1,
+                    text = "أَصْبَحْنَا وَأَصْبَحَ المُلْكُ للهِ، وَالحَمْدُ للهِ",
+                    categoryName = "أذكار الصباح",
+                    repeatCount = 1,
+                    audioPath = ""
+                ), deletedSince = "يومين"
+            ), onRestore = {}, onDeletePermanently = {})
+    }
+}
+
+@Preview(name = "Dark Mode", showBackground = true)
+@Composable
+fun DeletedZekrCardDarkPreview() {
+    Der3MuslimTheme(
+        style = AppStyle.DARK,
+        language = java.util.Locale.Builder().setLanguage("ar").build()
+    ) {
+        DeletedZekrCard(
+            item = DeletedZekrUiModel(
+                zekr = ZekrUiModel(
+                    id = 1,
+                    text = " أَصْبَحْنَا وَأَصْبَحَ المُلْكُ للهِ، وَالحَمْدُ لله أَصْبَحْنَا وَأَصْبَحَ المُلْكُ للهِ، وَالحَمْدُ للهِ",
+                    categoryName = "أذكار الصباح",
+                    repeatCount = 1,
+                    audioPath = ""
+                ), deletedSince = "يومين"
+            ), onRestore = {}, onDeletePermanently = {})
     }
 }

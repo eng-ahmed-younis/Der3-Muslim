@@ -10,14 +10,27 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.der3.shared.data.provider.ZekrCategoriesProvider
 import com.der3.home.presentations.azkar_category.components.CategoryRow
@@ -115,21 +128,62 @@ fun AzkarCategoryScreen(
             }
         )
 
-        ReminderNameField(
+        OutlinedTextField(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
-                .fillMaxWidth(),
-            label = stringResource(id = R.string.reminder_name_hint),
+                .fillMaxWidth()
+                .height(56.dp),
             value = searchText,
-            iconAction = Icons.Default.Search,
-            borderColor = AppColors.gray100,
-            backgroundColor = AppColors.white,
-            labelColor = AppColors.gray400,
-            iconActionColor = AppColors.green800,
             onValueChange = {
                 Log.d("AllCategoryScreen", "onValueChange: $it")
                 searchText = it
-            }
+            },
+            textStyle = TextStyle(
+                textAlign = TextAlign.Start,
+                fontWeight = FontWeight.Normal,
+                fontSize = 16.sp,
+                fontFamily = FontFamily(Font(R.font.cairo))
+            ),
+            placeholder = {
+                Text(
+                    text = stringResource(id = R.string.reminder_name_hint),
+                    color = AppColors.gray400,
+                    textAlign = TextAlign.Start,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 16.sp,
+                    fontFamily = FontFamily(Font(R.font.cairo))
+                )
+            },
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = null,
+                    tint = AppColors.green800
+                )
+            },
+            trailingIcon = {
+                if (searchText.isNotEmpty()) {
+                    IconButton(onClick = { searchText = "" }) {
+                        Icon(
+                            imageVector = Icons.Default.Clear,
+                            contentDescription = null,
+                            tint = AppColors.gray500,
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
+                }
+            },
+            shape = RoundedCornerShape(20.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = AppColors.gray100,
+                unfocusedBorderColor = AppColors.gray100,
+                focusedContainerColor = AppColors.cardColor,
+                unfocusedContainerColor = AppColors.cardColor,
+                cursorColor = AppColors.green800,
+                focusedTextColor = AppColors.green800,
+                unfocusedTextColor = AppColors.green800
+            ),
+            singleLine = true
         )
 
         LazyColumn(

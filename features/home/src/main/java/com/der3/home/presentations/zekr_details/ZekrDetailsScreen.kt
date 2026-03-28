@@ -1,8 +1,10 @@
 package com.der3.home.presentations.zekr_details
 
+import android.content.res.Configuration
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.background
+import com.der3.model.AppStyle
 import com.der3.model.ShareZekrType
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -19,7 +21,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -62,6 +63,8 @@ import java.util.Locale
 import com.der3.ui.components.captureComposable
 import com.der3.ui.components.saveBitmapToCache
 import com.der3.ui.components.ZekrShareCard
+import com.der3.ui.style.ShiftSystemBarStyle
+import com.der3.ui.themes.isStatusBarDark
 import kotlinx.coroutines.launch
 
 
@@ -169,6 +172,15 @@ fun ZekrDetailsRoute(
         }
     )
 
+    ShiftSystemBarStyle(
+        statusBarColor = AppColors.screenBackground,
+        isStatusBarVisible = true,
+        useDarkStatusBarIcons = isStatusBarDark,
+        isEdgeToEdgeEnabled = true,
+        isNavigationBarVisible = false,
+        navigationBarColor = AppColors.screenBackground,
+    )
+
     ZekrDetailsScreen(
         state = viewModel.viewState, onIntent = viewModel::onIntent
     )
@@ -232,11 +244,11 @@ fun ZekrDetailsScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(AppColors.gray50)
+            .background(AppColors.screenBackground)
     ) {
         Der3TopAppBar(
             title = stringResource(R.string.zekr_details_title),
-            backgroundColor = AppColors.gray50,
+            backgroundColor = AppColors.screenBackground,
             onBackClick = {
                 onIntent(ZekrDetailsIntent.Back)
             },
@@ -350,14 +362,28 @@ fun ZekrDetailsScreen(
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true, showSystemUi = true, name = "Light Mode")
 @Composable
-private fun ZekrDetailsScreenPreview() {
-    // Local state to make the preview interactive
-    var count by remember { mutableIntStateOf(33) }
-    val total = 100
-
+private fun ZekrDetailsScreenLightPreview() {
     Der3MuslimTheme(
+        style = AppStyle.LIGHT,
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
+        ZekrDetailsScreen(
+            state = ZekrDetailsState(), onIntent = {})
+    }
+}
+
+@Preview(
+    showBackground = true,
+    showSystemUi = true,
+    name = "Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+private fun ZekrDetailsScreenDarkPreview() {
+    Der3MuslimTheme(
+        style = AppStyle.DARK,
         language = Locale.Builder().setLanguage("ar").build()
     ) {
         ZekrDetailsScreen(

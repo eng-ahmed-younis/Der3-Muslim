@@ -23,22 +23,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
+import com.der3.model.AppStyle
 import com.der3.ui.R
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
-import com.der3.ui.themes.isStatusBarDark
+import com.der3.ui.themes.isDarkTheme
 
 @Composable
 fun HomeTopHeader(
     modifier: Modifier = Modifier,
-    darkTheme: Boolean = false,
     backgroundColor: Color = AppColors.screenBackground,
     onDrawerClick: () -> Unit,
     onNotificationClick: () -> Unit
 ) {
 
 
-    val (iconBg, iconColor) = if (darkTheme) {
+    val (iconBg, iconColor) = if (isDarkTheme) {
         AppColors.gray900Text.copy(alpha = 0.15f) to AppColors.gray900Text
     } else {
         AppColors.green50 to AppColors.green800
@@ -109,14 +109,25 @@ fun HomeTopHeader(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(name = "Light Mode", showBackground = true)
 @Composable
-fun HomeTopHeaderPreview() {
-    Der3MuslimTheme {
+fun HomeTopHeaderLightPreview() {
+    Der3MuslimTheme(style = AppStyle.LIGHT) {
         HomeTopHeader(
             onDrawerClick = {},
-            darkTheme = true,
-            backgroundColor = AppColors.gray50,
+            backgroundColor = AppColors.screenBackground,
+            onNotificationClick = {}
+        )
+    }
+}
+
+@Preview(name = "Dark Mode", showBackground = true)
+@Composable
+fun HomeTopHeaderDarkPreview() {
+    Der3MuslimTheme(style = AppStyle.DARK) {
+        HomeTopHeader(
+            onDrawerClick = {},
+            backgroundColor = AppColors.screenBackground,
             onNotificationClick = {}
         )
     }

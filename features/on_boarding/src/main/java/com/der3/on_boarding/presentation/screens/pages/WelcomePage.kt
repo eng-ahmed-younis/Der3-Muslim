@@ -1,35 +1,47 @@
 package com.der3.on_boarding.presentation.screens.pages
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.ArrowBack
-import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.der3.ui.components.HorizontalDotsIndicator
+import com.der3.model.AppStyle
 import com.der3.ui.R
+import com.der3.ui.components.HorizontalDotsIndicator
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
+import com.der3.ui.themes.isDarkTheme
 import java.util.Locale
 
 
@@ -44,7 +56,7 @@ fun WelcomePage(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(AppColors.gray50)
+            .background(AppColors.screenBackground)
             .padding(horizontal = 20.dp, vertical = 18.dp)
     ) {
         // Top: Skip pill (تخطي)
@@ -55,7 +67,12 @@ fun WelcomePage(
             Box(
                 modifier = Modifier
                     .clip(RoundedCornerShape(24.dp))
-                    .background(AppColors.green100)
+                    .background(if (isDarkTheme) AppColors.cardColor else AppColors.green100)
+                    .border(
+                        width = 1.dp,
+                        color = if (isDarkTheme) AppColors.green700.copy(alpha = 0.2f) else Color.Transparent,
+                        shape = RoundedCornerShape(24.dp)
+                    )
                     .clickable { onSkip() }
                     .padding(horizontal = 18.dp, vertical = 10.dp)
             ) {
@@ -77,7 +94,7 @@ fun WelcomePage(
                 .height(320.dp)
                 .shadow(10.dp, RoundedCornerShape(28.dp))
                 .clip(RoundedCornerShape(28.dp))
-                .background(Color.White)
+                .background(AppColors.cardColor)
         ) {
             // Replace with your image resource
             Image(
@@ -131,8 +148,8 @@ fun WelcomePage(
             colors = ButtonDefaults.buttonColors(containerColor = AppColors.green700)
         ) {
             Text(
-                text = "التالي",
-                color = Color.White,
+                text = stringResource(id = R.string.onboarding_next),
+                color = AppColors.white,
                 fontSize = 16.sp,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
@@ -143,7 +160,7 @@ fun WelcomePage(
             Icon(
                 imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowRight,
                 contentDescription = null,
-                tint = Color.White
+                tint = AppColors.white
             )
         }
 
@@ -152,10 +169,26 @@ fun WelcomePage(
 }
 
 
-@Preview(showSystemUi = true, showBackground = true)
+@Preview(showBackground = true, name = "Light Mode")
 @Composable
-fun WelcomePagePreview() {
+fun WelcomePageLightPreview() {
     Der3MuslimTheme(
+        style = AppStyle.LIGHT,
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
+        WelcomePage()
+    }
+}
+
+@Preview(
+    showBackground = true,
+    name = "Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun WelcomePageDarkPreview() {
+    Der3MuslimTheme(
+        style = AppStyle.DARK,
         language = Locale.Builder().setLanguage("ar").build()
     ) {
         WelcomePage()

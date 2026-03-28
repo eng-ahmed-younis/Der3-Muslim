@@ -20,8 +20,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.der3.model.AppStyle
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
+import com.der3.ui.themes.isDarkTheme
 import java.util.Locale
 
 @Composable
@@ -31,7 +33,9 @@ fun DailyZekrCard(
     description: String = "له الملك وله الحمد وهو على كل شيء قدير",
     containerColor: Color? = null
 ) {
-    val finalContainerColor = containerColor ?: AppColors.green800
+
+
+    val finalContainerColor =  containerColor ?: if (isDarkTheme) AppColors.dailyCardColor else AppColors.green800
 
     Card(
         modifier = modifier,
@@ -78,6 +82,7 @@ fun DailyZekrCard(
 @Composable
 fun DailyZekrCardPreview() {
     Der3MuslimTheme(
+        style = AppStyle.LIGHT,
         language = Locale.Builder().setLanguage("ar").build()
     ) {
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
@@ -94,6 +99,7 @@ fun DailyZekrCardPreview() {
 @Composable
 fun DailyZekrCardDarkPreview() {
     Der3MuslimTheme(
+        style = AppStyle.DARK,
         language = Locale.Builder().setLanguage("ar").build()
     ) {
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
@@ -106,11 +112,11 @@ fun DailyZekrCardDarkPreview() {
 @Composable
 fun DailyZekrCardGoldPreview() {
     Der3MuslimTheme(
+        style = AppStyle.LIGHT,
         language = Locale.Builder().setLanguage("ar").build()
     ) {
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
             DailyZekrCard(
-                containerColor = AppColors.gold600,
                 title = "سبحان الله وبحمده",
                 description = "مئة مرة حطت خطاياه وإن كانت مثل زبد البحر"
             )
@@ -126,11 +132,11 @@ fun DailyZekrCardGoldPreview() {
 @Composable
 fun DailyZekrCardGoldDarkPreview() {
     Der3MuslimTheme(
+        style = AppStyle.DARK,
         language = Locale.Builder().setLanguage("ar").build()
     ) {
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
             DailyZekrCard(
-                containerColor = AppColors.gold600,
                 title = "سبحان الله وبحمده",
                 description = "مئة مرة حطت خطاياه وإن كانت مثل زبد البحر"
             )
