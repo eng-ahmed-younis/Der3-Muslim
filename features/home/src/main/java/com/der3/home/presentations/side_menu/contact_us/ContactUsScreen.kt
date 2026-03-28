@@ -1,6 +1,8 @@
 package com.der3.home.presentations.side_menu.contact_us
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -55,6 +57,7 @@ import com.der3.home.presentations.side_menu.contact_us.components.ContactInfoCa
 import com.der3.home.presentations.side_menu.contact_us.components.ContactTextField
 import com.der3.home.presentations.side_menu.contact_us.mvi.ContactUsIntent
 import com.der3.home.presentations.side_menu.contact_us.mvi.ContactUsState
+import com.der3.model.AppStyle
 import com.der3.mvi.MviEffect
 import com.der3.screens.Screens
 import com.der3.ui.R
@@ -64,6 +67,8 @@ import com.der3.ui.components.LoadingDialog
 import com.der3.ui.style.ShiftSystemBarStyle
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
+import com.der3.ui.themes.isDarkTheme
+import com.der3.ui.themes.isStatusBarDark
 import com.der3.utils.asString
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -109,7 +114,7 @@ fun ContactUsRoute(
     ShiftSystemBarStyle(
         statusBarColor = AppColors.screenBackground,
         isStatusBarVisible = true,
-        useDarkStatusBarIcons = true,
+        useDarkStatusBarIcons = isStatusBarDark,
         isEdgeToEdgeEnabled = true,
         isNavigationBarVisible = false
     )
@@ -159,14 +164,23 @@ fun ContactUsScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(24.dp))
-                    .background(AppColors.green800)
+                    .background(if (isDarkTheme) AppColors.dailyCardColor.copy(alpha = 0.15f) else AppColors.green800)
+                    .then(
+                        if (isDarkTheme) {
+                            Modifier.border(
+                                width = 1.dp,
+                                color = AppColors.green700.copy(alpha = 0.3f),
+                                shape = RoundedCornerShape(24.dp)
+                            )
+                        } else Modifier
+                    )
                     .padding(24.dp)
             ) {
                 Column(horizontalAlignment = Alignment.Start) {
                     Text(
                         text = stringResource(id = R.string.contact_us_header_title),
                         style = MaterialTheme.typography.headlineSmall,
-                        color = AppColors.white,
+                        color = if (isDarkTheme) AppColors.gray900Text else AppColors.white,
                         fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.Start,
                         modifier = Modifier.fillMaxWidth()
@@ -177,7 +191,7 @@ fun ContactUsScreen(
                     Text(
                         text = stringResource(id = R.string.contact_us_header_description),
                         style = MaterialTheme.typography.bodyMedium,
-                        color = AppColors.white.copy(alpha = 0.7f),
+                        color = if (isDarkTheme) AppColors.gray500 else AppColors.white.copy(alpha = 0.7f),
                         textAlign = TextAlign.Start,
                         modifier = Modifier.fillMaxWidth(),
                         lineHeight = 20.sp
@@ -189,9 +203,15 @@ fun ContactUsScreen(
 
             // Form Card
             Card(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .border(
+                        width = 1.dp,
+                        color = if (isDarkTheme) AppColors.green700.copy(alpha = 0.2f) else Color.Transparent,
+                        shape = RoundedCornerShape(24.dp)
+                    ),
                 shape = RoundedCornerShape(24.dp),
-                colors = CardDefaults.cardColors(containerColor = AppColors.white),
+                colors = CardDefaults.cardColors(containerColor = AppColors.cardColor),
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
             ) {
                 Column(
@@ -234,7 +254,10 @@ fun ContactUsScreen(
                             .fillMaxWidth()
                             .height(56.dp),
                         shape = RoundedCornerShape(12.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = AppColors.green800)
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = if (isDarkTheme) AppColors.green700 else AppColors.green800,
+                            contentColor = if (isDarkTheme) AppColors.white else AppColors.white
+                        )
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
 
@@ -303,8 +326,19 @@ fun ContactSocialIcon(icon: ImageVector, onClick: () -> Unit) {
     Surface(
         onClick = onClick,
         shape = CircleShape,
-        color = AppColors.green50.copy(alpha = 0.5f),
-        modifier = Modifier.size(48.dp)
+        color = if (isDarkTheme) AppColors.cardColor else AppColors.green50.copy(alpha = 0.5f),
+        tonalElevation = if (isDarkTheme) 2.dp else 0.dp,
+        modifier = Modifier
+            .size(48.dp)
+            .then(
+                if (isDarkTheme) {
+                    Modifier.border(
+                        width = 1.dp,
+                        color = AppColors.green700.copy(alpha = 0.2f),
+                        shape = CircleShape
+                    )
+                } else Modifier
+            )
     ) {
         Box(contentAlignment = Alignment.Center) {
             Icon(
@@ -327,10 +361,11 @@ fun ContactSocialIconPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Arabic", locale = "ar")
+@Preview(showBackground = true, name = "Light Mode")
 @Composable
-fun ContactUsScreenPreviewAr() {
+fun ContactUsScreenPreviewLight() {
     Der3MuslimTheme(
+        style = AppStyle.LIGHT,
         language = Locale.Builder().setLanguage("ar").build()
     ) {
         ContactUsScreen(
@@ -340,11 +375,16 @@ fun ContactUsScreenPreviewAr() {
     }
 }
 
-@Preview(showBackground = true, name = "English")
+@Preview(
+    showBackground = true,
+    name = "Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
 @Composable
-fun ContactUsScreenPreviewEn() {
+fun ContactUsScreenPreviewDark() {
     Der3MuslimTheme(
-        language = Locale.Builder().setLanguage("en").build()
+        style = AppStyle.DARK,
+        language = Locale.Builder().setLanguage("ar").build()
     ) {
         ContactUsScreen(
             state = ContactUsState(),
