@@ -1,5 +1,6 @@
 package com.der3.home.presentations.side_menu.share_app
 
+import androidx.compose.foundation.border
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -50,6 +51,11 @@ import com.der3.ui.themes.Der3MuslimTheme
 import com.der3.utils.asString
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import android.content.res.Configuration
+import androidx.compose.foundation.isSystemInDarkTheme
+import com.der3.model.AppStyle
+import com.der3.ui.themes.isDarkTheme
+import com.der3.ui.themes.isStatusBarDark
 import java.util.Locale
 
 @Composable
@@ -98,11 +104,13 @@ fun ShareAppRoute(
     )
 
     ShiftSystemBarStyle(
-        statusBarColor = AppColors.gray50,
+        statusBarColor = AppColors.screenBackground,
         isStatusBarVisible = true,
-        useDarkStatusBarIcons = true,
+        useDarkStatusBarIcons = isStatusBarDark,
         isEdgeToEdgeEnabled = true,
-        isNavigationBarVisible = false
+        isNavigationBarVisible = false,
+        navigationBarColor = AppColors.screenBackground,
+        useDarkNavigationBarIcons = !isStatusBarDark
     )
 
     ShareDer3AppScreen(
@@ -122,15 +130,13 @@ fun ShareDer3AppScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(colors.gray50)
+            .background(AppColors.screenBackground)
     ) {
         // Custom App Bar
         Der3TopAppBar(
             title = stringResource(id = R.string.share_app_title),
-            backgroundColor = colors.gray50,
-            onBackClick = { onIntent(ShareAppIntent.Back) },
-            titleColor = colors.gray900Text,
-            navigationIconColor = colors.gray900Text
+            backgroundColor = AppColors.screenBackground,
+            onBackClick = { onIntent(ShareAppIntent.Back) }
         )
 
         Column(
@@ -140,14 +146,25 @@ fun ShareDer3AppScreen(
                 .padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Main Green Card
+            // Main Hero Card
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(450.dp),
+                    .height(450.dp)
+                    .then(
+                        if (isDarkTheme) {
+                            Modifier.border(
+                                width = 1.dp,
+                                color = AppColors.green700.copy(alpha = 0.2f),
+                                shape = RoundedCornerShape(32.dp)
+                            )
+                        } else Modifier
+                    ),
                 shape = RoundedCornerShape(32.dp),
-                colors = CardDefaults.cardColors(containerColor = colors.green800),
-                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+                colors = CardDefaults.cardColors(
+                    containerColor = if (isDarkTheme) AppColors.cardColor else colors.green800
+                ),
+                elevation = CardDefaults.cardElevation(defaultElevation = if (isDarkTheme) 0.dp else 8.dp)
             ) {
                 Column(
                     modifier = Modifier
@@ -161,16 +178,14 @@ fun ShareDer3AppScreen(
                         modifier = Modifier
                             .size(80.dp)
                             .clip(CircleShape)
-                            .background(colors.gold500.copy(alpha = 0.3f))
-                            .padding()
-                        ,
+                            .background(if (isDarkTheme) colors.gold500.copy(alpha = 0.1f) else colors.gold500.copy(alpha = 0.3f)),
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
                             imageVector = Icons.Default.ShieldMoon,
                             contentDescription = null,
                             modifier = Modifier.size(45.dp),
-                            tint = colors.gold500
+                            tint = if (isDarkTheme) AppColors.gold700 else colors.gold500
                         )
                     }
 
@@ -178,7 +193,7 @@ fun ShareDer3AppScreen(
 
                     Text(
                         text = stringResource(id = R.string.share_app_card_title),
-                        color = Color.White,
+                        color = if (isDarkTheme) AppColors.gray900Text else Color.White,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.Center,
@@ -192,7 +207,7 @@ fun ShareDer3AppScreen(
                         modifier = Modifier
                             .size(150.dp)
                             .clip(RoundedCornerShape(20.dp))
-                            .background(Color.White)
+                            .background(if (isDarkTheme) AppColors.screenBackground else AppColors.white)
                             .padding(8.dp),
                         contentAlignment = Alignment.Center
                     ) {
@@ -210,7 +225,7 @@ fun ShareDer3AppScreen(
                                         Box(
                                             modifier = Modifier
                                                 .size(20.dp)
-                                                .background(colors.green100.copy(alpha = 0.5f))
+                                                .background(if (isDarkTheme) AppColors.green800.copy(alpha = 0.1f) else AppColors.green100.copy(alpha = 0.5f))
                                         )
                                     }
                                 }
@@ -219,10 +234,10 @@ fun ShareDer3AppScreen(
                         Icon(
                             imageVector = Icons.Default.QrCodeScanner,
                             contentDescription = null,
-                            tint = colors.green800,
+                            tint = if (isDarkTheme) AppColors.gold700 else colors.green800,
                             modifier = Modifier
                                 .size(40.dp)
-                                .background(Color.White)
+                                .background(Color.Transparent)
                         )
                     }
 
@@ -230,7 +245,7 @@ fun ShareDer3AppScreen(
 
                     Text(
                         text = stringResource(id = R.string.share_app_card_subtitle),
-                        color = Color.White.copy(alpha = 0.8f),
+                        color = if (isDarkTheme) AppColors.gray500 else Color.White.copy(alpha = 0.8f),
                         fontSize = 14.sp,
                         letterSpacing = 1.5.sp,
                         textAlign = TextAlign.Center,
@@ -289,19 +304,21 @@ fun ShareDer3AppScreen(
                     .fillMaxWidth()
                     .height(60.dp),
                 shape = RoundedCornerShape(16.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = colors.gold500)
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = if (isDarkTheme) AppColors.gold700 else AppColors.gold500
+                )
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
                         imageVector = Icons.Default.ContentCopy,
                         contentDescription = null,
-                        tint = colors.green900,
+                        tint = AppColors.green900,
                         modifier = Modifier.size(24.dp)
                     )
                     Spacer(modifier = Modifier.width(12.dp))
                     Text(
                         text = stringResource(id = R.string.copy_link_button),
-                        color = colors.green900,
+                        color = AppColors.green900,
                         fontWeight = FontWeight.Bold,
                         fontSize = 20.sp
                     )
@@ -324,10 +341,12 @@ fun ShareDer3AppScreen(
 
 
 
-@Preview(showBackground = true, name = "Arabic", locale = "ar")
+@Preview(showBackground = true, name = "Arabic Light", locale = "ar")
+@Preview(showBackground = true, name = "Arabic Dark", locale = "ar", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun ShareDer3AppScreenPreviewAr() {
     Der3MuslimTheme(
+        style = if (isSystemInDarkTheme()) AppStyle.DARK else AppStyle.LIGHT,
         language = Locale.Builder().setLanguage("ar").build()
     ) {
         ShareDer3AppScreen(
@@ -337,10 +356,12 @@ fun ShareDer3AppScreenPreviewAr() {
     }
 }
 
-@Preview(showBackground = true, name = "English")
+@Preview(showBackground = true, name = "English Light")
+@Preview(showBackground = true, name = "English Dark", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun ShareDer3AppScreenPreviewEn() {
     Der3MuslimTheme(
+        style = if (isSystemInDarkTheme()) AppStyle.DARK else AppStyle.LIGHT,
         language = Locale.Builder().setLanguage("en").build()
     ) {
         ShareDer3AppScreen(

@@ -9,6 +9,7 @@ import com.der3.home.presentations.favorite.FavoritesRoute
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import androidx.navigation.navDeepLink
 import androidx.navigation.toRoute
 import com.der3.home.presentations.notification.NotificationRoute
 import com.der3.home.presentations.recycle_bin.RecycleBinRoute
@@ -25,6 +26,7 @@ import com.der3.navigation.NavigationManager.navigateTo
 import com.der3.on_boarding.presentation.screens.OnBoardingRoute
 import com.der3.screens.Der3NavigationRoute
 import com.der3.shared.params.MasbahaParams
+import com.der3.shared.params.NotificationParams
 import com.der3.splash.presentation.IslamicSplashRoute
 
 
@@ -70,10 +72,26 @@ fun NavGraphBuilder.der3AppNavigation(rootNavController: NavHostController) {
         }
     }
 
-    composable<Der3NavigationRoute.NotificationScreen> {
-        NotificationRoute{ screens ->
+    composable<Der3NavigationRoute.NotificationScreen>(
+        deepLinks = listOf(
+            navDeepLink {
+                // لاحظ إضافة {notificationId} في آخر اللينك
+                uriPattern = "https://der3.muslim.deeplink/notifications/{notificationId}"
+            }
+        )
+    ) { backStackEntry ->
+        // الـ Navigation سيسحب الـ ID تلقائياً ويضعه في الكلاس
+        val route: Der3NavigationRoute.NotificationScreen = backStackEntry.toRoute()
+        val params = NotificationParams(
+            notificationId = route.notificationId ?: -1
+        )
+
+        NotificationRoute(
+            params = params
+        ) { screens ->
             rootNavController.navigateTo(screen = screens)
         }
+
     }
 
     composable<Der3NavigationRoute.AddCustomReminderScreen> {

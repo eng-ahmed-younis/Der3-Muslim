@@ -34,7 +34,9 @@ sealed interface Der3NavigationRoute : Screens {
     object DailyNotificationsScreen : Der3NavigationRoute
 
     @Serializable
-    object NotificationScreen : Der3NavigationRoute
+    data class NotificationScreen (
+        val notificationId: Long? = null
+    ): Der3NavigationRoute
 
     @Serializable
     object AddCustomReminderScreen : Der3NavigationRoute

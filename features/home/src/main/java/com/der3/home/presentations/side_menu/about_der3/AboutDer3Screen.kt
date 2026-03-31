@@ -48,6 +48,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import android.content.res.Configuration
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.isSystemInDarkTheme
+import com.der3.model.AppStyle
+import com.der3.ui.themes.isDarkTheme
+import com.der3.ui.themes.isStatusBarDark
+import java.util.Locale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -91,7 +99,7 @@ fun AboutDer3Route(
                 }
                 else -> {}
             }
-        }.launchIn(this)
+        }.launchIn(scope)
     }
 
     LoadingDialog(visible = viewModel.viewState.isLoading)
@@ -110,13 +118,13 @@ fun AboutDer3Route(
     )
 
     ShiftSystemBarStyle(
-        statusBarColor = AppColors.green800,
+        statusBarColor = AppColors.screenBackground,
         isStatusBarVisible = true,
-        useDarkStatusBarIcons = false,
+        useDarkStatusBarIcons = isStatusBarDark,
         isEdgeToEdgeEnabled = true,
         isNavigationBarVisible = false,
-        navigationBarColor = AppColors.gray50,
-        useDarkNavigationBarIcons = false
+        navigationBarColor = AppColors.screenBackground,
+        useDarkNavigationBarIcons = !isStatusBarDark
     )
 
     AboutDer3Screen(
@@ -136,13 +144,11 @@ fun AboutDer3Screen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(AppColors.green25)
+            .background(AppColors.screenBackground)
     ) {
         Der3TopAppBar(
             title = stringResource(id = R.string.about_title),
-            backgroundColor = AppColors.green800,
-            titleColor = Color.White,
-            navigationIconColor = Color.White,
+            backgroundColor = AppColors.screenBackground,
             onBackClick = {
                 onIntent(AboutDer3Intent.Back)
             }
@@ -152,10 +158,7 @@ fun AboutDer3Screen(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(16.dp)
-                .background(
-                    color = AppColors.green25
-                ),
+                .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(24.dp))
@@ -165,7 +168,16 @@ fun AboutDer3Screen(
                 modifier = Modifier
                     .size(120.dp)
                     .clip(RoundedCornerShape(24.dp))
-                    .background(AppColors.green800),
+                    .background(if (isDarkTheme) AppColors.cardColor else AppColors.green800)
+                    .then(
+                        if (isDarkTheme) {
+                            Modifier.border(
+                                width = 1.dp,
+                                color = AppColors.green700.copy(alpha = 0.2f),
+                                shape = RoundedCornerShape(24.dp)
+                            )
+                        } else Modifier
+                    ),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
@@ -181,7 +193,7 @@ fun AboutDer3Screen(
             Text(
                 text = stringResource(id = R.string.der3_muslim_title),
                 style = MaterialTheme.typography.headlineSmall,
-                color = AppColors.green800,
+                color = if (isDarkTheme) AppColors.gold700 else AppColors.green800,
                 fontWeight = FontWeight.Bold
             )
 
@@ -274,7 +286,7 @@ fun AboutDer3Screen(
                 Text(
                     text = stringResource(id = R.string.made_with_love),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = AppColors.green800,
+                    color = if (isDarkTheme) AppColors.gold700 else AppColors.green800,
                     fontWeight = FontWeight.Medium
                 )
                 Spacer(modifier = Modifier.width(4.dp))
@@ -305,7 +317,7 @@ fun SocialIcon(icon: ImageVector, onClick: () -> Unit) {
     Surface(
         onClick = onClick,
         shape = CircleShape,
-        color = Color.White,
+        color = AppColors.white,
         modifier = Modifier.size(44.dp),
         border = androidx.compose.foundation.BorderStroke(1.dp, AppColors.gray100)
     ) {
@@ -321,13 +333,15 @@ fun SocialIcon(icon: ImageVector, onClick: () -> Unit) {
 }
 
 @Preview(showBackground = true, locale = "ar")
+@Preview(showBackground = true, locale = "ar", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun AboutDer3ScreenPreview() {
     Der3MuslimTheme (
-
+        style = if (isSystemInDarkTheme()) AppStyle.DARK else AppStyle.LIGHT,
+        language = Locale.Builder().setLanguage("ar").build()
     ){
         AboutDer3Screen(
-            state = AboutDer3State(),
+            state = AboutDer3State(version = "1.0.0"),
             onIntent = {}
         )
     }

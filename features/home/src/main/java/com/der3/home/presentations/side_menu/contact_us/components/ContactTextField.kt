@@ -78,11 +78,12 @@ fun ContactTextField(
                 unfocusedContainerColor = if (isDarkTheme) AppColors.cardColor else AppColors.green50.copy(alpha = 0.5f),
                 focusedBorderColor = Color.Transparent,
                 unfocusedBorderColor = Color.Transparent,
+                cursorColor = AppColors.green800,
             ),
             singleLine = singleLine,
             minLines = minLines,
             textStyle = MaterialTheme.typography.bodyMedium.copy(
-                textAlign = TextAlign.End,
+                textAlign = TextAlign.Start,
                 color = AppColors.gray900Text
             )
         )

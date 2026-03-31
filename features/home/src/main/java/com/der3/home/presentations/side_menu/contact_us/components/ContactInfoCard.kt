@@ -74,7 +74,7 @@ fun ContactInfoCard(
                 Icon(
                     imageVector = icon,
                     contentDescription = null,
-                    tint = if (isDarkTheme) AppColors.green400 else AppColors.green800,
+                    tint = if (isDarkTheme) AppColors.gold700 else AppColors.green800,
                     modifier = Modifier.size(20.dp)
                 )
             }

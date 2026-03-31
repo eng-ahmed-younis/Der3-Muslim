@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+import android.content.res.Configuration
 import androidx.compose.ui.tooling.preview.Preview
 import com.der3.ui.themes.Der3MuslimTheme
 import androidx.compose.ui.res.stringResource
@@ -59,6 +60,7 @@ fun EmptyNotificationsState() {
 }
 
 @Preview(showBackground = true, locale = "ar")
+@Preview(showBackground = true, locale = "ar", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun EmptyNotificationsStatePreview() {
     Der3MuslimTheme {

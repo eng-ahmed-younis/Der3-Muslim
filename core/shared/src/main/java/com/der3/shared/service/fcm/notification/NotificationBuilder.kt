@@ -15,16 +15,29 @@ import androidx.core.app.NotificationCompat
 import androidx.core.net.toUri
 import com.der3.data_store.api.DataStoreRepository
 import com.der3.model.AppStyle
+import com.der3.shared.data.source.local.entity.NotificationEntity
+import com.der3.shared.domain.use_case.notification.InsertNotificationUseCase
 import com.der3.shared.service.fcm.data.MessageData
 import com.der3.ui.R
 import com.der3.ui.isDarkTheme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.random.Random
 
 @Singleton
 class NotificationBuilder @Inject constructor(
-    private val dataStoreRepository: DataStoreRepository
+    private val dataStoreRepository: DataStoreRepository,
+    private val insertNotificationUseCase: InsertNotificationUseCase
 ) {
+    // 10-digit number between 1000000000 and 9999999999 like 1234567890
+    val notificationId: Long = Random.nextLong(1_000_000_000L, 9_999_999_999L)
+    val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+
 
     companion object {
         private const val CHANNEL_ID = "der3_notification_channel"
@@ -40,15 +53,12 @@ class NotificationBuilder @Inject constructor(
 
                 val channel =
                     notificationManager.getNotificationChannel(CHANNEL_ID) ?: NotificationChannel(
-                        CHANNEL_ID,
-                        CHANNEL_NAME,
-                        NotificationManager.IMPORTANCE_HIGH
+                        CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH
                     ).apply {
                         description = "General notifications for Der3 Muslim"
                         val audioAttributes = AudioAttributes.Builder()
                             .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                            .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-                            .build()
+                            .setUsage(AudioAttributes.USAGE_NOTIFICATION).build()
                         setSound(soundUri, audioAttributes)
                     }
                 notificationManager.createNotificationChannel(channel)
@@ -56,36 +66,50 @@ class NotificationBuilder @Inject constructor(
         }
     }
 
-    fun showNotification(
+    suspend fun showNotification(
         context: Context,
         title: String,
         jsonBody: String
     ) {
-        val notificationManager =
-            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val messageData: MessageData = MessageData.fromJson(jsonString = jsonBody)
-        val appStyle = AppStyle.valueOf(dataStoreRepository.appStyle)
 
-        val notification = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(R.drawable.app_logo)
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setSound(getSoundUri(context))
-            .setAutoCancel(true)
-            .setContentIntent(createPendingIntent(context = context))
-            .setColor(context.getColor(R.color.notification_color))
-            .setCustomContentView(
-                configSmallerMessage(
-                    context = context,
+        scope.launch {
+            insertNotificationUseCase.invoke(
+                notification = NotificationEntity(
+                    id = notificationId,
                     title = title,
-                    description = messageData.message,
-                    notificationStyle = setNotificationStyle(
-                        context = context,
-                        appStyle = appStyle
-                    )
+                    body = messageData.message,
+                    timestamp = System.currentTimeMillis()
                 )
             )
-            .setStyle(NotificationCompat.DecoratedCustomViewStyle())
-            .build()
+        }
+
+        val notificationManager =
+            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val appStyle = AppStyle.valueOf(dataStoreRepository.appStyle)
+
+        val notification =
+            NotificationCompat.Builder(context, CHANNEL_ID)
+                .setSmallIcon(R.drawable.app_logo)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setSound(getSoundUri(context))
+                .setAutoCancel(true)
+                .setContentIntent(
+                    createPendingIntent(
+                        context = context,
+                        notificationId = notificationId
+                    )
+                ).setColor(context.getColor(R.color.notification_color))
+                .setCustomContentView(
+                    configSmallerMessage(
+                        context = context,
+                        title = title,
+                        description = messageData.message,
+                        notificationStyle = setNotificationStyle(
+                            context = context, appStyle = appStyle
+                        )
+                    )
+                ).setStyle(NotificationCompat.DecoratedCustomViewStyle()).build()
 
         notificationManager.notify(System.currentTimeMillis().toInt(), notification)
     }
@@ -95,30 +119,22 @@ class NotificationBuilder @Inject constructor(
     }
 
     private fun configSmallerMessage(
-        context: Context,
-        title: String,
-        description: String,
-        notificationStyle: NotificationStyle
+        context: Context, title: String, description: String, notificationStyle: NotificationStyle
     ): RemoteViews {
         return RemoteViews(context.packageName, R.layout.notification_small).apply {
             setTextViewText(R.id.notification_title_small, title)
             setTextViewText(R.id.notification_desc_small, description)
             setTextColor(
-                R.id.notification_title_small,
-                context.getColor(notificationStyle.titleColor)
+                R.id.notification_title_small, context.getColor(notificationStyle.titleColor)
             )
             setTextColor(
-                R.id.notification_desc_small,
-                context.getColor(notificationStyle.descriptionColor)
+                R.id.notification_desc_small, context.getColor(notificationStyle.descriptionColor)
             )
         }
     }
 
     private fun configLargeMessage(
-        context: Context,
-        title: String,
-        description: String,
-        image: Bitmap? = null
+        context: Context, title: String, description: String, image: Bitmap? = null
 
     ): RemoteViews {
         return RemoteViews(context.packageName, R.layout.notification_large).apply {
@@ -131,41 +147,67 @@ class NotificationBuilder @Inject constructor(
         }
     }
 
-    private fun createPendingIntent(context: Context): PendingIntent {
-        val intent = context.packageManager.getLaunchIntentForPackage(context.packageName)?.apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+/*    private fun createPendingIntent(
+        context: Context, notificationId: Long
+    ): PendingIntent {
+        // الرابط اللي حددته في الـ Manifest
+
+        val deepLinkUri = "https://der3.muslim.deeplink/notifications/$notificationId".toUri()
+
+        val intent: Intent? =
+            context.packageManager.getLaunchIntentForPackage(context.packageName)?.apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            }
+
+        intent?.apply {
+            action = Intent.ACTION_VIEW
+            data = deepLinkUri
         }
 
         return PendingIntent.getActivity(
+            context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+    }*/
+
+
+    private fun createPendingIntent(
+        context: Context,
+        notificationId: Long
+    ): PendingIntent {
+
+        val intent = Intent(Intent.ACTION_VIEW,
+            "https://der3.muslim.deeplink/notifications/$notificationId".toUri()).apply {
+            `package` = context.packageName
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
+
+        return  PendingIntent.getActivity(
             context,
-            0,
+            notificationId.toInt(), // Unique ID here is critical
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
     }
 
 
+
     private fun setNotificationStyle(context: Context, appStyle: AppStyle): NotificationStyle {
         return when (appStyle) {
             AppStyle.DARK -> NotificationStyle(
-                titleColor = R.color.white,
-                descriptionColor = R.color.white
+                titleColor = R.color.white, descriptionColor = R.color.white
             )
 
             AppStyle.LIGHT -> NotificationStyle(
-                titleColor = R.color.black,
-                descriptionColor = R.color.black
+                titleColor = R.color.black, descriptionColor = R.color.black
             )
 
             AppStyle.SYSTEM -> if (context.isDarkTheme()) {
                 NotificationStyle(
-                    titleColor = R.color.white,
-                    descriptionColor = R.color.white
+                    titleColor = R.color.white, descriptionColor = R.color.white
                 )
             } else {
                 NotificationStyle(
-                    titleColor = R.color.black,
-                    descriptionColor = R.color.black
+                    titleColor = R.color.black, descriptionColor = R.color.black
                 )
             }
         }
@@ -173,6 +215,5 @@ class NotificationBuilder @Inject constructor(
 }
 
 data class NotificationStyle(
-    val titleColor: Int,
-    val descriptionColor: Int
+    val titleColor: Int, val descriptionColor: Int
 )

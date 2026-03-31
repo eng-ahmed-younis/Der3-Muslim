@@ -31,6 +31,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.der3.home.domain.model.DailyNotificationItem
+import android.content.res.Configuration
+import androidx.compose.foundation.isSystemInDarkTheme
+import com.der3.model.AppStyle
+import com.der3.ui.themes.isDarkTheme
 import com.der3.ui.themes.AppColors
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -50,15 +54,15 @@ fun DailyNotificationCard(
     onToggle: (Boolean) -> Unit,
     onEditTime: () -> Unit
 ) {
-    val borderColor = if (item.enabled) AppColors.gold600 else Color.Transparent
+    val borderColor = if (item.enabled) AppColors.gold600 else if (isDarkTheme) AppColors.green700.copy(alpha = 0.2f) else Color.Transparent
 
     Card(
         shape = RoundedCornerShape(24.dp),
-        colors = CardDefaults.cardColors(containerColor = AppColors.white),
+        colors = CardDefaults.cardColors(containerColor = AppColors.cardColor),
         modifier = modifier
             .fillMaxWidth()
-            .border(2.dp, borderColor, RoundedCornerShape(24.dp)),
-        elevation = CardDefaults.cardElevation(2.dp)
+            .border(if (item.enabled || isDarkTheme) 1.dp else 0.dp, borderColor, RoundedCornerShape(24.dp)),
+        elevation = CardDefaults.cardElevation(if (isDarkTheme) 0.dp else 2.dp)
     ) {
 
         Column(
@@ -78,11 +82,11 @@ fun DailyNotificationCard(
                     checked = item.enabled,
                     onCheckedChange = onToggle,
                     colors = SwitchDefaults.colors(
-                        checkedTrackColor = AppColors.green800,
-                        checkedThumbColor = AppColors.white,
+                        checkedTrackColor = if (isDarkTheme) AppColors.gold700 else AppColors.green800,
+                        checkedThumbColor = Color.White,
 
-                        uncheckedTrackColor = AppColors.gray200,
-                        uncheckedThumbColor = AppColors.white
+                        uncheckedTrackColor = if (isDarkTheme) AppColors.gray200 else AppColors.gray200,
+                        uncheckedThumbColor = Color.White
                     )
                 )
 
@@ -113,13 +117,16 @@ fun DailyNotificationCard(
                 Box(
                     modifier = Modifier
                         .size(52.dp)
-                        .background(item.iconBg, RoundedCornerShape(16.dp)),
+                        .background(
+                            if (isDarkTheme) item.iconBg.copy(alpha = 0.15f) else item.iconBg,
+                            RoundedCornerShape(16.dp)
+                        ),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         imageVector = item.icon,
                         contentDescription = null,
-                        tint = AppColors.gray900Text
+                        tint = if (isDarkTheme) AppColors.gold700 else AppColors.gray900Text
                     )
                 }
             }
@@ -185,7 +192,8 @@ fun DailyNotificationCard(
 }
 
 
-@Preview(showBackground = true, backgroundColor = 0xFFF3F4F6)
+@Preview(showBackground = true, name = "Light Mode")
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 private fun DailyNotificationCardPreview() {
     val enabledItem = DailyNotificationItem(
@@ -193,7 +201,7 @@ private fun DailyNotificationCardPreview() {
         title = "أذكار الصباح",
         subtitle = "تبدأ عند شروق الشمس",
         icon = Icons.Default.WbSunny,
-        iconBg = PalletColors.iconBackgroundColors.random(),
+        iconBg = PalletColors.iconBackgroundColors[0],
         timeText = "06:00 AM",
         enabled = true
     )
@@ -202,15 +210,18 @@ private fun DailyNotificationCardPreview() {
         id = "2",
         title = "أذكار المساء",
         subtitle = "تبدأ عند غروب الشمس",
-        icon = Icons.Default.NightsStay, // Using a different icon for variety
-        iconBg = PalletColors.iconBackgroundColors.random(),
+        icon = Icons.Default.NightsStay,
+        iconBg = PalletColors.iconBackgroundColors[1],
         timeText = "06:15 PM",
         enabled = false
     )
 
-    Der3MuslimTheme {
+    Der3MuslimTheme(
+        style = if (isSystemInDarkTheme()) AppStyle.DARK else AppStyle.LIGHT
+    ) {
         // Use a LazyColumn to provide a realistic background color and padding
         LazyColumn(
+            modifier = Modifier.background(AppColors.screenBackground),
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {

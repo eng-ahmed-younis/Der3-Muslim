@@ -1,5 +1,7 @@
 package com.der3.home.presentations.side_menu.rate_us
 
+import android.content.res.Configuration
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -54,6 +56,11 @@ import com.der3.ui.themes.Der3MuslimTheme
 import com.der3.utils.asString
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import androidx.compose.foundation.isSystemInDarkTheme
+import com.der3.model.AppStyle
+import com.der3.ui.style.ShiftSystemBarStyle
+import com.der3.ui.themes.isDarkTheme
+import com.der3.ui.themes.isStatusBarDark
 import java.util.Locale
 
 @Composable
@@ -102,6 +109,16 @@ fun RateUsRoute(
         }
     )
 
+    ShiftSystemBarStyle(
+        statusBarColor = AppColors.screenBackground,
+        isStatusBarVisible = true,
+        useDarkStatusBarIcons = isStatusBarDark,
+        isEdgeToEdgeEnabled = true,
+        isNavigationBarVisible = false,
+        navigationBarColor = AppColors.screenBackground,
+        useDarkNavigationBarIcons = !isStatusBarDark
+    )
+
     RateUsScreen(
         state = state,
         onIntent = viewModel::onIntent
@@ -116,7 +133,7 @@ fun RateUsScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Transparent)
+            .background(AppColors.screenBackground)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null,
@@ -148,8 +165,9 @@ fun RateUsDialogContent(
 ) {
     Surface(
         shape = RoundedCornerShape(28.dp),
-        color = AppColors.white,
-        modifier = modifier.fillMaxWidth()
+        color = AppColors.cardColor,
+        modifier = modifier.fillMaxWidth(),
+        border = if (isDarkTheme) BorderStroke(1.dp, AppColors.green700.copy(alpha = 0.2f)) else null
     ) {
         Column(
             modifier = Modifier
@@ -179,7 +197,7 @@ fun RateUsDialogContent(
                 text = stringResource(id = R.string.rate_dialog_title),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color.Black,
+                color = AppColors.gray900Text,
                 textAlign = TextAlign.Center
             )
 
@@ -216,7 +234,7 @@ fun RateUsDialogContent(
 
             Spacer(modifier = Modifier.height(40.dp))
 
-            // Rate Button
+                      // Rate Button
             Button(
                 onClick = onRateNow,
                 modifier = Modifier
@@ -224,7 +242,7 @@ fun RateUsDialogContent(
                     .height(60.dp),
                 shape = RoundedCornerShape(16.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = AppColors.green800
+                    containerColor = if (isDarkTheme) AppColors.gold700 else AppColors.green800
                 ),
                 elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
             ) {
@@ -232,7 +250,7 @@ fun RateUsDialogContent(
                     text = stringResource(id = R.string.rate_now),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White
+                    color = if (isDarkTheme) AppColors.green900 else Color.White
                 )
             }
 
@@ -255,9 +273,13 @@ fun RateUsDialogContent(
 }
 
 @Preview(showBackground = true, locale = "ar")
+@Preview(showBackground = true, locale = "ar", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun RateUsScreenPreview() {
-    Der3MuslimTheme(language = Locale("ar")) {
+    Der3MuslimTheme(
+        style = if (isSystemInDarkTheme()) AppStyle.DARK else AppStyle.LIGHT,
+        language = Locale("ar")
+    ) {
         RateUsScreen(
             state = RateUsState(),
             onIntent = {}

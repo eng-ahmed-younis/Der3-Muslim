@@ -66,7 +66,7 @@ internal val darkColors = Colors(
     gold600 = Color(0xFFC8A951),
     gold500 = Color(0xFFC5A059),
     gold400 = Color(0xFFFFE66D),
-    white = Color(0xFF151C15),
+    white = Color(0xFFFFFFFF),
 
     red900 = Color(0xFFEF4444),
     red50 = Color(0xFF450A0A),

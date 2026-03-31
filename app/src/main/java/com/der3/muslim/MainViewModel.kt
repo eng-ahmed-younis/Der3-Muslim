@@ -13,6 +13,14 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
+import com.der3.screens.Screens
+import com.der3.screens.Der3NavigationRoute
+import android.content.Intent
+import android.net.Uri
+import android.util.Log
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
@@ -22,6 +30,9 @@ class MainViewModel @Inject constructor(
 
     private var appStyle: MutableStateFlow<AppStyle> = MutableStateFlow(AppStyle.SYSTEM)
     val appStyleFlow = appStyle.asStateFlow()
+
+    private val _navigationEvent = MutableSharedFlow<Screens>()
+    val navigationEvent = _navigationEvent.asSharedFlow()
 
 
     init {
@@ -48,4 +59,25 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    fun handleIntent(intent: Intent?) {
+        intent?.let {
+            handleDeepLink(intent = intent)
+        }
+    }
+
+
+
+    private fun handleDeepLink(intent: Intent?) {
+        val data: Uri? = intent?.data
+        if (data != null && data.pathSegments.contains("notifications")) {
+            val notificationIdString = data.lastPathSegment
+            val notificationId = notificationIdString?.toLongOrNull() ?: 0L
+
+            Log.d("DeepLink", "Navigating to notification ID: $notificationId")
+
+            viewModelScope.launch {
+                _navigationEvent.emit(Der3NavigationRoute.NotificationScreen(notificationId = notificationId))
+            }
+        }
+    }
 }

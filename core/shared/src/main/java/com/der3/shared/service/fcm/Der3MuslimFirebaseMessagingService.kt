@@ -163,13 +163,14 @@ class Der3MuslimFirebaseMessagingService : FirebaseMessagingService() {
     /**
      * عرض الإشعار وانتظار الانتهاء من العرض
      */
+    @OptIn(DelicateCoroutinesApi::class)
     private fun showNotificationAndWait(title: String, jsonBody: String) {
         try {
             // إعادة تهيئة CountDownLatch
             notificationLatch = CountDownLatch(1)
 
-            // عرض الإشعار على الخيط الرئيسي
-            Handler(Looper.getMainLooper()).post {
+            // استخدام coroutine بدلاً من Handler لأن showNotification أصبحت suspend
+            GlobalScope.launch(Dispatchers.Main) {
                 try {
                     notificationBuilder.showNotification(
                         context = this@Der3MuslimFirebaseMessagingService,

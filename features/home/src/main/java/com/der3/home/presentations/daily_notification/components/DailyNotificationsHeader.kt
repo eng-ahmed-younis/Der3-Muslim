@@ -8,6 +8,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import android.content.res.Configuration
+import androidx.compose.foundation.isSystemInDarkTheme
+import com.der3.model.AppStyle
+import com.der3.ui.themes.isDarkTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Icon
@@ -30,8 +34,8 @@ fun DailyNotificationsHeader(
     title: String,
     subtitle: String,
     icon: ImageVector = Icons.Default.Notifications,
-    iconColor: Color = AppColors.green800,
-    iconBgColor: Color = AppColors.green50,
+    iconColor: Color = if (isDarkTheme) AppColors.gold700 else AppColors.green800,
+    iconBgColor: Color = if (isDarkTheme) AppColors.green800.copy(alpha = 0.1f) else AppColors.green50,
 ) {
     Column(
         modifier = modifier
@@ -60,7 +64,7 @@ fun DailyNotificationsHeader(
 
         Text(
             text = title,
-            color = AppColors.green800,
+            color = if (isDarkTheme) AppColors.gold700 else AppColors.green800,
             fontWeight = FontWeight.ExtraBold,
             fontSize = 24.sp
         )
@@ -78,16 +82,17 @@ fun DailyNotificationsHeader(
 }
 
 
-@Preview(showBackground = true, name = "Top App Bar with Action")
+@Preview(showBackground = true)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun Der3TopAppBarPreviewWithAction() {
-    Der3MuslimTheme {
+fun DailyNotificationsHeaderPreview() {
+    Der3MuslimTheme(
+        style = if (isSystemInDarkTheme()) AppStyle.DARK else AppStyle.LIGHT
+    ) {
         DailyNotificationsHeader(
             title = "التنبيهات اليومية",
             subtitle = "حافظ على وردك اليومي من خلال التنبيهات",
-            icon = Icons.Default.Notifications,
-            iconColor = AppColors.green800,
-            iconBgColor = AppColors.green50,
+            icon = Icons.Default.Notifications
         )
     }
 }

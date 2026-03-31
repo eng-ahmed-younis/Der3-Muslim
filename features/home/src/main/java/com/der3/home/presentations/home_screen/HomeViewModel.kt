@@ -66,7 +66,7 @@ class HomeViewModel @Inject constructor(
             }
 
             HomeIntent.NavigateToNotifications -> {
-                onEffect(Navigate(screen = Der3NavigationRoute.NotificationScreen))
+                onEffect(Navigate(screen = Der3NavigationRoute.NotificationScreen()))
             }
         }
     }
