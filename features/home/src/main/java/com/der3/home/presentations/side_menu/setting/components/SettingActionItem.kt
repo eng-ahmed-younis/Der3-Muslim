@@ -1,5 +1,6 @@
 package com.der3.home.presentations.side_menu.setting.components
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,8 +22,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.der3.model.AppStyle
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
+import com.der3.ui.themes.isDarkTheme
+import java.util.Locale
 
 @Composable
 fun SettingActionItem(
@@ -43,7 +47,7 @@ fun SettingActionItem(
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
                 contentDescription = null,
-                tint = AppColors.gray400,
+                tint = if (isDarkTheme) Color.White.copy(alpha = 0.5f) else AppColors.green800,
                 modifier = Modifier.size(24.dp)
             )
             Spacer(modifier = Modifier.weight(1f))
@@ -57,21 +61,47 @@ fun SettingActionItem(
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                tint = AppColors.green800,
+                tint = if (isDarkTheme) Color.White.copy(alpha = 0.5f) else AppColors.green800,
                 modifier = Modifier.size(24.dp)
             )
         }
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, name = "Light Mode")
 @Composable
-fun SettingActionItemPreview() {
-    Der3MuslimTheme {
-        SettingActionItem(
-            title = "حول التطبيق",
-            icon = Icons.Default.Info,
-            onClick = {}
-        )
+fun SettingActionItemLightPreview() {
+    Der3MuslimTheme(
+        style = AppStyle.LIGHT,
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
+        Surface(color = AppColors.cardColor) {
+            SettingActionItem(
+                title = "حول التطبيق",
+                icon = Icons.Default.Info,
+                onClick = {}
+            )
+        }
+    }
+}
+
+@Preview(
+    showBackground = true,
+    name = "Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun SettingActionItemDarkPreview() {
+    Der3MuslimTheme(
+        style = AppStyle.DARK,
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
+        Surface(color = AppColors.cardColor) {
+            SettingActionItem(
+                title = "حول التطبيق",
+                icon = Icons.Default.Info,
+                onClick = {}
+            )
+        }
     }
 }

@@ -39,6 +39,7 @@ import com.der3.model.AppStyle
 import com.der3.ui.R
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
+import com.der3.ui.themes.isDarkTheme
 import java.util.Locale
 
 
@@ -55,8 +56,8 @@ fun DailyNotificationCard(
             containerColor = AppColors.cardColor
         ),
         border = BorderStroke(
-            width = 0.5.dp,
-            color = AppColors.gray200
+            width = 1.dp,
+            color = if (isDarkTheme) AppColors.green700.copy(alpha = 0.2f) else AppColors.gray200
         )
     ) {
 

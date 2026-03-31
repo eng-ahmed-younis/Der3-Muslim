@@ -90,4 +90,16 @@ class DataStoreRepositoryImpl(private val dataStoreService: DataStoreService) : 
         }
 
     override val appStyleFlow: Flow<String> = dataStoreService[DataStoreKeys.APP_STYLE, "system"]
+
+    override var playbackSpeed: Float
+        get() = runBlocking(Dispatchers.IO) {
+            dataStoreService.get<Float>(DataStoreKeys.PLAYBACK_SPEED, 1.0f).first()
+        }
+        set(value) {
+            runBlocking(Dispatchers.IO) {
+                dataStoreService.set(DataStoreKeys.PLAYBACK_SPEED, value)
+            }
+        }
+
+    override val playbackSpeedFlow: Flow<Float> = dataStoreService[DataStoreKeys.PLAYBACK_SPEED, 1.0f]
 }

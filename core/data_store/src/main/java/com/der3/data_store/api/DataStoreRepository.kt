@@ -13,4 +13,6 @@ interface DataStoreRepository {
     var locationName: String?
     var appStyle: String
     val appStyleFlow: Flow<String>
+    var playbackSpeed: Float
+    val playbackSpeedFlow: Flow<Float>
 }

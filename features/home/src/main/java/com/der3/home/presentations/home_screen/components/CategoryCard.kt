@@ -51,7 +51,11 @@ fun CategoryCard(
         colors = CardDefaults.cardColors(
             containerColor = AppColors.cardColor
         ),
-        elevation = CardDefaults.cardElevation(4.dp)
+        elevation = CardDefaults.cardElevation(4.dp),
+        border = if (com.der3.ui.themes.isDarkTheme) androidx.compose.foundation.BorderStroke(
+            1.dp,
+            AppColors.green700.copy(alpha = 0.2f)
+        ) else null
     ) {
 
         Column(

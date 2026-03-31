@@ -137,7 +137,11 @@ fun FavoriteZekrCard(
                 ),
             shape = RoundedCornerShape(24.dp),
             colors = CardDefaults.cardColors(containerColor = cardBackgroundColor),
-            elevation = CardDefaults.cardElevation(defaultElevation = if (isPlaying) 4.dp else 2.dp)
+            elevation = CardDefaults.cardElevation(defaultElevation = if (isPlaying) 4.dp else 2.dp),
+            border = if (com.der3.ui.themes.isDarkTheme) androidx.compose.foundation.BorderStroke(
+                1.dp,
+                AppColors.green700.copy(alpha = 0.2f)
+            ) else null
         ) {
             Column(
                 modifier = Modifier

@@ -55,5 +55,11 @@ interface AudioPlayer {
      */
     fun setVolume(volume: Float)
 
+    /**
+     * Set the playback speed of the audio player.
+     * @param speed Speed multiplier (e.g., 1.0f for normal speed)
+     */
+    fun setPlaybackSpeed(speed: Float)
+
     val audioState: StateFlow<AzkarAudioState>
 }

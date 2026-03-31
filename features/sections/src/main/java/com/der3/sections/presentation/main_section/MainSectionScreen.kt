@@ -105,7 +105,7 @@ fun MainSectionRoute(
     ShiftSystemBarStyle(
         statusBarColor = AppColors.screenBackground,
         isStatusBarVisible = true,
-        useDarkStatusBarIcons = !isStatusBarDark,
+        useDarkStatusBarIcons = isStatusBarDark,
         isEdgeToEdgeEnabled = true,
         isNavigationBarVisible = false
     )

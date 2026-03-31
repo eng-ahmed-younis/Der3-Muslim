@@ -1,5 +1,6 @@
 package com.der3.home.presentations.side_menu.setting.components
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -23,8 +24,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.der3.model.AppStyle
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
+import com.der3.ui.themes.isDarkTheme
+import java.util.Locale
 
 @Composable
 fun SettingClickableItem(
@@ -46,9 +50,12 @@ fun SettingClickableItem(
             Text(
                 text = value,
                 modifier = Modifier
-                    .background(AppColors.green50, RoundedCornerShape(12.dp))
+                    .background(
+                        if (isDarkTheme) AppColors.gold700.copy(alpha = 0.15f) else AppColors.green800.copy(alpha = 0.1f),
+                        RoundedCornerShape(12.dp)
+                    )
                     .padding(horizontal = 12.dp, vertical = 4.dp),
-                color = AppColors.green800,
+                color = if (isDarkTheme) AppColors.gold700 else AppColors.green800,
                 fontSize = 12.sp
             )
             Spacer(modifier = Modifier.weight(1f))
@@ -62,22 +69,49 @@ fun SettingClickableItem(
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                tint = AppColors.green800,
+                tint = if (isDarkTheme) AppColors.gold700 else AppColors.green800,
                 modifier = Modifier.size(24.dp)
             )
         }
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, name = "Light Mode")
 @Composable
-fun SettingClickableItemPreview() {
-    Der3MuslimTheme {
-        SettingClickableItem(
-            title = "سرعة التشغيل",
-            value = "1.0x",
-            icon = Icons.Default.SettingsSuggest,
-            onClick = {}
-        )
+fun SettingClickableItemLightPreview() {
+    Der3MuslimTheme(
+        style = AppStyle.LIGHT,
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
+        Surface(color = AppColors.cardColor) {
+            SettingClickableItem(
+                title = "سرعة التشغيل",
+                value = "1.0x",
+                icon = Icons.Default.SettingsSuggest,
+                onClick = {}
+            )
+        }
+    }
+}
+
+@Preview(
+    showBackground = true,
+    name = "Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun SettingClickableItemDarkPreview() {
+    Der3MuslimTheme(
+        style = AppStyle.DARK,
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
+        Surface(color = AppColors.cardColor) {
+            SettingClickableItem(
+                title = "سرعة التشغيل",
+                value = "1.0x",
+                icon = Icons.Default.SettingsSuggest,
+                onClick = {}
+            )
+        }
     }
 }

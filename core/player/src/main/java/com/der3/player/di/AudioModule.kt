@@ -1,6 +1,7 @@
 package com.der3.player.di
 
 import android.content.Context
+import com.der3.data_store.api.DataStoreRepository
 import com.der3.player.audio.impl.AzkarAudioPlayer
 import dagger.Module
 import dagger.Provides
@@ -24,7 +25,11 @@ object AudioModule {
     @Provides
     @Singleton
     fun provideAzkarAudioPlayer(
-        @ApplicationContext context: Context
-    ): AzkarAudioPlayer = AzkarAudioPlayer(context)
+        @ApplicationContext context: Context,
+        dataStoreRepository: DataStoreRepository
+    ): AzkarAudioPlayer = AzkarAudioPlayer(
+        dataStoreRepository = dataStoreRepository,
+        context = context
+    )
 }
 

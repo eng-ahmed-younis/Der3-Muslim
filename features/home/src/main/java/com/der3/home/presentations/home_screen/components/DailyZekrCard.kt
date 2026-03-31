@@ -43,7 +43,11 @@ fun DailyZekrCard(
         colors = CardDefaults.cardColors(
             containerColor = finalContainerColor
         ),
-        elevation = CardDefaults.cardElevation(8.dp)
+        elevation = CardDefaults.cardElevation(8.dp),
+        border = if (isDarkTheme) androidx.compose.foundation.BorderStroke(
+            1.dp,
+            AppColors.green700.copy(alpha = 0.2f)
+        ) else null
     ) {
 
         Column(

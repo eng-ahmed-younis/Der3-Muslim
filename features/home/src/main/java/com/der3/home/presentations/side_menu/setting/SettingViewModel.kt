@@ -18,7 +18,8 @@ class SettingViewModel @Inject constructor(
     private val dataStoreRepository: DataStoreRepository
 ) : MviBaseViewModel<SettingState, SettingAction, SettingIntent>(
     initialState = SettingState(
-        fontSize = dataStoreRepository.zekrScreenDetailsFontSize
+        fontSize = dataStoreRepository.zekrScreenDetailsFontSize,
+        playbackSpeed = dataStoreRepository.playbackSpeed
     ),
     reducer = SettingReducer()
 ) {
@@ -42,6 +43,7 @@ class SettingViewModel @Inject constructor(
                 onAction(SettingAction.UpdateAutoPlay(intent.isAutoPlayEnabled))
             }
             is SettingIntent.OnPlaybackSpeedChange -> {
+                dataStoreRepository.playbackSpeed = intent.speed
                 onAction(SettingAction.UpdatePlaybackSpeed(intent.speed))
             }
             is SettingIntent.OnMorningRemindersChange -> {

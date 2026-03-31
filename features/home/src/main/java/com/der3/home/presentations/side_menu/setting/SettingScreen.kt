@@ -1,5 +1,6 @@
 package com.der3.home.presentations.side_menu.setting
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -31,6 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.der3.home.presentations.side_menu.setting.components.PlaybackSpeedDialog
 import com.der3.home.presentations.side_menu.setting.components.SettingActionItem
 import com.der3.home.presentations.side_menu.setting.components.SettingCard
 import com.der3.home.presentations.side_menu.setting.components.SettingClickableItem
@@ -39,6 +41,7 @@ import com.der3.home.presentations.side_menu.setting.components.SettingSliderIte
 import com.der3.home.presentations.side_menu.setting.components.SettingToggleItem
 import com.der3.home.presentations.side_menu.setting.mvi.SettingIntent
 import com.der3.home.presentations.side_menu.setting.mvi.SettingState
+import com.der3.model.AppStyle
 import com.der3.mvi.MviEffect
 import com.der3.screens.Screens
 import com.der3.ui.R
@@ -112,6 +115,19 @@ fun SettingScreen(
     state: SettingState,
     onIntent: (SettingIntent) -> Unit
 ) {
+    var showSpeedDialog by remember { mutableStateOf(false) }
+
+    if (showSpeedDialog) {
+        PlaybackSpeedDialog(
+            currentSpeed = state.playbackSpeed,
+            onSpeedSelected = {
+                onIntent(SettingIntent.OnPlaybackSpeedChange(speed = it))
+                showSpeedDialog = false
+            },
+            onDismiss = { showSpeedDialog = false }
+        )
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -167,7 +183,7 @@ fun SettingScreen(
                         title = stringResource(id = R.string.settings_playback_speed),
                         value = "${state.playbackSpeed}x",
                         icon = Icons.Default.SettingsSuggest,
-                        onClick = { /* speed selector logic */ }
+                        onClick = { showSpeedDialog = true }
                     )
                 }
             }
@@ -227,10 +243,32 @@ fun SettingScreen(
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+
+
+@Preview(showBackground = true, showSystemUi = true, name = "Light Mode")
 @Composable
-fun SettingScreenPreviewAr() {
+fun SettingScreenPreviewLight() {
     Der3MuslimTheme(
+        style = AppStyle.LIGHT,
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
+        SettingScreen(
+            state = SettingState(),
+            onIntent = {}
+        )
+    }
+}
+
+@Preview(
+    showBackground = true,
+    showSystemUi = true,
+    name = "Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun SettingScreenPreviewDark() {
+    Der3MuslimTheme(
+        style = AppStyle.DARK,
         language = Locale.Builder().setLanguage("ar").build()
     ) {
         SettingScreen(

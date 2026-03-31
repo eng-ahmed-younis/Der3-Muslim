@@ -284,4 +284,5 @@
     <string name="settings_share_app">مشاركة التطبيق</string>
     <string name="settings_rate_app">تقييم التطبيق</string>
     <string name="settings_about_app">حول التطبيق</string>
+    <string name="qibla_calibration_hint">يرجى تحريك الهاتف بشكل 8 لمعايرة البوصلة وضمان دقة الاتجاه.</string>
 </resources>
