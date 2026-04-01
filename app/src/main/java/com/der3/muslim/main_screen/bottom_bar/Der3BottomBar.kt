@@ -9,10 +9,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.der3.screens.Der3NavigationRoute
 import com.der3.screens.Screens
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
+import android.content.res.Configuration
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import com.der3.ui.R
 
 @Composable
 fun Der3BottomBar(
@@ -23,7 +29,8 @@ fun Der3BottomBar(
 ) {
     NavigationBar (
         modifier = modifier,
-        containerColor = AppColors.green25,
+        containerColor = AppColors.screenBackground,
+        tonalElevation = 8.dp
     ){
         bottomTabs.forEach { tab ->
             NavigationBarItem(
@@ -31,12 +38,16 @@ fun Der3BottomBar(
                 onClick = { onTabClick(tab.route) },
                 icon = { Icon(tab.icon, contentDescription = null) },
                 label = {
-                    Text(text = stringResource(tab.label))
+                    Text(
+                        text = stringResource(tab.label),
+                        fontSize = 12.sp,
+                        fontFamily = FontFamily(Font(R.font.cairo_medium))
+                    )
                 },
                 colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = AppColors.green700,
-                    selectedTextColor = AppColors.green700,
-                    indicatorColor = AppColors.green700.copy(alpha = 0.1f),
+                    selectedIconColor = AppColors.green800,
+                    selectedTextColor = AppColors.green800,
+                    indicatorColor = AppColors.green800.copy(alpha = 0.12f),
                     unselectedIconColor = AppColors.gray500,
                     unselectedTextColor = AppColors.gray500
                 )
@@ -46,17 +57,30 @@ fun Der3BottomBar(
 }
 
 
-@Preview(showBackground = true, name = "Bottom Bar Preview")
+@Preview(showBackground = true, name = "Bottom Bar Light")
 @Composable
 private fun Der3BottomBarPreview() {
-    // The preview now uses the actual 'bottomTabs' list from the model file.
-    // This ensures the preview is always in sync with the real app.
     Der3MuslimTheme {
         Der3BottomBar(
-            // To show a tab as selected, we pass its qualified class name.
             currentRoute = Der3NavigationRoute.HomeScreen::class.qualifiedName ?: "",
             onTabClick = {},
-            bottomTabs = bottomTabs // Use the globally defined list
+            bottomTabs = bottomTabs
+        )
+    }
+}
+
+@Preview(
+    showBackground = true,
+    name = "Bottom Bar Dark",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+private fun Der3BottomBarDarkPreview() {
+    Der3MuslimTheme {
+        Der3BottomBar(
+            currentRoute = Der3NavigationRoute.HomeScreen::class.qualifiedName ?: "",
+            onTabClick = {},
+            bottomTabs = bottomTabs
         )
     }
 }

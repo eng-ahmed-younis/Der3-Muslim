@@ -52,6 +52,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.der3.home.domain.model.ZekrUiModel
+import com.der3.model.AppStyle
 import com.der3.ui.R
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
@@ -82,7 +83,7 @@ fun FavoriteZekrCard(
     )
 
     val cardBackgroundColor by animateColorAsState(
-        targetValue = if (isPlaying) AppColors.green25.copy(alpha = 0.5f) else Color.White,
+        targetValue = if (isPlaying) AppColors.green25.copy(alpha = 0.5f) else AppColors.cardColor,
         label = "card_bg_color"
     )
 
@@ -136,7 +137,11 @@ fun FavoriteZekrCard(
                 ),
             shape = RoundedCornerShape(24.dp),
             colors = CardDefaults.cardColors(containerColor = cardBackgroundColor),
-            elevation = CardDefaults.cardElevation(defaultElevation = if (isPlaying) 4.dp else 2.dp)
+            elevation = CardDefaults.cardElevation(defaultElevation = if (isPlaying) 4.dp else 2.dp),
+            border = if (com.der3.ui.themes.isDarkTheme) androidx.compose.foundation.BorderStroke(
+                1.dp,
+                AppColors.green700.copy(alpha = 0.2f)
+            ) else null
         ) {
             Column(
                 modifier = Modifier
@@ -251,10 +256,35 @@ fun FavoriteZekrCard(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(name = "Light Mode", showBackground = true)
 @Composable
-fun FavoriteZekrCardPreview() {
+fun FavoriteZekrCardLightPreview() {
     Der3MuslimTheme(
+        style = AppStyle.LIGHT,
+        language = java.util.Locale.Builder().setLanguage("ar").build()
+    ) {
+        Box(modifier = Modifier.padding(16.dp)) {
+            FavoriteZekrCard(
+                zekr = ZekrUiModel(
+                    id = 1,
+                    text = "أَصْبَحْنَا وَأَصْبَحَ المُلْكُ للهِ وَالحَمْدُ للهِ، لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شريكَ لَهُ، لَهُ المُلْكُ وَلَهُ الحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ",
+                    audioPath = "",
+                    repeatCount = 3,
+                    isFavorite = true
+                ),
+                onRemove = {},
+                onPlay = {},
+                onClick = {}
+            )
+        }
+    }
+}
+
+@Preview(name = "Dark Mode", showBackground = true)
+@Composable
+fun FavoriteZekrCardDarkPreview() {
+    Der3MuslimTheme(
+        style = AppStyle.DARK,
         language = java.util.Locale.Builder().setLanguage("ar").build()
     ) {
         Box(modifier = Modifier.padding(16.dp)) {

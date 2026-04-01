@@ -6,6 +6,7 @@ import com.der3.shared.data.source.local.Der3MuslimDatabase
 import com.der3.shared.data.source.local.dao.MasbahaAzkarDao
 import com.der3.shared.data.source.local.dao.MasbahaHistoryDao
 import com.der3.shared.data.source.local.dao.FavoritesDao
+import com.der3.shared.data.source.local.dao.NotificationDao
 import com.der3.shared.data.source.local.dao.RecycleBinDao
 import com.der3.shared.utils.DataBaseUtils
 import dagger.Module
@@ -53,5 +54,11 @@ object DatabaseModule {
     @Singleton
     fun provideRecycleBinDao(database: Der3MuslimDatabase): RecycleBinDao {
         return database.recycleBinDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideNotificationDao(database: Der3MuslimDatabase): NotificationDao {
+        return database.notificationDao()
     }
 }

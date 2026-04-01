@@ -19,6 +19,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,11 +32,14 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.foundation.border
+import android.content.res.Configuration
+import com.der3.ui.themes.isDarkTheme
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.der3.home.domain.model.NotificationItem
-import com.der3.home.domain.model.NotificationType
+import com.der3.model.NotificationType
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
 import java.util.Locale
@@ -47,10 +52,19 @@ fun NotificationCard(
 
     Card(
         modifier = modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .then(
+                if (isDarkTheme) {
+                    Modifier.border(
+                        width = 1.dp,
+                        color = AppColors.green700.copy(alpha = 0.2f),
+                        shape = RoundedCornerShape(16.dp)
+                    )
+                } else Modifier
+            ),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = AppColors.gray100
+            containerColor = AppColors.cardColor
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
     ) {
@@ -66,13 +80,13 @@ fun NotificationCard(
                 modifier = Modifier
                     .size(44.dp)
                     .clip(RoundedCornerShape(10.dp))
-                    .background(Color(0xFFE8F5E9)),
+                    .background(AppColors.green500.copy(alpha = 0.1f)),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = getIconForType(notification.type),
                     contentDescription = null,
-                    tint = Color(0xFFCDA545),
+                    tint = if (isDarkTheme) AppColors.gold700 else AppColors.gold700,
                     modifier = Modifier.size(24.dp)
                 )
             }
@@ -147,22 +161,42 @@ private fun getIconForType(type: NotificationType): ImageVector {
     }
 }
 
-@Preview(showBackground = true, locale = "ar")
+@Preview(showBackground = true, name = "Light Mode")
 @Composable
-fun NotificationCardPreview() {
-    Der3MuslimTheme(
-        language = Locale.Builder().setLanguage("ar").build()
-    ) {
-        Box(modifier = Modifier.padding(16.dp)) {
-            NotificationCard(
-                notification = NotificationItem(
-                    id = "1",
-                    title = "حان موعد صلاة العصر",
-                    description = " الصلاة خير من النوم، أقم صلاتك تنعم بحياتك.",
-                    time = "10:30",
-                    type = NotificationType.GENERAL
+fun NotificationCardLightPreview() {
+    Der3MuslimTheme(style = com.der3.model.AppStyle.LIGHT) {
+        Surface(color = MaterialTheme.colorScheme.background) {
+            Box(modifier = Modifier.padding(16.dp)) {
+                NotificationCard(
+                    notification = NotificationItem(
+                        id = "1",
+                        title = "حان موعد صلاة العصر",
+                        description = " الصلاة خير من النوم، أقم صلاتك تنعم بحياتك.",
+                        time = "10:30",
+                        type = NotificationType.GENERAL
+                    )
                 )
-            )
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true, name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun NotificationCardDarkPreview() {
+    Der3MuslimTheme(style = com.der3.model.AppStyle.DARK) {
+        Surface(color = MaterialTheme.colorScheme.background) {
+            Box(modifier = Modifier.padding(16.dp)) {
+                NotificationCard(
+                    notification = NotificationItem(
+                        id = "1",
+                        title = "حان موعد صلاة العصر",
+                        description = " الصلاة خير من النوم، أقم صلاتك تنعم بحياتك.",
+                        time = "10:30",
+                        type = NotificationType.GENERAL
+                    )
+                )
+            }
         }
     }
 }

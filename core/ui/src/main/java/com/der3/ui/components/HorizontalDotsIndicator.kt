@@ -1,5 +1,6 @@
 package com.der3.ui.components
 
+import android.content.res.Configuration
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
@@ -22,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.der3.model.AppStyle
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
 
@@ -73,26 +75,45 @@ fun HorizontalDotsIndicator(
 }
 
 
-@Preview(showBackground = true, name = "OnBoarding Indicators States")
+@Preview(showBackground = true, name = "Light Mode")
 @Composable
-private fun HorizontalDotsIndicatorPreview() {
-    Der3MuslimTheme {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            // State: First page selected
-            HorizontalDotsIndicator(currentPage = 0, totalPages = 3)
+private fun HorizontalDotsIndicatorLightPreview() {
+    Der3MuslimTheme(style = AppStyle.LIGHT) {
+        IndicatorPreviewContent()
+    }
+}
 
-            Spacer(modifier = Modifier.height(16.dp))
+@Preview(
+    showBackground = true,
+    name = "Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+private fun HorizontalDotsIndicatorDarkPreview() {
+    Der3MuslimTheme(style = AppStyle.DARK) {
+        IndicatorPreviewContent()
+    }
+}
 
-            // State: Second page selected
-            HorizontalDotsIndicator(currentPage = 1, totalPages = 3)
+@Composable
+private fun IndicatorPreviewContent() {
+    Column(
+        modifier = Modifier
+            .background(AppColors.screenBackground)
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        // State: First page selected
+        HorizontalDotsIndicator(currentPage = 0, totalPages = 3)
 
-            Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
-            // State: Last page selected
-            HorizontalDotsIndicator(currentPage = 2, totalPages = 3)
-        }
+        // State: Second page selected
+        HorizontalDotsIndicator(currentPage = 1, totalPages = 3)
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // State: Last page selected
+        HorizontalDotsIndicator(currentPage = 2, totalPages = 3)
     }
 }

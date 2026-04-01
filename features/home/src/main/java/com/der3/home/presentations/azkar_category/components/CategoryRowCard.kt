@@ -1,6 +1,7 @@
 package com.der3.home.presentations.azkar_category.components
 
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
@@ -55,7 +56,7 @@ fun CategoryRow(
             .heightIn(min = 90.dp , max = 100.dp)
             .clickable { onClick() },
         shape = RoundedCornerShape(22.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = AppColors.cardColor),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
     ) {
         Row(
@@ -121,10 +122,9 @@ fun CategoryRow(
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFFF5F6F3)
+@Preview(showBackground = true, name = "Light Mode")
 @Composable
 private fun CategoryRowPreview() {
-    // 1. Create a mock category object
     val mockCategory = CategoryUi(
         id = 1,
         title = "أذكار الصباح",
@@ -135,9 +135,37 @@ private fun CategoryRowPreview() {
     Der3MuslimTheme(
         language = Locale.Builder().setLanguage("ar").build()
     ) {
-        // 2. Force RTL layout for the preview to match the Arabic app context
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
-            Box(modifier = Modifier.padding(16.dp)) {
+            Box(modifier = Modifier.background(AppColors.screenBackground).padding(16.dp)) {
+                CategoryRow(
+                    category = mockCategory,
+                    onClick = { /* Handle click */ }
+                )
+            }
+        }
+    }
+}
+
+@Preview(
+    showBackground = true,
+    name = "Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+private fun CategoryRowDarkPreview() {
+    val mockCategory = CategoryUi(
+        id = 1,
+        title = "أذكار الصباح",
+        subtitle = "يومي • 42 ذكراً",
+        icon = Icons.Default.WbSunny
+    )
+
+    Der3MuslimTheme(
+        style = com.der3.model.AppStyle.DARK,
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
+        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+            Box(modifier = Modifier.background(AppColors.screenBackground).padding(16.dp)) {
                 CategoryRow(
                     category = mockCategory,
                     onClick = { /* Handle click */ }

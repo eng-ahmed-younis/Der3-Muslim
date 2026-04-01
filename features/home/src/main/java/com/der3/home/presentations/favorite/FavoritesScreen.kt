@@ -1,11 +1,7 @@
 package com.der3.home.presentations.favorite
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
+import android.content.res.Configuration
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,31 +10,25 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.SwipeToDismissBox
-import androidx.compose.material3.SwipeToDismissBoxDefaults
-import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -46,13 +36,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -64,6 +53,7 @@ import com.der3.home.presentations.favorite.components.EmptyFavoritesView
 import com.der3.home.presentations.favorite.components.FavoriteZekrCard
 import com.der3.home.presentations.favorite.mvi.FavoritesIntent
 import com.der3.home.presentations.favorite.mvi.FavoritesState
+import com.der3.model.AppStyle
 import com.der3.mvi.MviEffect
 import com.der3.screens.Screens
 import com.der3.ui.R
@@ -73,6 +63,7 @@ import com.der3.ui.components.LoadingDialog
 import com.der3.ui.style.ShiftSystemBarStyle
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
+import com.der3.ui.themes.isStatusBarDark
 import com.der3.utils.asString
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -115,12 +106,12 @@ fun FavoritesRoute(
 
 
     ShiftSystemBarStyle(
-        statusBarColor = AppColors.gray50,
+        statusBarColor = AppColors.screenBackground,
         isStatusBarVisible = true,
-        useDarkStatusBarIcons = true,
+        useDarkStatusBarIcons = isStatusBarDark,
         isEdgeToEdgeEnabled = true,
         isNavigationBarVisible = false,
-        navigationBarColor = AppColors.gray50,
+        navigationBarColor = AppColors.screenBackground,
         useDarkNavigationBarIcons = false
     )
 
@@ -140,13 +131,13 @@ fun FavoritesScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(
-                color = AppColors.gray50
+                color = AppColors.screenBackground
             )
     ) {
         Der3TopAppBar(
             title = stringResource(R.string.favorites_title),
             showBackButton = false,
-            backgroundColor = AppColors.gray50,
+            backgroundColor = AppColors.screenBackground,
             trailingContent = {
                 var showMenu by remember { mutableStateOf(false) }
 
@@ -163,7 +154,7 @@ fun FavoritesScreen(
                         expanded = showMenu,
                         onDismissRequest = { showMenu = false },
                         modifier = Modifier
-                            .background(AppColors.white)
+                            .background(AppColors.cardColor)
                             .width(180.dp)
                     ) {
                         DropdownMenuItem(
@@ -209,16 +200,18 @@ fun FavoritesScreen(
                         .height(56.dp),
                     textStyle = TextStyle(
                         textAlign = TextAlign.Start,
-                        fontWeight = FontWeight.W600,
-                        fontSize = 16.sp
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 16.sp,
+                        fontFamily = FontFamily(Font(R.font.cairo))
                     ),
                     placeholder = {
                         Text(
                             text = stringResource(id = R.string.favorites_search_placeholder),
-                            color = AppColors.gray500,
+                            color = AppColors.gray400,
                             textAlign = TextAlign.Start,
-                            fontWeight = FontWeight.W600,
-                            fontSize = 14.sp
+                            fontWeight = FontWeight.Normal,
+                            fontSize = 16.sp,
+                            fontFamily = FontFamily(Font(R.font.cairo))
                         )
                     },
                     leadingIcon = {
@@ -230,32 +223,25 @@ fun FavoritesScreen(
                     },
                     trailingIcon = {
                         if (state.searchQuery.isNotEmpty()) {
-                            Box(
-                                modifier = Modifier
-                                    .padding(horizontal = 16.dp, vertical = 8.dp)
-                                    .size(32.dp)
-                                    .clip(CircleShape)
-                                    .background(AppColors.green400.copy(alpha = 0.3f))
-                                    .clickable { onIntent(FavoritesIntent.OnSearchQueryChanged("")) },
-                                contentAlignment = Alignment.Center
-                            ) {
+                            IconButton(onClick = { onIntent(FavoritesIntent.OnSearchQueryChanged("")) }) {
                                 Icon(
                                     imageVector = Icons.Default.Clear,
                                     contentDescription = null,
                                     tint = AppColors.gray500,
-                                    modifier = Modifier
-                                        .size(20.dp)
-                                        .padding(4.dp),
+                                    modifier = Modifier.size(20.dp)
                                 )
                             }
                         }
                     },
-                    shape = RoundedCornerShape(12.dp),
+                    shape = RoundedCornerShape(20.dp),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Color.Transparent,
-                        unfocusedBorderColor = Color.Transparent,
-                        focusedContainerColor = AppColors.green400.copy(alpha = 0.3f),
-                        unfocusedContainerColor = AppColors.green400.copy(alpha = 0.3f)
+                        focusedBorderColor = AppColors.gray100,
+                        unfocusedBorderColor = AppColors.gray100,
+                        focusedContainerColor = AppColors.cardColor,
+                        unfocusedContainerColor = AppColors.cardColor,
+                        cursorColor = AppColors.green800,
+                        focusedTextColor = AppColors.green800,
+                        unfocusedTextColor = AppColors.green800
                     ),
                     singleLine = true
                 )
@@ -297,10 +283,47 @@ fun FavoritesScreen(
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true, showSystemUi = true, name = "Light Mode")
 @Composable
-fun FavoritesScreenPreview() {
+fun FavoritesScreenLightPreview() {
     Der3MuslimTheme(
+        style = AppStyle.LIGHT,
+        language = java.util.Locale.Builder().setLanguage("ar").build()
+    ) {
+        FavoritesScreen(
+            state = FavoritesState(
+                favorites = listOf(
+                    ZekrUiModel(
+                        id = 1,
+                        text = "أَصْبَحْنَا وَأَصْبَحَ المُلْكُ للهِ وَالحَمْدُ للهِ، لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ المُلْكُ وَلَهُ الحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ",
+                        audioPath = "",
+                        repeatCount = 3,
+                        isFavorite = true
+                    ),
+                    ZekrUiModel(
+                        id = 2,
+                        text = "لَا إِلَهَ إِلَّا اللهُ العَظِيمُ الحَلِيمُ، لَا إِلَهَ إِلَّا اللهُ رَبُّ العَرْشِ العَظِيمِ، لَا إِلَهَ إِلَّا اللهُ رَبُّ السَّمَواتِ وَرَبُّ الأَرْضِ وَرَبُّ العَرْشِ الكَرِيمِ",
+                        audioPath = "",
+                        repeatCount = 1,
+                        isFavorite = true
+                    )
+                )
+            ),
+            onIntent = {}
+        )
+    }
+}
+
+@Preview(
+    showBackground = true,
+    showSystemUi = true,
+    name = "Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun FavoritesScreenDarkPreview() {
+    Der3MuslimTheme(
+        style = AppStyle.DARK,
         language = java.util.Locale.Builder().setLanguage("ar").build()
     ) {
         FavoritesScreen(

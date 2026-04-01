@@ -1,5 +1,7 @@
 package com.der3.home.presentations.side_menu.contact_us.components
 
+import android.content.res.Configuration
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,8 +20,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.der3.model.AppStyle
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
+import com.der3.ui.themes.isDarkTheme
 import java.util.Locale
 
 
@@ -45,7 +49,17 @@ fun ContactTextField(
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .then(
+                    if (isDarkTheme) {
+                        Modifier.border(
+                            width = 1.dp,
+                            color = AppColors.green700.copy(alpha = 0.2f),
+                            shape = RoundedCornerShape(12.dp)
+                        )
+                    } else Modifier
+                ),
             placeholder = {
                 Text(
                     text = placeholder,
@@ -60,24 +74,49 @@ fun ContactTextField(
             },
             shape = RoundedCornerShape(12.dp),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedContainerColor = AppColors.green50.copy(alpha = 0.5f),
-                unfocusedContainerColor = AppColors.green50.copy(alpha = 0.5f),
+                focusedContainerColor = if (isDarkTheme) AppColors.cardColor else AppColors.green50.copy(alpha = 0.5f),
+                unfocusedContainerColor = if (isDarkTheme) AppColors.cardColor else AppColors.green50.copy(alpha = 0.5f),
                 focusedBorderColor = Color.Transparent,
                 unfocusedBorderColor = Color.Transparent,
+                cursorColor = AppColors.green800,
             ),
             singleLine = singleLine,
             minLines = minLines,
-            textStyle = MaterialTheme.typography.bodyMedium.copy(textAlign = TextAlign.End)
+            textStyle = MaterialTheme.typography.bodyMedium.copy(
+                textAlign = TextAlign.Start,
+                color = AppColors.gray900Text
+            )
         )
     }
 }
 
-@Preview(showBackground = true, locale = "ar")
+@Preview(showBackground = true, name = "Light Mode")
 @Composable
-fun ContactTextFieldPreview() {
-    Der3MuslimTheme (
+fun ContactTextFieldLightPreview() {
+    Der3MuslimTheme(
+        style = AppStyle.LIGHT,
         language = Locale.Builder().setLanguage("ar").build()
-    ){
+    ) {
+        ContactTextField(
+            label = "الاسم",
+            value = "",
+            onValueChange = {},
+            placeholder = "أدخل اسمك الكريم"
+        )
+    }
+}
+
+@Preview(
+    showBackground = true,
+    name = "Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun ContactTextFieldDarkPreview() {
+    Der3MuslimTheme(
+        style = AppStyle.DARK,
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
         ContactTextField(
             label = "الاسم",
             value = "",

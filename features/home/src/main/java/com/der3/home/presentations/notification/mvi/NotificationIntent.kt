@@ -7,4 +7,5 @@ sealed class NotificationIntent : MviIntent {
     object Retry : NotificationIntent()
     object Back : NotificationIntent()
     object DismissError : NotificationIntent()
+    object DeleteAll : NotificationIntent()
 }

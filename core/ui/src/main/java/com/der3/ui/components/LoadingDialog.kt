@@ -1,20 +1,19 @@
 package com.der3.ui.components
 
-import androidx.compose.foundation.background
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,13 +27,14 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
+import com.der3.model.AppStyle
 import com.der3.ui.R
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
+import com.der3.ui.themes.isDarkTheme
 import java.util.Locale
-
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 
 
 @Composable
@@ -55,7 +55,7 @@ fun LoadingDialog(
         Card(
             shape = RoundedCornerShape(28.dp),
             colors = CardDefaults.cardColors(
-                containerColor = AppColors.white
+                containerColor = AppColors.cardColor
             ),
             elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
             modifier = Modifier
@@ -78,11 +78,11 @@ fun LoadingDialog(
                         painter = painterResource(id = R.drawable.star_shine),
                         contentDescription = null,
                         modifier = Modifier.size(18.dp),
-                        tint = AppColors.green800
+                        tint = if (isDarkTheme) AppColors.gold700 else AppColors.green800
                     )
                     CircularProgressIndicator(
                         strokeWidth = 5.dp,
-                        color = AppColors.green800,
+                        color = if (isDarkTheme) AppColors.gold700 else AppColors.green800,
                         trackColor = AppColors.green50,
                         modifier = Modifier.size(50.dp)
                     )
@@ -119,19 +119,31 @@ fun LoadingDialog(
 }
 
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true, name = "Light Mode")
 @Composable
-private fun LoadingDialogPreview() {
+private fun LoadingDialogLightPreview() {
     Der3MuslimTheme(
+        style = AppStyle.LIGHT,
         language = Locale.Builder().setLanguage("ar").build()
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    color = Color.Black.copy(alpha = 0.5f)
-                )
-        ) {
+        Surface(color = Color.Black.copy(alpha = 0.5f)) {
+            LoadingDialog(
+                visible = true,
+                title = "جاري التحميل",
+                message = "يرجى الانتظار قليلاً، نحن نقوم بتجهيز المحتوى لك"
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true, name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun LoadingDialogDarkPreview() {
+    Der3MuslimTheme(
+        style = AppStyle.DARK,
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
+        Surface(color = Color.Black.copy(alpha = 0.5f)) {
             LoadingDialog(
                 visible = true,
                 title = "جاري التحميل",

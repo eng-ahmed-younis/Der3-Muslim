@@ -10,4 +10,5 @@ object DataStoreKeys {
     const val SAVED_LOCATION_LONGITUDE = "saved_location_longitude_key"
     const val LOCATION_NAME = "location_name_key"
     const val APP_STYLE = "app_style_key"
+    const val PLAYBACK_SPEED = "playback_speed_key"
 }

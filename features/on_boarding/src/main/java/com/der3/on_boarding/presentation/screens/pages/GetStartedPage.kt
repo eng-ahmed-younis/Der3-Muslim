@@ -1,5 +1,6 @@
 package com.der3.on_boarding.presentation.screens.pages
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -24,7 +25,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -33,6 +33,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.der3.model.AppStyle
 import com.der3.ui.R
 import com.der3.ui.components.HorizontalDotsIndicator
 import com.der3.ui.themes.AppColors
@@ -51,7 +52,7 @@ fun GetStartedPage(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(AppColors.gray50)
+            .background(AppColors.screenBackground)
             .padding(horizontal = 20.dp, vertical = 16.dp)
     ) {
 
@@ -64,7 +65,8 @@ fun GetStartedPage(
             IconButton(onClick = onBack) {
                 Icon(
                     imageVector = Icons.Default.ArrowForward,
-                    contentDescription = null
+                    contentDescription = null,
+                    tint = AppColors.gray900Text
                 )
             }
         }
@@ -77,7 +79,7 @@ fun GetStartedPage(
                 .fillMaxWidth()
                 .height(340.dp)
                 .clip(RoundedCornerShape(20.dp))
-                .background(Color.White),
+                .background(AppColors.cardColor),
             contentAlignment = Alignment.Center
         ) {
 
@@ -135,7 +137,7 @@ fun GetStartedPage(
         ) {
             Text(
                 text = stringResource(id = R.string.onboarding_start_button),
-                color = Color.White,
+                color = AppColors.white,
                 fontSize = 16.sp,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
@@ -148,10 +150,29 @@ fun GetStartedPage(
 }
 
 
-@Preview(showBackground = true, name = "Get Started Page Preview")
+@Preview(showBackground = true, name = "Light Mode")
 @Composable
-private fun GetStartedPagePreview() {
+private fun GetStartedPageLightPreview() {
     Der3MuslimTheme(
+        style = AppStyle.LIGHT,
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
+        GetStartedPage(
+            onBack = {},
+            onFinish = {}
+        )
+    }
+}
+
+@Preview(
+    showBackground = true,
+    name = "Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+private fun GetStartedPageDarkPreview() {
+    Der3MuslimTheme(
+        style = AppStyle.DARK,
         language = Locale.Builder().setLanguage("ar").build()
     ) {
         GetStartedPage(

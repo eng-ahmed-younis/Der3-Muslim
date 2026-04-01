@@ -30,9 +30,11 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import com.der3.model.AppStyle
 import com.der3.shared.data.provider.ZekrCategoriesProvider
 import com.der3.ui.R
 import com.der3.ui.models.PalletColors
+import com.der3.ui.themes.AppColors
 
 @Composable
 fun CategoryCard(
@@ -41,17 +43,19 @@ fun CategoryCard(
     onCategoryClick: (CategoryUi) -> Unit
 ) {
 
-    // Pick random color ONCE per composition
-    val bgColor = remember {
-        PalletColors.iconBackgroundColors.random()
-    }
 
     Card(
         modifier = modifier
             .clickable(onClick = { onCategoryClick(category) }),
         shape = RoundedCornerShape(28.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(4.dp)
+        colors = CardDefaults.cardColors(
+            containerColor = AppColors.cardColor
+        ),
+        elevation = CardDefaults.cardElevation(4.dp),
+        border = if (com.der3.ui.themes.isDarkTheme) androidx.compose.foundation.BorderStroke(
+            1.dp,
+            AppColors.green700.copy(alpha = 0.2f)
+        ) else null
     ) {
 
         Column(
@@ -87,7 +91,8 @@ fun CategoryCard(
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Center,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = AppColors.gray900Text
             )
 
             Spacer(Modifier.height(4.dp))
@@ -99,16 +104,28 @@ fun CategoryCard(
                 overflow = TextOverflow.Ellipsis,
                 fontWeight = FontWeight.W600,
                 textAlign = TextAlign.Center,
-                fontFamily = FontFamily(Font(R.font.cairo_medium))
+                fontFamily = FontFamily(Font(R.font.cairo_medium)),
+                color = AppColors.gray500
             )
         }
     }
 }
 
-@Preview(showBackground = true)
+@Preview(name = "Light Mode", showBackground = true)
 @Composable
-fun CategoryCardPreview() {
-    Der3MuslimTheme {
+fun CategoryCardLightPreview() {
+    Der3MuslimTheme(style = AppStyle.LIGHT) {
+        CategoryCard(
+            category = ZekrCategoriesProvider.categories.first(),
+            onCategoryClick = {}
+        )
+    }
+}
+
+@Preview(name = "Dark Mode", showBackground = true)
+@Composable
+fun CategoryCardDarkPreview() {
+    Der3MuslimTheme(style = AppStyle.DARK) {
         CategoryCard(
             category = ZekrCategoriesProvider.categories.first(),
             onCategoryClick = {}

@@ -33,6 +33,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         enableEdgeToEdge()
+
+        viewModel.handleIntent(intent)
+
         setContent {
             Der3MuslimTheme(
                 style = viewModel.appStyleFlow.collectAsState().value,
@@ -47,7 +50,8 @@ class MainActivity : ComponentActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
+        Log.d("MainActivity_onNewIntent", "onNewIntent: ${intent.data}")
         setIntent(intent)
-        // إذا ضغط المستخدم على تنبيه وكان التطبيق مفتوحاً، يمكنك معالجة البيانات هنا
+        viewModel.handleIntent(intent)
     }
 }

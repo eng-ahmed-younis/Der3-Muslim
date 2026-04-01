@@ -1,4 +1,8 @@
+package com.der3.home.presentations.category_details.components
+
+import android.content.res.Configuration
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -27,13 +31,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.der3.home.domain.model.ZekrUiModel
+import com.der3.model.AppStyle
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
+import com.der3.ui.themes.isDarkTheme
 import java.util.Locale
 
 
@@ -48,9 +55,14 @@ fun ZekrCard(
 ) {
     Card(
         modifier = modifier
-            .clickable(onClick = onZekrClick),
+            .clickable(onClick = onZekrClick)
+            .border(
+                width = 1.dp,
+                color = if (isDarkTheme) AppColors.green700.copy(alpha = 0.2f) else Color.Transparent,
+                shape = RoundedCornerShape(24.dp)
+            ),
         shape = RoundedCornerShape(24.dp),
-        colors = CardDefaults.cardColors(containerColor = AppColors.white),
+        colors = CardDefaults.cardColors(containerColor = AppColors.cardColor),
         elevation = CardDefaults.cardElevation(2.dp)
     ) {
         Column(
@@ -75,15 +87,15 @@ fun ZekrCard(
                         modifier = Modifier
                             .size(46.dp)
                             .background(
-                                AppColors.green50,
+                                AppColors.green800,
                                 CircleShape
                             ),
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
-                            Icons.Default.PlayArrow,
+                            imageVector = Icons.Default.PlayArrow,
                             contentDescription = null,
-                            tint = AppColors.green800
+                            tint = AppColors.gold500
                         )
                     }
                 }
@@ -96,7 +108,7 @@ fun ZekrCard(
                         .fillMaxWidth()
                         .padding(end = 16.dp),
                     text = zekr.text,
-                    fontSize = 18.sp,
+                    fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
                     color = AppColors.gray900Text
                 )
@@ -147,7 +159,7 @@ fun ZekrCard(
                             contentDescription = null,
                             modifier = Modifier.size(24.dp),
                             tint = if (zekr.isFavorite)
-                                AppColors.green700
+                                AppColors.green800
                             else
                                 AppColors.gray500
                         )
@@ -164,7 +176,7 @@ fun ZekrCard(
                             modifier = Modifier.size(24.dp),
                             contentDescription = null,
                             tint = if (zekr.isBookmarked)
-                                AppColors.green700
+                                AppColors.green800
                             else
                                 AppColors.gray500
                         )
@@ -179,23 +191,56 @@ fun ZekrCard(
 }
 
 
-@Preview(showBackground = true)
+@Preview(name = "Light Mode", showBackground = true)
 @Composable
-private fun ZekrCardPreview() {
+private fun ZekrCardLightPreview() {
     val sampleZekr =    ZekrUiModel(
         id = 2,
         text = "اللّهُـمَّ بِكَ أَصْـبَحْنا وَبِكَ أَمْسَـينا",
         audioPath = "",
         repeatCount = 1,
-        isFavorite = false,
-        isBookmarked = false
+        isFavorite = true,
+        isBookmarked = true
     )
 
 
     Der3MuslimTheme(
+        style = AppStyle.LIGHT,
         language = Locale.Builder().setLanguage("ar").build()
     ) {
-        Box(modifier = Modifier.padding(16.dp)) {
+        Box(modifier = Modifier.background(AppColors.screenBackground).padding(16.dp)) {
+            ZekrCard(
+                zekr = sampleZekr,
+                onPlayZekrSound = {},
+                onFavoriteClick = {},
+                onBookmarkClick = {}
+            )
+        }
+    }
+}
+
+@Preview(
+    name = "Dark Mode",
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+private fun ZekrCardDarkPreview() {
+    val sampleZekr =    ZekrUiModel(
+        id = 2,
+        text = "اللّهُـمَّ بِكَ أَصْـبَحْنا وَبِكَ أَمْسَـينا",
+        audioPath = "",
+        repeatCount = 1,
+        isFavorite = true,
+        isBookmarked = true
+    )
+
+
+    Der3MuslimTheme(
+        style = AppStyle.DARK,
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
+        Box(modifier = Modifier.background(AppColors.screenBackground).padding(16.dp)) {
             ZekrCard(
                 zekr = sampleZekr,
                 onPlayZekrSound = {},

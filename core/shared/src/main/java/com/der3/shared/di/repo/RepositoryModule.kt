@@ -4,10 +4,12 @@ import android.content.Context
 import com.der3.shared.data.repo.AzkarRepositoryImpl
 import com.der3.shared.data.repo.FavoritesRepositoryImpl
 import com.der3.shared.data.repo.MasbahaRepositoryImpl
+import com.der3.shared.data.repo.NotificationRepositoryImpl
 import com.der3.shared.data.repo.RecycleBinRepositoryImpl
 import com.der3.shared.domain.repo.AzkarRepository
 import com.der3.shared.domain.repo.FavoritesRepository
 import com.der3.shared.domain.repo.MasbahaRepository
+import com.der3.shared.domain.repo.NotificationRepository
 import com.der3.shared.domain.repo.RecycleBinRepository
 import dagger.Binds
 import dagger.Module
@@ -38,6 +40,12 @@ abstract class RepositoryModule {
     abstract fun bindRecycleBinRepository(
         impl: RecycleBinRepositoryImpl
     ): RecycleBinRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindNotificationRepository(
+        impl: NotificationRepositoryImpl
+    ): NotificationRepository
 
     companion object {
         @Provides

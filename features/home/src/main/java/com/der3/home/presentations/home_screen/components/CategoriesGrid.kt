@@ -12,6 +12,7 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import com.der3.model.AppStyle
 import com.der3.shared.data.provider.ZekrCategoriesProvider
 import com.der3.ui.models.CategoryUi
 import com.der3.ui.themes.Der3MuslimTheme
@@ -44,10 +45,27 @@ fun CategoriesGrid(
 
 }
 
-@Preview(showBackground = true)
+@Preview(name = "Light Mode", showBackground = true)
 @Composable
-fun CategoriesGridPreview() {
+fun CategoriesGridLightPreview() {
     Der3MuslimTheme(
+        style = AppStyle.LIGHT,
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
+        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+            CategoriesGrid(
+                categories = ZekrCategoriesProvider.categories,
+                onCategoryClick = {}
+            )
+        }
+    }
+}
+
+@Preview(name = "Dark Mode", showBackground = true)
+@Composable
+fun CategoriesGridDarkPreview() {
+    Der3MuslimTheme(
+        style = AppStyle.DARK,
         language = Locale.Builder().setLanguage("ar").build()
     ) {
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
