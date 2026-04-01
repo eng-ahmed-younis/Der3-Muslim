@@ -4,6 +4,7 @@ import com.der3.shared.data.source.local.dao.NotificationDao
 import com.der3.shared.data.source.local.entity.NotificationEntity
 import com.der3.shared.domain.repo.NotificationRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
 
 class NotificationRepositoryImpl @Inject constructor(
@@ -27,6 +28,10 @@ class NotificationRepositoryImpl @Inject constructor(
 
     override suspend fun deleteAllNotifications() {
         notificationDao.deleteAllNotifications()
+    }
+
+    override suspend fun deleteNotificationsByType(type: String) {
+        notificationDao.deleteNotificationsByType(type)
     }
 
     override fun getNotificationByType(type: String): Flow<NotificationEntity?> {

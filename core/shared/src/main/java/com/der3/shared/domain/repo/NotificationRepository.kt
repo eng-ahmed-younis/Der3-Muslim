@@ -9,5 +9,6 @@ interface NotificationRepository {
     suspend fun deleteNotificationById(id: String)
     suspend fun markAsRead(id: Int)
     suspend fun deleteAllNotifications()
+    suspend fun deleteNotificationsByType(type: String)
     fun getNotificationByType(type: String): Flow<NotificationEntity?>
 }

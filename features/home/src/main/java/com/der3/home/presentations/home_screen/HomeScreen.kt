@@ -149,8 +149,7 @@ fun HomeScreen(
 
             item {
                 DailyZekrCard(
-                 //   title = state.dailyNotificationTitle ?: stringResource(id = R.string.),
-                 //   description = state.dailyNotificationDesc
+                    message = state.dailyNotificationDesc ?: "قَالَ لَاْ تَخَافَا إِنِّني مَعَكُمَا أَسْمَعُ وَأَرَى"
                 )
             }
 

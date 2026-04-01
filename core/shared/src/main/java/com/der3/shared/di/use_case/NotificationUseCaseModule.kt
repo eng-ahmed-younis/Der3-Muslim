@@ -46,4 +46,10 @@ abstract class NotificationUseCaseModule {
     abstract fun bindGetNotificationByTypeUseCase(
         impl: GetNotificationByTypeUseCaseImpl
     ): GetNotificationByTypeUseCase
+
+    @Binds
+    @Singleton
+    abstract fun bindClearNotificationsByTypeUseCase(
+        impl: ClearNotificationsByTypeUseCaseImpl
+    ): ClearNotificationsByTypeUseCase
 }

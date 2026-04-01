@@ -55,6 +55,8 @@
     <string name="notification_today">اليوم</string>
     <string name="notification_yesterday">بالأمس</string>
     <string name="notification_aya_of_the_day">آية اليوم</string>
+    <string name="aya_of_the_day">آية اليوم</string>
+    <string name="notification_retry_button">إعادة المحاولة</string>
     <string name="notification_empty_state">لا توجد تنبيهات أخرى</string>
     <string name="notification_error_title">حدث خطأ ما</string>
     <string name="delete_all_notifications_title">مسح كافة التنبيهات</string>

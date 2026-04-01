@@ -24,6 +24,9 @@ interface NotificationDao {
     @Query("DELETE FROM notification_table")
     suspend fun deleteAllNotifications()
 
+    @Query("DELETE FROM notification_table WHERE type = :type")
+    suspend fun deleteNotificationsByType(type: String)
+
     @Query("SELECT * FROM notification_table WHERE type = :type ORDER BY timestamp DESC LIMIT 1")
     fun getNotificationByType(type: String): Flow<NotificationEntity?>
 }

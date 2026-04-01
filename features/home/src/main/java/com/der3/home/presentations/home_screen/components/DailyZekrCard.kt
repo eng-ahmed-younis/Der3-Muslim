@@ -15,12 +15,14 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.der3.model.AppStyle
+import com.der3.ui.R
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
 import com.der3.ui.themes.isDarkTheme
@@ -29,8 +31,7 @@ import java.util.Locale
 @Composable
 fun DailyZekrCard(
     modifier: Modifier = Modifier,
-    title: String = "لا إله إلا الله وحده لا شريك له",
-    description: String = "له الملك وله الحمد وهو على كل شيء قدير",
+    message: String = "قَالَ لَاْ تَخَافَا إِنِّني مَعَكُمَا أَسْمَعُ وَأَرَى",
     containerColor: Color? = null
 ) {
 
@@ -57,27 +58,19 @@ fun DailyZekrCard(
         ) {
 
             Text(
-                text = "آية اليوم",
+                text = stringResource(id = R.string.aya_of_the_day),
                 color = Color.White.copy(alpha = 0.7f),
                 fontWeight = FontWeight.W600,
-                fontSize = 15.sp
+                fontSize = 14.sp
             )
 
             Spacer(Modifier.height(12.dp))
 
             Text(
-                text = title,
+                text = message,
                 color = Color.White,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
-            )
-
-            Spacer(Modifier.height(8.dp))
-
-            Text(
-                text = description,
-                color = Color.White.copy(alpha = 0.9f),
-                fontSize = 14.sp
+                fontSize = 16.sp,
+                fontWeight = FontWeight.W800,
             )
         }
     }
@@ -122,8 +115,7 @@ fun DailyZekrCardGoldPreview() {
     ) {
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
             DailyZekrCard(
-                title = "سبحان الله وبحمده",
-                description = "مئة مرة حطت خطاياه وإن كانت مثل زبد البحر"
+                message = "سبحان الله وبحمده، مئة مرة حطت خطاياه وإن كانت مثل زبد البحر"
             )
         }
     }
@@ -142,8 +134,7 @@ fun DailyZekrCardGoldDarkPreview() {
     ) {
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
             DailyZekrCard(
-                title = "سبحان الله وبحمده",
-                description = "مئة مرة حطت خطاياه وإن كانت مثل زبد البحر"
+                message = "سبحان الله وبحمده، مئة مرة حطت خطاياه وإن كانت مثل زبد البحر"
             )
         }
     }
