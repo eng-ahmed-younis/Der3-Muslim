@@ -1,8 +1,9 @@
 package com.der3.home.presentations.home_screen.mvi
 
 import com.der3.mvi.Reducer
+import jakarta.inject.Inject
 
-class HomeReducer : Reducer<HomeAction, HomeState> {
+class HomeReducer @Inject constructor() : Reducer<HomeAction, HomeState> {
     override fun reduce(
         action: HomeAction,
         state: HomeState
@@ -18,6 +19,13 @@ class HomeReducer : Reducer<HomeAction, HomeState> {
             is HomeAction.LoadHomeAzkarCategory -> {
                 state.copy(
                     homeAzkarCategory = action.category
+                )
+            }
+
+            is HomeAction.LoadDailyNotification -> {
+                state.copy(
+                    dailyNotificationTitle = action.title,
+                    dailyNotificationDesc = action.desc
                 )
             }
 

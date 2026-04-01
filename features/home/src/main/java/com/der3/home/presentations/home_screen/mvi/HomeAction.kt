@@ -15,5 +15,10 @@ sealed interface HomeAction  : MviAction {
         val category:List<CategoryUi>
     ) : HomeAction
 
+    data class LoadDailyNotification(
+        val title: String?,
+        val desc: String?
+    ) : HomeAction
+
     data object ClearError : HomeAction
 }

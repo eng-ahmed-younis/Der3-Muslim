@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import android.content.res.Configuration
 import androidx.compose.ui.tooling.preview.Preview
 import com.der3.ui.themes.Der3MuslimTheme
 import androidx.compose.foundation.layout.Box
@@ -40,6 +41,7 @@ fun SectionHeader(title: String) {
 }
 
 @Preview(showBackground = true, locale = "ar")
+@Preview(showBackground = true, locale = "ar", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun SectionHeaderPreview() {
     Der3MuslimTheme {

@@ -9,5 +9,7 @@ import com.der3.ui.models.CategoryUi
 data class HomeState (
     val isLoading: Boolean = false,
     val homeAzkarCategory : List<CategoryUi> = emptyList(),
+    val dailyNotificationTitle: String? = null,
+    val dailyNotificationDesc: String? = null,
     val error: String? = null
 ) : MviState

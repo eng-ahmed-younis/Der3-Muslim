@@ -4,8 +4,8 @@ import com.der3.home.domain.model.NotificationItem
 import com.der3.mvi.MviAction
 
 sealed class NotificationAction : MviAction {
-    object Loading : NotificationAction()
-    data class Success(
+    data class Loading(val isLoading: Boolean) : NotificationAction()
+    data class LoadNotificationSuccess(
         val today: List<NotificationItem>,
         val yesterday: List<NotificationItem>,
         val aya: String?

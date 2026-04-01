@@ -1,5 +1,6 @@
 package com.der3.home.presentations.home_screen
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -33,6 +34,7 @@ import com.der3.home.presentations.home_screen.components.HomeTopHeader
 import com.der3.home.presentations.home_screen.components.SectionHeader
 import com.der3.home.presentations.home_screen.mvi.HomeIntent
 import com.der3.home.presentations.home_screen.mvi.HomeState
+import com.der3.model.AppStyle
 import com.der3.model.UiText
 import com.der3.mvi.MviEffect
 import com.der3.screens.Screens
@@ -44,6 +46,7 @@ import com.der3.ui.style.ShiftSystemBarStyle
 import com.der3.ui.themes.Der3MuslimTheme
 import java.util.Locale
 import com.der3.ui.themes.AppColors
+import com.der3.ui.themes.isStatusBarDark
 import com.der3.utils.asString
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -105,9 +108,9 @@ fun HomeScreen(
 
 
     ShiftSystemBarStyle(
-        statusBarColor = Color(0xFFF4F6F5),
+        statusBarColor = AppColors.screenBackground,
         isStatusBarVisible = true,
-        useDarkStatusBarIcons = true,
+        useDarkStatusBarIcons = isStatusBarDark,
         isEdgeToEdgeEnabled = true,
         isNavigationBarVisible = false,
         navigationBarColor = AppColors.gray50,
@@ -119,12 +122,12 @@ fun HomeScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(AppColors.green25)
+            .background(AppColors.screenBackground)
     ) {
 
         HomeTopHeader(
             modifier = Modifier,
-            backgroundColor = AppColors.gray50,
+            backgroundColor = AppColors.screenBackground,
             onDrawerClick = {
                 if (drawerState.isOpen) {
                     scope.launch { drawerState.close() }
@@ -144,7 +147,11 @@ fun HomeScreen(
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
 
-            item { DailyZekrCard() }
+            item {
+                DailyZekrCard(
+                    message = state.dailyNotificationDesc ?: "قَالَ لَاْ تَخَافَا إِنِّني مَعَكُمَا أَسْمَعُ وَأَرَى"
+                )
+            }
 
             item {
                 SectionHeader(
@@ -165,7 +172,7 @@ fun HomeScreen(
             }
 
             item {
-                DailyNotificationCard {
+                DailyNotificationCard() {
                     onIntent(HomeIntent.NavigateToDailyNotifications)
                 }
             }
@@ -176,16 +183,41 @@ fun HomeScreen(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(name = "Light Mode", showBackground = true, showSystemUi = true)
 @Composable
-fun HomeScreenPreview() {
+fun HomeScreenLightPreview() {
     Der3MuslimTheme(
+        style = AppStyle.LIGHT,
         language = Locale.Builder().setLanguage("ar").build()
     ) {
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
             HomeScreen(
                 state = HomeState(
-                    isLoading = true,
+                    isLoading = false,
+                    homeAzkarCategory = ZekrCategoriesProvider.categories
+                ),
+                onIntent = {}
+            )
+        }
+    }
+}
+
+@Preview(
+    name = "Dark Mode",
+    showBackground = true,
+    showSystemUi = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun HomeScreenDarkPreview() {
+    Der3MuslimTheme(
+        style = AppStyle.DARK,
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
+        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+            HomeScreen(
+                state = HomeState(
+                    isLoading = false,
                     homeAzkarCategory = ZekrCategoriesProvider.categories
                 ),
                 onIntent = {}

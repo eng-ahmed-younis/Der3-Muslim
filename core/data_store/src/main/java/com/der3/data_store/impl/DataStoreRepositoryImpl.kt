@@ -2,6 +2,7 @@ package com.der3.data_store.impl
 
 import com.der3.data_store.api.DataStoreRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
@@ -87,4 +88,18 @@ class DataStoreRepositoryImpl(private val dataStoreService: DataStoreService) : 
                 dataStoreService.set(DataStoreKeys.APP_STYLE, value ?: "system")
             }
         }
+
+    override val appStyleFlow: Flow<String> = dataStoreService[DataStoreKeys.APP_STYLE, "system"]
+
+    override var playbackSpeed: Float
+        get() = runBlocking(Dispatchers.IO) {
+            dataStoreService.get<Float>(DataStoreKeys.PLAYBACK_SPEED, 1.0f).first()
+        }
+        set(value) {
+            runBlocking(Dispatchers.IO) {
+                dataStoreService.set(DataStoreKeys.PLAYBACK_SPEED, value)
+            }
+        }
+
+    override val playbackSpeedFlow: Flow<Float> = dataStoreService[DataStoreKeys.PLAYBACK_SPEED, 1.0f]
 }

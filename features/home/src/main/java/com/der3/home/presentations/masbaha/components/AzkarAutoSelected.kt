@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.der3.ui.R
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
+import com.der3.ui.themes.isDarkTheme
 import java.util.Locale
 
 @Composable
@@ -32,6 +33,12 @@ fun AzkarAutoSelected(
     onAutoSwitchChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val (selectZekrColor, switchTextColor) = if (isDarkTheme) {
+        AppColors.gold500 to AppColors.gray900Text
+    } else {
+        AppColors.green800 to AppColors.gold500
+    }
+
 
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
 
@@ -51,7 +58,7 @@ fun AzkarAutoSelected(
                     onCheckedChange = onAutoSwitchChange,
                     colors = SwitchDefaults.colors(
                         checkedThumbColor = AppColors.white,
-                        checkedTrackColor = AppColors.green800,
+                        checkedTrackColor = if (isDarkTheme) AppColors.gold500 else AppColors.green800,
                         uncheckedThumbColor = AppColors.gray500,
                         uncheckedTrackColor = AppColors.gray200,
                         uncheckedBorderColor = AppColors.gray500
@@ -59,14 +66,14 @@ fun AzkarAutoSelected(
                 )
                 Text(
                     text = stringResource(id = R.string.auto_change),
-                    color = AppColors.gold500,
+                    color = switchTextColor,
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
 
             Text(
                 text = stringResource(id = R.string.select_zekr),
-                color = AppColors.green800,
+                color = selectZekrColor,
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Bold
             )

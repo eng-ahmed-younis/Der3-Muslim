@@ -1,5 +1,6 @@
 package com.der3.home.presentations.azkar_category
 
+import android.content.res.Configuration
 import com.der3.ui.components.Der3TopAppBar
 import android.util.Log
 import androidx.compose.runtime.Composable
@@ -9,12 +10,27 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.der3.shared.data.provider.ZekrCategoriesProvider
 import com.der3.home.presentations.azkar_category.components.CategoryRow
@@ -27,6 +43,7 @@ import com.der3.ui.components.LoadingDialog
 import com.der3.ui.components.ReminderNameField
 import com.der3.ui.style.ShiftSystemBarStyle
 import com.der3.ui.themes.AppColors
+import com.der3.ui.themes.isStatusBarDark
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -53,12 +70,12 @@ fun AzkarCategoryRoute(
     }
 
     ShiftSystemBarStyle(
-        statusBarColor = AppColors.gray50,
+        statusBarColor = AppColors.screenBackground,
         isStatusBarVisible = true,
-        useDarkStatusBarIcons = true,
+        useDarkStatusBarIcons = isStatusBarDark,
         isEdgeToEdgeEnabled = true,
         isNavigationBarVisible = false,
-        navigationBarColor = AppColors.gray50,
+        navigationBarColor = AppColors.screenBackground,
         useDarkNavigationBarIcons = false
     )
 
@@ -98,11 +115,11 @@ fun AzkarCategoryScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(AppColors.gray50)
+            .background(AppColors.screenBackground)
     ) {
         Der3TopAppBar(
             title = stringResource(id = R.string.home_categories_title),
-            backgroundColor = AppColors.gray50,
+            backgroundColor = AppColors.screenBackground,
             titleColor = AppColors.gray900Text,
             navigationIconColor = AppColors.gray900Text,
             //actionIconColor = AppColors.green800,
@@ -111,26 +128,70 @@ fun AzkarCategoryScreen(
             }
         )
 
-        ReminderNameField(
+        OutlinedTextField(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
-                .fillMaxWidth(),
-            label = stringResource(id = R.string.reminder_name_hint),
+                .fillMaxWidth()
+                .height(56.dp),
             value = searchText,
-            iconAction = Icons.Default.Search,
-            borderColor = AppColors.gray500,
-            backgroundColor = AppColors.white,
-            labelColor = AppColors.gray500,
-            iconActionColor = AppColors.gray500,
             onValueChange = {
                 Log.d("AllCategoryScreen", "onValueChange: $it")
                 searchText = it
-            }
+            },
+            textStyle = TextStyle(
+                textAlign = TextAlign.Start,
+                fontWeight = FontWeight.Normal,
+                fontSize = 16.sp,
+                fontFamily = FontFamily(Font(R.font.cairo))
+            ),
+            placeholder = {
+                Text(
+                    text = stringResource(id = R.string.reminder_name_hint),
+                    color = AppColors.gray400,
+                    textAlign = TextAlign.Start,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 16.sp,
+                    fontFamily = FontFamily(Font(R.font.cairo))
+                )
+            },
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = null,
+                    tint = AppColors.green800
+                )
+            },
+            trailingIcon = {
+                if (searchText.isNotEmpty()) {
+                    IconButton(onClick = { searchText = "" }) {
+                        Icon(
+                            imageVector = Icons.Default.Clear,
+                            contentDescription = null,
+                            tint = AppColors.gray500,
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
+                }
+            },
+            shape = RoundedCornerShape(20.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = AppColors.gray100,
+                unfocusedBorderColor = AppColors.gray100,
+                focusedContainerColor = AppColors.cardColor,
+                unfocusedContainerColor = AppColors.cardColor,
+                cursorColor = AppColors.green800,
+                focusedTextColor = AppColors.green800,
+                unfocusedTextColor = AppColors.green800
+            ),
+            singleLine = true
         )
 
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
+                .background(
+                    color = AppColors.screenBackground,
+                )
                 .heightIn(
                     min = (state.categories.size * 100).dp,
                     max = ((state.categories.size + 3) * 100).dp
@@ -162,18 +223,44 @@ fun AzkarCategoryScreen(
 }
 
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true, showSystemUi = true, name = "Light Mode")
 @Composable
-fun AzkarCategoryScreenPreview() {
+fun AzkarCategoryScreenLightPreview() {
     Der3MuslimTheme(
         language = Locale.Builder().setLanguage("ar").build()
     ) {
-        AzkarCategoryScreen(
-            state = AzkarCategoryState(
-                isLoading = true,
-                categories = ZekrCategoriesProvider.categories
-            ),
-            onIntent = {}
-        )
+        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+            AzkarCategoryScreen(
+                state = AzkarCategoryState(
+                    isLoading = false,
+                    categories = ZekrCategoriesProvider.categories
+                ),
+                onIntent = {}
+            )
+        }
+    }
+}
+
+@Preview(
+    showBackground = true,
+    showSystemUi = true,
+    name = "Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun AzkarCategoryScreenDarkPreview() {
+    Der3MuslimTheme(
+        style = com.der3.model.AppStyle.DARK,
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
+        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+            AzkarCategoryScreen(
+                state = AzkarCategoryState(
+                    isLoading = false,
+                    categories = ZekrCategoriesProvider.categories
+                ),
+                onIntent = {}
+            )
+        }
     }
 }

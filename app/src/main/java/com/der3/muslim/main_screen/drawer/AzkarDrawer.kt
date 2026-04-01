@@ -18,6 +18,7 @@ import com.der3.muslim.main_screen.drawer.model.DrawerItem
 import com.der3.muslim.main_screen.drawer.model.drawerItems
 import com.der3.muslim.utils.getAppVersionName
 import com.der3.screens.Screens
+import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
 import java.util.Locale
 
@@ -36,7 +37,7 @@ fun AzkarDrawer(
         modifier = Modifier
             .fillMaxHeight()
             .width(drawerWidth),
-        drawerContainerColor = Color.White,
+        drawerContainerColor = AppColors.screenBackground,
             drawerShape = androidx.compose.foundation.shape.RoundedCornerShape(
                 topStart = 0.dp,
                 bottomStart = 0.dp,

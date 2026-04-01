@@ -4,6 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DeleteSweep
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -25,9 +27,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.der3.ui.R
 import com.der3.home.domain.model.NotificationItem
-import com.der3.home.domain.model.NotificationType
 import com.der3.home.presentations.notification.components.AyaCard
 import com.der3.home.presentations.notification.components.EmptyNotificationsState
+import com.der3.home.presentations.notification.components.DeleteAllNotificationsDialog
 import com.der3.home.presentations.notification.components.NotificationCard
 import com.der3.home.presentations.notification.components.SectionHeader
 import com.der3.home.presentations.notification.mvi.NotificationIntent
@@ -37,18 +39,34 @@ import com.der3.screens.Screens
 import com.der3.ui.components.Der3TopAppBar
 import com.der3.ui.components.ErrorDialog
 import com.der3.ui.components.LoadingDialog
+import com.der3.ui.style.ShiftSystemBarStyle
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
+import com.der3.ui.themes.isStatusBarDark
 import com.der3.utils.asString
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import com.der3.model.AppStyle
+import android.content.res.Configuration
+import androidx.compose.foundation.isSystemInDarkTheme
+import com.der3.home.di.factory.MasbahaViewModelFactory
+import com.der3.home.di.factory.NotificationViewModelFactory
+import com.der3.home.presentations.masbaha.MasbahaViewModel
+import com.der3.model.NotificationType
+import com.der3.shared.params.NotificationParams
 import java.util.Locale
 
 @Composable
 fun NotificationRoute(
+    params: NotificationParams,
     onNavigate: (Screens) -> Unit
 ) {
-    val viewModel: NotificationViewModel = hiltViewModel()
+
+    val viewModel: NotificationViewModel =
+        hiltViewModel<NotificationViewModel, NotificationViewModelFactory> { factory ->
+            factory.create(params)
+        }
+
     val state = viewModel.viewState
 
     val scope = rememberCoroutineScope()
@@ -82,15 +100,24 @@ fun NotificationRoute(
             viewModel.onIntent(NotificationIntent.DismissError)
         }
     )
+    LoadingDialog(visible = state.isLoading)
+
+    ShiftSystemBarStyle(
+        statusBarColor = AppColors.screenBackground,
+        isStatusBarVisible = true,
+        useDarkStatusBarIcons = isStatusBarDark,
+        isEdgeToEdgeEnabled = true,
+        isNavigationBarVisible = false,
+        navigationBarColor = AppColors.screenBackground,
+        useDarkNavigationBarIcons = false
+    )
 
     NotificationScreen(
         state = state,
         onIntent = viewModel::onIntent
     )
 
-    LoadingDialog(
-        visible = state.isLoading
-    )
+
 }
 
 @Composable
@@ -98,19 +125,43 @@ fun NotificationScreen(
     state: NotificationState,
     onIntent: (NotificationIntent) -> Unit
 ) {
+    var showDeleteDialog by remember { mutableStateOf(false) }
+
+
+    if (showDeleteDialog) {
+        DeleteAllNotificationsDialog(
+            count = state.todayNotifications.size + state.yesterdayNotifications.size,
+            onDismiss = { showDeleteDialog = false },
+            onConfirm = {
+                onIntent(NotificationIntent.DeleteAll)
+                showDeleteDialog = false
+            }
+        )
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 16.dp)
-            .background(color = AppColors.gray50)
+            .background(color = AppColors.screenBackground)
     ) {
         Der3TopAppBar(
             title = stringResource(R.string.notification_history_title),
-            backgroundColor = AppColors.gray50,
+            backgroundColor = AppColors.screenBackground,
             onBackClick = {
                 onIntent(NotificationIntent.Back)
             },
-            showBackButton = true
+            showBackButton = true,
+            trailingContent = {
+                if (state.todayNotifications.isNotEmpty() || state.yesterdayNotifications.isNotEmpty()) {
+                    IconButton(onClick = { showDeleteDialog = true }) {
+                        Icon(
+                            imageVector = Icons.Default.DeleteSweep,
+                            contentDescription = "Delete All",
+                            tint = AppColors.gray900Text
+                        )
+                    }
+                }
+            }
         )
 
         Box(
@@ -119,7 +170,7 @@ fun NotificationScreen(
             if (state.isLoading) {
                 CircularProgressIndicator(
                     modifier = Modifier.align(Alignment.Center),
-                    color = Color(0xFF1B5E20)
+                    color = AppColors.green800
                 )
             } else if (state.error != null) {
                 Column(
@@ -131,16 +182,20 @@ fun NotificationScreen(
                 ) {
                     Text(
                         text = stringResource(R.string.notification_error_title),
-                        color = Color.Red,
+                        color = AppColors.red900,
                         fontSize = 18.sp
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text(text = state.error, textAlign = TextAlign.Center, color = Color.Gray)
+                    Text(
+                        text = state.error,
+                        textAlign = TextAlign.Center,
+                        color = AppColors.gray500
+                    )
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Button(
                         onClick = { onIntent(NotificationIntent.Retry) },
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1B5E20))
+                        colors = ButtonDefaults.buttonColors(containerColor = AppColors.green800)
                     ) {
                         Text(
                             text = stringResource(R.string.notification_retry_button),
@@ -214,6 +269,7 @@ fun NotificationScreen(
 }
 
 @Preview(showBackground = true, locale = "ar")
+@Preview(showBackground = true, locale = "ar", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun NotificationScreenPreview() {
     val mockState = NotificationState(
@@ -245,6 +301,7 @@ fun NotificationScreenPreview() {
     )
 
     Der3MuslimTheme(
+        style = if (isSystemInDarkTheme()) AppStyle.DARK else AppStyle.LIGHT,
         language = Locale.Builder().setLanguage("ar").build()
     ) {
         NotificationScreen(state = mockState) {}

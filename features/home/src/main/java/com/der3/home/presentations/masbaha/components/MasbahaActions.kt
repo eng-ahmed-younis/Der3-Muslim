@@ -1,5 +1,10 @@
 package com.der3.home.presentations.masbaha.components
 
+import android.content.res.Configuration
+import androidx.compose.foundation.background
+import com.der3.model.AppStyle
+import com.der3.ui.themes.Der3MuslimTheme
+import com.der3.ui.themes.isDarkTheme
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -39,10 +44,14 @@ fun MasbahaActionButton(
         onClick = onClick,
         modifier = modifier
             .height(56.dp)
-            .border(1.dp, AppColors.gray200, RoundedCornerShape(28.dp)),
+            .border(
+                width = 1.dp,
+                color = if (isDarkTheme) AppColors.green700.copy(alpha = 0.2f) else AppColors.gray100,
+                shape = RoundedCornerShape(28.dp)
+            ),
         colors = ButtonDefaults.buttonColors(
-            containerColor = AppColors.white,
-            contentColor = AppColors.green800
+            containerColor = AppColors.cardColor,
+            contentColor = if (isDarkTheme) AppColors.gold700 else AppColors.green800
         ),
         shape = RoundedCornerShape(28.dp),
         elevation = ButtonDefaults.buttonElevation(defaultElevation = 0.dp)
@@ -51,7 +60,11 @@ fun MasbahaActionButton(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
-            Icon(imageVector = icon, contentDescription = null, tint = AppColors.gold600)
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = if (isDarkTheme) AppColors.gold700 else AppColors.gold600
+            )
             Spacer(modifier = Modifier.width(8.dp))
             Text(text = text, fontWeight = FontWeight.Bold)
         }
@@ -70,10 +83,14 @@ fun MasbahaToggleActionButton(
         onClick = { onToggle(!enabled) },
         modifier = modifier
             .height(56.dp)
-            .border(1.dp, AppColors.gray200, RoundedCornerShape(28.dp)),
+            .border(
+                width = 1.dp,
+                color = if (isDarkTheme) AppColors.green700.copy(alpha = 0.2f) else AppColors.gray100,
+                shape = RoundedCornerShape(28.dp)
+            ),
         colors = ButtonDefaults.buttonColors(
-            containerColor = AppColors.white,
-            contentColor = if (enabled) AppColors.green800 else AppColors.gray500
+            containerColor = AppColors.cardColor,
+            contentColor = if (enabled) (if (isDarkTheme) AppColors.gold700 else AppColors.green800) else AppColors.gray500
         ),
         shape = RoundedCornerShape(28.dp),
         elevation = ButtonDefaults.buttonElevation(defaultElevation = 0.dp)
@@ -85,49 +102,56 @@ fun MasbahaToggleActionButton(
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                tint = if (enabled) AppColors.green800 else AppColors.gray500
+                tint = if (enabled) (if (isDarkTheme) AppColors.gold700 else AppColors.green800) else AppColors.gray500
             )
             Text(text = text, fontSize = 12.sp)
         }
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, name = "Light Mode")
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 fun MasbahaActionsPreview() {
-    Column(
-        modifier = Modifier.padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+    Der3MuslimTheme(
+        style = if (androidx.compose.foundation.isSystemInDarkTheme()) AppStyle.DARK else AppStyle.LIGHT
     ) {
-        Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-            MasbahaActionButton(
-                text = "تصفير",
-                icon = Icons.Default.Refresh,
-                modifier = Modifier.weight(1f),
-                onClick = {}
-            )
-            MasbahaActionButton(
-                text = "تعديل الهدف",
-                icon = Icons.Default.Settings,
-                modifier = Modifier.weight(1f),
-                onClick = {}
-            )
-        }
-        Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-            MasbahaToggleActionButton(
-                text = "تنبيه صوتي",
-                icon = Icons.AutoMirrored.Filled.VolumeUp,
-                enabled = true,
-                modifier = Modifier.weight(1f),
-                onToggle = {}
-            )
-            MasbahaToggleActionButton(
-                text = "الاهتزاز",
-                icon = Icons.Default.Vibration,
-                enabled = false,
-                modifier = Modifier.weight(1f),
-                onToggle = {}
-            )
+        Column(
+            modifier = Modifier
+                .background(AppColors.screenBackground)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                MasbahaActionButton(
+                    text = "تصفير",
+                    icon = Icons.Default.Refresh,
+                    modifier = Modifier.weight(1f),
+                    onClick = {}
+                )
+                MasbahaActionButton(
+                    text = "تعديل الهدف",
+                    icon = Icons.Default.Settings,
+                    modifier = Modifier.weight(1f),
+                    onClick = {}
+                )
+            }
+            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                MasbahaToggleActionButton(
+                    text = "تنبيه صوتي",
+                    icon = Icons.AutoMirrored.Filled.VolumeUp,
+                    enabled = true,
+                    modifier = Modifier.weight(1f),
+                    onToggle = {}
+                )
+                MasbahaToggleActionButton(
+                    text = "الاهتزاز",
+                    icon = Icons.Default.Vibration,
+                    enabled = false,
+                    modifier = Modifier.weight(1f),
+                    onToggle = {}
+                )
+            }
         }
     }
 }

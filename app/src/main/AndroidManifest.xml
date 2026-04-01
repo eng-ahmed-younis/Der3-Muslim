@@ -30,13 +30,31 @@
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/der3_muslim_title"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.App.Starting">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <!-- this indicates that my app can open or browse link -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="der3.muslim.deeplink"
+                    android:pathPrefix="/notifications"
+                    android:scheme="https" />
+            </intent-filter>
         </activity>
+
+
+
+
+
 
         <provider
             android:name="androidx.core.content.FileProvider"

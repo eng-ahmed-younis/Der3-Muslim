@@ -7,8 +7,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -55,8 +54,11 @@ import com.der3.sections.presentation.utils.qibla.rememberCompassAzimuth
 import com.der3.sections.presentation.utils.qibla.rememberLocationState
 import com.der3.sections.presentation.utils.qibla.rememberQiblaDirection
 import com.der3.sections.presentation.utils.qibla.hasLocationPermission
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import android.content.res.Configuration
+import com.der3.model.AppStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -64,11 +66,12 @@ import com.der3.mvi.MviEffect
 import com.der3.screens.Screens
 import com.der3.sections.presentation.qibla.mvi.QiblaIntent
 import com.der3.sections.presentation.qibla.mvi.QiblaState
-import com.der3.ui.R
 import com.der3.ui.components.Der3TopAppBar
 import com.der3.ui.components.ErrorDialog
+import com.der3.ui.style.ShiftSystemBarStyle
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
+import com.der3.ui.themes.isStatusBarDark
 import com.der3.utils.asString
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -110,6 +113,14 @@ fun QiblaRoute(
             showErrorDialog = false
             errorMessage = null
         }
+    )
+
+    ShiftSystemBarStyle(
+        statusBarColor = AppColors.screenBackground,
+        isStatusBarVisible = true,
+        useDarkStatusBarIcons = isStatusBarDark,
+        isEdgeToEdgeEnabled = true,
+        isNavigationBarVisible = false
     )
 
 
@@ -168,11 +179,11 @@ fun QiblaScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(AppColors.gray50)
+            .background(AppColors.screenBackground)
     ) {
         Der3TopAppBar(
             title = "اتجاه القبلة",
-            backgroundColor = AppColors.gray50,
+            backgroundColor = AppColors.screenBackground,
             showBackButton = true,
             onBackClick = { onIntent(QiblaIntent.OnBackClick) },
             trailingContent = {
@@ -181,7 +192,7 @@ fun QiblaScreen(
                         .padding(end = 16.dp)
                         .size(40.dp)
                         .clip(CircleShape)
-                        .background(AppColors.green800),
+                        .background(if (com.der3.ui.themes.isDarkTheme) AppColors.gold700 else AppColors.green800),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
@@ -198,10 +209,7 @@ fun QiblaScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp)
-                .scrollable(
-                    state = rememberScrollState(),
-                    orientation = Orientation.Vertical
-                ),
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // Location Card
@@ -209,8 +217,12 @@ fun QiblaScreen(
                 modifier = Modifier
                     .fillMaxWidth(),
                 shape = RoundedCornerShape(24.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White),
-                elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+                colors = CardDefaults.cardColors(containerColor = AppColors.cardColor),
+                elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+                border = if (com.der3.ui.themes.isDarkTheme) androidx.compose.foundation.BorderStroke(
+                    1.dp,
+                    AppColors.green700.copy(alpha = 0.2f)
+                ) else null
             ) {
                 Column(
                     modifier = Modifier
@@ -238,7 +250,7 @@ fun QiblaScreen(
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.Center,
-                        color = Color.Black
+                        color = AppColors.gray900Text
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
@@ -328,14 +340,21 @@ fun QiblaScreen(
                 fontWeight = FontWeight.Bold
             )
 
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.height(16.dp))
 
             // Calibration Warning
             Card(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp),
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFFDF6E3)), // Light yellowish
-                border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFF9EBC8))
+                colors = CardDefaults.cardColors(
+                    containerColor = if (com.der3.ui.themes.isDarkTheme) AppColors.gray100 else Color(0xFFFDF6E3)
+                ),
+                border = androidx.compose.foundation.BorderStroke(
+                    1.dp,
+                    if (com.der3.ui.themes.isDarkTheme) AppColors.green700.copy(alpha = 0.2f) else Color(0xFFF9EBC8)
+                )
             ) {
                 Row(
                     modifier = Modifier.padding(16.dp),
@@ -343,9 +362,9 @@ fun QiblaScreen(
                 ) {
                     Text(
                         modifier = Modifier.weight(1f),
-                        text = "يرجى تحريك الهاتف بشكل 8 لمعايرة البوصلة وضمان دقة الاتجاه.",
+                        text = stringResource(id = com.der3.ui.R.string.qibla_calibration_hint),
                         style = MaterialTheme.typography.bodySmall,
-                        color = Color(0xFFB8942E),
+                        color = if (com.der3.ui.themes.isDarkTheme) AppColors.gold700 else Color(0xFFB8942E),
                         lineHeight = 18.sp,
                         textAlign = TextAlign.Right
                     )
@@ -353,7 +372,7 @@ fun QiblaScreen(
                     Icon(
                         imageVector = Icons.Default.Info,
                         contentDescription = null,
-                        tint = Color(0xFFD4A017),
+                        tint = if (com.der3.ui.themes.isDarkTheme) AppColors.gold700 else Color(0xFFD4A017),
                         modifier = Modifier.size(24.dp)
                     )
                 }
@@ -418,7 +437,7 @@ fun CompassDial(modifier: Modifier = Modifier) {
 @Composable
 fun CompassNeedle(modifier: Modifier = Modifier) {
     val green800 = AppColors.green800
-    val gold = Color(0xFFD4A017)
+    val gold = AppColors.gold700
     
     Canvas(modifier = modifier.size(240.dp)) {
         val centerX = size.width / 2
@@ -472,10 +491,31 @@ fun CompassNeedle(modifier: Modifier = Modifier) {
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, name = "Light Mode")
 @Composable
-fun QiblaScreenPreview() {
+fun QiblaScreenPreviewLight() {
     Der3MuslimTheme(
+        style = AppStyle.LIGHT,
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
+        QiblaScreen(state = QiblaState(
+            qiblaDirection = 295f,
+            directionText = "شمال غرب",
+            currentLocationName = "مكة المكرمة، المملكة العربية السعودية",
+            distanceToKaaba = 0.5
+        ))
+    }
+}
+
+@Preview(
+    showBackground = true,
+    name = "Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun QiblaScreenPreviewDark() {
+    Der3MuslimTheme(
+        style = AppStyle.DARK,
         language = Locale.Builder().setLanguage("ar").build()
     ) {
         QiblaScreen(state = QiblaState(

@@ -31,18 +31,23 @@ fun Der3MuslimTheme(
         AppStyle.SYSTEM -> if (isSystemInDarkTheme()) darkColors
         else lightColors
     }
+
     val direction =
         if (language.language == "ar")
             LayoutDirection.Rtl
         else
             LayoutDirection.Ltr
 
+    val statusBarDark = style != AppStyle.DARK
+    val isDark = style == AppStyle.DARK || (style == AppStyle.SYSTEM && isSystemInDarkTheme())
 
   //  val typography = buildTypography(language)
 
     CompositionLocalProvider(
         LocalCurrentColor provides colors,
         LocalAppTypography provides appTypography,
+        LocalIsStatusBarDark provides statusBarDark,
+        LocalDarkTheme provides isDark,
       //  LocalAppRoundedCornerShape provides roundShapes,
         LocalAppLanguage provides language,
         LocalLayoutDirection provides direction,

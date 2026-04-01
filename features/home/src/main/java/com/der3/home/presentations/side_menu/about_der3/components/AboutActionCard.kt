@@ -25,6 +25,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.foundation.border
+import android.content.res.Configuration
+import com.der3.ui.themes.isDarkTheme
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.der3.ui.themes.AppColors
@@ -41,8 +44,17 @@ fun AboutActionCard(
         onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 6.dp),
-        colors = CardDefaults.cardColors(containerColor = AppColors.green50.copy(alpha = 0.7f)),
+            .padding(vertical = 6.dp)
+            .then(
+                if (isDarkTheme) {
+                    Modifier.border(
+                        width = 1.dp,
+                        color = AppColors.green700.copy(alpha = 0.2f),
+                        shape = RoundedCornerShape(16.dp)
+                    )
+                } else Modifier
+            ),
+        colors = CardDefaults.cardColors(containerColor = AppColors.cardColor),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
@@ -78,13 +90,13 @@ fun AboutActionCard(
                 modifier = Modifier
                     .size(40.dp)
                     .clip(RoundedCornerShape(10.dp))
-                    .background(AppColors.green25),
+                    .background(AppColors.green500.copy(alpha = 0.1f)),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = icon,
                     contentDescription = null,
-                    tint = AppColors.green800,
+                    tint = if (isDarkTheme) AppColors.gold700 else AppColors.green800,
                     modifier = Modifier.size(20.dp)
                 )
             }
@@ -92,15 +104,18 @@ fun AboutActionCard(
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFFF5F5F5)
+@Preview(showBackground = true)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun AboutActionCardPreview() {
     Der3MuslimTheme {
-        AboutActionCard(
-            title = "تقييم التطبيق",
-            subtitle = "ادعمنا بتقييمك على المتجر",
-            icon = Icons.Default.Info,
-            onClick = {}
-        )
+        Box(modifier = Modifier.padding(16.dp)) {
+            AboutActionCard(
+                title = "تقييم التطبيق",
+                subtitle = "ادعمنا بتقييمك على المتجر",
+                icon = Icons.Default.Info,
+                onClick = {}
+            )
+        }
     }
 }

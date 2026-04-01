@@ -11,7 +11,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.tooling.preview.Preview
+import com.der3.muslim.MainViewModel
 import androidx.compose.ui.unit.LayoutDirection
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.compose.*
 import com.der3.muslim.main_screen.bottom_bar.Der3BottomBar
 import com.der3.muslim.main_screen.bottom_bar.bottomTabs
@@ -33,17 +35,24 @@ fun MainScreen() {
     val navController = rememberNavController()
     val drawerState = LocalDrawerState.current
     val scope = rememberCoroutineScope()
+    val viewModel: MainViewModel = hiltViewModel()
 
     NotificationPermissionLauncher()
+
+    LaunchedEffect(Unit) {
+        viewModel.navigationEvent.collect { screen ->
+            navController.navigateTo(screen)
+        }
+    }
 
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry?.destination?.route
 
-    val showBottomBar = when (currentRoute) {
-        Der3NavigationRoute.HomeScreen::class.qualifiedName,
-        Der3NavigationRoute.FavouriteScreen::class.qualifiedName,
-        Der3NavigationRoute.TasbeehScreen::class.qualifiedName,
-        Der3NavigationRoute.SectionScreen::class.qualifiedName -> true
+    val showBottomBar = when {
+        currentRoute == Der3NavigationRoute.HomeScreen::class.qualifiedName -> true
+        currentRoute == Der3NavigationRoute.FavouriteScreen::class.qualifiedName -> true
+        currentRoute == Der3NavigationRoute.SectionScreen::class.qualifiedName -> true
+        currentRoute?.startsWith(Der3NavigationRoute.TasbeehScreen::class.qualifiedName ?: "") == true -> true
         else -> false
     }
 

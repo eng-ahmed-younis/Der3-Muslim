@@ -14,7 +14,14 @@ object TimeFormatUtils {
         val diffInDays = TimeUnit.MILLISECONDS.toDays(diff)
 
         return when {
-            diffInSeconds < 60 -> "منذ ثوانٍ"
+            diffInSeconds < 60 -> {
+                when (diffInSeconds) {
+                    0L, 1L -> "منذ ثانية"
+                    2L -> "منذ ثانيتين"
+                    in 3..10 -> "منذ $diffInSeconds ثوانٍ"
+                    else -> "منذ $diffInSeconds ثانية"
+                }
+            }
             diffInMinutes < 60 -> {
                 when (diffInMinutes) {
                     1L -> "منذ دقيقة"

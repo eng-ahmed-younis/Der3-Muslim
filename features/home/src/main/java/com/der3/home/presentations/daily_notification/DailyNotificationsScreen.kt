@@ -38,6 +38,12 @@ import com.der3.ui.themes.Der3MuslimTheme
 import com.der3.ui.models.PalletColors
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import android.content.res.Configuration
+import androidx.compose.foundation.isSystemInDarkTheme
+import com.der3.model.AppStyle
+import com.der3.ui.themes.isDarkTheme
+import com.der3.ui.themes.isStatusBarDark
+import java.util.Locale
 
 @Composable
 fun DailyNotificationsRoute(
@@ -66,12 +72,13 @@ fun DailyNotificationsRoute(
 
 
     ShiftSystemBarStyle(
-        statusBarColor = AppColors.gray50,
+        statusBarColor = AppColors.screenBackground,
         isStatusBarVisible = true,
+        useDarkStatusBarIcons = isStatusBarDark,
         isEdgeToEdgeEnabled = true,
-        useDarkStatusBarIcons = true,
-        navigationBarColor = AppColors.gray50,
-        useDarkNavigationBarIcons = false
+        isNavigationBarVisible = false,
+        navigationBarColor = AppColors.screenBackground,
+        useDarkNavigationBarIcons = !isStatusBarDark
     )
 
 }
@@ -89,11 +96,11 @@ fun DailyNotificationsScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(AppColors.gray50)
+            .background(AppColors.screenBackground)
     ) {
 
         Der3TopAppBar(
-            backgroundColor = AppColors.gray50,
+            backgroundColor = AppColors.screenBackground,
             title = stringResource(id = R.string.daily_notifications_title),
             onBackClick = {
                 onIntent(DailyNotificationsIntent.NavigateBack)
@@ -112,9 +119,7 @@ fun DailyNotificationsScreen(
                 DailyNotificationsHeader(
                     title = stringResource(R.string.daily_notifications_title),
                     subtitle = stringResource(R.string.daily_notifications_header_subtitle),
-                    icon = Icons.Default.Notifications,
-                    iconColor = AppColors.green800,
-                    iconBgColor = AppColors.green50,
+                    icon = Icons.Default.Notifications
                 )
             }
 
@@ -154,7 +159,8 @@ fun DailyNotificationsScreen(
 
 
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true, name = "Light Mode", locale = "ar")
+@Preview(showBackground = true, name = "Dark Mode", locale = "ar", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun DailyNotificationsScreenPreview() {
     val mockItems = listOf(
@@ -178,18 +184,9 @@ private fun DailyNotificationsScreenPreview() {
         )
     )
 
-    Der3MuslimTheme() {
-
-        ShiftSystemBarStyle(
-            statusBarColor = AppColors.gray50,
-            isStatusBarVisible = true,
-            isEdgeToEdgeEnabled = true,
-            useDarkStatusBarIcons = true,
-            navigationBarColor = AppColors.gray50,
-            useDarkNavigationBarIcons = false
-        )
-
-
+    Der3MuslimTheme(
+        style = if (isSystemInDarkTheme()) AppStyle.DARK else AppStyle.LIGHT
+    ) {
         DailyNotificationsScreen(
             state = DailyNotificationsState(
                 notifications = mockItems

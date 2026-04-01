@@ -104,6 +104,7 @@ dependencies {
     //Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
+    implementation(libs.hilt.navigation.compose)
 
     // google icons
     implementation(libs.androidx.compose.material.icons.core)

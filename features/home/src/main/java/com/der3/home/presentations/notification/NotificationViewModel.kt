@@ -1,21 +1,37 @@
 package com.der3.home.presentations.notification
 
 import androidx.lifecycle.viewModelScope
+import com.der3.home.di.factory.NotificationViewModelFactory
 import com.der3.home.domain.model.NotificationItem
-import com.der3.home.domain.model.NotificationType
 import com.der3.home.presentations.notification.mvi.NotificationAction
 import com.der3.home.presentations.notification.mvi.NotificationIntent
 import com.der3.home.presentations.notification.mvi.NotificationReducer
 import com.der3.home.presentations.notification.mvi.NotificationState
+import com.der3.model.NotificationType
 import com.der3.mvi.MviBaseViewModel
 import com.der3.mvi.MviEffect
 import com.der3.screens.Screens
+import com.der3.shared.domain.use_case.notification.ClearAllNotificationsUseCase
+import com.der3.shared.domain.use_case.notification.ClearNotificationsByTypeUseCase
+import com.der3.shared.domain.use_case.notification.GetAllNotificationsUseCase
+import com.der3.shared.params.NotificationParams
+import com.der3.utils.TimeFormatUtils
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import java.util.Calendar
 
-@HiltViewModel
-class NotificationViewModel @Inject constructor(
+@HiltViewModel(assistedFactory = NotificationViewModelFactory::class)
+class NotificationViewModel @AssistedInject constructor(
+    @Assisted params: NotificationParams,
+    private val getAllNotificationsUseCase: GetAllNotificationsUseCase,
+    private val clearNotificationsByTypeUseCase: ClearNotificationsByTypeUseCase,
     reducer: NotificationReducer
 ) : MviBaseViewModel<NotificationState, NotificationAction, NotificationIntent>(
     initialState = NotificationState(),
@@ -23,7 +39,7 @@ class NotificationViewModel @Inject constructor(
 ) {
 
     init {
-        onIntent(NotificationIntent.LoadNotifications)
+        loadNotifications()
     }
 
     override fun handleIntent(intent: NotificationIntent) {
@@ -33,54 +49,83 @@ class NotificationViewModel @Inject constructor(
             is NotificationIntent.Back -> {
                 onEffect(MviEffect.Navigate(screen = Screens.Back()))
             }
+
             is NotificationIntent.DismissError -> {
                 onAction(NotificationAction.DismissError)
+            }
+
+            is NotificationIntent.DeleteAll -> {
+                deleteAllNotifications()
+            }
+        }
+    }
+
+    private fun deleteAllNotifications() {
+
+        viewModelScope.launch {
+            try {
+                onAction(NotificationAction.Loading(isLoading = true))
+                clearNotificationsByTypeUseCase.invoke(type = NotificationType.GENERAL.value)
+            }catch (exception: Exception) {
+                onAction(NotificationAction.Error(exception.message ?: "An unknown error occurred"))
+            }
+            finally {
+                onAction(NotificationAction.Loading(isLoading = false))
             }
         }
     }
 
     private fun loadNotifications() {
-        viewModelScope.launch {
-            onAction(NotificationAction.Loading)
-            try {
-                // Mocking data for now as repository is still being setup
-                val today = listOf(
-                    NotificationItem(
-                        id = "1",
-                        title = "حان موعد صلاة العصر",
-                        description = "الصلاة خير من النوم، أقم صلاتك تنعم بحياتك.",
-                        time = "الآن",
-                        type = NotificationType.DAILY
-                    ),
-                    NotificationItem(
-                        id = "2",
-                        title = "أذكار المساء",
-                        description = "لا تنسى وردك من أذكار المساء لتحصين نفسك.",
-                        time = "منذ ساعتين",
-                        type = NotificationType.DAILY
-                    )
-                )
 
-                val yesterday = listOf(
-                    NotificationItem(
-                        id = "3",
-                        title = "تحديث جديد متوفر",
-                        description = "تم إضافة ميزات جديدة في المسبحة الإلكترونية، استكشفها الآن.",
-                        time = "بالأمس",
-                        type = NotificationType.DAILY
+        getAllNotificationsUseCase.invoke()
+            .onStart {
+                onAction(NotificationAction.Loading(isLoading = true))
+            }.onEach { notifications ->
+                val today = Calendar.getInstance()
+                val yesterday = Calendar.getInstance().apply { add(Calendar.DATE, -1) }
+
+                val todayList = mutableListOf<NotificationItem>()
+                val yesterdayList = mutableListOf<NotificationItem>()
+
+                notifications.forEach { entity ->
+                    val item = NotificationItem(
+                        id = entity.id,
+                        title = entity.title,
+                        description = entity.body,
+                        time = TimeFormatUtils.getRelativeTimeSpanString(entity.timestamp),
+                        type = NotificationType.GENERAL
                     )
-                )
+
+                    val itemCalendar =
+                        Calendar.getInstance().apply { timeInMillis = entity.timestamp }
+
+                    if (isSameDay(itemCalendar, today)) {
+                        todayList.add(item)
+                    } else if (isSameDay(itemCalendar, yesterday)) {
+                        yesterdayList.add(item)
+                    }
+                }
 
                 onAction(
-                    NotificationAction.Success(
-                        today = today,
-                        yesterday = yesterday,
+                    NotificationAction.LoadNotificationSuccess(
+                        today = todayList,
+                        yesterday = yesterdayList,
                         aya = "فَاذْكُرُونِي أَذْكُرْكُمْ وَاشْكُرُوا لِي وَلَا تَكْفُرُونِ"
                     )
                 )
-            } catch (e: Exception) {
-                onAction(NotificationAction.Error(e.message ?: "An unknown error occurred"))
-            }
-        }
+
+
+            }.onCompletion {
+                onAction(NotificationAction.Loading(isLoading = false))
+            }.catch { error ->
+                onAction(NotificationAction.Error(error.message ?: "An unknown error occurred"))
+            }.launchIn(viewModelScope)
     }
+
+}
+
+
+private fun isSameDay(cal1: Calendar, cal2: Calendar): Boolean {
+    return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
+            cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR)
 }

@@ -2,8 +2,10 @@ package com.der3.player.audio.impl
 
 import android.content.Context
 import android.media.MediaPlayer
+import android.media.PlaybackParams
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
+import com.der3.data_store.api.DataStoreRepository
 import com.der3.player.audio.api.AudioPlayer
 import com.der3.player.audio.model.AzkarAudioState
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -22,13 +24,22 @@ import javax.inject.Singleton
 
 @Singleton
 class AzkarAudioPlayer @Inject constructor(
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
+    private val dataStoreRepository: DataStoreRepository
 ) : AudioPlayer, DefaultLifecycleObserver {
 
     private var mediaPlayer: MediaPlayer? = null
     private var currentPath: String? = null
     private var progressJob: Job? = null
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+
+    init {
+        scope.launch {
+            dataStoreRepository.playbackSpeedFlow.collect { speed ->
+                setPlaybackSpeed(speed)
+            }
+        }
+    }
 
     // ─────────────────────────────────────────────
     // Reactive State
@@ -73,6 +84,10 @@ class AzkarAudioPlayer @Inject constructor(
             }
 
             mediaPlayer?.apply {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                    val speed = dataStoreRepository.playbackSpeed
+                    playbackParams = playbackParams.setSpeed(speed)
+                }
                 start()
 
                 currentPath = cleanPath
@@ -186,6 +201,18 @@ class AzkarAudioPlayer @Inject constructor(
 
     override fun setVolume(volume: Float) {
         mediaPlayer?.setVolume(volume, volume)
+    }
+
+    override fun setPlaybackSpeed(speed: Float) {
+        try {
+            mediaPlayer?.let {
+                val params = it.playbackParams
+                params.speed = speed
+                it.playbackParams = params
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     // ─────────────────────────────────────────────
