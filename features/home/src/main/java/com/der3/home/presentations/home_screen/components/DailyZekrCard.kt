@@ -57,9 +57,10 @@ fun DailyZekrCard(
         ) {
 
             Text(
-                text = "ذكر اليوم",
+                text = "آية اليوم",
                 color = Color.White.copy(alpha = 0.7f),
-                fontSize = 14.sp
+                fontWeight = FontWeight.W600,
+                fontSize = 15.sp
             )
 
             Spacer(Modifier.height(12.dp))

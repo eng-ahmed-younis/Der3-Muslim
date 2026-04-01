@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -87,21 +88,24 @@ fun DailyNotificationCard(
 
 
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally
+                modifier = Modifier.weight(1f).padding(horizontal = 12.dp),
+                horizontalAlignment = Alignment.Start
             ) {
 
                 Text(
-                    text = "التنبيهات اليومية",
+                    text = stringResource(id = R.string.daily_notifications_title),
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,
+                    maxLines = 1,
                     fontFamily = FontFamily(Font(R.font.cairo_bold)),
                     color = AppColors.gray900Text
                 )
 
                 Text(
-                    text = "قم بتفعيل التنبيهات للأذكار اليومية",
+                    text = stringResource(id = R.string.daily_notifications_desc),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.W800,
+                    maxLines = 1,
                     fontFamily = FontFamily(Font(R.font.cairo_medium)),
                     color = AppColors.gray500
                 )

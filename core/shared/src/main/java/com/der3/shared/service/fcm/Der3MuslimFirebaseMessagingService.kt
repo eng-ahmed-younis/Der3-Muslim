@@ -8,6 +8,7 @@ import android.os.PowerManager
 import android.util.Log
 import androidx.core.app.NotificationManagerCompat
 import com.der3.data_store.api.DataStoreRepository
+import com.der3.model.NotificationType
 import com.der3.shared.service.fcm.data.MessageData
 import com.der3.shared.service.fcm.notification.NotificationBuilder
 import com.google.firebase.messaging.FirebaseMessaging
@@ -105,14 +106,8 @@ class Der3MuslimFirebaseMessagingService : FirebaseMessagingService() {
             Log.d(TAG, "جاري معالجة الرسالة...")
 
             // استخراج بيانات الإشعار
-            val title = remoteMessage.data["title"]
-                ?: remoteMessage.notification?.title
-                ?: "درع المسلم"
-
-            val rawBody = remoteMessage.data["message"]
-                ?: remoteMessage.data["body"]
-                ?: remoteMessage.notification?.body
-                ?: ""
+            val title = remoteMessage.notification?.title ?: "درع المسلم"
+            val rawBody = remoteMessage.notification?.body ?: ""
 
             Log.d(TAG, "العنوان: $title")
             Log.d(TAG, "النص الأصلي: $rawBody")
@@ -129,7 +124,7 @@ class Der3MuslimFirebaseMessagingService : FirebaseMessagingService() {
                 rawBody
             }
 
-            val type = (remoteMessage.data["type"] ?: "GENERAL").uppercase()
+            val type = remoteMessage.data["type"] ?: NotificationType.GENERAL.value
             val image = remoteMessage.data["image"] ?: remoteMessage.notification?.imageUrl?.toString()
 
             val messageData = MessageData(
@@ -247,3 +242,29 @@ class Der3MuslimFirebaseMessagingService : FirebaseMessagingService() {
         super.onDestroy()
     }
 }
+
+/**
+ * {
+ *   "message": {
+ *     "topic": "all",
+ *     "notification": {
+ *       "title": "تنبيه",
+ *       "body": "هل أنت متأكد من رغبتك في مسح كافة التنبيهات (5) من السجل؟",
+ *       "image": null
+ *     },
+ *     "data": {
+ *       "type": "GENERAL",
+ *       "count": "5"
+ *     },
+ *     "android": {
+ *       "priority": "high",
+ *       "notification": {
+ *         "click_action": "OPEN_BROADCAST",
+ *         "sound": "default",
+ *         "channel_id": "broadcast_channel"
+ *       }
+ *     }
+ *   }
+ * }
+ *
+ * */

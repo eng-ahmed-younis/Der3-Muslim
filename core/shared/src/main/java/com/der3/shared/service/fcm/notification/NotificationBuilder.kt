@@ -25,6 +25,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.random.Random
@@ -34,8 +35,6 @@ class NotificationBuilder @Inject constructor(
     private val dataStoreRepository: DataStoreRepository,
     private val insertNotificationUseCase: InsertNotificationUseCase
 ) {
-    // 10-digit number between 1000000000 and 9999999999 like 1234567890
-    val notificationId: Long = Random.nextLong(1_000_000_000L, 9_999_999_999L)
     val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
 
@@ -72,12 +71,14 @@ class NotificationBuilder @Inject constructor(
         jsonBody: String
     ) {
         val messageData: MessageData = MessageData.fromJson(jsonString = jsonBody)
+        val notificationId = UUID.randomUUID().toString()
 
         scope.launch {
             insertNotificationUseCase.invoke(
                 notification = NotificationEntity(
                     id = notificationId,
                     title = title,
+                    type = messageData.type,
                     body = messageData.message,
                     timestamp = System.currentTimeMillis()
                 )
@@ -172,7 +173,7 @@ class NotificationBuilder @Inject constructor(
 
     private fun createPendingIntent(
         context: Context,
-        notificationId: Long
+        notificationId: String
     ): PendingIntent {
 
         val intent = Intent(Intent.ACTION_VIEW,
@@ -181,9 +182,9 @@ class NotificationBuilder @Inject constructor(
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
 
-        return  PendingIntent.getActivity(
+        return PendingIntent.getActivity(
             context,
-            notificationId.toInt(), // Unique ID here is critical
+            notificationId.hashCode(), // Unique ID here is critical
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )

@@ -148,7 +148,10 @@ fun HomeScreen(
         ) {
 
             item {
-                DailyZekrCard()
+                DailyZekrCard(
+                 //   title = state.dailyNotificationTitle ?: stringResource(id = R.string.),
+                 //   description = state.dailyNotificationDesc
+                )
             }
 
             item {
@@ -170,7 +173,7 @@ fun HomeScreen(
             }
 
             item {
-                DailyNotificationCard {
+                DailyNotificationCard() {
                     onIntent(HomeIntent.NavigateToDailyNotifications)
                 }
             }

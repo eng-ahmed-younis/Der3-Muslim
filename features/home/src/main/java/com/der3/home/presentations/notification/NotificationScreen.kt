@@ -27,7 +27,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.der3.ui.R
 import com.der3.home.domain.model.NotificationItem
-import com.der3.home.domain.model.NotificationType
 import com.der3.home.presentations.notification.components.AyaCard
 import com.der3.home.presentations.notification.components.EmptyNotificationsState
 import com.der3.home.presentations.notification.components.DeleteAllNotificationsDialog
@@ -53,6 +52,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import com.der3.home.di.factory.MasbahaViewModelFactory
 import com.der3.home.di.factory.NotificationViewModelFactory
 import com.der3.home.presentations.masbaha.MasbahaViewModel
+import com.der3.model.NotificationType
 import com.der3.shared.params.NotificationParams
 import java.util.Locale
 

@@ -3,29 +3,28 @@ package com.der3.home.presentations.notification
 import androidx.lifecycle.viewModelScope
 import com.der3.home.di.factory.NotificationViewModelFactory
 import com.der3.home.domain.model.NotificationItem
-import com.der3.home.domain.model.NotificationType
 import com.der3.home.presentations.notification.mvi.NotificationAction
 import com.der3.home.presentations.notification.mvi.NotificationIntent
 import com.der3.home.presentations.notification.mvi.NotificationReducer
 import com.der3.home.presentations.notification.mvi.NotificationState
+import com.der3.model.NotificationType
 import com.der3.mvi.MviBaseViewModel
 import com.der3.mvi.MviEffect
 import com.der3.screens.Screens
-import com.der3.shared.params.NotificationParams
 import com.der3.shared.domain.use_case.notification.ClearAllNotificationsUseCase
 import com.der3.shared.domain.use_case.notification.GetAllNotificationsUseCase
+import com.der3.shared.params.NotificationParams
 import com.der3.utils.TimeFormatUtils
-import java.util.Calendar
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import java.util.Calendar
 
 @HiltViewModel(assistedFactory = NotificationViewModelFactory::class)
 class NotificationViewModel @AssistedInject constructor(
@@ -80,7 +79,7 @@ class NotificationViewModel @AssistedInject constructor(
 
                 notifications.forEach { entity ->
                     val item = NotificationItem(
-                        id = entity.id.toString(),
+                        id = entity.id,
                         title = entity.title,
                         description = entity.body,
                         time = TimeFormatUtils.getRelativeTimeSpanString(entity.timestamp),

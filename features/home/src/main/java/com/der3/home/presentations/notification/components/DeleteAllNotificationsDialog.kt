@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.der3.model.AppStyle
 import com.der3.ui.R
 import com.der3.ui.themes.AppColors
@@ -73,7 +74,9 @@ fun DeleteAllNotificationsDialog(
             ) {
                 Text(
                     text = stringResource(id = R.string.cancel),
-                    color = AppColors.gray400
+                    color = AppColors.gray400,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp
                 )
             }
         }

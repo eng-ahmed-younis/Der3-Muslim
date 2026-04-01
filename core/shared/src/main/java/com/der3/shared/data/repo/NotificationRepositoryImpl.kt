@@ -17,7 +17,7 @@ class NotificationRepositoryImpl @Inject constructor(
         return notificationDao.insertNotification(notification)
     }
 
-    override suspend fun deleteNotificationById(id: Int) {
+    override suspend fun deleteNotificationById(id: String) {
         notificationDao.deleteNotificationById(id)
     }
 
@@ -27,5 +27,9 @@ class NotificationRepositoryImpl @Inject constructor(
 
     override suspend fun deleteAllNotifications() {
         notificationDao.deleteAllNotifications()
+    }
+
+    override fun getNotificationByType(type: String): Flow<NotificationEntity?> {
+        return notificationDao.getNotificationByType(type)
     }
 }

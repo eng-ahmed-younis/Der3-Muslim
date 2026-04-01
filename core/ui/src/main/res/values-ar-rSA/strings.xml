@@ -57,9 +57,12 @@
     <string name="notification_aya_of_the_day">آية اليوم</string>
     <string name="notification_empty_state">لا توجد تنبيهات أخرى</string>
     <string name="notification_error_title">حدث خطأ ما</string>
-    <string name="notification_retry_button">إعادة المحاولة</string>
+    <string name="delete_all_notifications_title">مسح كافة التنبيهات</string>
+    <string name="delete_all_notifications_message">هل أنت متأكد من رغبتك في مسح كافة التنبيهات (%d) من السجل؟ لا يمكن التراجع عن هذا الإجراء.</string>
+    <string name="delete_confirm">حذف الكل</string>
 
     <string name="daily_notifications_title">التنبيهات اليومية</string>
+    <string name="daily_notifications_desc">قم بتفعيل التنبيهات للأذكار اليومية</string>
     <string name="daily_notifications_header_subtitle">حافظ على وردك اليومي من خلال التنبيهات</string>
     <string name="daily_notifications_add_custom">إضافة تنبيه مخصص</string>
 
