@@ -12,6 +12,7 @@ import com.der3.mvi.MviBaseViewModel
 import com.der3.mvi.MviEffect
 import com.der3.screens.Screens
 import com.der3.shared.params.NotificationParams
+import com.der3.shared.domain.use_case.notification.ClearAllNotificationsUseCase
 import com.der3.shared.domain.use_case.notification.GetAllNotificationsUseCase
 import com.der3.utils.TimeFormatUtils
 import java.util.Calendar
@@ -30,6 +31,7 @@ import kotlinx.coroutines.launch
 class NotificationViewModel @AssistedInject constructor(
     @Assisted params: NotificationParams,
     private val getAllNotificationsUseCase: GetAllNotificationsUseCase,
+    private val clearAllNotificationsUseCase: ClearAllNotificationsUseCase,
     reducer: NotificationReducer
 ) : MviBaseViewModel<NotificationState, NotificationAction, NotificationIntent>(
     initialState = NotificationState(),
@@ -51,6 +53,16 @@ class NotificationViewModel @AssistedInject constructor(
             is NotificationIntent.DismissError -> {
                 onAction(NotificationAction.DismissError)
             }
+
+            is NotificationIntent.DeleteAll -> {
+                deleteAllNotifications()
+            }
+        }
+    }
+
+    private fun deleteAllNotifications() {
+        viewModelScope.launch {
+            clearAllNotificationsUseCase.invoke()
         }
     }
 

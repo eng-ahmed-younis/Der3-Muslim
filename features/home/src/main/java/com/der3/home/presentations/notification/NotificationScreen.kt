@@ -4,6 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DeleteSweep
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -28,6 +30,7 @@ import com.der3.home.domain.model.NotificationItem
 import com.der3.home.domain.model.NotificationType
 import com.der3.home.presentations.notification.components.AyaCard
 import com.der3.home.presentations.notification.components.EmptyNotificationsState
+import com.der3.home.presentations.notification.components.DeleteAllNotificationsDialog
 import com.der3.home.presentations.notification.components.NotificationCard
 import com.der3.home.presentations.notification.components.SectionHeader
 import com.der3.home.presentations.notification.mvi.NotificationIntent
@@ -122,6 +125,20 @@ fun NotificationScreen(
     state: NotificationState,
     onIntent: (NotificationIntent) -> Unit
 ) {
+    var showDeleteDialog by remember { mutableStateOf(false) }
+
+
+    if (showDeleteDialog) {
+        DeleteAllNotificationsDialog(
+            count = state.todayNotifications.size + state.yesterdayNotifications.size,
+            onDismiss = { showDeleteDialog = false },
+            onConfirm = {
+                onIntent(NotificationIntent.DeleteAll)
+                showDeleteDialog = false
+            }
+        )
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -133,7 +150,18 @@ fun NotificationScreen(
             onBackClick = {
                 onIntent(NotificationIntent.Back)
             },
-            showBackButton = true
+            showBackButton = true,
+            trailingContent = {
+                if (state.todayNotifications.isNotEmpty() || state.yesterdayNotifications.isNotEmpty()) {
+                    IconButton(onClick = { showDeleteDialog = true }) {
+                        Icon(
+                            imageVector = Icons.Default.DeleteSweep,
+                            contentDescription = "Delete All",
+                            tint = AppColors.gray900Text
+                        )
+                    }
+                }
+            }
         )
 
         Box(
