@@ -1,29 +1,37 @@
 # Der3 Muslim (درع المسلم)
+
 **Der3 Muslim** is a modern, modular Android application designed to be a comprehensive spiritual companion for Muslims. It provides a rich set of features including daily Azkar, prayer notifications, a digital Masbaha, and a customizable user experience, all built with the latest Android development practices.
+
 ---
-## :iphone: Features
-- **:book: Azkar & Supplications:**
+
+## 📱 Features
+
+- **📖 Azkar & Supplications:**
     - Extensive collection of daily Azkar (Morning, Evening, Sleep, etc.).
     - Categorized for quick access with detailed views for each Zekr.
     - Search functionality to find specific supplications.
-- **:bell: Smart Notifications:**
+- **🔔 Smart Notifications:**
     - Timely reminders for daily Azkar.
     - Custom reminders for religious occasions and specific user-defined times.
     - Integration with Firebase Cloud Messaging (FCM) for dynamic updates.
-- **:prayer_beads: Digital Masbaha (Tasbih):**
+- **📿 Digital Masbaha (Tasbih):**
     - Interactive counter with haptic feedback.
     - History tracking to monitor your daily progress.
     - Customizable Azkar for the counter.
-- **:wastebasket: Recycle Bin:**
+- **🗑️ Recycle Bin:**
     - Safety feature for deleted custom Azkar or notifications, allowing for recovery.
-- **:star: Favorites:**
+- **⭐ Favorites:**
     - Quick access to your most-used supplications.
-- **:art: Modern UI/UX:**
+- **🎨 Modern UI/UX:**
     - Fully built with Jetpack Compose.
     - Supports Dark/Light themes and dynamic styling.
+
 ---
-## :building_construction: Architecture & Project Structure
+
+## 🏗️ Architecture & Project Structure
+
 The project follows **Clean Architecture** principles and uses a **Modular** approach to ensure scalability, testability, and separation of concerns.
+
 ### Project Modules:
 - **`:app`**: The main entry point. Handles app initialization, theme configuration, and top-level navigation.
 - **`:features`**: Contains feature-specific logic and UI.
@@ -39,8 +47,11 @@ The project follows **Clean Architecture** principles and uses a **Modular** app
     - `:core:utils`: General-purpose utility functions and extensions.
 - **`:navigation`**: Centralized navigation logic for the entire app.
 - **`:screens`**: High-level screen definitions and routing.
+
 ---
-## :hammer_and_wrench: Tech Stack
+
+## 🛠️ Tech Stack
+
 - **Language:** [Kotlin](https://kotlinlang.org/)
 - **UI:** [Jetpack Compose](https://developer.android.com/jetpack/compose)
 - **Dependency Injection:** [Hilt (Dagger)](https://dagger.dev/hilt/)
@@ -52,37 +63,41 @@ The project follows **Clean Architecture** principles and uses a **Modular** app
 - **Backend/Analytics:** Firebase (Firestore, Messaging, Analytics)
 - **Image Loading:** [Coil](https://coil-kt.github.io/coil/)
 - **Build System:** Gradle (Kotlin DSL) with Version Catalogs.
+
 ---
-## :rocket: Getting Started
+
+## 🚀 Getting Started
+
 ### Prerequisites
 - Android Studio Ladybug (2024.2.1) or newer.
 - JDK 17+.
 - Android SDK 35 (Compile SDK).
+
 ### Setup
 1. **Clone the repo:**
+   ```bash
+   git clone https://github.com/your-username/Der3-Muslim.git
+   ```
+2. **Open in Android Studio:**
+   Wait for the Gradle sync to complete.
+3. **Firebase Setup:**
+    - Add your `google-services.json` to the `/app` directory.
+4. **Build & Run:**
+   Select the `app` module and run on your preferred device.
 
-Kotlin
-Kotlin Programming Language
-Kotlin is a concise and multiplatform programming language by JetBrains. Enjoy coding and build server-side, mobile, web, and desktop applications efficiently.
-https://kotlinlang.org/
+---
 
+## 🤝 Contributing
 
-Android Developers
-Jetpack Compose UI App Development Toolkit - Android Developers
-Jetpack Compose is Android's recommended modern toolkit for building native UI. It simplifies and accelerates UI development on Android. Quickly bring your app to life with less code, powerful tools, and intuitive Kotlin APIs.
-https://developer.android.com/jetpack/compose
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
+1. Fork the Project.
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`).
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`).
+4. Push to the Branch (`git push origin feature/AmazingFeature`).
+5. Open a Pull Request.
 
-dagger.dev
-Hilt
-Dagger is a fully static, compile-time dependency injection framework for both Java and Android.
+---
 
-Kotlin Help
-Coroutines | Kotlin
-https://kotlinlang.org/docs/coroutines-overview.html
-
-
-Kotlin Help
-Asynchronous Flow | Kotlin
-https://kotlinlang.org/docs/flow.html
-
+## 📜 License
+Distributed under the MIT License. See `LICENSE` for more information.
