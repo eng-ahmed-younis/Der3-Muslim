@@ -1,6 +1,19 @@
 package com.der3.shared.di.use_case
 
-import com.der3.shared.domain.use_case.notification.*
+import com.der3.shared.domain.use_case.notification.ClearAllNotificationsUseCase
+import com.der3.shared.domain.use_case.notification.ClearAllNotificationsUseCaseImpl
+import com.der3.shared.domain.use_case.notification.ClearNotificationsByTypeUseCase
+import com.der3.shared.domain.use_case.notification.ClearNotificationsByTypeUseCaseImpl
+import com.der3.shared.domain.use_case.notification.DeleteNotificationUseCase
+import com.der3.shared.domain.use_case.notification.DeleteNotificationUseCaseImpl
+import com.der3.shared.domain.use_case.notification.GetAllNotificationsUseCase
+import com.der3.shared.domain.use_case.notification.GetAllNotificationsUseCaseImpl
+import com.der3.shared.domain.use_case.notification.GetNotificationByTypeUseCase
+import com.der3.shared.domain.use_case.notification.GetNotificationByTypeUseCaseImpl
+import com.der3.shared.domain.use_case.notification.InsertNotificationUseCase
+import com.der3.shared.domain.use_case.notification.InsertNotificationUseCaseImpl
+import com.der3.shared.domain.use_case.notification.MarkNotificationAsReadUseCase
+import com.der3.shared.domain.use_case.notification.MarkNotificationAsReadUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
