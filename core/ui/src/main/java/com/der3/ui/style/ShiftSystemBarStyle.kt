@@ -1,8 +1,10 @@
 package com.der3.ui.style
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.view.View
 import android.view.WindowInsets
+import android.view.WindowInsets.*
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
@@ -15,6 +17,7 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.der3.ui.themes.AppColors
 
+@SuppressLint("ContextCastToActivity")
 @Composable
 fun ShiftSystemBarStyle(
     statusBarColor: Color = AppColors.white,
@@ -36,14 +39,14 @@ fun ShiftSystemBarStyle(
         val window = activity.window
         val insetsController = WindowCompat.getInsetsController(window, window.decorView)
 
-        if (isStatusBarVisible) insetsController.show(WindowInsets.Type.statusBars())
-        else insetsController.hide(WindowInsets.Type.statusBars())
+        if (isStatusBarVisible) insetsController.show(Type.statusBars())
+        else insetsController.hide(Type.statusBars())
 
-        if (isNavigationBarVisible) insetsController.show(WindowInsets.Type.navigationBars())
+        if (isNavigationBarVisible) insetsController.show(Type.navigationBars())
         else {
             insetsController.systemBarsBehavior =
                 WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-            insetsController.hide(WindowInsets.Type.navigationBars())
+            insetsController.hide(Type.navigationBars())
         }
 
         // STATUS BAR

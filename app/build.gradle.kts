@@ -10,11 +10,11 @@ plugins {
 
 android {
 
-    namespace = "com.der3.muslim"
+    namespace = "com.der3.muslims"
     compileSdk = BuildVersions.COMPILE_SDK
 
     defaultConfig {
-        applicationId = "com.der3.muslim"
+        applicationId = "com.der3.muslims"
         minSdk = BuildVersions.MIN_SDK
         targetSdk = BuildVersions.TARGET_SDK
         versionCode = BuildVersions.VERSION_CODE
@@ -25,8 +25,22 @@ android {
     }
 
     buildTypes {
-        release {
+
+        create("staging") {
+            isDefault = true
+            initWith(getByName("release"))
+            applicationIdSuffix = ".staging"
+
+            signingConfig = signingConfigs.getByName("debug") // ✅ FIX
+
             isMinifyEnabled = false
+            isShrinkResources = false
+        }
+
+        release {
+          //  signingConfig = signingConfigs.getByName("debug")
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile(
                     "proguard-android-optimize.txt"
@@ -35,6 +49,17 @@ android {
             )
         }
     }
+
+    splits {
+        abi {
+            isEnable = false
+            reset()
+            include("armeabi-v7a", "arm64-v8a")   // Only the two most common ABIs
+            isUniversalApk = false                // Don't create one huge universal APK
+        }
+    }
+
+
 
 
     compileOptions {

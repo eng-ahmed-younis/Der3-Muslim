@@ -36,10 +36,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="com.der3.muslim" />
-                  <option name="mobileSdkAppId" value="1:464462821834:android:6789620d4fd3cc10c03733" />
-                  <option name="projectId" value="der3-muslim" />
-                  <option name="projectNumber" value="464462821834" />
+                  <option name="appId" value="com.der3.muslims.staging" />
+                  <option name="mobileSdkAppId" value="1:403591271867:android:27f875b5fb83c36934a09e" />
+                  <option name="projectId" value="der3-muslim-1" />
+                  <option name="projectNumber" value="403591271867" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

@@ -27,11 +27,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.der3.ui.R
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
 import java.util.Locale
@@ -100,7 +98,7 @@ private fun SwitchCardPreview() {
     var isChecked by remember { mutableStateOf(true) }
 
     Der3MuslimTheme(
-        language = Locale("ar")
+        language = Locale.Builder().setLanguage("ar").build()
     ) {
         Box(
             modifier = Modifier

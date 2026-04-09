@@ -94,4 +94,8 @@ Thumbs.db
 *.swp
 
 
+.env
+firebase-service-account.json
+
+
 secrets.properties

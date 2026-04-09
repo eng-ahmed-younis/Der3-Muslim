@@ -1,0 +1,251 @@
+# ================================
+# Fastlane configuration
+# ================================
+require_relative 'strings'
+
+BUILD_CONFIG_STAGING = "staging"
+BUILD_CONFIG_RELEASE = "release"
+
+default_platform(:android)
+
+platform :android do
+
+  ############################################################
+  # 🔔 Global error handler (Slack)
+  ############################################################
+  error do |lane, exception|
+    slack(
+      message: slack_error_message(lane, exception),
+      slack_url: ENV["SLACK_URL"]
+    )
+  end
+
+  ############################################################
+  # 🚀 Lanes
+  ############################################################
+
+  desc "Firebase Staging"
+  lane :firebase_staging do |options|
+    flavor = options[:flavor] || ENV["FLAVOR"] || "staging"
+    distribute_firebase(flavor: flavor, build_type: BUILD_CONFIG_STAGING)
+  end
+
+  desc "Firebase Release"
+  lane :firebase_release do |options|
+    flavor = options[:flavor] || ENV["FLAVOR"] || "release"
+    distribute_firebase(flavor: flavor, build_type: BUILD_CONFIG_RELEASE)
+  end
+
+  ############################################################
+  # 🛠 Helpers
+  ############################################################
+
+  def camelize(s)
+    s.to_s.split(/[^a-zA-Z0-9]/).map(&:capitalize).join
+  end
+
+  ############################################################
+  # 🏗 Build + Versioning (with fallback)
+  ############################################################
+  def build_app_with_flavor(flavor:, build_type:)
+    UI.message(current_branch_message(git_branch))
+    UI.message(building_message(build_type))
+
+    # Fetch latest release from Firebase (may be nil if none exists)
+    latest_release = begin
+      firebase_app_distribution_get_latest_release(
+        app: firebase_app_id(build_type),
+        service_credentials_file: ENV["GOOGLE_APPLICATION_CREDENTIALS"]
+      )
+    rescue StandardError => e
+      UI.important(firebase_fetch_error_message(e))
+      nil
+    end
+
+    # Determine next version code
+    if latest_release && latest_release[:buildVersion]
+      next_version_code = latest_release[:buildVersion].to_i + 1
+    else
+      # Fallback: read current versionCode from BuildVersions.kt and increment by 1
+      current_vc = get_version_code_from_gradle
+      next_version_code = current_vc + 1
+      UI.message(no_previous_release_message(current_vc, next_version_code))
+    end
+
+    update_version_code_in_build_versions(next_version_code)
+
+    task_name = ":app:assemble#{camelize(build_type)}"
+    gradle(
+      gradle_path: "./gradlew",
+      task: task_name,
+      print_command: true,
+      flags: "--stacktrace"
+    )
+  end
+
+  # Read versionCode from BuildVersions.kt
+  def get_version_code_from_gradle
+    file_path = "buildSrc/src/main/kotlin/BuildVersions.kt"
+    file_path = "../#{file_path}" unless File.exist?(file_path)
+
+    content = File.read(file_path)
+    match = content.match(/const val VERSION_CODE = (\d+)/)
+    if match
+      match[1].to_i
+    else
+      UI.user_error!(version_code_not_found_message(file_path))
+    end
+  end
+
+  def update_version_code_in_build_versions(new_vc)
+    file_path = "buildSrc/src/main/kotlin/BuildVersions.kt"
+    file_path = "../#{file_path}" unless File.exist?(file_path)
+
+    content = File.read(file_path)
+    new_content = content.gsub(/const val VERSION_CODE = \d+/, "const val VERSION_CODE = #{new_vc}")
+    File.write(file_path, new_content)
+    UI.success(version_code_updated_message(new_vc, file_path))
+  end
+
+  ############################################################
+  # 📦 Firebase Distribution
+  ############################################################
+  def distribute_firebase(flavor:, build_type:)
+    # Validate required environment variables
+    required_vars = ["GOOGLE_APPLICATION_CREDENTIALS", "SLACK_URL", "APP_NAME"]
+    required_vars.each do |var|
+      UI.user_error!(missing_env_var_message(var)) if ENV[var].to_s.empty?
+    end
+
+    build_app_with_flavor(flavor: flavor, build_type: build_type)
+
+    # Verify APK exists before upload
+    apk_path = apk_path(flavor, build_type)
+
+    if apk_path.nil?
+      UI.user_error!(no_apk_found_message)
+    end
+
+    # Check if path needs to be adjusted relative to project root
+    absolute_apk_path = File.expand_path(apk_path, Dir.pwd)
+    unless File.exist?(absolute_apk_path)
+      # Try one level up
+      absolute_apk_path = File.expand_path("../#{apk_path}", Dir.pwd)
+    end
+
+    unless File.exist?(absolute_apk_path)
+      UI.user_error!(apk_not_found_message(apk_path))
+    end
+
+    # Distribute APK
+    app_id = firebase_app_id(build_type)
+    UI.message(distributing_apk_message(app_id))
+
+    firebase_app_distribution(
+      app: app_id,
+      android_artifact_path: absolute_apk_path,
+      android_artifact_type: "APK",
+      groups: firebase_groups(build_type),
+      release_notes: release_notes_formatted(build_type, flavor),
+      service_credentials_file: ENV["GOOGLE_APPLICATION_CREDENTIALS"],
+      upload_timeout: 1800
+    )
+
+    slack_notify_success(build_type: build_type, flavor: flavor)
+  end
+
+  ############################################################
+  # 📂 Dynamic paths (fixed)
+  ############################################################
+  def apk_path(flavor, build_type)
+    # Priority 1: Use the path from the Gradle assemble task if available
+    gradle_apk = lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]
+    return gradle_apk if gradle_apk && File.exist?(gradle_apk)
+
+    # Priority 2: Manual search for APK
+    build_type_dir = build_type.downcase
+
+    # Search in both root and parent (in case running from fastlane folder)
+    search_dirs = [
+      "app/build/outputs/apk/#{build_type_dir}",
+      "../app/build/outputs/apk/#{build_type_dir}"
+    ]
+
+    search_dirs.each do |base_path|
+      next unless Dir.exist?(base_path)
+      # Prefer universal APK if it exists, otherwise get the first one
+      apks = Dir.glob("#{base_path}/**/*universal*.apk") + Dir.glob("#{base_path}/**/*.apk")
+      next if apks.empty?
+
+      return apks.first
+    end
+
+    nil
+  end
+
+  def firebase_app_id(build_type)
+    case build_type
+    when BUILD_CONFIG_RELEASE
+      ENV["FIREBASE_APP_ID_PRODUCTION"]
+    else
+      ENV["FIREBASE_APP_ID_STAGING"]
+    end
+  end
+
+  def firebase_groups(build_type)
+    case build_type
+    when BUILD_CONFIG_RELEASE
+      "der3_muslim_testers"  # Changed from "testers"
+    else
+      "der3_muslim_testers"  # Changed from "testers"
+    end
+  end
+
+  ############################################################
+  # 📝 Notes + Version
+  ############################################################
+  def release_notes_text
+    path = "./release_notes"
+    File.exist?(path) ? File.read(path) : no_release_notes_message
+  end
+
+  def current_version
+    file_path = "buildSrc/src/main/kotlin/BuildVersions.kt"
+    file_path = "../#{file_path}" unless File.exist?(file_path)
+
+    content = File.read(file_path)
+    match = content.match(/const val VERSION_NAME = "(.+)"/)
+    match ? match[1] : "1.0"
+  end
+
+  def build_icon(build_type)
+    case build_type
+    when BUILD_CONFIG_STAGING then build_icon_staging
+    when BUILD_CONFIG_RELEASE then build_icon_release
+    else build_icon_default
+    end
+  end
+
+  def release_notes_formatted(build_type, flavor)
+    release_notes_formatted_message(build_type, flavor, ENV['APP_NAME'], current_version, git_branch, release_notes_text)
+  end
+
+  ############################################################
+  # 🔔 Slack
+  ############################################################
+  def slack_notify_success(build_type:, flavor:)
+    slack(
+      message: slack_success_message(build_type, flavor, ENV['APP_NAME'], current_version),
+      slack_url: ENV["SLACK_URL"],
+      payload: {
+        "Version" => current_version,
+        "Flavor" => flavor,
+        "Build Type" => build_type,
+        "Branch" => git_branch,
+        "Author" => sh("git config user.name").strip
+      },
+      default_payloads: []
+    )
+  end
+
+end

@@ -2,12 +2,9 @@ package com.der3.shared.service.fcm
 
 import android.content.Context
 import android.content.Intent
-import android.os.Handler
-import android.os.Looper
 import android.os.PowerManager
 import android.util.Log
 import androidx.core.app.NotificationManagerCompat
-import com.der3.data_store.api.DataStoreRepository
 import com.der3.model.NotificationType
 import com.der3.shared.service.fcm.data.MessageData
 import com.der3.shared.service.fcm.notification.NotificationBuilder
@@ -15,7 +12,10 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.*
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
@@ -23,9 +23,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class Der3MuslimFirebaseMessagingService : FirebaseMessagingService() {
-
-    @Inject
-    lateinit var dataStoreRepository: DataStoreRepository
 
     @Inject
     lateinit var notificationBuilder: NotificationBuilder
