@@ -73,6 +73,7 @@ android {
                 org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(
                     BuildVersions.JAVA_VERSION.toString()
                 )
+
             )
         }
     }
