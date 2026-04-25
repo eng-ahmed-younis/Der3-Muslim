@@ -44,6 +44,9 @@ fun CircularZekrCounter(
     total: Int,
     backgroundColor: Color = AppColors.gray100,
     progressColor: Color = AppColors.gold600,
+    countTextColor: Color = AppColors.gray900Text,
+    subtextColor: Color = AppColors.green700,
+    fabColor: Color = AppColors.green800,
     onClick: () -> Unit
 ) {
 
@@ -95,12 +98,12 @@ fun CircularZekrCounter(
                 fontWeight = FontWeight.Bold,
                 fontFamily = FontFamily(Font(R.font.cairo_bold)),
                 fontSize = 35.sp,
-                color = AppColors.gray900Text
+                color = countTextColor
             )
 
             Text(
                 text = "من $total",
-                color = AppColors.green700,
+                color = subtextColor,
                 fontWeight = FontWeight.Normal,
                 textAlign = TextAlign.Center,
                 fontFamily = FontFamily(Font(R.font.cairo_medium)),
@@ -112,7 +115,7 @@ fun CircularZekrCounter(
         // ← FAB pinned to bottom center of the Box
         FloatingActionButton(
             onClick = onClick,
-            containerColor = AppColors.green800,
+            containerColor = fabColor,
             modifier = Modifier
                 .size(72.dp)
                 .align(Alignment.BottomCenter)

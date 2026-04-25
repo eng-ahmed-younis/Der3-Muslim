@@ -29,6 +29,7 @@ import com.der3.sections.presentation.prayer.prayer_times.mvi.PrayerTimeState
 import com.der3.sections.presentation.utils.prayer.CalculationMethodsList
 import com.der3.shared.data.dto.prayer.timings.PrayerTimesDto
 import com.der3.ui.themes.AppColors
+import com.der3.ui.themes.isDarkTheme
 import com.der3.utils.TimeFormatUtils
 import com.der3.ui.R
 import java.util.Calendar
@@ -45,13 +46,13 @@ fun CalculationMethodDialog(
                 .fillMaxWidth()
                 .fillMaxHeight(0.85f),
             shape = RoundedCornerShape(28.dp),
-            color = Color.White
+            color = AppColors.cardColor
         ) {
             Column(modifier = Modifier.padding(24.dp)) {
                 Text(
                     text = stringResource(R.string.prayer_times_settings),
                     style = MaterialTheme.typography.headlineSmall,
-                    color = AppColors.green900,
+                    color = AppColors.gray900Text,
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center
                 )
@@ -123,9 +124,9 @@ fun CalculationMethodDialog(
                     onClick = onDismiss,
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = AppColors.green800)
+                    colors = ButtonDefaults.buttonColors(containerColor = if (isDarkTheme) AppColors.green700 else AppColors.green800)
                 ) {
-                    Text(stringResource(R.string.save), fontWeight = FontWeight.Bold)
+                    Text(stringResource(R.string.save), fontWeight = FontWeight.Bold, color = if (isDarkTheme) Color.Black else Color.White)
                 }
             }
         }
@@ -169,13 +170,13 @@ fun LocationSelectionDialog(
                 .fillMaxWidth()
                 .fillMaxHeight(0.85f),
             shape = RoundedCornerShape(28.dp),
-            color = Color.White
+            color = AppColors.cardColor
         ) {
             Column(modifier = Modifier.padding(24.dp)) {
                 Text(
                     text = stringResource(R.string.location_settings),
                     style = MaterialTheme.typography.headlineSmall,
-                    color = AppColors.green900,
+                    color = AppColors.gray900Text,
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center
                 )
@@ -223,7 +224,7 @@ fun MonthlyCalendarDialog(
                 .fillMaxWidth(0.95f)
                 .fillMaxHeight(0.9f),
             shape = RoundedCornerShape(28.dp),
-            color = Color.White
+            color = AppColors.cardColor
         ) {
             Column(modifier = Modifier.padding(vertical = 20.dp)) {
                 val monthNameEn = state.monthlyCalendar.firstOrNull()?.date?.gregorian?.month?.en ?: ""
@@ -246,7 +247,7 @@ fun MonthlyCalendarDialog(
                 Text(
                     text = "تقويم شهر $monthNameAr",
                     style = MaterialTheme.typography.titleLarge,
-                    color = AppColors.green900,
+                    color = AppColors.gray900Text,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -261,17 +262,17 @@ fun MonthlyCalendarDialog(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 12.dp)
-                        .background(AppColors.green800, RoundedCornerShape(12.dp))
+                        .background(if (isDarkTheme) AppColors.green700 else AppColors.green800, RoundedCornerShape(12.dp))
                         .padding(vertical = 12.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    HeaderText(stringResource(R.string.day), Modifier.weight(1.5f), color = Color.White)
-                    HeaderText(stringResource(R.string.fajr), Modifier.weight(1f), color = Color.White)
-                    HeaderText(stringResource(R.string.dhuhr), Modifier.weight(1f), color = Color.White)
-                    HeaderText(stringResource(R.string.asr), Modifier.weight(1f), color = Color.White)
-                    HeaderText(stringResource(R.string.maghrib), Modifier.weight(1f), color = Color.White)
-                    HeaderText(stringResource(R.string.isha), Modifier.weight(1f), color = Color.White)
+                    HeaderText(stringResource(R.string.day), Modifier.weight(1.5f), color = if (isDarkTheme) Color.Black else Color.White)
+                    HeaderText(stringResource(R.string.fajr), Modifier.weight(1f), color = if (isDarkTheme) Color.Black else Color.White)
+                    HeaderText(stringResource(R.string.dhuhr), Modifier.weight(1f), color = if (isDarkTheme) Color.Black else Color.White)
+                    HeaderText(stringResource(R.string.asr), Modifier.weight(1f), color = if (isDarkTheme) Color.Black else Color.White)
+                    HeaderText(stringResource(R.string.maghrib), Modifier.weight(1f), color = if (isDarkTheme) Color.Black else Color.White)
+                    HeaderText(stringResource(R.string.isha), Modifier.weight(1f), color = if (isDarkTheme) Color.Black else Color.White)
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -314,7 +315,7 @@ fun MonthlyCalendarDialog(
                         .fillMaxWidth()
                         .padding(top = 8.dp)
                 ) {
-                    Text(stringResource(R.string.close), color = AppColors.green800, fontWeight = FontWeight.Bold)
+                    Text(stringResource(R.string.close), color = if (isDarkTheme) AppColors.gold700 else AppColors.green800, fontWeight = FontWeight.Bold)
                 }
             }
         }
@@ -327,7 +328,7 @@ private fun SectionHeader(title: String) {
         text = title,
         style = MaterialTheme.typography.titleMedium,
         fontWeight = FontWeight.Bold,
-        color = AppColors.green800,
+        color = if (isDarkTheme) AppColors.gold700 else AppColors.green800,
         modifier = Modifier.padding(bottom = 8.dp)
     )
 }
@@ -341,7 +342,11 @@ private fun MethodItem(
     Surface(
         onClick = onClick,
         shape = RoundedCornerShape(16.dp),
-        color = if (isSelected) AppColors.green50 else AppColors.gray50,
+        color = if (isSelected) {
+            if (isDarkTheme) AppColors.green700.copy(alpha = 0.15f) else AppColors.green50
+        } else {
+            AppColors.screenBackground
+        },
         modifier = Modifier.fillMaxWidth()
     ) {
         Row(
@@ -359,7 +364,7 @@ private fun MethodItem(
                     Icon(
                         imageVector = Icons.Default.CheckCircle,
                         contentDescription = null,
-                        tint = Color.White,
+                        tint = if (isDarkTheme) Color.Black else Color.White,
                         modifier = Modifier.size(16.dp)
                     )
                 }
@@ -368,7 +373,11 @@ private fun MethodItem(
             Text(
                 text = stringResource(method.nameResId),
                 style = MaterialTheme.typography.bodyLarge,
-                color = if (isSelected) AppColors.green900 else AppColors.gray900Text,
+                color = if (isSelected) {
+                    if (isDarkTheme) AppColors.gold700 else AppColors.green800
+                } else {
+                    AppColors.gray900Text
+                },
                 fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
             )
         }
@@ -384,7 +393,11 @@ private fun SchoolItem(
     Surface(
         onClick = onClick,
         shape = RoundedCornerShape(16.dp),
-        color = if (isSelected) AppColors.green50 else AppColors.gray50,
+        color = if (isSelected) {
+            if (isDarkTheme) AppColors.green700.copy(alpha = 0.15f) else AppColors.green50
+        } else {
+            AppColors.screenBackground
+        },
         modifier = Modifier.fillMaxWidth()
     ) {
         Row(
@@ -400,7 +413,11 @@ private fun SchoolItem(
             Text(
                 text = title,
                 style = MaterialTheme.typography.bodyLarge,
-                color = if (isSelected) AppColors.green900 else AppColors.gray900Text,
+                color = if (isSelected) {
+                    if (isDarkTheme) AppColors.gold700 else AppColors.green800
+                } else {
+                    AppColors.gray900Text
+                },
                 fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
             )
         }
@@ -416,7 +433,11 @@ private fun TimeFormatItem(
     Surface(
         onClick = onClick,
         shape = RoundedCornerShape(16.dp),
-        color = if (isSelected) AppColors.green50 else AppColors.gray50,
+        color = if (isSelected) {
+            if (isDarkTheme) AppColors.green700.copy(alpha = 0.15f) else AppColors.green50
+        } else {
+            AppColors.screenBackground
+        },
         modifier = Modifier.fillMaxWidth()
     ) {
         Row(
@@ -432,7 +453,11 @@ private fun TimeFormatItem(
             Text(
                 text = title,
                 style = MaterialTheme.typography.bodyLarge,
-                color = if (isSelected) AppColors.green900 else AppColors.gray900Text,
+                color = if (isSelected) {
+                    if (isDarkTheme) AppColors.gold700 else AppColors.green800
+                } else {
+                    AppColors.gray900Text
+                },
                 fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
             )
         }
@@ -448,7 +473,11 @@ private fun CityItem(
     Surface(
         onClick = onClick,
         shape = RoundedCornerShape(16.dp),
-        color = if (isSelected) AppColors.green50 else AppColors.gray50,
+        color = if (isSelected) {
+            if (isDarkTheme) AppColors.green700.copy(alpha = 0.15f) else AppColors.green50
+        } else {
+            AppColors.screenBackground
+        },
         modifier = Modifier.fillMaxWidth()
     ) {
         Row(
@@ -458,14 +487,18 @@ private fun CityItem(
             Icon(
                 imageVector = Icons.Default.LocationOn,
                 contentDescription = null,
-                tint = if (isSelected) AppColors.green800 else AppColors.green700,
+                tint = if (isSelected) AppColors.green800 else if (isDarkTheme) AppColors.gold700 else AppColors.green700,
                 modifier = Modifier.size(20.dp)
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = name,
                 style = MaterialTheme.typography.bodyLarge,
-                color = if (isSelected) AppColors.green900 else AppColors.gray900Text,
+                color = if (isSelected) {
+                    if (isDarkTheme) AppColors.gold700 else AppColors.green800
+                } else {
+                    AppColors.gray900Text
+                },
                 fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
             )
 
@@ -499,14 +532,14 @@ private fun CalendarRow(day: PrayerTimesDto, isToday: Boolean, is24Hour: Boolean
     val isFriday = day.date.gregorian.weekday.en == "Friday"
     
     val backgroundColor = when {
-        isToday -> AppColors.green800
-        isFriday -> AppColors.green50.copy(alpha = 0.5f)
+        isToday -> if (isDarkTheme) AppColors.green700 else AppColors.green800
+        isFriday -> if (isDarkTheme) AppColors.green700.copy(alpha = 0.15f) else AppColors.green50.copy(alpha = 0.5f)
         else -> Color.Transparent
     }
     
-    val contentColor = if (isToday) Color.White else AppColors.gray900Text
-    val secondaryColor = if (isToday) Color.White.copy(alpha = 0.7f) else AppColors.gray500
-    val amPmColor = if (isToday) Color.White else AppColors.green700
+    val contentColor = if (isToday) (if (isDarkTheme) Color.Black else Color.White) else AppColors.gray900Text
+    val secondaryColor = if (isToday) (if (isDarkTheme) Color.Black.copy(alpha = 0.7f) else Color.White.copy(alpha = 0.7f)) else AppColors.zekrSubText
+    val amPmColor = if (isToday) (if (isDarkTheme) Color.Black else Color.White) else (if (isDarkTheme) AppColors.gold700 else AppColors.green700)
     
     Surface(
         shape = RoundedCornerShape(12.dp),
@@ -528,7 +561,7 @@ private fun CalendarRow(day: PrayerTimesDto, isToday: Boolean, is24Hour: Boolean
                     text = day.date.gregorian.day,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
-                    color = if (isToday) Color.White else (if (isFriday) AppColors.green800 else AppColors.gray900Text)
+                    color = if (isToday) (if (isDarkTheme) Color.Black else Color.White) else (if (isFriday) (if (isDarkTheme) AppColors.gold700 else AppColors.green800) else AppColors.gray900Text)
                 )
                 Text(
                     text = day.date.hijri.day + " " + day.date.hijri.month.ar,
@@ -546,7 +579,7 @@ private fun CalendarRow(day: PrayerTimesDto, isToday: Boolean, is24Hour: Boolean
         }
     }
     if (!isToday) {
-        HorizontalDivider(color = AppColors.gray50, thickness = 1.dp)
+        HorizontalDivider(color = AppColors.screenBackground, thickness = 1.dp)
     }
 }
 

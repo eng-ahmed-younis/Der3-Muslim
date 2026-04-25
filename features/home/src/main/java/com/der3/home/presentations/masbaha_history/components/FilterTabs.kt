@@ -24,6 +24,7 @@ import com.der3.ui.themes.AppColors
 import androidx.compose.ui.tooling.preview.Preview
 import com.der3.model.HistoryFilter
 import com.der3.ui.themes.Der3MuslimTheme
+import com.der3.ui.themes.isDarkTheme
 import java.util.Locale
 
 @Composable
@@ -32,11 +33,15 @@ fun FilterTabs(
     selectedFilter: HistoryFilter,
     onFilterSelected: (HistoryFilter) -> Unit,
 ) {
+    val dark = isDarkTheme
+    val containerColor = if (dark) AppColors.green25 else AppColors.green100
+    val selectedTabColor = if (dark) AppColors.zekrPanelBg else AppColors.gray50
+    
     Row(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(24.dp))
-            .background(color = AppColors.green100)
+            .background(color = containerColor)
             .padding(4.dp),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
@@ -46,7 +51,7 @@ fun FilterTabs(
                 modifier = Modifier
                     .weight(1f)
                     .clip(RoundedCornerShape(20.dp))
-                    .background(if (isSelected) AppColors.gray50 else Color.Transparent)
+                    .background(if (isSelected) selectedTabColor else Color.Transparent)
                     .clickable { onFilterSelected(filter) }
                     .padding(vertical = 8.dp),
                 contentAlignment = Alignment.Center
@@ -58,7 +63,7 @@ fun FilterTabs(
                         HistoryFilter.MONTH -> stringResource(R.string.history_filter_month)
                     },
                     style = MaterialTheme.typography.bodyMedium,
-                    color = if (isSelected) AppColors.green800 else AppColors.gray500,
+                    color = if (isSelected) AppColors.zekrPanelProgress else AppColors.gray500,
                     fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
                 )
             }
@@ -66,13 +71,42 @@ fun FilterTabs(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, name = "Light Mode")
 @Composable
 fun FilterTabsPreview() {
     Der3MuslimTheme(
+        style = com.der3.model.AppStyle.LIGHT,
         language = Locale.Builder().setLanguage("ar").build()
     ) {
-        Box(modifier = Modifier.padding(16.dp)) {
+        Box(
+            modifier = Modifier
+                .background(AppColors.screenBackground)
+                .padding(16.dp)
+        ) {
+            FilterTabs(
+                selectedFilter = HistoryFilter.DAY,
+                onFilterSelected = {}
+            )
+        }
+    }
+}
+
+@Preview(
+    showBackground = true,
+    name = "Dark Mode",
+    uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun FilterTabsDarkPreview() {
+    Der3MuslimTheme(
+        style = com.der3.model.AppStyle.DARK,
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
+        Box(
+            modifier = Modifier
+                .background(AppColors.screenBackground)
+                .padding(16.dp)
+        ) {
             FilterTabs(
                 selectedFilter = HistoryFilter.DAY,
                 onFilterSelected = {}

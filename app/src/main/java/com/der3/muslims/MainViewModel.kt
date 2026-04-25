@@ -39,11 +39,21 @@ class MainViewModel @Inject constructor(
     }
 
     private fun observeAppStyle() {
-        dataStoreRepository.appStyleFlow.onEach {
-            appStyle.value = when (it) {
+        dataStoreRepository.appStyleFlow.onEach { styleValue ->
+            appStyle.value = when (styleValue) {
                 AppStyle.LIGHT.value -> AppStyle.LIGHT
                 AppStyle.DARK.value -> AppStyle.DARK
-                else -> AppStyle.SYSTEM
+                else -> {
+                    // 1. Determine the actual theme based on system settings
+                    val determinedTheme = if (isSystemDark()) AppStyle.DARK else AppStyle.LIGHT
+
+                    // 2. Update the DataStore manually.
+                    // This update will trigger 'appStyleFlow' again automatically.
+                    dataStoreRepository.appStyle = determinedTheme.value
+
+                    // 3. Return the determined theme for the immediate UI state
+                    determinedTheme
+                }
             }
         }.launchIn(viewModelScope)
     }
@@ -64,6 +74,11 @@ class MainViewModel @Inject constructor(
         }
     }
 
+
+    private fun isSystemDark(): Boolean {
+        return context.resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK ==
+                android.content.res.Configuration.UI_MODE_NIGHT_YES
+    }
 
 
     private fun handleDeepLink(intent: Intent?) {

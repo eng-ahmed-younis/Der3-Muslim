@@ -8,6 +8,7 @@ data class PrayerDetails(
     val time: String,
     val remainingTime: String = "00:00:00",
     val isNext: Boolean = false,
+    val isCurrent: Boolean = false,
     val isPassed: Boolean = false,
     val notificationEnabled: Boolean = true,
     val type: PrayerType

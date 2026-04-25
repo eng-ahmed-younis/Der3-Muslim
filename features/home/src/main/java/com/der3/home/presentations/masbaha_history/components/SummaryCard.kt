@@ -25,16 +25,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.der3.ui.R
 import com.der3.ui.themes.AppColors
-import java.util.Locale
-
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
 import com.der3.ui.themes.Der3MuslimTheme
+import com.der3.ui.themes.isDarkTheme
+import java.util.Locale
 
 @Composable
 fun SummaryCard(
@@ -43,15 +44,19 @@ fun SummaryCard(
     continuousDays: Int,
     locale: Locale
 ) {
+    val isDark = isDarkTheme
+    val backgroundColor = if (isDark) AppColors.zekrPanelBg else AppColors.green800
+    val contentColor = Color.White
+
     Card(
         modifier = modifier
             .fillMaxWidth(),
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults
-            .cardColors(containerColor = AppColors.green800)
+            .cardColors(containerColor = backgroundColor)
     ) {
         Column(
-            modifier = Modifier.padding(24.dp),
+            modifier = Modifier.padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row(
@@ -60,9 +65,9 @@ fun SummaryCard(
             ) {
                 Box(
                     modifier = Modifier
-                        .size(64.dp)
+                        .size(54.dp)
                         .clip(RoundedCornerShape(16.dp))
-                        .background(AppColors.white.copy(alpha = 0.15f)),
+                        .background(if (isDark) AppColors.zekrScreenBg else Color.White.copy(alpha = 0.15f)),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
@@ -76,7 +81,7 @@ fun SummaryCard(
                 Column {
                     Text(
                         text = stringResource(R.string.history_summary_total),
-                        color = AppColors.white.copy(alpha = 0.8f),
+                        color = if (isDark) AppColors.zekrSubText else Color.White.copy(alpha = 0.8f),
                         fontSize = 16.sp,
                         style = MaterialTheme.typography.bodyMedium
                     )
@@ -86,7 +91,7 @@ fun SummaryCard(
                     ) {
                         Text(
                             text = String.format(locale, "%,d", totalCount),
-                            color = AppColors.white,
+                            color = if (isDark) AppColors.gray900Text else Color.White,
                             style = MaterialTheme.typography.headlineLarge,
                             fontWeight = FontWeight.Bold
                         )
@@ -95,7 +100,7 @@ fun SummaryCard(
 
                         Text(
                             text = stringResource(R.string.history_summary_count_suffix),
-                            color = AppColors.white,
+                            color = if (isDark) AppColors.gray900Text else Color.White,
                             modifier = Modifier.padding(bottom = 6.dp)
                         )
                     }
@@ -103,7 +108,7 @@ fun SummaryCard(
             }
 
             Spacer(modifier = Modifier.height(16.dp))
-            HorizontalDivider(color = AppColors.white.copy(alpha = 0.1f))
+            HorizontalDivider(color = (if (isDark) AppColors.zekrSubText else Color.White).copy(alpha = 0.1f))
             Spacer(modifier = Modifier.height(16.dp))
 
             Row(
@@ -119,7 +124,7 @@ fun SummaryCard(
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = stringResource(R.string.history_continuous_days, continuousDays),
-                    color = AppColors.gold400,
+                    color = if (isDark) AppColors.gold400 else Color.White,
                     style = MaterialTheme.typography.bodySmall
                 )
             }
@@ -127,13 +132,43 @@ fun SummaryCard(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, name = "Light Mode")
 @Composable
 fun SummaryCardPreview() {
     Der3MuslimTheme(
+        style = com.der3.model.AppStyle.LIGHT,
         language = Locale.Builder().setLanguage("ar").build()
     ) {
-        Box(modifier = Modifier.padding(16.dp)) {
+        Box(
+            modifier = Modifier
+                .background(AppColors.screenBackground)
+                .padding(16.dp)
+        ) {
+            SummaryCard(
+                totalCount = 1250,
+                continuousDays = 7,
+                locale = Locale("ar")
+            )
+        }
+    }
+}
+
+@Preview(
+    showBackground = true,
+    name = "Dark Mode",
+    uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun SummaryCardDarkPreview() {
+    Der3MuslimTheme(
+        style = com.der3.model.AppStyle.DARK,
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
+        Box(
+            modifier = Modifier
+                .background(AppColors.screenBackground)
+                .padding(16.dp)
+        ) {
             SummaryCard(
                 totalCount = 1250,
                 continuousDays = 7,

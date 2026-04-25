@@ -25,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import com.der3.model.AppStyle
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
-import com.der3.ui.themes.isDarkTheme
 import java.util.Locale
 
 @Composable
@@ -47,7 +46,7 @@ fun SettingActionItem(
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
                 contentDescription = null,
-                tint = if (isDarkTheme) Color.White.copy(alpha = 0.5f) else AppColors.green800,
+                tint = AppColors.green800,
                 modifier = Modifier.size(24.dp)
             )
             Spacer(modifier = Modifier.weight(1f))
@@ -61,7 +60,7 @@ fun SettingActionItem(
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                tint = if (isDarkTheme) Color.White.copy(alpha = 0.5f) else AppColors.green800,
+                tint = AppColors.green800,
                 modifier = Modifier.size(24.dp)
             )
         }

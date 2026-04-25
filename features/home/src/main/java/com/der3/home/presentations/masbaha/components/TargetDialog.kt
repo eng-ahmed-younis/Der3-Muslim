@@ -1,11 +1,11 @@
 package com.der3.home.presentations.masbaha.components
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -33,15 +33,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.der3.model.AppStyle
+import com.der3.model.TargetGoalType
 import com.der3.ui.R
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
 import java.util.Locale
-
-enum class TargetGoalType {
-    UNLIMITED,
-    SPECIFIC
-}
 
 @Composable
 fun TargetDialog(
@@ -59,12 +56,12 @@ fun TargetDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        containerColor = AppColors.white,
+        containerColor = AppColors.zekrPanelBg,
         shape = RoundedCornerShape(28.dp),
         title = {
             Text(
                 text = stringResource(id = R.string.edit_target),
-                color = AppColors.green900,
+                color = AppColors.gray900Text,
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.fillMaxWidth(),
@@ -89,14 +86,14 @@ fun TargetDialog(
                         selected = selectedGoalType == TargetGoalType.UNLIMITED,
                         onClick = { selectedGoalType = TargetGoalType.UNLIMITED },
                         colors = RadioButtonDefaults.colors(
-                            selectedColor = AppColors.green800,
-                            unselectedColor = AppColors.gray300
+                            selectedColor = AppColors.zekrPlayButtonBg,
+                            unselectedColor = AppColors.zekrDotInactive
                         )
                     )
                     Text(
                         text = stringResource(id = R.string.target_unlimited),
                         style = MaterialTheme.typography.bodyLarge,
-                        color = if (selectedGoalType == TargetGoalType.UNLIMITED) AppColors.green900 else AppColors.gray500,
+                        color = if (selectedGoalType == TargetGoalType.UNLIMITED) AppColors.gray900Text else AppColors.zekrSubText,
                         fontWeight = if (selectedGoalType == TargetGoalType.UNLIMITED) FontWeight.Bold else FontWeight.Normal
                     )
                 }
@@ -117,14 +114,14 @@ fun TargetDialog(
                         selected = selectedGoalType == TargetGoalType.SPECIFIC,
                         onClick = { selectedGoalType = TargetGoalType.SPECIFIC },
                         colors = RadioButtonDefaults.colors(
-                            selectedColor = AppColors.green800,
-                            unselectedColor = AppColors.gray300
+                            selectedColor = AppColors.zekrPlayButtonBg,
+                            unselectedColor = AppColors.zekrDotInactive
                         )
                     )
                     Text(
                         text = stringResource(id = R.string.target_label),
                         style = MaterialTheme.typography.bodyLarge,
-                        color = if (selectedGoalType == TargetGoalType.SPECIFIC) AppColors.green900 else AppColors.gray500,
+                        color = if (selectedGoalType == TargetGoalType.SPECIFIC) AppColors.gray900Text else AppColors.zekrSubText,
                         fontWeight = if (selectedGoalType == TargetGoalType.SPECIFIC) FontWeight.Bold else FontWeight.Normal
                     )
                 }
@@ -146,13 +143,15 @@ fun TargetDialog(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = AppColors.green800,
-                        unfocusedBorderColor = AppColors.gray200,
-                        focusedLabelColor = AppColors.green800,
-                        unfocusedLabelColor = AppColors.gray500,
-                        disabledBorderColor = AppColors.gray50,
-                        disabledLabelColor = AppColors.gray200,
-                        cursorColor = AppColors.green800
+                        focusedBorderColor = AppColors.zekrPlayButtonBg,
+                        unfocusedBorderColor = AppColors.zekrDotInactive,
+                        focusedLabelColor = AppColors.zekrPlayButtonBg,
+                        unfocusedLabelColor = AppColors.zekrSubText,
+                        disabledBorderColor = AppColors.gray100,
+                        disabledLabelColor = AppColors.gray300,
+                        cursorColor = AppColors.zekrPlayButtonBg,
+                        focusedTextColor = AppColors.gray900Text,
+                        unfocusedTextColor = AppColors.gray900Text
                     )
                 )
             }
@@ -168,7 +167,7 @@ fun TargetDialog(
                 },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = AppColors.green800)
+                colors = ButtonDefaults.buttonColors(containerColor = AppColors.zekrPlayButtonBg)
             ) {
                 Text(
                     text = stringResource(id = android.R.string.ok),
@@ -183,17 +182,37 @@ fun TargetDialog(
             ) {
                 Text(
                     text = stringResource(id = android.R.string.cancel),
-                    color = AppColors.gray400
+                    color = AppColors.gray500
                 )
             }
         }
     )
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, name = "Light Mode")
 @Composable
 private fun TargetDialogPreview() {
     Der3MuslimTheme(
+        style = AppStyle.LIGHT,
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
+        TargetDialog(
+            currentTarget = 33,
+            onDismiss = {},
+            onConfirm = {}
+        )
+    }
+}
+
+@Preview(
+    showBackground = true,
+    name = "Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+private fun TargetDialogDarkPreview() {
+    Der3MuslimTheme(
+        style = AppStyle.DARK,
         language = Locale.Builder().setLanguage("ar").build()
     ) {
         TargetDialog(

@@ -18,6 +18,8 @@ data class ZekrDetailsState (
     val fontSizeSheetVisibility: Boolean = false,
     val volumeSheetVisibility: Boolean = false,
     val currentVolume: Float = 1.0f,
+    val playbackSpeedSheetVisibility: Boolean = false,
+    val currentPlaybackSpeed: Float = 1.0f,
     val shareSheetVisibility: Boolean = false,
     val menuItems : List<MenuItemData> = com.der3.home.utils.menuItems,
     val audioPath: String = "",

@@ -30,11 +30,12 @@ fun AyaCard(
     modifier: Modifier = Modifier,
     aya: String
 ) {
+    val isDark = isDarkTheme
     Card(
         modifier = modifier
             .fillMaxWidth()
             .then(
-                if (isDarkTheme) {
+                if (isDark) {
                     Modifier.border(
                         width = 1.dp,
                         color = AppColors.gold700.copy(alpha = 0.2f),
@@ -44,7 +45,7 @@ fun AyaCard(
             ),
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(
-            containerColor = if (isDarkTheme) AppColors.cardColor else AppColors.green800
+            containerColor = if (isDark) AppColors.cardColor else AppColors.green800
         )
     ) {
         Column(
@@ -72,7 +73,7 @@ fun AyaCard(
 
             Text(
                 text = stringResource(R.string.notification_aya_of_the_day),
-                color = if (isDarkTheme) AppColors.gray900Text.copy(alpha = 0.6f) else AppColors.white.copy(alpha = 0.8f),
+                color = if (isDark) AppColors.gray900Text.copy(alpha = 0.6f) else Color.White.copy(alpha = 0.8f),
                 fontWeight = FontWeight.Normal,
                 fontSize = 14.sp
             )
@@ -81,7 +82,7 @@ fun AyaCard(
             
             Text(
                 text = aya,
-                color = if (isDarkTheme) AppColors.gray900Text else AppColors.white,
+                color = if (isDark) AppColors.gray900Text else Color.White,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,

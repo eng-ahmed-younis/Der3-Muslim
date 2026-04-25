@@ -34,6 +34,7 @@ fun ShiftSystemBarStyle(
     isStatusBarTransparent: Boolean = false,     // default: NOT transparent
     isNavigationBarTransparent: Boolean = false  // default: NOT transparent
 ) {
+
     val activity = (LocalContext.current as? ComponentActivity) ?: return
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
         val window = activity.window

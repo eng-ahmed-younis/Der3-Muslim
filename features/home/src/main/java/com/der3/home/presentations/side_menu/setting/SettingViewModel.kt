@@ -84,7 +84,7 @@ class SettingViewModel @Inject constructor(
                 AppStyle.DARK.value -> true
                 else -> false
             }
-            onAction(SettingAction.UpdateNightMode(isNightMode = nightMode))
+            onAction(action = SettingAction.UpdateNightMode(isNightMode = nightMode))
             updateUseDarkStatusBarIcons(nightMode)
         }
     }

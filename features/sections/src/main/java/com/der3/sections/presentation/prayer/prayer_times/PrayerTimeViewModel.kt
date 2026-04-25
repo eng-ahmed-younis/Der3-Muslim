@@ -69,14 +69,21 @@ class PrayerTimeViewModel @Inject constructor(
                 val nextIndex = state.prayerTimes.indexOfFirst { it.isNext }
                 if (nextIndex != -1) {
                     val next = state.prayerTimes[nextIndex]
-                    onAction(PrayerTimeAction.OnPrayerTimesLoaded(
-                        location = state.locationName,
-                        hijriDate = state.hijriDate,
-                        gregorianDate = state.gregorianDate,
-                        prayerTimes = state.prayerTimes.toMutableList().apply {
-                            this[nextIndex] = next.copy(remainingTime = next.calculateRemainingTimeFromTime())
-                        }
-                    ))
+                    val remaining = next.calculateRemainingTimeFromTime()
+                    
+                    // If remaining is "00:00:00", we should probably reload to update Next/Current
+                    if (remaining == "00:00:00") {
+                        loadPrayerTimes()
+                    } else {
+                        onAction(PrayerTimeAction.OnPrayerTimesLoaded(
+                            location = state.locationName,
+                            hijriDate = state.hijriDate,
+                            gregorianDate = state.gregorianDate,
+                            prayerTimes = state.prayerTimes.toMutableList().apply {
+                                this[nextIndex] = next.copy(remainingTime = remaining)
+                            }
+                        ))
+                    }
                 }
             }
         }.launchIn(viewModelScope)
@@ -204,8 +211,11 @@ class PrayerTimeViewModel @Inject constructor(
                         val combinedInfo: CombinedPrayerInfo = result.data
                         val allPrayers = combinedInfo.allPrayers
                         val nextPrayerInfo = combinedInfo.nextPrayer
+                        
+                        val nextIndex = allPrayers.indexOfFirst { it.name == nextPrayerInfo.prayerName }
+                        val currentIndex = if (nextIndex > 0) nextIndex - 1 else if (nextIndex == 0) allPrayers.size - 1 else -1
 
-                        val prayerDetailsList = allPrayers.map { prayer: IPrayerRepository.PrayerWithStatus ->
+                        val prayerDetailsList = allPrayers.mapIndexed { index, prayer ->
                             PrayerDetails(
                                 name = when (prayer.name.lowercase()) {
                                     "fajr" -> "الفجر"
@@ -221,9 +231,10 @@ class PrayerTimeViewModel @Inject constructor(
                                     else -> prayer.name
                                 },
                                 time = TimeFormatUtils.formatTime(prayer.time, viewState.is24HourFormat),
-                                isNext = prayer.name == nextPrayerInfo.prayerName,
+                                isNext = index == nextIndex,
+                                isCurrent = index == currentIndex,
                                 isPassed = prayer.status == PrayerStatus.COMPLETED,
-                                remainingTime = if (prayer.name == nextPrayerInfo.prayerName) nextPrayerInfo.remainingTime else "00:00:00",
+                                remainingTime = if (index == nextIndex) nextPrayerInfo.remainingTime else "00:00:00",
                                 type = when (prayer.name.lowercase()) {
                                     "fajr" -> PrayerType.FAJR
                                     "sunrise" -> PrayerType.SUNRISE
