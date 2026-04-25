@@ -1,5 +1,6 @@
 package com.der3.home.presentations.masbaha_history.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -36,12 +37,12 @@ fun RecentActivityHeader(
             text = stringResource(R.string.history_recent_activity),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
-            color = AppColors.green800
+            color = AppColors.gray900Text
         )
         Text(
             text = stringResource(R.string.history_view_all),
             style = MaterialTheme.typography.bodySmall,
-            color = AppColors.green800,
+            color = AppColors.zekrPanelProgress,
             fontWeight = FontWeight.W600,
             fontSize = 14.sp,
             modifier = Modifier.clickable { onViewAll() }
@@ -49,13 +50,39 @@ fun RecentActivityHeader(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, name = "Light Mode")
 @Composable
 fun RecentActivityHeaderPreview() {
     Der3MuslimTheme(
+        style = com.der3.model.AppStyle.LIGHT,
         language = Locale.Builder().setLanguage("ar").build()
     ) {
-        Box(modifier = Modifier.padding(16.dp)) {
+        Box(
+            modifier = Modifier
+                .background(AppColors.screenBackground)
+                .padding(16.dp)
+        ) {
+            RecentActivityHeader(onViewAll = {})
+        }
+    }
+}
+
+@Preview(
+    showBackground = true,
+    name = "Dark Mode",
+    uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun RecentActivityHeaderDarkPreview() {
+    Der3MuslimTheme(
+        style = com.der3.model.AppStyle.DARK,
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
+        Box(
+            modifier = Modifier
+                .background(AppColors.screenBackground)
+                .padding(16.dp)
+        ) {
             RecentActivityHeader(onViewAll = {})
         }
     }

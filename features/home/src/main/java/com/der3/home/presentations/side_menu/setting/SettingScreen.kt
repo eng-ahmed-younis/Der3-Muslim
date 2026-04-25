@@ -245,6 +245,12 @@ fun SettingScreen(
 
 
 
+@Preview(showBackground = true)
+@Composable
+fun SimplePreview() {
+    androidx.compose.material3.Text("Hello Preview")
+}
+
 @Preview(showBackground = true, showSystemUi = true, name = "Light Mode")
 @Composable
 fun SettingScreenPreviewLight() {

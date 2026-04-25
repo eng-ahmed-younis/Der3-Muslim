@@ -26,6 +26,10 @@ sealed interface ZekrDetailsAction : MviAction {
 
     data class UpdateVolume(val volume: Float) : ZekrDetailsAction
 
+    data class PlaybackSpeedSheetVisibility(val visible: Boolean) : ZekrDetailsAction
+
+    data class UpdatePlaybackSpeed(val speed: Float) : ZekrDetailsAction
+
     data class UpdateFavorite(val isFavorite: Boolean) : ZekrDetailsAction
 
     data class ShareSheetVisibility(val visible: Boolean) : ZekrDetailsAction

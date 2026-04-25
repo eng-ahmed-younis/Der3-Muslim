@@ -81,7 +81,7 @@ The project follows **Clean Architecture** principles and uses a **Modular** app
 2. **Open in Android Studio:**
    Wait for the Gradle sync to complete.
 3. **Firebase Setup:**
-   - Add your `google-services.json` to the `/app` directory.
+    - Add your `google-services.json` to the `/app` directory.
 4. **Build & Run:**
    Select the `app` module and run on your preferred device.
 

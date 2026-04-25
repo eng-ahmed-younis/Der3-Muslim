@@ -57,6 +57,14 @@ class ZekrDetailsReducer @Inject constructor() : Reducer<ZekrDetailsAction, Zekr
                 state.copy(currentVolume = action.volume)
             }
 
+            is ZekrDetailsAction.PlaybackSpeedSheetVisibility -> {
+                state.copy(playbackSpeedSheetVisibility = action.visible)
+            }
+
+            is ZekrDetailsAction.UpdatePlaybackSpeed -> {
+                state.copy(currentPlaybackSpeed = action.speed)
+            }
+
             is ZekrDetailsAction.UpdateFavorite -> {
                 state.copy(
                     zekrDetails = state.zekrDetails.copy(isFavorite = action.isFavorite)

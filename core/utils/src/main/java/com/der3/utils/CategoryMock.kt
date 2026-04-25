@@ -3,14 +3,19 @@ package com.der3.utils
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.filled.Calculate
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Explore
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.HistoryEdu
 import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Pin
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.WbSunny
 import com.der3.ui.models.CategoryUi
 
 object CategoryMock {
@@ -80,6 +85,36 @@ object CategoryMock {
             title = "خاتمة القرآن",
             subtitle = "متابعة ورد الختمة",
             icon = Icons.AutoMirrored.Filled.MenuBook
+        ),
+        CategoryUi(
+            id = 12,
+            title = "السيرة النبوية",
+            subtitle = "قصة حياة النبي ﷺ",
+            icon = Icons.Default.Person
+        ),
+        CategoryUi(
+            id = 13,
+            title = "الحديث الشريف",
+            subtitle = "أحاديث صحيحة من السنة النبوية",
+            icon = Icons.Default.HistoryEdu
+        ),
+        CategoryUi(
+            id = 14,
+            title = "الزكاة والصدقة",
+            subtitle = "حاسبة الزكاة وأنواع الصدقات",
+            icon = Icons.Default.Calculate
+        ),
+        CategoryUi(
+            id = 15,
+            title = "الصيام",
+            subtitle = "متابعة أيام الصيام والنوافل",
+            icon = Icons.Default.WbSunny
+        ),
+        CategoryUi(
+            id = 16,
+            title = "قصص الأنبياء",
+            subtitle = "سير الأنبياء والمرسلين",
+            icon = Icons.Default.Favorite
         ),
     )
 }

@@ -1,20 +1,31 @@
 package com.der3.ui.components
 
+import android.content.res.Configuration
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.TextFields
-import androidx.compose.material3.*
+import androidx.compose.material3.BottomSheetDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.unit.dp
-import com.der3.ui.themes.AppColors
-
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.der3.model.AppStyle
+import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
 import java.util.Locale
 
@@ -29,7 +40,7 @@ fun ShareBottomSheet(
     if (isVisible) {
         ModalBottomSheet(
             onDismissRequest = onDismiss,
-            containerColor = AppColors.white,
+            containerColor = AppColors.zekrPanelBg,
             shape = RoundedCornerShape(
                 topStart = 24.dp,
                 topEnd = 24.dp
@@ -65,7 +76,7 @@ fun ShareBottomSheetContent(
             onClick = onShareAsText
         )
 
-        HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp), color = AppColors.gray50)
+        HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp), color = AppColors.gray200)
 
         ShareOptionItem(
             title = "مشاركة كصورة",
@@ -93,7 +104,7 @@ private fun ShareOptionItem(
         Icon(
             imageVector = icon,
             contentDescription = null,
-            tint = AppColors.green700
+            tint = AppColors.green800
         )
         Text(
             text = title,
@@ -104,10 +115,31 @@ private fun ShareOptionItem(
 }
 
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true, name = "Light Mode")
 @Composable
 private fun ShareBottomSheetPreview() {
     Der3MuslimTheme(
+        style = AppStyle.LIGHT,
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
+        ShareBottomSheet(
+            isVisible = true,
+            onDismiss = {},
+            onShareAsText = {},
+            onShareAsImage = {}
+        )
+    }
+}
+
+@Preview(
+    showBackground = true,
+    name = "Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+private fun ShareBottomSheetDarkPreview() {
+    Der3MuslimTheme(
+        style = AppStyle.DARK,
         language = Locale.Builder().setLanguage("ar").build()
     ) {
         ShareBottomSheet(

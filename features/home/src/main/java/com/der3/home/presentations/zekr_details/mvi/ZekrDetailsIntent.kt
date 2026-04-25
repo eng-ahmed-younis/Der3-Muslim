@@ -25,6 +25,10 @@ sealed interface ZekrDetailsIntent : MviIntent {
 
     data class UpdateVolume(val volume: Float) : ZekrDetailsIntent
 
+    data class PlaybackSpeedSheetVisibility(val isVisible: Boolean) : ZekrDetailsIntent
+
+    data class UpdatePlaybackSpeed(val speed: Float) : ZekrDetailsIntent
+
     data object ToggleFavorite : ZekrDetailsIntent
 
     data class ShareSheetVisibility(val isVisible: Boolean) : ZekrDetailsIntent

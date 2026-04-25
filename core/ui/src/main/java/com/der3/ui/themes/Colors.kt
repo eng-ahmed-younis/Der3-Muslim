@@ -38,7 +38,26 @@ internal val lightColors = Colors(
 
     screenBackground = Color(0xFFF4F6F5),
     cardColor = Color(0xFFFFFFFF),
-    dailyCardColor = Color(0xFF344955)
+    dailyCardColor = Color(0xFF344955),
+
+    // ZekrDetails semantic colors
+    zekrScreenBg = Color(0xFFF4F6F5),
+    zekrChipBg = Color(0xFFDDE8DF),
+    zekrChipBorder = Color.Transparent,
+    zekrChipText = Color(0xFF1B5F21),
+    zekrPanelBg = Color(0xFFFFFFFF),
+    zekrPanelTrack = Color(0xFFDDE8DF),
+    zekrPanelProgress = Color(0xFF1F6B2D),
+    zekrIconTint = Color(0xFF1B5F21),
+    zekrPlayButtonBg = Color(0xFF1F6B2D),
+    zekrCardBg = Color(0xFFFFFFFF),
+    zekrCardBorder = Color.Transparent,
+    zekrProgressText = Color(0xFF1B5F21),
+    zekrSubText = Color(0xFF6B7280),
+    zekrDotActive = Color(0xFF1F6B2D),
+    zekrDotInactive = Color(0xFFE2E8F0),
+    zekrCounterTrack = Color(0xFFCBD5C9),
+    zekrCounterFab = Color(0xFF1B5F21),
 )
 
 
@@ -75,8 +94,26 @@ internal val darkColors = Colors(
    // screenBackground = Color(0xFF121212)
     screenBackground = Color(0xFF1B1F23),
     cardColor = Color(0xFF2A2F34),
-    dailyCardColor = Color(0xFF344955)
+    dailyCardColor = Color(0xFF344955),
 
+    // ZekrDetails semantic colors
+    zekrScreenBg = Color(0xFF1B1F23),
+    zekrChipBg = Color(0xFF2A2F34),
+    zekrChipBorder = Color.Transparent,
+    zekrChipText = Color(0xFFA4BFA6),
+    zekrPanelBg = Color(0xFF2A2F34),
+    zekrPanelTrack = Color(0xFF374151),
+    zekrPanelProgress = Color(0xFFC8A951),
+    zekrIconTint = Color(0xFFA4BFA6),
+    zekrPlayButtonBg = Color(0xFFB8963D),
+    zekrCardBg = Color(0xFF2A2F34),
+    zekrCardBorder = Color.Transparent,
+    zekrProgressText = Color(0xFFA4BFA6),
+    zekrSubText = Color(0xFF9CA3AF),
+    zekrDotActive = Color(0xFFB8963D),
+    zekrDotInactive = Color(0xFF374151),
+    zekrCounterTrack = Color(0xFF1F2937),
+    zekrCounterFab = Color(0xFFB8963D),
 )
 //121212
 
@@ -110,6 +147,25 @@ data class Colors(
     val red50: Color,
 
     val screenBackground: Color,
-    val cardColor:Color,
-    val dailyCardColor:Color
+    val cardColor: Color,
+    val dailyCardColor: Color,
+
+    // ZekrDetails semantic colors
+    val zekrScreenBg: Color,
+    val zekrChipBg: Color,
+    val zekrChipBorder: Color,
+    val zekrChipText: Color,
+    val zekrPanelBg: Color,
+    val zekrPanelTrack: Color,
+    val zekrPanelProgress: Color,
+    val zekrIconTint: Color,
+    val zekrPlayButtonBg: Color,
+    val zekrCardBg: Color,
+    val zekrCardBorder: Color,
+    val zekrProgressText: Color,
+    val zekrSubText: Color,
+    val zekrDotActive: Color,
+    val zekrDotInactive: Color,
+    val zekrCounterTrack: Color,
+    val zekrCounterFab: Color,
 )

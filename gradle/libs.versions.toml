@@ -4,19 +4,19 @@
 agp = "9.1.0"
 
 coilCompose = "2.7.0"
-kotlin = "2.3.10"
+kotlin = "2.3.20"
 ksp = "2.3.6"
 
 # --- Serialization ---
 kotlinxSerializationJson = "1.10.0"
-ktorSerializationKotlinxJson = "3.4.1"
-ktorClientContentNegotiation = "3.4.1"
+ktorSerializationKotlinxJson = "3.4.2"
+ktorClientContentNegotiation = "3.4.2"
 library = "4.3.1"
 savedState = "1.4.0"
 
 # --- Compose ---
-composeBom = "2026.03.00"
-composeRuntime = "1.10.5"
+composeBom = "2026.03.01"
+composeRuntime = "1.10.6"
 materialIconsCore = "1.7.8"
 navigationCompose = "2.9.7"
 
@@ -45,7 +45,7 @@ espressoCore = "3.7.0"
 # --- Google Services ---
 googleServices = "4.4.4"
 secretsPlugin = "2.0.1"
-firebaseBom = "34.10.0"
+firebaseBom = "34.11.0"
 firebaseFirestoreKtx = "25.1.4"
 kotlinxCoroutinesPlayServices = "1.10.2"
 
@@ -60,6 +60,7 @@ androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = 
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
+kotlin-parcelize-runtime = { module = "org.jetbrains.kotlin:kotlin-parcelize-runtime" }
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktorSerializationKotlinxJson" }
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktorClientContentNegotiation" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktorSerializationKotlinxJson" }
@@ -142,6 +143,8 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 # Built-in Kotlin (لا تضف kotlin-android)
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 
 # Hilt
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroid" }

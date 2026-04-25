@@ -4,12 +4,12 @@ import android.content.Context
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.der3.shared.BuildConfig
+import com.der3.shared.domain.model.NetworkException
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import com.der3.shared.domain.model.NetworkException
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.ClientRequestException
@@ -23,7 +23,6 @@ import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.header
-import io.ktor.client.utils.EmptyContent.contentType
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
@@ -70,9 +69,13 @@ object NetworkClientModule {
         json: Json,
         chuckerInterceptor: ChuckerInterceptor
     ) : HttpClient = HttpClient(OkHttp) {
-        engine {
-            addInterceptor(chuckerInterceptor)
+       if (BuildConfig.NETWORK_DEBUGGING == "true") {
+            // enable logging
+            engine {
+                addInterceptor(chuckerInterceptor)
+            }
         }
+
 
         install(HttpTimeout) {
             connectTimeoutMillis = 10_000

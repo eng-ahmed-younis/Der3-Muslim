@@ -49,7 +49,7 @@ fun SettingToggleItem(
         Icon(
             imageVector = icon,
             contentDescription = null,
-            tint = if (isDarkTheme) AppColors.green500 else AppColors.green800,
+            tint = AppColors.green800,
             modifier = Modifier.size(24.dp)
         )
         Spacer(modifier = Modifier.width(12.dp))
@@ -78,7 +78,7 @@ fun SettingToggleItem(
             modifier = Modifier.scale(0.8f),
             colors = SwitchDefaults.colors(
                 checkedThumbColor = Color.White,
-                checkedTrackColor = if (isDarkTheme) AppColors.green500 else AppColors.green800,
+                checkedTrackColor = AppColors.green500,
                 uncheckedThumbColor = if (isDarkTheme) AppColors.gray400 else Color.White,
                 uncheckedTrackColor = if (isDarkTheme) AppColors.gray300 else AppColors.gray200,
                 uncheckedBorderColor = Color.Transparent

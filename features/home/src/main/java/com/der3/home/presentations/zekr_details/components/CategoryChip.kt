@@ -10,34 +10,33 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.der3.model.AppStyle
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
-import com.der3.ui.themes.isDarkTheme
 
 @Composable
 fun CategoryChip(
     text: String,
     modifier: Modifier = Modifier
 ) {
+    val colors = AppColors
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(20.dp))
-            .background(if (isDarkTheme) AppColors.cardColor else AppColors.green100)
+            .background(colors.zekrChipBg)
             .border(
                 width = 1.dp,
-                color = if (isDarkTheme) AppColors.green700.copy(alpha = 0.5f) else Color.Transparent,
+                color = colors.zekrChipBorder.copy(alpha = 0.7f),
                 shape = RoundedCornerShape(20.dp)
             )
             .padding(horizontal = 18.dp, vertical = 8.dp)
     ) {
         Text(
             text = text,
-            color = if (isDarkTheme) AppColors.green700 else AppColors.green800,
+            color = colors.zekrChipText,
             fontWeight = FontWeight.Medium
         )
     }

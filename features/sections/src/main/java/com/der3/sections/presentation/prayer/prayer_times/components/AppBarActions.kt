@@ -44,21 +44,21 @@ fun AppBarActions(
             Icon(
                 imageVector = Icons.Default.CalendarMonth,
                 contentDescription = "Calendar",
-                tint = AppColors.gray500
+                tint = AppColors.gray900Text
             )
         }
         IconButton(onClick = onShowLocation) {
             Icon(
                 imageVector = Icons.Default.LocationOn,
                 contentDescription = "Location",
-                tint = AppColors.gray500
+                tint = AppColors.gray900Text
             )
         }
         IconButton(onClick = onShowMethod) {
             Icon(
                 imageVector = Icons.Default.Settings,
                 contentDescription = "Settings",
-                tint = AppColors.gray500
+                tint = AppColors.gray900Text
             )
         }
         IconButton(onClick = { onIntent(PrayerTimeIntent.OpenQibla) }) {

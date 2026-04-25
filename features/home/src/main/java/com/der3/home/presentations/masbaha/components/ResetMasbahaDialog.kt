@@ -1,5 +1,6 @@
 package com.der3.home.presentations.masbaha.components
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
@@ -15,6 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.der3.model.AppStyle
 import com.der3.ui.R
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
@@ -27,12 +29,12 @@ fun ResetMasbahaDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        containerColor = AppColors.white,
+        containerColor = AppColors.zekrPanelBg,
         shape = RoundedCornerShape(28.dp),
         title = {
             Text(
                 text = stringResource(id = R.string.reset_confirmation_title),
-                color = AppColors.green900,
+                color = AppColors.gray900Text,
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.fillMaxWidth(),
@@ -42,7 +44,7 @@ fun ResetMasbahaDialog(
         text = {
             Text(
                 text = stringResource(id = R.string.reset_confirmation_message),
-                color = AppColors.gray500,
+                color = AppColors.zekrSubText,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodyLarge
@@ -53,7 +55,7 @@ fun ResetMasbahaDialog(
                 onClick = onConfirm,
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = AppColors.green800)
+                colors = ButtonDefaults.buttonColors(containerColor = AppColors.zekrPlayButtonBg)
             ) {
                 Text(
                     text = stringResource(id = R.string.reset_confirm),
@@ -68,17 +70,35 @@ fun ResetMasbahaDialog(
             ) {
                 Text(
                     text = stringResource(id = R.string.cancel),
-                    color = AppColors.gray400
+                    color = AppColors.gray500
                 )
             }
         }
     )
 }
 
-@Preview
+@Preview(showBackground = true, name = "Light Mode")
 @Composable
 fun ResetMasbahaDialogPreview() {
-    Der3MuslimTheme(language = Locale("ar")) {
+    Der3MuslimTheme(
+        style = AppStyle.LIGHT,
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
+        ResetMasbahaDialog(onDismiss = {}, onConfirm = {})
+    }
+}
+
+@Preview(
+    showBackground = true,
+    name = "Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun ResetMasbahaDialogDarkPreview() {
+    Der3MuslimTheme(
+        style = AppStyle.DARK,
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
         ResetMasbahaDialog(onDismiss = {}, onConfirm = {})
     }
 }

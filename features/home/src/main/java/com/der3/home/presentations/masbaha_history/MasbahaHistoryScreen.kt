@@ -1,5 +1,6 @@
 package com.der3.home.presentations.masbaha_history
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,7 +29,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -40,6 +40,7 @@ import com.der3.home.presentations.masbaha_history.components.RecentActivityHead
 import com.der3.home.presentations.masbaha_history.components.SummaryCard
 import com.der3.home.presentations.masbaha_history.mvi.MasbahaHistoryIntent
 import com.der3.home.presentations.masbaha_history.mvi.MasbahaHistoryState
+import com.der3.model.AppStyle
 import com.der3.model.UiText
 import com.der3.mvi.MviEffect
 import com.der3.screens.Screens
@@ -51,6 +52,7 @@ import com.der3.ui.components.LoadingDialog
 import com.der3.ui.style.ShiftSystemBarStyle
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
+import com.der3.ui.themes.isStatusBarDark
 import com.der3.utils.asString
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -82,13 +84,13 @@ fun MasbahaHistoryRoute(
     }
 
     ShiftSystemBarStyle(
-        statusBarColor = AppColors.gray50,
+        statusBarColor = AppColors.screenBackground,
         isStatusBarVisible = true,
-        useDarkStatusBarIcons = true,
+        useDarkStatusBarIcons = isStatusBarDark,
         isEdgeToEdgeEnabled = true,
-        isNavigationBarVisible = false,
-        navigationBarColor = AppColors.gray50,
-        useDarkNavigationBarIcons = false
+        isNavigationBarVisible = true,
+        navigationBarColor = AppColors.screenBackground,
+        useDarkNavigationBarIcons = isStatusBarDark
     )
 
     ErrorDialog(
@@ -124,6 +126,7 @@ fun MasbahaHistoryScreen(
     if (showClearDialog) {
         androidx.compose.material3.AlertDialog(
             onDismissRequest = { showClearDialog = false },
+            containerColor = AppColors.zekrPanelBg,
             confirmButton = {
                 androidx.compose.material3.TextButton(
                     onClick = {
@@ -131,16 +134,29 @@ fun MasbahaHistoryScreen(
                         showClearDialog = false
                     }
                 ) {
-                    Text(stringResource(R.string.clear), color = Color.Red)
+                    Text(stringResource(R.string.clear), color = AppColors.red900)
                 }
             },
             dismissButton = {
                 androidx.compose.material3.TextButton(onClick = { showClearDialog = false }) {
-                    Text(stringResource(id = R.string.cancel))
+                    Text(
+                        text = stringResource(id = R.string.cancel),
+                        color = AppColors.gray500
+                    )
                 }
             },
-            title = { Text(stringResource(id = R.string.clear_history)) },
-            text = { Text(stringResource(id = R.string.clear_history_confirmation_message)) }
+            title = { 
+                Text(
+                    text = stringResource(id = R.string.clear_history),
+                    color = AppColors.gray900Text
+                ) 
+            },
+            text = { 
+                Text(
+                    text = stringResource(id = R.string.clear_history_confirmation_message),
+                    color = AppColors.zekrSubText
+                ) 
+            }
         )
     }
 
@@ -149,13 +165,13 @@ fun MasbahaHistoryScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(AppColors.gray50)
+            .background(AppColors.screenBackground)
     ) {
         var showMenu by remember { mutableStateOf(false) }
 
         Der3TopAppBar(
             title = stringResource(id = R.string.history_title),
-            backgroundColor = AppColors.gray50,
+            backgroundColor = AppColors.screenBackground,
             onBackClick = {
                 onIntent(MasbahaHistoryIntent.Back)
             },
@@ -165,17 +181,22 @@ fun MasbahaHistoryScreen(
                         Icon(
                             imageVector = Icons.Default.MoreVert,
                             contentDescription = "More",
-                            tint = AppColors.green800
+                            tint = AppColors.gray900Text
                         )
                     }
                     DropdownMenu(
                         modifier = Modifier
-                            .background(color = AppColors.white),
+                            .background(color = AppColors.zekrPanelBg),
                         expanded = showMenu,
                         onDismissRequest = { showMenu = false }
                     ) {
                         DropdownMenuItem(
-                            text = { Text(stringResource(id = R.string.clear_history)) },
+                            text = { 
+                                Text(
+                                    text = stringResource(id = R.string.clear_history),
+                                    color = AppColors.gray900Text
+                                ) 
+                            },
                             onClick = {
                                 showMenu = false
                                 showClearDialog = true
@@ -184,7 +205,7 @@ fun MasbahaHistoryScreen(
                                 Icon(
                                     imageVector = Icons.Default.Delete,
                                     contentDescription = null,
-                                    tint = AppColors.gold500
+                                    tint = AppColors.red900
                                 )
                             }
                         )
@@ -234,10 +255,51 @@ fun MasbahaHistoryScreen(
 }
 
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true, name = "Light Mode")
 @Composable
 fun MasbahaHistoryScreenPreview() {
     Der3MuslimTheme(
+        style = AppStyle.LIGHT,
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
+        MasbahaHistoryScreen(
+            state = MasbahaHistoryState(
+                totalTasbihCount = 1250,
+                continuousDays = 7,
+                recentActivity = listOf(
+                    MasbahaHistoryEntity(
+                        zekrText = "سبحان الله",
+                        count = 33,
+                        zekrId = 1,
+                        timestamp = System.currentTimeMillis()
+                    ),
+                    MasbahaHistoryEntity(
+                        zekrText = "الحمد لله",
+                        count = 33,
+                        zekrId = 2,
+                        timestamp = System.currentTimeMillis() - 3600000
+                    ),
+                    MasbahaHistoryEntity(
+                        zekrText = "الله أكبر",
+                        count = 34,
+                        zekrId = 3,
+                        timestamp = System.currentTimeMillis() - 7200000
+                    )
+                )
+            )
+        )
+    }
+}
+
+@Preview(
+    showBackground = true,
+    name = "Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun MasbahaHistoryScreenDarkPreview() {
+    Der3MuslimTheme(
+        style = AppStyle.DARK,
         language = Locale.Builder().setLanguage("ar").build()
     ) {
         MasbahaHistoryScreen(

@@ -1,11 +1,9 @@
 package com.der3.home.presentations.zekr_details
 
-import android.content.res.Configuration
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import androidx.compose.foundation.background
-import com.der3.model.AppStyle
-import com.der3.model.ShareZekrType
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,7 +31,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import com.der3.shared.params.ZekrDetailsParams
 import com.der3.home.di.factory.ZekrDetailsViewModelFactory
 import com.der3.home.presentations.zekr_details.components.CategoryChip
 import com.der3.home.presentations.zekr_details.components.ControlPanel
@@ -41,9 +38,12 @@ import com.der3.home.presentations.zekr_details.components.ProgressCard
 import com.der3.home.presentations.zekr_details.mvi.ZekrDetailsIntent
 import com.der3.home.presentations.zekr_details.mvi.ZekrDetailsState
 import com.der3.home.utils.AzkarDetailsMenuItems
+import com.der3.model.AppStyle
+import com.der3.model.ShareZekrType
 import com.der3.model.UiText
 import com.der3.mvi.MviEffect
 import com.der3.screens.Screens
+import com.der3.shared.params.ZekrDetailsParams
 import com.der3.ui.R
 import com.der3.ui.components.CircularZekrCounter
 import com.der3.ui.components.CustomMenu
@@ -51,21 +51,21 @@ import com.der3.ui.components.Der3TopAppBar
 import com.der3.ui.components.ErrorDialog
 import com.der3.ui.components.FontSizeBottomSheet
 import com.der3.ui.components.LoadingDialog
-import com.der3.ui.components.VolumeBottomSheet
 import com.der3.ui.components.ShareBottomSheet
 import com.der3.ui.components.TextSlider
+import com.der3.ui.components.VolumeBottomSheet
+import com.der3.ui.components.ZekrShareCard
+import com.der3.ui.components.captureComposable
+import com.der3.ui.components.saveBitmapToCache
+import com.der3.ui.style.ShiftSystemBarStyle
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
+import com.der3.ui.themes.isStatusBarDark
 import com.der3.utils.asString
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import java.util.Locale
-import com.der3.ui.components.captureComposable
-import com.der3.ui.components.saveBitmapToCache
-import com.der3.ui.components.ZekrShareCard
-import com.der3.ui.style.ShiftSystemBarStyle
-import com.der3.ui.themes.isStatusBarDark
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 
 @Composable
@@ -172,13 +172,15 @@ fun ZekrDetailsRoute(
         }
     )
 
+    val routeBg = AppColors.zekrScreenBg
+
     ShiftSystemBarStyle(
         statusBarColor = AppColors.screenBackground,
         isStatusBarVisible = true,
         useDarkStatusBarIcons = isStatusBarDark,
         isEdgeToEdgeEnabled = true,
-        isNavigationBarVisible = false,
-        navigationBarColor = AppColors.screenBackground,
+        isNavigationBarVisible = true,
+        navigationBarColor = routeBg,
     )
 
     ZekrDetailsScreen(
@@ -241,14 +243,16 @@ fun ZekrDetailsScreen(
         }
     )
 
+    val screenBg = AppColors.zekrScreenBg
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(AppColors.screenBackground)
+            .background(screenBg)
     ) {
         Der3TopAppBar(
             title = stringResource(R.string.zekr_details_title),
-            backgroundColor = AppColors.screenBackground,
+            backgroundColor = screenBg,
             onBackClick = {
                 onIntent(ZekrDetailsIntent.Back)
             },
@@ -318,6 +322,11 @@ fun ZekrDetailsScreen(
                 progress = progress,
                 count = state.currentCount,
                 total = state.zekrDetails.repeatCount,
+                backgroundColor = AppColors.zekrCounterTrack,
+                progressColor = AppColors.gold600,
+                countTextColor = AppColors.gray900Text,
+                subtextColor = AppColors.zekrIconTint,
+                fabColor = AppColors.zekrCounterFab,
                 onClick = {
                     onIntent(ZekrDetailsIntent.IncrementZekrReadingCount)
                 })

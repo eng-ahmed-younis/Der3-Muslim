@@ -1,23 +1,30 @@
 package com.der3.sections.presentation.prayer.prayer_times
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CalendarMonth
-import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,12 +42,14 @@ import com.der3.sections.presentation.prayer.prayer_times.components.NextPrayerC
 import com.der3.sections.presentation.prayer.prayer_times.components.PrayerTimeItem
 import com.der3.sections.presentation.prayer.prayer_times.mvi.PrayerTimeIntent
 import com.der3.sections.presentation.prayer.prayer_times.mvi.PrayerTimeState
+import com.der3.ui.R
 import com.der3.ui.components.Der3TopAppBar
 import com.der3.ui.components.ErrorDialog
 import com.der3.ui.components.LoadingDialog
+import com.der3.ui.style.ShiftSystemBarStyle
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
-import com.der3.ui.R
+import com.der3.ui.themes.isStatusBarDark
 import com.der3.utils.asString
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -89,6 +98,16 @@ fun PrayerTimeRoute(
         }
     )
 
+    ShiftSystemBarStyle(
+        statusBarColor = AppColors.screenBackground,
+        isStatusBarVisible = true,
+        useDarkStatusBarIcons = isStatusBarDark,
+        isEdgeToEdgeEnabled = true,
+        isNavigationBarVisible = true,
+        navigationBarColor = AppColors.screenBackground,
+        useDarkNavigationBarIcons = isStatusBarDark
+    )
+
     PrayerTimeScreen(
         state = state,
         onIntent = viewModel::onIntent
@@ -130,12 +149,12 @@ fun PrayerTimeScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(AppColors.gray50)
+            .background(AppColors.screenBackground)
     ) {
         Der3TopAppBar(
             title = "أوقات الصلاة",
             subtitle = state.locationName,
-            backgroundColor = Color.Transparent,
+            backgroundColor = AppColors.screenBackground,
             showBackButton = true,
             onBackClick = { onIntent(PrayerTimeIntent.Back) },
             trailingContent = {
@@ -164,19 +183,21 @@ fun PrayerTimeScreen(
                         state.hijriDate,
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
-                        color = AppColors.green900
+                        color = AppColors.gray900Text
                     )
                     Text(
                         state.gregorianDate,
                         style = MaterialTheme.typography.bodyMedium,
-                        color = AppColors.gray500
+                        color = AppColors.zekrSubText
                     )
                 }
             }
 
             item {
                 state.nextPrayer?.let { next ->
-                    NextPrayerCard(next)
+                    NextPrayerCard(
+                        prayer = next
+                    )
                 }
             }
 
@@ -199,7 +220,7 @@ fun PrayerTimeScreen(
                         stringResource(R.string.other_times),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
-                        color = AppColors.green900,
+                        color = AppColors.gray900Text,
                         modifier = Modifier.padding(bottom = 12.dp, start = 4.dp)
                     )
                     
@@ -218,7 +239,7 @@ fun PrayerTimeScreen(
                                         .weight(1f)
                                         .padding(vertical = 6.dp),
                                     shape = RoundedCornerShape(16.dp),
-                                    color = Color.White,
+                                    color = AppColors.cardColor,
                                     tonalElevation = 2.dp,
                                     shadowElevation = 1.dp
                                 ) {
@@ -229,7 +250,7 @@ fun PrayerTimeScreen(
                                         Text(
                                             text = other.name,
                                             style = MaterialTheme.typography.bodySmall,
-                                            color = AppColors.gray500,
+                                            color = AppColors.zekrSubText,
                                             fontWeight = FontWeight.Medium
                                         )
                                         Spacer(modifier = Modifier.height(4.dp))
@@ -237,7 +258,7 @@ fun PrayerTimeScreen(
                                             text = other.time,
                                             style = MaterialTheme.typography.titleMedium,
                                             fontWeight = FontWeight.Bold,
-                                            color = AppColors.green800
+                                            color = AppColors.zekrPanelProgress
                                         )
                                     }
                                 }
@@ -255,10 +276,46 @@ fun PrayerTimeScreen(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, name = "Light Mode")
 @Composable
 fun PrayerTimeScreenPreview() {
     Der3MuslimTheme(
+        style = com.der3.model.AppStyle.LIGHT,
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
+        PrayerTimeScreen(
+            state = PrayerTimeState(
+                locationName = "الرياض، المملكة العربية السعودية",
+                hijriDate = "الأربعاء 15 رمضان 1445 هـ",
+                gregorianDate = "27 مارس 2024",
+                nextPrayer = PrayerDetails(
+                    "العصر",
+                    "03:45 م",
+                    isNext = true,
+                    type = PrayerType.ASR
+                ),
+                prayerTimes = listOf(
+                    PrayerDetails("الفجر", "04:42 ص", isPassed = true, type = PrayerType.FAJR),
+                    PrayerDetails("الشروق", "06:01 ص", isPassed = true, type = PrayerType.SUNRISE),
+                    PrayerDetails("الظهر", "12:05 م", isPassed = true, type = PrayerType.DHUHR),
+                    PrayerDetails("العصر", "03:45 م", isNext = true, type = PrayerType.ASR),
+                    PrayerDetails("المغرب", "06:12 م", type = PrayerType.MAGHRIB),
+                    PrayerDetails("العشاء", "07:42 م", type = PrayerType.ISHA)
+                )
+            )
+        )
+    }
+}
+
+@Preview(
+    showBackground = true,
+    name = "Dark Mode",
+    uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun PrayerTimeScreenDarkPreview() {
+    Der3MuslimTheme(
+        style = com.der3.model.AppStyle.DARK,
         language = Locale.Builder().setLanguage("ar").build()
     ) {
         PrayerTimeScreen(

@@ -5,7 +5,9 @@ import com.der3.mvi.Reducer
 class SettingReducer : Reducer<SettingAction, SettingState> {
     override fun reduce(action: SettingAction, state: SettingState): SettingState {
         return when (action) {
-            is SettingAction.UpdateNightMode -> state.copy(isNightMode = action.isNightMode)
+            is SettingAction.UpdateNightMode -> {
+                state.copy(isNightMode = action.isNightMode)
+            }
             is SettingAction.UpdateFontSize -> state.copy(fontSize = action.fontSize)
             is SettingAction.UpdateAutoPlay -> state.copy(isAutoPlayEnabled = action.isAutoPlayEnabled)
             is SettingAction.UpdatePlaybackSpeed -> {
@@ -16,7 +18,9 @@ class SettingReducer : Reducer<SettingAction, SettingState> {
             is SettingAction.UpdateSleepingReminders -> state.copy(isSleepingRemindersEnabled = action.isEnabled)
             is SettingAction.UpdateLoading -> state.copy(isLoading = action.isLoading)
             is SettingAction.UpdateError -> state.copy(error = action.error)
-            is SettingAction.UpdateUseDarkStatusBarIcons -> state.copy(useDarkStatusBarIcons = action.useDarkStatusBarIcons)
+            is SettingAction.UpdateUseDarkStatusBarIcons -> {
+                state.copy(useDarkStatusBarIcons = action.useDarkStatusBarIcons)
+            }
         }
     }
 }

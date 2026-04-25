@@ -17,6 +17,10 @@ android {
     }
 
     buildTypes {
+        create("staging") {
+            isDefault = true
+            matchingFallbacks += listOf("release")
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(

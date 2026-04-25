@@ -30,6 +30,7 @@ import com.der3.ui.R
 import com.der3.ui.themes.AppColors
 import androidx.compose.ui.tooling.preview.Preview
 import com.der3.ui.themes.Der3MuslimTheme
+import com.der3.ui.themes.isDarkTheme
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -42,7 +43,7 @@ fun ActivityItem(activity: MasbahaHistoryEntity, modifier: Modifier = Modifier) 
     Card(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(24.dp),
-        colors = CardDefaults.cardColors(containerColor = AppColors.white)
+        colors = CardDefaults.cardColors(containerColor = AppColors.zekrPanelBg)
     ) {
         Row(
             modifier = Modifier
@@ -54,13 +55,13 @@ fun ActivityItem(activity: MasbahaHistoryEntity, modifier: Modifier = Modifier) 
                 modifier = Modifier
                     .size(48.dp)
                     .clip(CircleShape)
-                    .background(AppColors.gray50),
+                    .background(AppColors.zekrScreenBg),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = Icons.Default.Stars,
                     contentDescription = null,
-                    tint = AppColors.green800,
+                    tint = AppColors.zekrPanelProgress,
                     modifier = Modifier.size(24.dp)
                 )
             }
@@ -70,12 +71,12 @@ fun ActivityItem(activity: MasbahaHistoryEntity, modifier: Modifier = Modifier) 
                     text = activity.zekrText,
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Bold,
-                    color = AppColors.green800
+                    color = AppColors.gray900Text
                 )
                 Text(
                     text = stringResource(R.string.history_item_subtitle),
                     style = MaterialTheme.typography.bodySmall,
-                    color = AppColors.gray500
+                    color = AppColors.zekrSubText
                 )
             }
             Column(horizontalAlignment = Alignment.End) {
@@ -83,25 +84,58 @@ fun ActivityItem(activity: MasbahaHistoryEntity, modifier: Modifier = Modifier) 
                     text = String.format(Locale("ar"), "%,d", activity.count),
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Bold,
-                    color = AppColors.green800
+                    color = AppColors.zekrPanelProgress
                 )
                 Text(
                     text = time,
                     style = MaterialTheme.typography.bodySmall,
-                    color = AppColors.gray200
+                    color = AppColors.zekrSubText
                 )
             }
         }
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, name = "Light Mode")
 @Composable
 fun ActivityItemPreview() {
     Der3MuslimTheme(
+        style = com.der3.model.AppStyle.LIGHT,
         language = Locale.Builder().setLanguage("ar").build()
     ) {
-        Box(modifier = Modifier.padding(16.dp)) {
+        Box(
+            modifier = Modifier
+                .background(AppColors.screenBackground)
+                .padding(16.dp)
+        ) {
+            ActivityItem(
+                activity = MasbahaHistoryEntity(
+                    zekrText = "سبحان الله",
+                    count = 33,
+                    zekrId = 1,
+                    timestamp = System.currentTimeMillis()
+                )
+            )
+        }
+    }
+}
+
+@Preview(
+    showBackground = true,
+    name = "Dark Mode",
+    uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun ActivityItemDarkPreview() {
+    Der3MuslimTheme(
+        style = com.der3.model.AppStyle.DARK,
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
+        Box(
+            modifier = Modifier
+                .background(AppColors.screenBackground)
+                .padding(16.dp)
+        ) {
             ActivityItem(
                 activity = MasbahaHistoryEntity(
                     zekrText = "سبحان الله",

@@ -1,5 +1,6 @@
 package com.der3.home.presentations.zekr_details.components
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,10 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.geometry.RoundRect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathMeasure
@@ -37,8 +35,10 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.der3.model.AppStyle
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
+import com.der3.ui.themes.isDarkTheme
 import java.util.Locale
 
 @Composable
@@ -55,10 +55,11 @@ fun ControlPanel(
 ) {
     val cornerRadiusValue = 28.dp
     val strokeWidth = 3.dp
-    val colors = AppColors
-    val trackColor = colors.green100.copy(alpha = 0.4f)
-    val progressColor = colors.green700
-    val iconTint = colors.green800
+    val dark = isDarkTheme
+    val trackColor = if (dark) AppColors.zekrPanelTrack else AppColors.zekrPanelTrack.copy(alpha = 0.4f)
+    val progressColor = AppColors.zekrPanelProgress
+    val iconTint = AppColors.zekrIconTint
+    val playButtonColor = AppColors.zekrPlayButtonBg
 
     Box(
         modifier = modifier
@@ -66,9 +67,9 @@ fun ControlPanel(
             .shadow(
                 elevation = 12.dp,
                 shape = RoundedCornerShape(cornerRadiusValue),
-                spotColor = colors.green900.copy(alpha = 0.2f)
+                spotColor = AppColors.green900.copy(alpha = 0.2f)
             )
-            .background(colors.white, RoundedCornerShape(cornerRadiusValue))
+            .background(AppColors.zekrPanelBg, RoundedCornerShape(cornerRadiusValue))
             .drawWithCache {
                 val strokePx = strokeWidth.toPx()
                 val w = size.width
@@ -195,7 +196,7 @@ fun ControlPanel(
             Surface(
                 onClick = onPlay,
                 shape = CircleShape,
-                color = progressColor,
+                color = playButtonColor,
                 modifier = Modifier.size(56.dp),
                 shadowElevation = 4.dp
             ) {
@@ -232,13 +233,46 @@ fun ControlPanel(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, name = "Light Mode")
 @Composable
 private fun ControlPanelPreview() {
     Der3MuslimTheme(
+        style = AppStyle.LIGHT,
         language = Locale.Builder().setLanguage("ar").build()
     ) {
-        Box(modifier = Modifier.padding(16.dp)) {
+        Box(
+            modifier = Modifier
+                .background(AppColors.screenBackground)
+                .padding(16.dp)
+        ) {
+            ControlPanel(
+                audioProgress = 0.5f,
+                onFavorite = {},
+                onPlay = {},
+                onReset = {},
+                onShare = {},
+                onVolume = {}
+            )
+        }
+    }
+}
+
+@Preview(
+    showBackground = true,
+    name = "Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+private fun ControlPanelDarkPreview() {
+    Der3MuslimTheme(
+        style = AppStyle.DARK,
+        language = Locale.Builder().setLanguage("ar").build()
+    ) {
+        Box(
+            modifier = Modifier
+                .background(AppColors.screenBackground)
+                .padding(16.dp)
+        ) {
             ControlPanel(
                 audioProgress = 0.5f,
                 onFavorite = {},

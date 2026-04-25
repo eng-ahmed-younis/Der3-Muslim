@@ -1,14 +1,9 @@
 package com.der3.home.presentations.side_menu.setting.components
 
 import android.content.res.Configuration
-import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
@@ -54,24 +49,23 @@ fun PlaybackSpeedDialog(
             )
         },
         text = {
-            Row(
+            Column(
                 Modifier
                     .fillMaxWidth()
-                    .horizontalScroll(rememberScrollState())
                     .selectableGroup()
-                    .padding(vertical = 8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 PlaybackSpeed.entries.forEach { speed ->
                     val isSelected = (speed.value == currentSpeed)
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
+                    Row(
                         modifier = Modifier
+                            .fillMaxWidth()
                             .selectable(
                                 selected = isSelected,
                                 onClick = { onSpeedSelected(speed.value) },
                                 role = androidx.compose.ui.semantics.Role.RadioButton
                             )
+                            .padding(vertical = 12.dp),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
                         RadioButton(
                             selected = isSelected,
@@ -82,12 +76,11 @@ fun PlaybackSpeedDialog(
                             )
                         )
 
-                        Spacer(modifier = Modifier.height(4.dp))
-
                         Text(
-                            text = "${speed}",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = AppColors.gray900Text
+                            text = speed.label,
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = if (isSelected) AppColors.gold700 else AppColors.gray900Text,
+                            modifier = Modifier.padding(horizontal = 8.dp)
                         )
                     }
                 }

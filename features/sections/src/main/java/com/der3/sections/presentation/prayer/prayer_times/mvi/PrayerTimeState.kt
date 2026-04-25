@@ -12,6 +12,7 @@ data class PrayerTimeState(
     val hijriDate: String = "",
     val gregorianDate: String = "",
     val nextPrayer: PrayerDetails? = null,
+    val currentPrayer: PrayerDetails? = null,
     val prayerTimes: List<PrayerDetails> = emptyList(),
     val selectedMethodId: Int = 4, // Default Umm Al-Qura
     val selectedSchoolId: Int = 0, // 0: Shafi, 1: Hanafi

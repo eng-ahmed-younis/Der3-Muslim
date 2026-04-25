@@ -12,6 +12,8 @@ import com.der3.home.domain.use_case.ResetAzkarAudioUseCase
 import com.der3.home.domain.use_case.ResetAzkarAudioUseCaseImpl
 import com.der3.home.domain.use_case.ResumeAzkarAudioUseCase
 import com.der3.home.domain.use_case.ResumeAzkarAudioUseCaseImpl
+import com.der3.home.domain.use_case.SetAzkarPlaybackSpeedUseCase
+import com.der3.home.domain.use_case.SetAzkarPlaybackSpeedUseCaseImpl
 import com.der3.home.domain.use_case.SetAzkarVolumeUseCase
 import com.der3.home.domain.use_case.SetAzkarVolumeUseCaseImpl
 import com.der3.home.domain.use_case.StopAzkarAudioUseCase
@@ -79,6 +81,12 @@ abstract class AudioUseCaseModule {
     abstract fun bindSetAzkarVolume(
         impl: SetAzkarVolumeUseCaseImpl
     ): SetAzkarVolumeUseCase
+
+    @Binds
+    @Singleton
+    abstract fun bindSetAzkarPlaybackSpeed(
+        impl: SetAzkarPlaybackSpeedUseCaseImpl
+    ): SetAzkarPlaybackSpeedUseCase
 
     @Binds
     @Singleton

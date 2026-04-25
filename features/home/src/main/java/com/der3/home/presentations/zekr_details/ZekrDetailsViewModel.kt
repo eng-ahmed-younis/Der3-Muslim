@@ -2,18 +2,19 @@ package com.der3.home.presentations.zekr_details
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.der3.shared.params.ZekrDetailsParams
-import com.der3.shared.domain.use_case.GetAzkarItemByIdUseCase
 import com.der3.data_store.api.DataStoreRepository
 import com.der3.home.data.mappers.toZekrUiModel
 import com.der3.home.di.factory.ZekrDetailsViewModelFactory
 import com.der3.home.domain.use_case.ObserveAzkarAudioStateUseCase
 import com.der3.home.domain.use_case.ResetAzkarAudioUseCase
+import com.der3.home.domain.use_case.SetAzkarPlaybackSpeedUseCase
 import com.der3.home.domain.use_case.SetAzkarVolumeUseCase
 import com.der3.home.domain.use_case.StopAzkarAudioUseCase
 import com.der3.home.domain.use_case.ToggleAzkarAudioUseCase
 import com.der3.home.presentations.zekr_details.mvi.ZekrDetailsAction
-import com.der3.home.presentations.zekr_details.mvi.ZekrDetailsAction.*
+import com.der3.home.presentations.zekr_details.mvi.ZekrDetailsAction.FontSizeSheetVisibility
+import com.der3.home.presentations.zekr_details.mvi.ZekrDetailsAction.ShareSheetVisibility
+import com.der3.home.presentations.zekr_details.mvi.ZekrDetailsAction.UpdateDeaultFontSize
 import com.der3.home.presentations.zekr_details.mvi.ZekrDetailsIntent
 import com.der3.home.presentations.zekr_details.mvi.ZekrDetailsReducer
 import com.der3.home.presentations.zekr_details.mvi.ZekrDetailsState
@@ -23,9 +24,11 @@ import com.der3.mvi.MviEffect
 import com.der3.mvi.MviEffect.Navigate
 import com.der3.screens.Screens.Back
 import com.der3.shared.data.source.local.entity.FavoriteEntity
+import com.der3.shared.domain.use_case.GetAzkarItemByIdUseCase
 import com.der3.shared.domain.use_case.fav.AddToFavoriteUseCase
 import com.der3.shared.domain.use_case.fav.IsFavoriteUseCase
 import com.der3.shared.domain.use_case.fav.RemoveFromFavoriteUseCase
+import com.der3.shared.params.ZekrDetailsParams
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -45,6 +48,7 @@ class ZekrDetailsViewModel @AssistedInject constructor(
     private val stopAzkarAudioUseCase: StopAzkarAudioUseCase,
     private val resetAzkarAudioUseCase: ResetAzkarAudioUseCase,
     private val setAzkarVolumeUseCase: SetAzkarVolumeUseCase,
+    private val setAzkarPlaybackSpeedUseCase: SetAzkarPlaybackSpeedUseCase,
     private val observeAzkarAudioStateUseCase: ObserveAzkarAudioStateUseCase,
     private val dataStoreRepository: DataStoreRepository,
     private val addToFavoriteUseCase: AddToFavoriteUseCase,
@@ -124,6 +128,15 @@ class ZekrDetailsViewModel @AssistedInject constructor(
             is ZekrDetailsIntent.UpdateVolume -> {
                 onAction(action = ZekrDetailsAction.UpdateVolume(volume = intent.volume))
                 setAzkarVolumeUseCase.invoke(intent.volume)
+            }
+
+            is ZekrDetailsIntent.PlaybackSpeedSheetVisibility -> {
+                onAction(action = ZekrDetailsAction.PlaybackSpeedSheetVisibility(visible = intent.isVisible))
+            }
+
+            is ZekrDetailsIntent.UpdatePlaybackSpeed -> {
+                onAction(action = ZekrDetailsAction.UpdatePlaybackSpeed(speed = intent.speed))
+                setAzkarPlaybackSpeedUseCase.invoke(intent.speed)
             }
 
             is ZekrDetailsIntent.ShareSheetVisibility -> {

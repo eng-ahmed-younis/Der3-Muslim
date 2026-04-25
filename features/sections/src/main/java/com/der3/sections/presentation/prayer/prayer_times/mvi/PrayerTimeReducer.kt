@@ -12,6 +12,7 @@ class PrayerTimeReducer @Inject constructor() : Reducer<PrayerTimeAction, Prayer
                 gregorianDate = action.gregorianDate,
                 prayerTimes = action.prayerTimes,
                 nextPrayer = action.prayerTimes.find { it.isNext },
+                currentPrayer = action.prayerTimes.find { it.isCurrent },
                 isLoading = false
             )
             is PrayerTimeAction.OnNotificationToggled -> {

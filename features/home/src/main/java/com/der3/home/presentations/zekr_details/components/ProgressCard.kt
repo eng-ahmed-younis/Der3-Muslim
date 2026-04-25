@@ -20,14 +20,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.der3.model.AppStyle
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
-import com.der3.ui.themes.isDarkTheme
 import java.util.Locale
 
 @Composable
@@ -36,15 +34,16 @@ fun ProgressCard(
     modifier: Modifier = Modifier
 ) {
     val percentage = (progress * 100).toInt()
+    val colors = AppColors
 
     Card(
         shape = RoundedCornerShape(24.dp),
-        colors = CardDefaults.cardColors(containerColor = AppColors.cardColor),
+        colors = CardDefaults.cardColors(containerColor = colors.zekrCardBg),
         modifier = modifier
             .fillMaxWidth()
             .border(
                 width = 1.dp,
-                color = if (isDarkTheme) AppColors.green700.copy(alpha = 0.2f) else Color.Transparent,
+                color = colors.zekrCardBorder.copy(alpha = 0.5f),
                 shape = RoundedCornerShape(24.dp)
             )
     ) {
@@ -57,19 +56,17 @@ fun ProgressCard(
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Visual indicator (5 dots)
-
             Column(
                 horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 Text(
                     text = "التقدم الإجمالي",
-                    color = AppColors.gray500
+                    color = colors.zekrSubText
                 )
                 Text(
                     text = "$percentage% اكتمل",
-                    color = if (isDarkTheme) AppColors.green700 else AppColors.green800,
+                    color = colors.zekrProgressText,
                     fontWeight = FontWeight.Bold
                 )
             }
@@ -86,10 +83,8 @@ fun ProgressCard(
                             .size(10.dp)
                             .clip(CircleShape)
                             .background(
-                                if (index < percentage / 20)
-                                    AppColors.green700
-                                else
-                                    if (isDarkTheme) AppColors.green700.copy(alpha = 0.2f) else AppColors.gray200
+                                if (index < percentage / 20) colors.zekrDotActive
+                                else colors.zekrDotInactive
                             )
                     )
                 }

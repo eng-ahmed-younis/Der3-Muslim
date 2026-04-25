@@ -22,7 +22,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -57,7 +56,7 @@ fun SettingSliderItem(
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                tint = if (isDarkTheme) AppColors.green500 else AppColors.green800,
+                tint = AppColors.green800,
                 modifier = Modifier.size(24.dp)
             )
             Spacer(modifier = Modifier.width(12.dp))
@@ -72,29 +71,29 @@ fun SettingSliderItem(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(top = 8.dp)
         ) {
-            Text(text = "A",  color = if (isDarkTheme) Color.White.copy(alpha = 0.7f) else AppColors.gray500, fontSize = 12.sp)
+            Text(text = "A", color = AppColors.gray500, fontSize = 12.sp)
             Slider(
                 value = value,
                 onValueChange = onValueChange,
                 valueRange = 12f..30f,
                 modifier = Modifier.weight(1f).padding(horizontal = 8.dp),
                 colors = SliderDefaults.colors(
-                    thumbColor = if (isDarkTheme) AppColors.green500 else AppColors.green800,
-                    activeTrackColor = if (isDarkTheme) AppColors.green500 else AppColors.green800,
+                    thumbColor = AppColors.green500,
+                    activeTrackColor = AppColors.green500,
                     inactiveTrackColor = if (isDarkTheme) AppColors.gray300 else AppColors.gray200
                 )
             )
-            Text(text = "A", color = if (isDarkTheme) Color.White.copy(alpha = 0.7f) else AppColors.gray500, fontSize = 20.sp)
+            Text(text = "A", color = AppColors.gray500, fontSize = 20.sp)
         }
         Text(
             text = "${value.toInt()}px",
             modifier = Modifier
                 .background(
-                    if (isDarkTheme) AppColors.green500.copy(alpha = 0.15f) else AppColors.green800.copy(alpha = 0.1f),
+                    AppColors.green700.copy(alpha = 0.15f),
                     RoundedCornerShape(12.dp)
                 )
                 .padding(horizontal = 12.dp, vertical = 4.dp),
-            color = if (isDarkTheme) Color.White.copy(alpha = 0.9f) else AppColors.green800,
+            color = AppColors.green800,
             fontSize = 12.sp
         )
     }

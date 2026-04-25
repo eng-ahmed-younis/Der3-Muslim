@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.serialization)
-    id("kotlin-parcelize")
+    alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.secrets.gradle.plugin)
 }
 
@@ -37,6 +37,36 @@ android {
                 "\"${project.findProperty("BASE_URL")}\""
             )
 
+            buildConfigField(
+                "String",
+                "NETWORK_DEBUGGING",
+                "\"false\""
+            )
+
+        }
+
+        create("staging") {
+            isDefault = true
+         //   initWith(getByName("release"))
+            // “If this build type (or flavor) doesn’t exist in a dependency, fall back to using release instead.”
+            matchingFallbacks += listOf("release")
+            // signingConfigs: a container holding all signing configurations
+            // assigning the debug signing configuration to something (usually a build type like release or a custom one).
+            //    signingConfig = signingConfigs.getByName("debug")
+
+
+            buildConfigField(
+                "String",
+                "BASE_URL",
+                "\"${project.findProperty("BASE_URL")}\""
+            )
+
+            buildConfigField(
+                "String",
+                "NETWORK_DEBUGGING",
+                "\"true\""
+            )
+
         }
 
         debug {
@@ -44,6 +74,12 @@ android {
                 "String",
                 "BASE_URL",
                 "\"${project.findProperty("BASE_URL")}\""
+            )
+
+            buildConfigField(
+                "String",
+                "NETWORK_DEBUGGING",
+                "\"true\""
             )
         }
     }
@@ -115,11 +151,11 @@ dependencies {
 
     // chucker
     debugImplementation (libs.library)
+    add("stagingImplementation", libs.library)
     releaseImplementation (libs.library.no.op)
 
     // Image loading
     implementation(libs.coil.compose)
-
 
     implementation(project(":core:data_store"))
     implementation(project(":core:ui"))
