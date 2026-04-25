@@ -5,42 +5,47 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000229">
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000189">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="1: git_branch" time="0.022516">
+      <testcase classname="fastlane.lanes" name="1: git_branch" time="0.019549">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="2: firebase_app_distribution_get_latest_release" time="0.661883">
+      <testcase classname="fastlane.lanes" name="2: firebase_app_distribution_get_latest_release" time="1.402657">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="3: :app:assembleRelease" time="164.847684">
+      <testcase classname="fastlane.lanes" name="3: :app:assembleStaging" time="146.435466">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="4: git_branch" time="0.039326">
+      <testcase classname="fastlane.lanes" name="4: git_branch" time="0.026385">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="5: firebase_app_distribution" time="286.252112">
+      <testcase classname="fastlane.lanes" name="5: firebase_app_distribution" time="315.421382">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="6: git_branch" time="0.053375">
+      <testcase classname="fastlane.lanes" name="6: git_branch" time="0.042376">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="7: slack" time="0.625238">
+      <testcase classname="fastlane.lanes" name="7: git config user.name" time="0.024168">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="8: slack" time="0.677391">
         
       </testcase>
     

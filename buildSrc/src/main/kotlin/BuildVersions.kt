@@ -5,6 +5,6 @@ object BuildVersions {
 
     const val JAVA_VERSION = 21
 
-    const val VERSION_CODE = 24
+    const val VERSION_CODE = 25
     const val VERSION_NAME = "1.0"
 }
