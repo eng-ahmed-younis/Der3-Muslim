@@ -220,7 +220,7 @@ fun FavoriteZekrCard(
                         modifier = Modifier
                             .scale(if (isPlaying) pulsateScale else 1f)
                             .background(
-                                color = if (isPlaying) AppColors.green900 else AppColors.green800,
+                                color = if (com.der3.ui.themes.isDarkTheme) AppColors.gold700 else AppColors.green500,
                                 shape = RoundedCornerShape(16.dp)
                             )
                             .clickable { onPlay() }
@@ -233,13 +233,13 @@ fun FavoriteZekrCard(
                         Icon(
                             imageVector = if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
                             contentDescription = stringResource(id = if (isPlaying) R.string.pause_audio else R.string.play_audio),
-                            tint = AppColors.white,
+                            tint = Color.White,
                             modifier = Modifier.size(20.dp)
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
                             text = stringResource(id = if (isPlaying) R.string.pause_audio else R.string.play_audio),
-                            color = AppColors.white,
+                            color = Color.White,
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Bold
                         )

@@ -14,8 +14,6 @@ import com.der3.mvi.MviEffect
 import com.der3.screens.Screens
 import com.der3.shared.domain.use_case.notification.ClearNotificationsByTypeUseCase
 import com.der3.shared.domain.use_case.notification.GetAllNotificationsUseCase
-import com.der3.shared.domain.use_case.notification.read_status.GetReadNotificationCountUseCase
-import com.der3.shared.domain.use_case.notification.read_status.GetUnReadNotificationCountUseCase
 import com.der3.shared.domain.use_case.notification.read_status.MarkAllNotificationAsReadUseCase
 import com.der3.shared.params.NotificationParams
 import com.der3.utils.TimeFormatUtils
@@ -35,8 +33,6 @@ class NotificationViewModel @AssistedInject constructor(
     @Assisted params: NotificationParams,
     private val getAllNotificationsUseCase: GetAllNotificationsUseCase,
     private val markAllNotificationsAsReadUseCase: MarkAllNotificationAsReadUseCase,
-    private val getReadNotificationCountUseCase: GetReadNotificationCountUseCase,
-    private val getUnreadNotificationCountUseCase: GetUnReadNotificationCountUseCase,
     private val clearNotificationsByTypeUseCase: ClearNotificationsByTypeUseCase,
     reducer: NotificationReducer
 ) : MviBaseViewModel<NotificationState, NotificationAction, NotificationIntent>(

@@ -21,6 +21,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bookmarks
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -48,6 +49,7 @@ import java.util.Locale
 fun ZekrCard(
     modifier: Modifier = Modifier,
     zekr: ZekrUiModel,
+    isPlaying: Boolean = false,
     onPlayZekrSound: () -> Unit = {},
     onFavoriteClick: () -> Unit = {},
     onBookmarkClick: () -> Unit = {},
@@ -87,15 +89,15 @@ fun ZekrCard(
                         modifier = Modifier
                             .size(46.dp)
                             .background(
-                                AppColors.green800,
+                                if (isDarkTheme) AppColors.gold700 else AppColors.green500,
                                 CircleShape
                             ),
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
-                            imageVector = Icons.Default.PlayArrow,
+                            imageVector = if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
                             contentDescription = null,
-                            tint = AppColors.gold500
+                            tint = Color.White
                         )
                     }
                 }

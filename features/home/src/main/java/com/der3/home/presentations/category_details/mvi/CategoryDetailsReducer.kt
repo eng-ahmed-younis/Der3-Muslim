@@ -27,6 +27,14 @@ class CategoryDetailsReducer @Inject constructor() : Reducer<CategoryDetailsActi
                     categoryCount = action.categoryCount
                 )
             }
+
+            is CategoryDetailsAction.UpdateAudioState -> {
+                state.copy(audioState = action.audioState)
+            }
+
+            is CategoryDetailsAction.SetPlayingZekrId -> {
+                state.copy(currentlyPlayingId = action.zekrId)
+            }
         }
     }
 
