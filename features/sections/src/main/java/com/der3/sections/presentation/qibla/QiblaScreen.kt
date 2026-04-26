@@ -1,5 +1,6 @@
 package com.der3.sections.presentation.qibla
 
+import android.content.res.Configuration
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.animateColorAsState
@@ -7,7 +8,6 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Explore
 import androidx.compose.material.icons.filled.Info
@@ -46,26 +47,25 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.unit.LayoutDirection
-import com.der3.sections.presentation.utils.qibla.rememberCompassAzimuth
-import com.der3.sections.presentation.utils.qibla.rememberLocationState
-import com.der3.sections.presentation.utils.qibla.rememberQiblaDirection
-import com.der3.sections.presentation.utils.qibla.hasLocationPermission
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import android.content.res.Configuration
-import com.der3.model.AppStyle
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.der3.model.AppStyle
 import com.der3.mvi.MviEffect
 import com.der3.screens.Screens
 import com.der3.sections.presentation.qibla.mvi.QiblaIntent
 import com.der3.sections.presentation.qibla.mvi.QiblaState
+import com.der3.sections.presentation.utils.qibla.hasLocationPermission
+import com.der3.sections.presentation.utils.qibla.rememberCompassAzimuth
+import com.der3.sections.presentation.utils.qibla.rememberLocationState
+import com.der3.sections.presentation.utils.qibla.rememberQiblaDirection
 import com.der3.ui.components.Der3TopAppBar
 import com.der3.ui.components.ErrorDialog
 import com.der3.ui.style.ShiftSystemBarStyle
@@ -137,8 +137,8 @@ fun QiblaScreen(
 ) {
     val context = LocalContext.current
 
-    var hasPermission by remember { 
-        mutableStateOf(context.hasLocationPermission()) 
+    var hasPermission by remember {
+        mutableStateOf(context.hasLocationPermission())
     }
 
     val permissionLauncher = rememberLauncherForActivityResult(
@@ -315,7 +315,7 @@ fun QiblaScreen(
                 targetValue = if (state.isOnTarget) AppColors.green800 else AppColors.gray500,
                 label = "guidance_color"
             )
-            
+
             Text(
                 text = state.guidanceText,
                 style = MaterialTheme.typography.titleLarge,

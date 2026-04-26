@@ -15,4 +15,6 @@ interface DataStoreRepository {
     val appStyleFlow: Flow<String>
     var playbackSpeed: Float
     val playbackSpeedFlow: Flow<Float>
+    var prayerCalculationMethod: Int?
+    var prayerSchool: Int?
 }

@@ -291,4 +291,23 @@
     <string name="settings_about_app">حول التطبيق</string>
     <string name="qibla_calibration_hint">يرجى تحريك الهاتف بشكل 8 لمعايرة البوصلة وضمان دقة الاتجاه.</string>
     <string name="daily_notifications_subtitle">قم بتفعيل التنبيهات للأذكار اليومية</string>
+    <string name="prayer_settings_title">إعدادات الصلاة</string>
+    <string name="location_label">الموقع</string>
+    <string name="change">تغيير</string>
+    <string name="gps_auto_detect">تحديد تلقائي عبر نظام GPS</string>
+    <string name="currently_adopted">المعتمد حالياً</string>
+    <string name="madhab_label">المذهب</string>
+    <string name="shafi_majority">شافعي / جمهور</string>
+    <string name="high_latitude_adjustment_label">تعديل خطوط العرض</string>
+    <string name="angle_based">بناءً على الزاوية</string>
+    <string name="manual_adjustment_label">الضبط اليدوي</string>
+    <string name="manual_adjustment_desc">إضافة أو إنقاص دقائق لكل صلاة</string>
+    <string name="save_changes">حفظ التغييرات</string>
+    <string name="location_default_riyadh">الرياض، المملكة العربية السعودية</string>
+    <string name="error_save_settings">فشل حفظ الإعدادات</string>
+    <string name="prayer_fajr">الفجر</string>
+    <string name="prayer_dhuhr">الظهر</string>
+    <string name="prayer_asr">العصر</string>
+    <string name="prayer_maghrib">المغرب</string>
+    <string name="prayer_isha">العشاء</string>
 </resources>

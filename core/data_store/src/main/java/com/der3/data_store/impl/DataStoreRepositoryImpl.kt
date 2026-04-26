@@ -110,4 +110,24 @@ class DataStoreRepositoryImpl(private val dataStoreService: DataStoreService) : 
         }
 
     override val playbackSpeedFlow: Flow<Float> = dataStoreService[DataStoreKeys.PLAYBACK_SPEED, 1.0f]
+
+    override var prayerCalculationMethod: Int?
+        get() = runBlocking(Dispatchers.IO) {
+            dataStoreService.get<Int>(DataStoreKeys.PRAYER_CALCULATION_METHOD, 2).first()
+        }
+        set(value) {
+            runBlocking(Dispatchers.IO) {
+                dataStoreService.set(DataStoreKeys.PRAYER_CALCULATION_METHOD, value ?: 2)
+            }
+        }
+
+    override var prayerSchool: Int?
+        get() = runBlocking(Dispatchers.IO) {
+            dataStoreService.get<Int>(DataStoreKeys.PRAYER_SCHOOL, 0).first()
+        }
+        set(value) {
+            runBlocking(Dispatchers.IO) {
+                dataStoreService.set(DataStoreKeys.PRAYER_SCHOOL, value ?: 0)
+            }
+        }
 }
