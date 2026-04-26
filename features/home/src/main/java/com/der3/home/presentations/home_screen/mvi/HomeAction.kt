@@ -20,5 +20,9 @@ sealed interface HomeAction  : MviAction {
         val desc: String?
     ) : HomeAction
 
+    data class LoadUnreadNotificationCount(
+        val count: Int
+    ) : HomeAction
+
     data object ClearError : HomeAction
 }

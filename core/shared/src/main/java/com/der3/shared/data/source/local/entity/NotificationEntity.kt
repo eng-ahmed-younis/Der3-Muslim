@@ -1,5 +1,6 @@
 package com.der3.shared.data.source.local.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.der3.model.NotificationType
@@ -12,6 +13,9 @@ data class NotificationEntity(
     val title: String,
     val body: String,
     val type: String = NotificationType.GENERAL.value,
+    // current time when receive notification
     val timestamp: Long = System.currentTimeMillis(),
-    val isRead: Boolean = false
+    // Room uses a standard naming convention in the SQLite database.
+    @ColumnInfo(name = "is_read")
+    val isRead: Int = 0
 )

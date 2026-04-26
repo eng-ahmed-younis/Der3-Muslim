@@ -14,6 +14,7 @@ class InsertNotificationUseCaseImpl @Inject constructor(
     private val repository: NotificationRepository
 ) : InsertNotificationUseCase {
     override suspend fun invoke(notification: NotificationEntity) = withContext(Dispatchers.IO) {
+        android.util.Log.d("InsertUseCase", "Invoking insert for id: ${notification.id}, title: ${notification.title}")
         repository.insertNotification(notification)
     }
 }

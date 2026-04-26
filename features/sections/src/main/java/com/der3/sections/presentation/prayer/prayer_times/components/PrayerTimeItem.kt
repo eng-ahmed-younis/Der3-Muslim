@@ -43,6 +43,12 @@ import com.der3.ui.themes.Der3MuslimTheme
 import com.der3.ui.themes.isDarkTheme
 import java.util.Locale
 
+/**
+ * A composable that displays a single prayer time item, including the name, time, and notification toggle.
+ *
+ * @param prayer The details of the prayer to display.
+ * @param onToggleNotification Callback to toggle the notification for this prayer.
+ */
 @Composable
 fun PrayerTimeItem(
     prayer: PrayerDetails,

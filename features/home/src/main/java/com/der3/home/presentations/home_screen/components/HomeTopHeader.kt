@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -20,9 +21,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.tooling.preview.Preview
 import com.der3.model.AppStyle
 import com.der3.ui.R
 import com.der3.ui.themes.AppColors
@@ -33,6 +34,7 @@ import com.der3.ui.themes.isDarkTheme
 fun HomeTopHeader(
     modifier: Modifier = Modifier,
     backgroundColor: Color = AppColors.screenBackground,
+    unreadCount: Int = 0,
     onDrawerClick: () -> Unit,
     onNotificationClick: () -> Unit
 ) {
@@ -98,12 +100,23 @@ fun HomeTopHeader(
                     tint = iconColor
                 )
 
-                Box(
-                    modifier = Modifier
-                        .size(8.dp)
-                        .background(Color.Red, CircleShape)
-                        .align(Alignment.TopEnd)
-                )
+                if (unreadCount > 0) {
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.TopStart)
+                            .offset(x = (-4).dp, y = (-4).dp)
+                            .size(16.dp)
+                            .background(Color.Red, CircleShape),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = if (unreadCount > 9) "9+" else unreadCount.toString(),
+                            color = Color.White,
+                            fontSize = 10.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
             }
         }
     }
@@ -115,6 +128,7 @@ fun HomeTopHeaderLightPreview() {
     Der3MuslimTheme(style = AppStyle.LIGHT) {
         HomeTopHeader(
             onDrawerClick = {},
+            unreadCount = 4,
             backgroundColor = AppColors.screenBackground,
             onNotificationClick = {}
         )
@@ -127,6 +141,7 @@ fun HomeTopHeaderDarkPreview() {
     Der3MuslimTheme(style = AppStyle.DARK) {
         HomeTopHeader(
             onDrawerClick = {},
+            unreadCount = 20,
             backgroundColor = AppColors.screenBackground,
             onNotificationClick = {}
         )

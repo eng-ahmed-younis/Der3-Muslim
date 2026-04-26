@@ -56,7 +56,7 @@ fun NotificationPermissionLauncher() {
 
     // 2- Request: System permission request launcher
     val launcher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestPermission()
+        contract = ActivityResultContracts.RequestPermission()
     ) { isGranted ->
         // 3- Denial: If denied, trigger the custom dialog
         if (!isGranted) {

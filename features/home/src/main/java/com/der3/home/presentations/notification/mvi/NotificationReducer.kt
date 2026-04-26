@@ -11,13 +11,15 @@ class NotificationReducer @Inject constructor() : Reducer<NotificationAction, No
                     isLoading = action.isLoading
                 )
             }
-            is NotificationAction.LoadNotificationSuccess -> state.copy(
-                isLoading = false,
-                todayNotifications = action.today,
-                yesterdayNotifications = action.yesterday,
-                ayaOfTheDay = action.aya,
-                error = null
-            )
+            is NotificationAction.LoadNotificationSuccess -> {
+                state.copy(
+                    isLoading = false,
+                    todayNotifications = action.today,
+                    yesterdayNotifications = action.yesterday,
+                    ayaOfTheDay = action.aya,
+                    error = null
+                )
+            }
             is NotificationAction.Error -> state.copy(
                 isLoading = false,
                 error = action.message

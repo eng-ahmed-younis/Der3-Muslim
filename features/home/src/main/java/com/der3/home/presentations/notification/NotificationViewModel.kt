@@ -7,13 +7,16 @@ import com.der3.home.presentations.notification.mvi.NotificationAction
 import com.der3.home.presentations.notification.mvi.NotificationIntent
 import com.der3.home.presentations.notification.mvi.NotificationReducer
 import com.der3.home.presentations.notification.mvi.NotificationState
+import com.der3.home.utils.isSameCalendarDay
 import com.der3.model.NotificationType
 import com.der3.mvi.MviBaseViewModel
 import com.der3.mvi.MviEffect
 import com.der3.screens.Screens
-import com.der3.shared.domain.use_case.notification.ClearAllNotificationsUseCase
 import com.der3.shared.domain.use_case.notification.ClearNotificationsByTypeUseCase
 import com.der3.shared.domain.use_case.notification.GetAllNotificationsUseCase
+import com.der3.shared.domain.use_case.notification.read_status.GetReadNotificationCountUseCase
+import com.der3.shared.domain.use_case.notification.read_status.GetUnReadNotificationCountUseCase
+import com.der3.shared.domain.use_case.notification.read_status.MarkAllNotificationAsReadUseCase
 import com.der3.shared.params.NotificationParams
 import com.der3.utils.TimeFormatUtils
 import dagger.assisted.Assisted
@@ -31,6 +34,9 @@ import java.util.Calendar
 class NotificationViewModel @AssistedInject constructor(
     @Assisted params: NotificationParams,
     private val getAllNotificationsUseCase: GetAllNotificationsUseCase,
+    private val markAllNotificationsAsReadUseCase: MarkAllNotificationAsReadUseCase,
+    private val getReadNotificationCountUseCase: GetReadNotificationCountUseCase,
+    private val getUnreadNotificationCountUseCase: GetUnReadNotificationCountUseCase,
     private val clearNotificationsByTypeUseCase: ClearNotificationsByTypeUseCase,
     reducer: NotificationReducer
 ) : MviBaseViewModel<NotificationState, NotificationAction, NotificationIntent>(
@@ -96,13 +102,18 @@ class NotificationViewModel @AssistedInject constructor(
                         type = NotificationType.GENERAL
                     )
 
+                    // this calendar have time equal relived notification time
                     val itemCalendar =
                         Calendar.getInstance().apply { timeInMillis = entity.timestamp }
 
-                    if (isSameDay(itemCalendar, today)) {
-                        todayList.add(item)
-                    } else if (isSameDay(itemCalendar, yesterday)) {
-                        yesterdayList.add(item)
+                    when {
+                        isSameCalendarDay(itemCalendar, today) -> {
+                            todayList.add(item)
+                        }
+
+                        isSameCalendarDay(itemCalendar, yesterday) -> {
+                            yesterdayList.add(item)
+                        }
                     }
                 }
 
@@ -114,6 +125,10 @@ class NotificationViewModel @AssistedInject constructor(
                     )
                 )
 
+                viewModelScope.launch {
+                    markAllNotificationsAsReadUseCase.invoke()
+                }
+
 
             }.onCompletion {
                 onAction(NotificationAction.Loading(isLoading = false))
@@ -121,11 +136,5 @@ class NotificationViewModel @AssistedInject constructor(
                 onAction(NotificationAction.Error(error.message ?: "An unknown error occurred"))
             }.launchIn(viewModelScope)
     }
-
 }
 
-
-private fun isSameDay(cal1: Calendar, cal2: Calendar): Boolean {
-    return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
-            cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR)
-}

@@ -10,6 +10,7 @@ import android.graphics.Bitmap
 import android.media.AudioAttributes
 import android.net.Uri
 import android.os.Build
+import android.util.Log
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.core.net.toUri
@@ -23,7 +24,6 @@ import com.der3.ui.isDarkTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -68,19 +68,25 @@ class NotificationBuilder @Inject constructor(
         title: String,
         jsonBody: String
     ) {
+        Log.d("NotificationBuilder", "Showing notification: $title")
         val messageData: MessageData = MessageData.fromJson(jsonString = jsonBody)
         val notificationId = UUID.randomUUID().toString()
 
-        scope.launch {
+        Log.d("NotificationBuilder", "Inserting notification into DB: $notificationId, type: ${messageData.type}")
+        try {
             insertNotificationUseCase.invoke(
                 notification = NotificationEntity(
                     id = notificationId,
                     title = title,
                     type = messageData.type,
                     body = messageData.message,
-                    timestamp = System.currentTimeMillis()
+                    timestamp = System.currentTimeMillis(),
+                    isRead = 0
                 )
             )
+            Log.d("NotificationBuilder", "Successfully inserted notification into DB")
+        } catch (e: Exception) {
+            Log.e("NotificationBuilder", "Error inserting notification: ${e.message}", e)
         }
 
         val notificationManager =
@@ -193,20 +199,24 @@ class NotificationBuilder @Inject constructor(
     private fun setNotificationStyle(context: Context, appStyle: AppStyle): NotificationStyle {
         return when (appStyle) {
             AppStyle.DARK -> NotificationStyle(
-                titleColor = R.color.white, descriptionColor = R.color.white
+                titleColor = R.color.white,
+                descriptionColor = R.color.white
             )
 
             AppStyle.LIGHT -> NotificationStyle(
-                titleColor = R.color.black, descriptionColor = R.color.black
+                titleColor = R.color.black,
+                descriptionColor = R.color.black
             )
 
             AppStyle.SYSTEM -> if (context.isDarkTheme()) {
                 NotificationStyle(
-                    titleColor = R.color.white, descriptionColor = R.color.white
+                    titleColor = R.color.white,
+                    descriptionColor = R.color.white
                 )
             } else {
                 NotificationStyle(
-                    titleColor = R.color.black, descriptionColor = R.color.black
+                    titleColor = R.color.black,
+                    descriptionColor = R.color.black
                 )
             }
         }
