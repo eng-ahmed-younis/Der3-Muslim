@@ -18,7 +18,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
@@ -26,7 +25,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import com.der3.shared.data.provider.ZekrCategoriesProvider
 import com.der3.home.presentations.home_screen.components.CategoriesGrid
 import com.der3.home.presentations.home_screen.components.DailyNotificationCard
 import com.der3.home.presentations.home_screen.components.DailyZekrCard
@@ -38,19 +36,20 @@ import com.der3.model.AppStyle
 import com.der3.model.UiText
 import com.der3.mvi.MviEffect
 import com.der3.screens.Screens
+import com.der3.shared.data.provider.ZekrCategoriesProvider
 import com.der3.ui.R
 import com.der3.ui.components.ErrorDialog
 import com.der3.ui.components.LoadingDialog
 import com.der3.ui.models.LocalDrawerState
 import com.der3.ui.style.ShiftSystemBarStyle
-import com.der3.ui.themes.Der3MuslimTheme
-import java.util.Locale
 import com.der3.ui.themes.AppColors
+import com.der3.ui.themes.Der3MuslimTheme
 import com.der3.ui.themes.isStatusBarDark
 import com.der3.utils.asString
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 @Composable
 fun HomeRoute(
@@ -124,10 +123,12 @@ fun HomeScreen(
             .fillMaxSize()
             .background(AppColors.screenBackground)
     ) {
+        android.util.Log.d("HomeScreen", "Current unread count: ${state.unreadNotificationCount}")
 
         HomeTopHeader(
             modifier = Modifier,
             backgroundColor = AppColors.screenBackground,
+            unreadCount = state.unreadNotificationCount,
             onDrawerClick = {
                 if (drawerState.isOpen) {
                     scope.launch { drawerState.close() }
@@ -194,6 +195,7 @@ fun HomeScreenLightPreview() {
             HomeScreen(
                 state = HomeState(
                     isLoading = false,
+                    unreadNotificationCount = 20,
                     homeAzkarCategory = ZekrCategoriesProvider.categories
                 ),
                 onIntent = {}
@@ -218,6 +220,7 @@ fun HomeScreenDarkPreview() {
             HomeScreen(
                 state = HomeState(
                     isLoading = false,
+                    unreadNotificationCount = 20,
                     homeAzkarCategory = ZekrCategoriesProvider.categories
                 ),
                 onIntent = {}

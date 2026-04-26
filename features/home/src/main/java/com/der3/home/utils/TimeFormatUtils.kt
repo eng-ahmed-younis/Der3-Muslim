@@ -1,6 +1,7 @@
 package com.der3.home.utils
 
 
+import java.util.Calendar
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
@@ -24,6 +25,7 @@ object TimeFormatUtils {
                     else -> "منذ $diffInMinutes دقيقة"
                 }
             }
+
             diffInHours < 24 -> {
                 when (diffInHours) {
                     1L -> "منذ ساعة"
@@ -32,6 +34,7 @@ object TimeFormatUtils {
                     else -> "منذ $diffInHours ساعة"
                 }
             }
+
             diffInDays < 30 -> {
                 when (diffInDays) {
                     1L -> "منذ يوم"
@@ -40,6 +43,7 @@ object TimeFormatUtils {
                     else -> "منذ $diffInDays يوم"
                 }
             }
+
             diffInDays < 365 -> {
                 val months = diffInDays / 30
                 when (months) {
@@ -49,6 +53,7 @@ object TimeFormatUtils {
                     else -> "منذ $months شهر"
                 }
             }
+
             else -> {
                 val years = diffInDays / 365
                 when (years) {
@@ -112,3 +117,8 @@ object TimeFormatUtils {
     }
 }
 
+
+fun isSameCalendarDay(first: Calendar, second: Calendar): Boolean {
+    return first.get(Calendar.YEAR) == second.get(Calendar.YEAR) &&
+            first.get(Calendar.DAY_OF_YEAR) == second.get(Calendar.DAY_OF_YEAR)
+}

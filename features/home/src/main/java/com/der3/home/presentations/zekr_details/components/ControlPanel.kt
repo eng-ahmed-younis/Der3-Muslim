@@ -59,7 +59,7 @@ fun ControlPanel(
     val trackColor = if (dark) AppColors.zekrPanelTrack else AppColors.zekrPanelTrack.copy(alpha = 0.4f)
     val progressColor = AppColors.zekrPanelProgress
     val iconTint = AppColors.zekrIconTint
-    val playButtonColor = AppColors.zekrPlayButtonBg
+    val playButtonColor = if (dark) AppColors.gold700 else AppColors.green500
 
     Box(
         modifier = modifier

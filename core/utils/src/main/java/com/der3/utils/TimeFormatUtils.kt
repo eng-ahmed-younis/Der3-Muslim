@@ -3,8 +3,17 @@ package com.der3.utils
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
+/**
+ * Utility object for time formatting and relative time span calculation.
+ */
 object TimeFormatUtils {
 
+    /**
+     * Returns a relative time span string (e.g., "منذ دقيقة", "منذ ساعة") in Arabic.
+     *
+     * @param timeMillis The time in milliseconds to calculate the relative span for.
+     * @return A formatted string representing the relative time.
+     */
     fun getRelativeTimeSpanString(timeMillis: Long): String {
         val now = System.currentTimeMillis()
         val diff = now - timeMillis
@@ -67,6 +76,13 @@ object TimeFormatUtils {
         }
     }
 
+    /**
+     * Formats a time string into either 24-hour or 12-hour format.
+     *
+     * @param time The time string to format (e.g., "10:30 PM", "22:30").
+     * @param is24Hour Boolean flag to indicate whether to convert to 24-hour format.
+     * @return The formatted time string.
+     */
     fun formatTime(time: String, is24Hour: Boolean): String {
         return if (is24Hour) {
             convertTo24Hour(time)
@@ -75,6 +91,12 @@ object TimeFormatUtils {
         }
     }
 
+    /**
+     * Converts a time string to 24-hour format (e.g., "10:30 PM" -> "22:30").
+     *
+     * @param time The time string to convert.
+     * @return The time string in 24-hour format.
+     */
     private fun convertTo24Hour(time: String): String {
         val isPm = time.contains("م") || time.contains("PM")
         val isAm = time.contains("ص") || time.contains("AM")
@@ -92,6 +114,12 @@ object TimeFormatUtils {
         return String.format(Locale.ENGLISH, "%02d:%s", hour, min)
     }
 
+    /**
+     * Converts a time string to 12-hour format with Arabic markers (ص/م).
+     *
+     * @param time The time string to convert.
+     * @return The time string in 12-hour format.
+     */
     private fun convertTo12Hour(time: String): String {
         val isPm = time.contains("م") || time.contains("PM")
         val isAm = time.contains("ص") || time.contains("AM")

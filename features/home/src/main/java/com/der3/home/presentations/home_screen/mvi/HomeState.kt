@@ -11,5 +11,6 @@ data class HomeState (
     val homeAzkarCategory : List<CategoryUi> = emptyList(),
     val dailyNotificationTitle: String? = null,
     val dailyNotificationDesc: String? = null,
+    val unreadNotificationCount: Int = 0,
     val error: String? = null
 ) : MviState

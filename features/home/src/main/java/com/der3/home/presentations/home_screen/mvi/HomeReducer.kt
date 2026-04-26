@@ -29,6 +29,13 @@ class HomeReducer @Inject constructor() : Reducer<HomeAction, HomeState> {
                 )
             }
 
+            is HomeAction.LoadUnreadNotificationCount -> {
+                android.util.Log.d("HomeReducer", "Updating unread count: ${action.count}")
+                state.copy(
+                    unreadNotificationCount = action.count
+                )
+            }
+
             HomeAction.ClearError -> {
                 state.copy(
                     error = null

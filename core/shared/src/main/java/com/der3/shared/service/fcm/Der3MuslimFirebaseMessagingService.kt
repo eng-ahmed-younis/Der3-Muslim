@@ -12,6 +12,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -26,6 +27,8 @@ class Der3MuslimFirebaseMessagingService : FirebaseMessagingService() {
 
     @Inject
     lateinit var notificationBuilder: NotificationBuilder
+
+    private val mainScope = CoroutineScope(Dispatchers.Main)
 
     companion object {
         private const val TAG = "Der3MuslimFirebaseMessagingService"
@@ -157,13 +160,16 @@ class Der3MuslimFirebaseMessagingService : FirebaseMessagingService() {
      */
     @OptIn(DelicateCoroutinesApi::class)
     private fun showNotificationAndWait(title: String, jsonBody: String) {
+        Log.d(TAG, "Entering showNotificationAndWait")
         try {
             // إعادة تهيئة CountDownLatch
             notificationLatch = CountDownLatch(1)
 
-            // استخدام coroutine بدلاً من Handler لأن showNotification أصبحت suspend
-            GlobalScope.launch(Dispatchers.Main) {
+            // IMPORTANT: Use Dispatchers.IO to avoid Deadlock if this is called from Main thread.
+            // Using Dispatchers.Main while blocking the Main thread with latch.await() will freeze the app.
+            mainScope.launch {
                 try {
+                    Log.d(TAG, "Starting showNotification coroutine")
                     notificationBuilder.showNotification(
                         context = this@Der3MuslimFirebaseMessagingService,
                         title = title,
@@ -179,6 +185,7 @@ class Der3MuslimFirebaseMessagingService : FirebaseMessagingService() {
             }
 
             // انتظار اكتمال عرض الإشعار (بحد أقصى 5 ثوانٍ)
+            Log.d(TAG, "Waiting for notification latch...")
             val completed = notificationLatch.await(5, TimeUnit.SECONDS)
             if (completed) {
                 Log.d(TAG, "✅ اكتمل عرض الإشعار")
@@ -192,6 +199,7 @@ class Der3MuslimFirebaseMessagingService : FirebaseMessagingService() {
         }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onNewToken(token: String) {
         super.onNewToken(token)
         Log.w(TAG, "🆕 رمز FCM جديد: $token")

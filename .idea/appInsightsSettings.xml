@@ -20,11 +20,6 @@
         <entry key="Android vitals">
           <value>
             <InsightsFilterSettings>
-              <option name="connection">
-                <ConnectionSetting>
-                  <option name="appId" value="com.innovitics.app.shift" />
-                </ConnectionSetting>
-              </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
               <option name="timeIntervalDays" value="SEVEN_DAYS" />
               <option name="visibilityType" value="ALL" />
@@ -36,8 +31,8 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="com.der3.muslims.staging" />
-                  <option name="mobileSdkAppId" value="1:403591271867:android:27f875b5fb83c36934a09e" />
+                  <option name="appId" value="com.der3.muslims" />
+                  <option name="mobileSdkAppId" value="1:403591271867:android:d3b51de98d8a205334a09e" />
                   <option name="projectId" value="der3-muslim-1" />
                   <option name="projectNumber" value="403591271867" />
                 </ConnectionSetting>

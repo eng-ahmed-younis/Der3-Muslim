@@ -1,7 +1,7 @@
 package com.der3.home.presentations.home_screen
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.der3.shared.domain.use_case.GetAzkarCategoriesUseCase
 import com.der3.home.data.mappers.toUiCategories
 import com.der3.home.presentations.home_screen.mvi.HomeAction
 import com.der3.home.presentations.home_screen.mvi.HomeIntent
@@ -11,9 +11,12 @@ import com.der3.model.NotificationType
 import com.der3.model.UiText
 import com.der3.mvi.MviBaseViewModel
 import com.der3.mvi.MviEffect
-import com.der3.mvi.MviEffect.*
+import com.der3.mvi.MviEffect.Navigate
 import com.der3.screens.Der3NavigationRoute
+import com.der3.shared.domain.use_case.GetAzkarCategoriesUseCase
 import com.der3.shared.domain.use_case.notification.GetNotificationByTypeUseCase
+import com.der3.shared.domain.use_case.notification.InsertNotificationUseCase
+import com.der3.shared.domain.use_case.notification.read_status.GetUnReadNotificationCountUseCase
 import com.der3.ui.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
@@ -22,13 +25,14 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getAllCategoriesUseCase: GetAzkarCategoriesUseCase,
     private val getNotificationByTypeUseCase: GetNotificationByTypeUseCase,
+    private val getUnReadNotificationCountUseCase: GetUnReadNotificationCountUseCase,
+    private val insertNotificationUseCase: InsertNotificationUseCase,
     reducer: HomeReducer
 ) : MviBaseViewModel<HomeState, HomeAction, HomeIntent>(
     initialState = HomeState(),
@@ -37,6 +41,7 @@ class HomeViewModel @Inject constructor(
     init {
         getAllAzkarCategories()
         getDailyNotification()
+        getUnreadNotificationCount()
     }
 
     override fun handleIntent(intent: HomeIntent) {
@@ -70,12 +75,25 @@ class HomeViewModel @Inject constructor(
             HomeIntent.Retry -> {
                 getAllAzkarCategories()
                 getDailyNotification()
+                getUnreadNotificationCount()
             }
 
             HomeIntent.NavigateToNotifications -> {
                 onEffect(Navigate(screen = Der3NavigationRoute.NotificationScreen()))
             }
         }
+    }
+
+    private fun getUnreadNotificationCount() {
+        getUnReadNotificationCountUseCase.invoke()
+            .onEach { count ->
+                onAction(HomeAction.LoadUnreadNotificationCount(count = count))
+                Log.d("HomeViewModel", "Unread notification count: $count")
+            }
+            .catch {
+                onEffect(MviEffect.OnErrorDialog(error = UiText.ResourceError(messageId = R.string.error_dialog_message)))
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun getDailyNotification() {

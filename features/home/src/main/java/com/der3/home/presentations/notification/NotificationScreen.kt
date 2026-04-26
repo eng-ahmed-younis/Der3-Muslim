@@ -1,12 +1,27 @@
 package com.der3.home.presentations.notification
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DeleteSweep
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -18,24 +33,28 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import com.der3.ui.R
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.der3.home.di.factory.NotificationViewModelFactory
 import com.der3.home.domain.model.NotificationItem
 import com.der3.home.presentations.notification.components.AyaCard
-import com.der3.home.presentations.notification.components.EmptyNotificationsState
 import com.der3.home.presentations.notification.components.DeleteAllNotificationsDialog
+import com.der3.home.presentations.notification.components.EmptyNotificationsState
 import com.der3.home.presentations.notification.components.NotificationCard
 import com.der3.home.presentations.notification.components.SectionHeader
 import com.der3.home.presentations.notification.mvi.NotificationIntent
 import com.der3.home.presentations.notification.mvi.NotificationState
+import com.der3.model.AppStyle
+import com.der3.model.NotificationType
 import com.der3.mvi.MviEffect
 import com.der3.screens.Screens
+import com.der3.shared.params.NotificationParams
+import com.der3.ui.R
 import com.der3.ui.components.Der3TopAppBar
 import com.der3.ui.components.ErrorDialog
 import com.der3.ui.components.LoadingDialog
@@ -46,16 +65,14 @@ import com.der3.ui.themes.isStatusBarDark
 import com.der3.utils.asString
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import com.der3.model.AppStyle
-import android.content.res.Configuration
-import androidx.compose.foundation.isSystemInDarkTheme
-import com.der3.home.di.factory.MasbahaViewModelFactory
-import com.der3.home.di.factory.NotificationViewModelFactory
-import com.der3.home.presentations.masbaha.MasbahaViewModel
-import com.der3.model.NotificationType
-import com.der3.shared.params.NotificationParams
 import java.util.Locale
 
+/**
+ * The entry point for the Notification screen, handling Hilt ViewModel injection and MVI effects.
+ *
+ * @param params Parameters for the notification screen.
+ * @param onNavigate Callback for navigation events.
+ */
 @Composable
 fun NotificationRoute(
     params: NotificationParams,
@@ -120,6 +137,13 @@ fun NotificationRoute(
 
 }
 
+/**
+ * The main UI for the Notification screen, displaying a list of today's and yesterday's notifications,
+ * along with the "Aya of the Day".
+ *
+ * @param state The current state of the notification screen.
+ * @param onIntent Callback to send intents to the ViewModel.
+ */
 @Composable
 fun NotificationScreen(
     state: NotificationState,
@@ -206,7 +230,7 @@ fun NotificationScreen(
             } else {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(16.dp),
+                    contentPadding = PaddingValues( all = 16.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     // Section: Today

@@ -139,9 +139,13 @@ fun CategoryDetailsScreen(
             }
 
             items(state.azkarItems, key = { it.id }) { zekr ->
+                val isPlaying = state.audioState.isPlaying && state.currentlyPlayingId == zekr.id
                 ZekrCard(
                     zekr = zekr,
-                    onPlayZekrSound = {},
+                    isPlaying = isPlaying,
+                    onPlayZekrSound = {
+                        onIntent(CategoryDetailsIntent.OnPlayClick(zekr))
+                    },
                     onFavoriteClick = {
                         onIntent(CategoryDetailsIntent.OnFavoriteClick(zekr))
                     },
@@ -149,9 +153,6 @@ fun CategoryDetailsScreen(
                     onZekrClick = {
                         onIntent(CategoryDetailsIntent.OnZekrClick(zekr.id))
                     }
-
-                  //  onPlay = { onPlay(zekr.id) },
-                 //   onFavorite = { onFavorite(zekr.id) }
                 )
             }
         }

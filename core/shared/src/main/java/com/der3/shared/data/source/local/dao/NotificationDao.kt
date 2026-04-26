@@ -18,8 +18,8 @@ interface NotificationDao {
     @Query("DELETE FROM notification_table WHERE id = :id")
     suspend fun deleteNotificationById(id: String)
 
-    @Query("UPDATE notification_table SET isRead = 1 WHERE id = :id")
-    suspend fun markAsRead(id: Int)
+    @Query("UPDATE notification_table SET is_read = 1 WHERE id = :id")
+    suspend fun markAsRead(id: String)
 
     @Query("DELETE FROM notification_table")
     suspend fun deleteAllNotifications()
@@ -29,4 +29,20 @@ interface NotificationDao {
 
     @Query("SELECT * FROM notification_table WHERE type = :type ORDER BY timestamp DESC LIMIT 1")
     fun getNotificationByType(type: String): Flow<NotificationEntity?>
+
+
+    // read status
+
+    /** mark all notifications as read */
+    @Query("UPDATE notification_table SET is_read = 1")
+    suspend fun markAllNotificationsAsRead()
+
+    /** 0 = unread | 1 = read */
+    @Query("SELECT COUNT(*) FROM notification_table WHERE is_read = 0")
+    fun getUnreadNotificationsCount(): Flow<Int>
+
+    @Query("SELECT COUNT(*) FROM notification_table WHERE is_read = 1")
+    fun getReadNotificationsCount(): Flow<Int>
+
+
 }

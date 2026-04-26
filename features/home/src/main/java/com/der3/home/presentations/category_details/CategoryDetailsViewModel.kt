@@ -5,6 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.der3.home.data.mappers.toZekrUiModels
 import com.der3.home.di.factory.CategoryDetailsViewModelFactory
 import com.der3.home.domain.model.ZekrUiModel
+import com.der3.home.domain.use_case.ObserveAzkarAudioStateUseCase
+import com.der3.home.domain.use_case.StopAzkarAudioUseCase
+import com.der3.home.domain.use_case.ToggleAzkarAudioUseCase
 import com.der3.home.presentations.category_details.mvi.CategoryDetailsAction
 import com.der3.home.presentations.category_details.mvi.CategoryDetailsIntent
 import com.der3.home.presentations.category_details.mvi.CategoryDetailsReducer
@@ -16,9 +19,9 @@ import com.der3.mvi.MviEffect.Navigate
 import com.der3.screens.Der3NavigationRoute.ZekrDetailsScreen
 import com.der3.screens.Screens.Back
 import com.der3.shared.data.source.local.entity.FavoriteEntity
+import com.der3.shared.domain.use_case.GetAzkarCategoryByIdUseCase
 import com.der3.shared.domain.use_case.fav.AddToFavoriteUseCase
 import com.der3.shared.domain.use_case.fav.GetAllFavouritesUsecase
-import com.der3.shared.domain.use_case.GetAzkarCategoryByIdUseCase
 import com.der3.shared.domain.use_case.fav.RemoveFromFavoriteUseCase
 import com.der3.shared.params.CategoryDetailsParams
 import dagger.assisted.Assisted
@@ -41,7 +44,10 @@ class CategoryDetailsViewModel @AssistedInject constructor(
     private val getAzkarCategoryByIdUseCase: GetAzkarCategoryByIdUseCase,
     private val addToFavoriteUseCase: AddToFavoriteUseCase,
     private val removeFavoriteUseCase: RemoveFromFavoriteUseCase,
-    private val getAllFavouritesUsecase: GetAllFavouritesUsecase
+    private val getAllFavouritesUsecase: GetAllFavouritesUsecase,
+    private val toggleAzkarAudioUseCase: ToggleAzkarAudioUseCase,
+    private val stopAzkarAudioUseCase: StopAzkarAudioUseCase,
+    private val observeAzkarAudioStateUseCase: ObserveAzkarAudioStateUseCase
 ) : MviBaseViewModel<CategoryDetailsState, CategoryDetailsAction, CategoryDetailsIntent>(
     initialState = CategoryDetailsState(
     ),
@@ -61,12 +67,30 @@ class CategoryDetailsViewModel @AssistedInject constructor(
 
         getCategoryDetails(params.categoryId)
 
+        observeAudioState()
+
+    }
+
+    private fun observeAudioState() {
+        observeAzkarAudioStateUseCase()
+            .onEach { state ->
+                onAction(CategoryDetailsAction.UpdateAudioState(state))
+                val zekrId = viewState.azkarItems.find {
+                    it.audioPath.removePrefix("/") == state.currentPath
+                }?.id
+                onAction(CategoryDetailsAction.SetPlayingZekrId(zekrId))
+            }
+            .catch { e ->
+                onEffect(MviEffect.OnErrorDialog(UiText.DynamicError(e.message ?: "Audio Error")))
+            }
+            .launchIn(viewModelScope)
     }
 
 
     override fun handleIntent(intent: CategoryDetailsIntent) {
         when (intent) {
             is CategoryDetailsIntent.OnBackClick -> {
+                stopAzkarAudioUseCase.invoke()
                 onEffect(Navigate(Back()))
             }
 
@@ -86,10 +110,20 @@ class CategoryDetailsViewModel @AssistedInject constructor(
             is CategoryDetailsIntent.OnFavoriteClick -> {
                 toggleFavoriteStatus(intent.zekr)
             }
-            is CategoryDetailsIntent.OnPlayClick -> {}
+
+            is CategoryDetailsIntent.OnPlayClick -> {
+                onAction(CategoryDetailsAction.SetPlayingZekrId(intent.zekr.id))
+                toggleAzkarAudioUseCase.invoke(intent.zekr.audioPath)
+            }
+
             is CategoryDetailsIntent.OnShareClick -> {}
         }
 
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        stopAzkarAudioUseCase.invoke()
     }
 
 

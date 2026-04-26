@@ -6,13 +6,13 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 interface MarkNotificationAsReadUseCase {
-    suspend operator fun invoke(id: Int)
+    suspend operator fun invoke(id: String)
 }
 
 class MarkNotificationAsReadUseCaseImpl @Inject constructor(
     private val repository: NotificationRepository
 ) : MarkNotificationAsReadUseCase {
-    override suspend fun invoke(id: Int) = withContext(Dispatchers.IO) {
+    override suspend fun invoke(id: String) = withContext(Dispatchers.IO) {
         repository.markAsRead(id)
     }
 }

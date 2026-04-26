@@ -14,6 +14,12 @@ import com.der3.shared.domain.use_case.notification.InsertNotificationUseCase
 import com.der3.shared.domain.use_case.notification.InsertNotificationUseCaseImpl
 import com.der3.shared.domain.use_case.notification.MarkNotificationAsReadUseCase
 import com.der3.shared.domain.use_case.notification.MarkNotificationAsReadUseCaseImpl
+import com.der3.shared.domain.use_case.notification.read_status.GetReadNotificationCountUseCase
+import com.der3.shared.domain.use_case.notification.read_status.GetReadNotificationCountUseCaseImpl
+import com.der3.shared.domain.use_case.notification.read_status.GetUnReadNotificationCountUseCase
+import com.der3.shared.domain.use_case.notification.read_status.GetUnReadNotificationCountUseCaseImpl
+import com.der3.shared.domain.use_case.notification.read_status.MarkAllNotificationAsReadUseCase
+import com.der3.shared.domain.use_case.notification.read_status.MarkAllNotificationAsReadUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -65,4 +71,23 @@ abstract class NotificationUseCaseModule {
     abstract fun bindClearNotificationsByTypeUseCase(
         impl: ClearNotificationsByTypeUseCaseImpl
     ): ClearNotificationsByTypeUseCase
+
+    @Binds
+    @Singleton
+    abstract fun bindGetReadNotificationCountUseCase(
+        impl: GetReadNotificationCountUseCaseImpl
+    ): GetReadNotificationCountUseCase
+
+    @Binds
+    @Singleton
+    abstract fun bindGetUnReadNotificationCountUseCase(
+        impl: GetUnReadNotificationCountUseCaseImpl
+    ): GetUnReadNotificationCountUseCase
+
+
+    @Binds
+    @Singleton
+    abstract fun bindMarkAllNotificationAsReadUseCase(
+        impl: MarkAllNotificationAsReadUseCaseImpl
+    ): MarkAllNotificationAsReadUseCase
 }
