@@ -81,6 +81,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     packaging {
@@ -138,6 +139,12 @@ dependencies {
 
     //Navigation
     implementation(libs.androidx.navigation.compose)
+
+
+    // location
+    implementation(libs.play.services.location)
+    implementation(libs.maplibre.sdk)
+
 
     // modules
     implementation(project(path = ":core:ui"))

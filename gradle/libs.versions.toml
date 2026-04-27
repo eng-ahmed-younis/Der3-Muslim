@@ -1,24 +1,26 @@
 [versions]
 
 # --- Gradle / Kotlin ---
-agp = "9.1.0"
+agp = "9.2.0"
 
+androidSdk = "13.0.2"
 coilCompose = "2.7.0"
-kotlin = "2.3.20"
-ksp = "2.3.6"
+kotlin = "2.3.21"
+ksp = "2.3.7"
 
 # --- Serialization ---
-kotlinxSerializationJson = "1.10.0"
-ktorSerializationKotlinxJson = "3.4.2"
-ktorClientContentNegotiation = "3.4.2"
+kotlinxSerializationJson = "1.11.0"
+ktorSerializationKotlinxJson = "3.4.3"
+ktorClientContentNegotiation = "3.4.3"
 library = "4.3.1"
+playServicesLocation = "21.3.0"
 savedState = "1.4.0"
 
 # --- Compose ---
-composeBom = "2026.03.01"
-composeRuntime = "1.10.6"
+composeBom = "2026.04.01"
+composeRuntime = "1.11.0"
 materialIconsCore = "1.7.8"
-navigationCompose = "2.9.7"
+navigationCompose = "2.9.8"
 
 # --- DataStore ---
 datastorePreferences = "1.2.1"
@@ -45,7 +47,7 @@ espressoCore = "3.7.0"
 # --- Google Services ---
 googleServices = "4.4.4"
 secretsPlugin = "2.0.1"
-firebaseBom = "34.11.0"
+firebaseBom = "34.12.0"
 firebaseFirestoreKtx = "25.1.4"
 kotlinxCoroutinesPlayServices = "1.10.2"
 
@@ -56,6 +58,7 @@ kotlinxCoroutinesPlayServices = "1.10.2"
 [libraries]
 
 # --- Core ---
+maplibre-sdk = { module = "org.maplibre.gl:android-sdk", version.ref = "androidSdk" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
@@ -98,6 +101,7 @@ androidx-compose-material-icons-core = { module = "androidx.compose.material:mat
 androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsCore" }
 
 # --- Room ---
+play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }

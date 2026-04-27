@@ -91,12 +91,17 @@ class DataStoreRepositoryImpl(private val dataStoreService: DataStoreService) : 
 
     override val appStyleFlow: Flow<String> = dataStoreService[DataStoreKeys.APP_STYLE, "system"]
 
+    override var mapStyle: String
+        get() = runBlocking(Dispatchers.IO) {
+            dataStoreService.get<String>(DataStoreKeys.GEOGRAPHY_MAP_STYLE, "osm-bright").first()
+        }
+        set(value) {
+            runBlocking(Dispatchers.IO) {
+                dataStoreService.set(DataStoreKeys.GEOGRAPHY_MAP_STYLE, value)
+            }
+        }
 
-
-
-
-
-
+    override val mapStyleFlow: Flow<String> = dataStoreService[DataStoreKeys.GEOGRAPHY_MAP_STYLE, "osm-bright"]
 
 
     override var playbackSpeed: Float

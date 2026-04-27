@@ -13,6 +13,8 @@ interface DataStoreRepository {
     var locationName: String?
     var appStyle: String
     val appStyleFlow: Flow<String>
+    var mapStyle: String
+    val mapStyleFlow: Flow<String>
     var playbackSpeed: Float
     val playbackSpeedFlow: Flow<Float>
     var prayerCalculationMethod: Int?

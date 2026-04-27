@@ -1,5 +1,6 @@
 package com.der3.sections.presentation.prayer.prayer_times.components
 
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -7,7 +8,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarMonth
-import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -16,13 +16,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.der3.sections.presentation.prayer.prayer_times.mvi.PrayerTimeIntent
 import com.der3.ui.R
 import com.der3.ui.themes.AppColors
-
-
-import androidx.compose.ui.tooling.preview.Preview
 import com.der3.ui.themes.Der3MuslimTheme
 
 @Composable
@@ -30,8 +28,7 @@ fun AppBarActions(
     modifier: Modifier = Modifier,
     onIntent: (PrayerTimeIntent) -> Unit,
     onShowCalendar: () -> Unit,
-    onShowLocation: () -> Unit,
-    onShowMethod: () -> Unit
+    onShowSettings: () -> Unit
 ) {
     Row(
         modifier = modifier,
@@ -47,14 +44,7 @@ fun AppBarActions(
                 tint = AppColors.gray900Text
             )
         }
-        IconButton(onClick = onShowLocation) {
-            Icon(
-                imageVector = Icons.Default.LocationOn,
-                contentDescription = "Location",
-                tint = AppColors.gray900Text
-            )
-        }
-        IconButton(onClick = onShowMethod) {
+        IconButton(onClick = onShowSettings) {
             Icon(
                 imageVector = Icons.Default.Settings,
                 contentDescription = "Settings",
@@ -87,8 +77,7 @@ private fun AppBarActionsPreview() {
         AppBarActions(
             onIntent = {},
             onShowCalendar = {},
-            onShowLocation = {},
-            onShowMethod = {}
+            onShowSettings = {}
         )
     }
 }

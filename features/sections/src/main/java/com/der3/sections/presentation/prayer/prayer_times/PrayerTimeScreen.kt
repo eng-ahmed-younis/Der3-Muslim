@@ -29,14 +29,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.der3.mvi.MviEffect
 import com.der3.screens.Screens
 import com.der3.sections.domain.model.PrayerDetails
 import com.der3.sections.domain.model.PrayerType
 import com.der3.sections.presentation.prayer.prayer_times.components.AppBarActions
-import com.der3.sections.presentation.prayer.prayer_times.components.CalculationMethodDialog
-import com.der3.sections.presentation.prayer.prayer_times.components.LocationSelectionDialog
 import com.der3.sections.presentation.prayer.prayer_times.components.MonthlyCalendarDialog
 import com.der3.sections.presentation.prayer.prayer_times.components.NextPrayerCard
 import com.der3.sections.presentation.prayer.prayer_times.components.PrayerTimeItem
@@ -119,25 +117,7 @@ fun PrayerTimeScreen(
     state: PrayerTimeState,
     onIntent: (PrayerTimeIntent) -> Unit = {}
 ) {
-    var showMethodDialog by remember { mutableStateOf(false) }
-    var showLocationDialog by remember { mutableStateOf(false) }
     var showCalendarDialog by remember { mutableStateOf(false) }
-
-    if (showMethodDialog) {
-        CalculationMethodDialog(
-            state = state,
-            onIntent = onIntent,
-            onDismiss = { showMethodDialog = false }
-        )
-    }
-
-    if (showLocationDialog) {
-        LocationSelectionDialog(
-            state = state,
-            onIntent = onIntent,
-            onDismiss = { showLocationDialog = false }
-        )
-    }
 
     if (showCalendarDialog) {
         MonthlyCalendarDialog(
@@ -161,8 +141,7 @@ fun PrayerTimeScreen(
                 AppBarActions(
                     onIntent = onIntent,
                     onShowCalendar = { showCalendarDialog = true },
-                    onShowLocation = { showLocationDialog = true },
-                    onShowMethod = { showMethodDialog = true }
+                    onShowSettings = { onIntent(PrayerTimeIntent.OpenPrayerSetting) }
                 )
             }
         )

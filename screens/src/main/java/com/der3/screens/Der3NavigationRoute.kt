@@ -96,4 +96,12 @@ sealed interface Der3NavigationRoute : Screens {
 
     @Serializable
     object RecycleBinScreen : Der3NavigationRoute
+
+
+    @Serializable
+    object PrayerSettingScreen : Der3NavigationRoute
+
+    @Serializable
+    object LocationPickerScreen : Der3NavigationRoute
+
 }

@@ -13,4 +13,5 @@ object DataStoreKeys {
     const val PLAYBACK_SPEED = "playback_speed_key"
     const val PRAYER_CALCULATION_METHOD = "prayer_calculation_method_key"
     const val PRAYER_SCHOOL = "prayer_school_key"
+    const val GEOGRAPHY_MAP_STYLE = "geography_map_style_key"
 }

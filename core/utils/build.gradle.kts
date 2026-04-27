@@ -76,6 +76,10 @@ dependencies {
     // serialization
     implementation(libs.kotlinx.serialization.json)
 
+    // location
+    implementation(libs.play.services.location)
+    implementation(libs.maplibre.sdk)
+
     implementation(project(":core:ui-model"))
     implementation(project(":core:ui"))
 }

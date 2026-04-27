@@ -11,6 +11,7 @@ sealed interface PrayerTimeIntent : MviIntent {
     data class ChangeSchool(val schoolId: Int) : PrayerTimeIntent
     data class ChangeTimeFormat(val is24Hour: Boolean) : PrayerTimeIntent
     object OpenQibla : PrayerTimeIntent
+    object OpenPrayerSetting : PrayerTimeIntent
     object Back : PrayerTimeIntent
     object DismissError : PrayerTimeIntent
     data class ChangeLocation(val lat: Double, val lng: Double, val locationName: String) : PrayerTimeIntent

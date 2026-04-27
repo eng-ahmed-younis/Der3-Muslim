@@ -5,6 +5,7 @@ import com.der3.data_store.api.DataStoreRepository
 import com.der3.model.UiText
 import com.der3.mvi.MviBaseViewModel
 import com.der3.mvi.MviEffect
+import com.der3.screens.Der3NavigationRoute
 import com.der3.screens.Screens
 import com.der3.sections.presentation.prayer.prayer_setting.mvi.*
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,7 +29,7 @@ class PrayerSettingViewModel @Inject constructor(
         when (intent) {
             is PrayerSettingIntent.LoadSettings -> loadSettings()
             is PrayerSettingIntent.ChangeLocation -> {
-                // In a real app, this would open a location picker
+                onEffect(MviEffect.Navigate(Der3NavigationRoute.LocationPickerScreen))
             }
             is PrayerSettingIntent.SelectCalculationMethod -> {
                 onAction(PrayerSettingAction.UpdateMethod(intent.methodId))

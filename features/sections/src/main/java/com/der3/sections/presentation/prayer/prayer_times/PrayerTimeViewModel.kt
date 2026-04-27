@@ -1,23 +1,22 @@
 package com.der3.sections.presentation.prayer.prayer_times
 
 import androidx.lifecycle.viewModelScope
+import com.der3.data_store.api.DataStoreRepository
 import com.der3.mvi.MviBaseViewModel
 import com.der3.mvi.MviEffect
 import com.der3.screens.Der3NavigationRoute
 import com.der3.screens.Screens
 import com.der3.sections.data.service.api.PrayerTimeService
 import com.der3.sections.domain.model.CombinedPrayerInfo
+import com.der3.sections.domain.model.PrayerDetails
 import com.der3.sections.domain.model.PrayerStatus
 import com.der3.sections.domain.model.PrayerTimesResult
-import com.der3.sections.domain.repository.IPrayerRepository
+import com.der3.sections.domain.model.PrayerType
 import com.der3.sections.domain.use_case.prayer.GetCombinedPrayerInfoUseCase
 import com.der3.sections.presentation.prayer.prayer_times.mvi.PrayerTimeAction
 import com.der3.sections.presentation.prayer.prayer_times.mvi.PrayerTimeIntent
 import com.der3.sections.presentation.prayer.prayer_times.mvi.PrayerTimeReducer
 import com.der3.sections.presentation.prayer.prayer_times.mvi.PrayerTimeState
-import com.der3.data_store.api.DataStoreRepository
-import com.der3.sections.domain.model.PrayerDetails
-import com.der3.sections.domain.model.PrayerType
 import com.der3.utils.TimeFormatUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -138,6 +137,9 @@ class PrayerTimeViewModel @Inject constructor(
             }
             is PrayerTimeIntent.OpenQibla -> {
                 onEffect(MviEffect.Navigate(screen = Der3NavigationRoute.QiblaScreen))
+            }
+            is PrayerTimeIntent.OpenPrayerSetting -> {
+                onEffect(MviEffect.Navigate(screen = Der3NavigationRoute.PrayerSettingScreen))
             }
             is PrayerTimeIntent.Back -> {
                 onEffect(MviEffect.Navigate(Screens.Back()))

@@ -309,4 +309,20 @@
     <string name="prayer_asr">Al-Asr</string>
     <string name="prayer_maghrib">Al-Maghrib</string>
     <string name="prayer_isha">Al-Isha</string>
+    <string name="location_selection_title">تحديد الموقع</string>
+    <string name="search_city_placeholder">البحث عن مدينة</string>
+    <string name="active_now">نشط الآن</string>
+    <string name="use_current_location">استخدام الموقع الحالي</string>
+    <string name="gps_coordinates_desc">تحديد تلقائي بناءً على إحداثيات نظام GPS</string>
+    <string name="last_update_2_mins">آخر تحديث: منذ دقيقتين</string>
+    <string name="suggested_cities">المدن المقترحة</string>
+    <string name="manual_selection_on_map">تحديد يدوي على الخريطة</string>
+    <string name="latitude_label">خط العرض</string>
+    <string name="longitude_label">خط الطول</string>
+    <string name="saudi_arabia">المملكة العربية السعودية</string>
+    <string name="egypt">جمهورية مصر العربية</string>
+    <string name="makkah">مكة المكرمة</string>
+    <string name="madinah">المدينة المنورة</string>
+    <string name="cairo">القاهرة</string>
+    <string name="riyadh">الرياض</string>
 </resources>
