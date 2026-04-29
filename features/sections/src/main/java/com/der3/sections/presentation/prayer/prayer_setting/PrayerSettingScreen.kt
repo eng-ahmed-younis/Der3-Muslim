@@ -28,7 +28,6 @@ import com.der3.model.AppStyle
 import com.der3.mvi.MviEffect
 import com.der3.screens.Screens
 import com.der3.sections.presentation.prayer.prayer_setting.components.CalculationMethodItem
-import com.der3.sections.presentation.prayer.prayer_setting.components.HighLatitudeSection
 import com.der3.sections.presentation.prayer.prayer_setting.components.LocationCard
 import com.der3.sections.presentation.prayer.prayer_setting.components.MadhabSection
 import com.der3.sections.presentation.prayer.prayer_setting.components.ManualAdjustmentSection
@@ -44,7 +43,6 @@ import com.der3.ui.components.LoadingDialog
 import com.der3.ui.style.ShiftSystemBarStyle
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
-import com.der3.ui.themes.isDarkTheme
 import com.der3.ui.themes.isStatusBarDark
 import com.der3.utils.asString
 import kotlinx.coroutines.flow.launchIn
@@ -112,8 +110,6 @@ fun PrayerSettingScreen(
 ) {
     LoadingDialog(visible = state.isLoading || state.isSaving)
 
-    val headerContentColor = if (isDarkTheme) AppColors.gray900Text else AppColors.gray900Text
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -179,12 +175,12 @@ fun PrayerSettingScreen(
             }
 
             // High Latitude Adjustment Section
-            item {
+          /*  item {
                 HighLatitudeSection(
                     selectedMethod = state.highLatitudeAdjustment,
                     onMethodSelect = { onIntent(PrayerSettingIntent.SelectHighLatitudeMethod(it)) }
                 )
-            }
+            }*/
 
             // Manual Adjustment Section
             item {

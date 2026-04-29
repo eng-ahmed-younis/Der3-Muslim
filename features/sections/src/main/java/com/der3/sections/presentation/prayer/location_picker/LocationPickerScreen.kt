@@ -1,6 +1,9 @@
 package com.der3.sections.presentation.prayer.location_picker
 
+import android.Manifest
 import android.content.res.Configuration
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -29,6 +32,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -40,6 +44,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.der3.mvi.MviEffect
 import com.der3.screens.Screens
 import com.der3.sections.presentation.prayer.location_picker.components.CityCard
+import com.der3.sections.presentation.prayer.location_picker.components.ConfirmLocationButton
 import com.der3.sections.presentation.prayer.location_picker.components.CurrentLocationCard
 import com.der3.sections.presentation.prayer.location_picker.components.ManualMapPickerButton
 import com.der3.sections.presentation.prayer.location_picker.components.MapPreviewCard
@@ -56,6 +61,7 @@ import com.der3.ui.themes.Der3MuslimTheme
 import com.der3.ui.themes.isDarkTheme
 import com.der3.ui.themes.isStatusBarDark
 import com.der3.utils.AppConfig
+import com.der3.utils.CurrentLocationProvider
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -68,9 +74,6 @@ fun LocationPickerRoute(
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
-        if (state.currentLat == 0.0 && state.currentLng == 0.0) {
-            viewModel.onIntent(LocationPickerIntent.UseCurrentLocation)
-        }
         viewModel.effects.onEach {
             when (it) {
                 is MviEffect.Navigate -> onNavigate(it.screen)
@@ -90,7 +93,31 @@ fun LocationPickerScreen(
     state: LocationPickerState,
     onIntent: (LocationPickerIntent) -> Unit
 ) {
+    val context = LocalContext.current
     var showMapStyleSheet by remember { mutableStateOf(false) }
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        if (permissions.values.any { it }) {
+            onIntent(LocationPickerIntent.UseCurrentLocation)
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        if (state.currentLat == 0.0 && state.currentLng == 0.0) {
+            if (CurrentLocationProvider.hasLocationPermission(context)) {
+                onIntent(LocationPickerIntent.UseCurrentLocation)
+            } else {
+                permissionLauncher.launch(
+                    arrayOf(
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    )
+                )
+            }
+        }
+    }
 
     LoadingDialog(visible = state.isLoading)
 
@@ -149,7 +176,18 @@ fun LocationPickerScreen(
             // Use Current Location Card
             CurrentLocationCard(
                 lastUpdateTime = state.lastLocationUpdateTime,
-                onClick = { onIntent(LocationPickerIntent.UseCurrentLocation) }
+                onClick = {
+                    if (CurrentLocationProvider.hasLocationPermission(context)) {
+                        onIntent(LocationPickerIntent.UseCurrentLocation)
+                    } else {
+                        permissionLauncher.launch(
+                            arrayOf(
+                                Manifest.permission.ACCESS_FINE_LOCATION,
+                                Manifest.permission.ACCESS_COARSE_LOCATION
+                            )
+                        )
+                    }
+                }
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -158,6 +196,7 @@ fun LocationPickerScreen(
             MapPreviewCard(
                 lat = state.currentLat,
                 lng = state.currentLng,
+                locationName = state.locationName,
                 mapStyle = state.mapStyle
             )
 
@@ -205,10 +244,16 @@ fun LocationPickerScreen(
             }
 
             Spacer(modifier = Modifier.height(16.dp))
+
+            ConfirmLocationButton(
+                onClick = { onIntent(LocationPickerIntent.ConfirmLocation) }
+            )
             // Manual Selection Button
             ManualMapPickerButton(
                 onClick = { onIntent(LocationPickerIntent.OpenManualMapPicker) }
             )
+
+            Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }

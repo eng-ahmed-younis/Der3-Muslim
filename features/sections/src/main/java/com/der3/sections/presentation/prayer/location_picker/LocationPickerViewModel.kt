@@ -6,6 +6,7 @@ import com.der3.data_store.api.DataStoreRepository
 import com.der3.model.GeographyMapStyle
 import com.der3.mvi.MviBaseViewModel
 import com.der3.mvi.MviEffect
+import com.der3.screens.Der3NavigationRoute
 import com.der3.screens.Screens
 import com.der3.sections.presentation.prayer.location_picker.mvi.LocationPickerAction
 import com.der3.sections.presentation.prayer.location_picker.mvi.LocationPickerIntent
@@ -29,6 +30,14 @@ class LocationPickerViewModel @Inject constructor(
 ) {
 
     init {
+        val savedLat = dataStoreRepository.latitude
+        val savedLng = dataStoreRepository.longitude
+        val savedName = dataStoreRepository.locationName ?: ""
+
+        if (savedLat != 0.0 || savedLng != 0.0) {
+            onAction(LocationPickerAction.LocationUpdated(savedLat, savedLng, savedName))
+        }
+
         dataStoreRepository.mapStyleFlow.onEach { styleValue ->
             GeographyMapStyle.fromValue(styleValue)?.let { style ->
                 onAction(LocationPickerAction.MapStyleUpdated(style))
@@ -90,7 +99,14 @@ class LocationPickerViewModel @Inject constructor(
             }
 
             is LocationPickerIntent.OpenManualMapPicker -> {
-                // TODO: Navigate to map picker
+                onEffect(MviEffect.Navigate(Der3NavigationRoute.GeocoderScreen))
+            }
+
+            is LocationPickerIntent.ConfirmLocation -> {
+                dataStoreRepository.latitude = viewState.currentLat
+                dataStoreRepository.longitude = viewState.currentLng
+                dataStoreRepository.locationName = viewState.locationName
+                onEffect(MviEffect.Navigate(Screens.Back()))
             }
 
             is LocationPickerIntent.Back -> {

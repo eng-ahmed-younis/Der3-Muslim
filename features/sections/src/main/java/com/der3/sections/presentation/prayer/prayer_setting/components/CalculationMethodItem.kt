@@ -32,6 +32,7 @@ import com.der3.model.AppStyle
 import com.der3.sections.presentation.prayer.prayer_setting.mvi.CalculationMethodUi
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
+import com.der3.ui.themes.isDarkTheme
 import java.util.Locale
 
 @Composable
@@ -40,6 +41,9 @@ fun CalculationMethodItem(
     isSelected: Boolean,
     onSelect: () -> Unit
 ) {
+    val isDark = isDarkTheme
+    val selectionColor = if (isDark) AppColors.gold500 else AppColors.green800
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -49,7 +53,7 @@ fun CalculationMethodItem(
         colors = CardDefaults.cardColors(
             containerColor = AppColors.cardColor
         ),
-        border = if (isSelected) androidx.compose.foundation.BorderStroke(2.dp, AppColors.green800) else null
+        border = if (isSelected) androidx.compose.foundation.BorderStroke(2.dp, selectionColor) else null
     ) {
         Row(
             modifier = Modifier
@@ -61,7 +65,7 @@ fun CalculationMethodItem(
             Icon(
                 imageVector = if (isSelected) Icons.Default.CheckCircle else Icons.Default.RadioButtonUnchecked,
                 contentDescription = null,
-                tint = if (isSelected) AppColors.green800 else AppColors.gray300
+                tint = if (isSelected) selectionColor else AppColors.gray300
             )
             Spacer(modifier = Modifier.width(16.dp))
             Column(horizontalAlignment = Alignment.Start, modifier = Modifier.weight(1f)) {

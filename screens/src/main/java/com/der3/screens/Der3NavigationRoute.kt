@@ -104,4 +104,7 @@ sealed interface Der3NavigationRoute : Screens {
     @Serializable
     object LocationPickerScreen : Der3NavigationRoute
 
+    @Serializable
+    object GeocoderScreen : Der3NavigationRoute
+
 }

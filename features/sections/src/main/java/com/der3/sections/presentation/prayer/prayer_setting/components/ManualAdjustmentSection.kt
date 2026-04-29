@@ -160,7 +160,11 @@ fun AdjustmentItem(prayer: PrayerType, offset: Int, onOffsetChange: (Int) -> Uni
                         .clickable { onOffsetChange(offset + 1) },
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = "+", color = AppColors.green900, fontWeight = FontWeight.Bold)
+                    Text(
+                        text = "+",
+                        color = if (isDarkTheme) AppColors.green50 else AppColors.green900,
+                        fontWeight = FontWeight.Bold
+                    )
                 }
             }
         }

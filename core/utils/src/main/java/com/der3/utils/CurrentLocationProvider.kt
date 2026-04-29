@@ -70,8 +70,12 @@ object CurrentLocationProvider {
         onSuccess: (String) -> Unit,
         onError: (String) -> Unit
     ) {
+        val arabicLocale = Locale.Builder()
+            .setLanguage("ar")
+            .build()
+
         try {
-            val geocoder = Geocoder(context, Locale.getDefault())
+            val geocoder = Geocoder(context, arabicLocale)
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 geocoder.getFromLocation(
@@ -111,6 +115,6 @@ object CurrentLocationProvider {
                 address.locality,        // city
                 address.adminArea,       // state/governorate
                 address.countryName      // country
-            ).joinToString(", ")
+            ).joinToString(", ").take(2)
     }
 }

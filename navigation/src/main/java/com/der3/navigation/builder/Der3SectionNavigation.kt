@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import com.der3.navigation.NavigationManager.navigateTo
 import com.der3.screens.Der3NavigationRoute
 import com.der3.sections.presentation.main_section.MainSectionRoute
+import com.der3.sections.presentation.prayer.geocoder.GeocoderRoute
 import com.der3.sections.presentation.prayer.location_picker.LocationPickerRoute
 import com.der3.sections.presentation.prayer.prayer_setting.PrayerSettingRoute
 import com.der3.sections.presentation.prayer.prayer_times.PrayerTimeRoute
@@ -40,6 +41,12 @@ fun NavGraphBuilder.der3SectionNavigation(rootNavController: NavHostController) 
 
     composable<Der3NavigationRoute.LocationPickerScreen> {
         LocationPickerRoute { screen ->
+            rootNavController.navigateTo(screen = screen)
+        }
+    }
+
+    composable<Der3NavigationRoute.GeocoderScreen> {
+        GeocoderRoute { screen ->
             rootNavController.navigateTo(screen = screen)
         }
     }

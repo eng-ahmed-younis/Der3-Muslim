@@ -326,4 +326,7 @@
     <string name="madinah">المدينة المنورة</string>
     <string name="cairo">القاهرة</string>
     <string name="riyadh">الرياض</string>
+    <string name="geocoder_title">تحديد الموقع</string>
+    <string name="selected_location">الموقع المحدد</string>
+    <string name="confirm_location">تأكيد الموقع</string>
 </resources>

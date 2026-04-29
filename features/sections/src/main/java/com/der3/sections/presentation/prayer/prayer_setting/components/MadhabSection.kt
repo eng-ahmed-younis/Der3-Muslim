@@ -36,7 +36,7 @@ fun MadhabSection(selectedMadhab: Madhab, onMadhabSelect: (Madhab) -> Unit) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.MenuBook,
                 contentDescription = null,
-                tint = AppColors.green800,
+                tint = if (isDarkTheme) AppColors.gold500 else AppColors.green800,
                 modifier = Modifier.size(20.dp)
             )
             Spacer(modifier = Modifier.width(8.dp))
@@ -50,7 +50,7 @@ fun MadhabSection(selectedMadhab: Madhab, onMadhabSelect: (Madhab) -> Unit) {
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),
-            colors = CardDefaults.cardColors(containerColor = AppColors.gray50)
+            colors = CardDefaults.cardColors(containerColor = AppColors.cardColor)
         ) {
             Row(modifier = Modifier.padding(4.dp)) {
                 MadhabToggleItem(
@@ -92,17 +92,21 @@ private fun MadhabSectionDarkPreview() {
 
 @Composable
 fun MadhabToggleItem(text: String, isSelected: Boolean, onClick: () -> Unit, modifier: Modifier) {
+    val isDark = isDarkTheme
+    val selectedBg = if (isDark) AppColors.gold500 else AppColors.green800
+    val selectedText = if (isDark) AppColors.green50 else Color.White
+
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(12.dp))
-            .background(if (isSelected) AppColors.green800 else Color.Transparent)
+            .background(if (isSelected) selectedBg else Color.Transparent)
             .clickable { onClick() }
             .padding(vertical = 12.dp),
         contentAlignment = Alignment.Center
     ) {
         Text(
             text = text,
-            color = if (isSelected) Color.White else AppColors.gray500,
+            color = if (isSelected) selectedText else AppColors.gray500,
             fontWeight = FontWeight.Bold
         )
     }

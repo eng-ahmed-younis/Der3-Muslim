@@ -2,6 +2,7 @@ package com.der3.sections.presentation.prayer.prayer_setting.components
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,6 +32,7 @@ import androidx.compose.ui.unit.sp
 import com.der3.model.AppStyle
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
+import com.der3.ui.themes.isDarkTheme
 import java.util.Locale
 
 @Composable
@@ -39,6 +41,7 @@ fun LocationCard(
     locationName: String,
     onChangeClick: () -> Unit
 ) {
+    val isDark = isDarkTheme
     Card(
         modifier = modifier
             .fillMaxWidth(),
@@ -55,13 +58,16 @@ fun LocationCard(
             Box(
                 modifier = Modifier
                     .size(40.dp)
-                    .background(AppColors.green25, CircleShape),
+                    .background(
+                        if (isDark) AppColors.gold500.copy(alpha = 0.1f) else AppColors.green25,
+                        CircleShape
+                    ),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = Icons.Default.LocationOn,
                     contentDescription = null,
-                    tint = AppColors.green800
+                    tint = if (isDark) AppColors.gold500 else AppColors.green800
                 )
             }
 
@@ -69,9 +75,13 @@ fun LocationCard(
 
             Column(horizontalAlignment = Alignment.Start, modifier = Modifier.weight(1f)) {
                 Text(
+                    modifier = Modifier.
+                        basicMarquee(),
                     text = locationName.ifEmpty { stringResource(id = com.der3.ui.R.string.location_default_riyadh) },
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,
+                    maxLines = 1,
+                    overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
                     textAlign = TextAlign.Start,
                     color = AppColors.gray900Text
                 )
