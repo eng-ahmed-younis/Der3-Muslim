@@ -38,6 +38,7 @@ import com.der3.ui.R
 import com.der3.ui.components.HorizontalDotsIndicator
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
+import com.der3.ui.themes.isDarkTheme
 import java.util.Locale
 
 
@@ -132,12 +133,12 @@ fun GetStartedPage(
                 .height(64.dp),
             shape = RoundedCornerShape(24.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = AppColors.green700
+                containerColor = if (isDarkTheme) AppColors.gold700 else AppColors.green700
             )
         ) {
             Text(
                 text = stringResource(id = R.string.onboarding_start_button),
-                color = AppColors.white,
+                color = if (isDarkTheme) AppColors.gray100 else AppColors.white,
                 fontSize = 16.sp,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold

@@ -1,32 +1,34 @@
 package com.der3.sections.presentation.qibla
 
-import com.der3.sections.presentation.qibla.mvi.QiblaAction
-import com.der3.sections.presentation.qibla.mvi.QiblaIntent
-import com.der3.sections.presentation.qibla.mvi.QiblaReducer
-import com.der3.sections.presentation.qibla.mvi.QiblaState
-import android.location.Location
 import android.content.Context
+import android.hardware.GeomagneticField
 import android.location.Geocoder
+import android.location.Location
 import androidx.lifecycle.viewModelScope
 import com.der3.mvi.MviBaseViewModel
 import com.der3.mvi.MviEffect
 import com.der3.screens.Screens
-import android.hardware.GeomagneticField
+import com.der3.sections.presentation.qibla.mvi.QiblaAction
+import com.der3.sections.presentation.qibla.mvi.QiblaIntent
+import com.der3.sections.presentation.qibla.mvi.QiblaReducer
+import com.der3.sections.presentation.qibla.mvi.QiblaState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 import java.util.Locale
+import javax.inject.Inject
 
 @HiltViewModel
 class QiblaViewModel @Inject constructor(
     reducer: QiblaReducer,
     @ApplicationContext private val context: Context
 ) : MviBaseViewModel<QiblaState, QiblaAction, QiblaIntent>(
-    initialState = QiblaState(),
+    initialState = QiblaState(
+        currentLocationName = context.getString(com.der3.ui.R.string.locating)
+    ),
     reducer = reducer
 ) {
     private var addressJob: Job? = null
@@ -77,28 +79,31 @@ class QiblaViewModel @Inject constructor(
         addressJob?.cancel()
         addressJob = viewModelScope.launch {
             val locationName = getAddress(latitude, longitude)
-            if (locationName != "موقع مجهول" && locationName != "موقع غير معروف") {
+            if (locationName != context.getString(com.der3.ui.R.string.unknown_location) &&
+                locationName != context.getString(com.der3.ui.R.string.location_not_found)
+            ) {
                 onAction(QiblaAction.OnLocationUpdated(locationName, distanceKm))
             }
         }
     }
 
-    private suspend fun getAddress(latitude: Double, longitude: Double): String = withContext(Dispatchers.IO) {
-        try {
-            val geocoder = Geocoder(context, Locale("ar"))
-            val addresses = geocoder.getFromLocation(latitude, longitude, 1)
-            if (!addresses.isNullOrEmpty()) {
-                val address = addresses[0]
-                val city = address.locality ?: address.subAdminArea ?: ""
-                val country = address.countryName ?: ""
-                if (city.isNotEmpty() && country.isNotEmpty()) "$city، $country"
-                else if (city.isNotEmpty()) city
-                else country
-            } else {
-                "موقع غير معروف"
+    private suspend fun getAddress(latitude: Double, longitude: Double): String =
+        withContext(Dispatchers.IO) {
+            try {
+                val geocoder = Geocoder(context, Locale("ar"))
+                val addresses = geocoder.getFromLocation(latitude, longitude, 1)
+                if (!addresses.isNullOrEmpty()) {
+                    val address = addresses[0]
+                    val city = address.locality ?: address.subAdminArea ?: ""
+                    val country = address.countryName ?: ""
+                    if (city.isNotEmpty() && country.isNotEmpty()) "$city، $country"
+                    else if (city.isNotEmpty()) city
+                    else country
+                } else {
+                    context.getString(com.der3.ui.R.string.location_not_found)
+                }
+            } catch (e: Exception) {
+                context.getString(com.der3.ui.R.string.unknown_location)
             }
-        } catch (e: Exception) {
-            "موقع مجهول"
         }
-    }
 }

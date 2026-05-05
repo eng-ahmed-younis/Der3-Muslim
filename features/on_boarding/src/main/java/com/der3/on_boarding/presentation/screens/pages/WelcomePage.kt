@@ -70,7 +70,7 @@ fun WelcomePage(
                     .background(if (isDarkTheme) AppColors.cardColor else AppColors.green100)
                     .border(
                         width = 1.dp,
-                        color = if (isDarkTheme) AppColors.green700.copy(alpha = 0.2f) else Color.Transparent,
+                        color = if (isDarkTheme) AppColors.gold700.copy(alpha = 0.3f) else Color.Transparent,
                         shape = RoundedCornerShape(24.dp)
                     )
                     .clickable { onSkip() }
@@ -78,7 +78,7 @@ fun WelcomePage(
             ) {
                 Text(
                     text = stringResource(id = R.string.onboarding_skip),
-                    color = AppColors.green800,
+                    color = if (isDarkTheme) AppColors.gold700 else AppColors.green800,
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -145,11 +145,13 @@ fun WelcomePage(
                 .fillMaxWidth()
                 .height(64.dp),
             shape = RoundedCornerShape(24.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = AppColors.green700)
+            colors = ButtonDefaults.buttonColors(
+                containerColor = if (isDarkTheme) AppColors.gold700 else AppColors.green700
+            )
         ) {
             Text(
                 text = stringResource(id = R.string.onboarding_next),
-                color = AppColors.white,
+                color = if (isDarkTheme) AppColors.gray100 else AppColors.white,
                 fontSize = 16.sp,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
@@ -160,7 +162,7 @@ fun WelcomePage(
             Icon(
                 imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowRight,
                 contentDescription = null,
-                tint = AppColors.white
+                tint = if (isDarkTheme) AppColors.gray100 else AppColors.white
             )
         }
 

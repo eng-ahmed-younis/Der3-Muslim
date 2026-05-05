@@ -290,6 +290,16 @@
     <string name="settings_rate_app">تقييم التطبيق</string>
     <string name="settings_about_app">حول التطبيق</string>
     <string name="qibla_calibration_hint">يرجى تحريك الهاتف بشكل 8 لمعايرة البوصلة وضمان دقة الاتجاه.</string>
+    <string name="qibla_title">اتجاه القبلة</string>
+    <string name="current_location_label">موقعك الحالي</string>
+    <string name="distance_to_kaaba">المسافة إلى الكعبة: %s كم</string>
+    <string name="locating">جاري تحديد الموقع...</string>
+    <string name="north_short">ش</string>
+    <string name="south_short">ج</string>
+    <string name="east_short">ق</string>
+    <string name="west_short">غ</string>
+    <string name="unknown_location">موقع مجهول</string>
+    <string name="location_not_found">موقع غير معروف</string>
     <string name="daily_notifications_subtitle">قم بتفعيل التنبيهات للأذكار اليومية</string>
     <string name="prayer_settings_title">إعدادات الصلاة</string>
     <string name="location_label">الموقع</string>

@@ -65,8 +65,20 @@ fun rememberCompassAzimuth(
                         event.values
                     )
 
-                    SensorManager.getOrientation(
+                    // Remap axes so azimuth reflects the back-camera direction (device -Z),
+                    // which is what the user naturally "points" when holding the phone upright
+                    // in portrait. Without this, getOrientation uses device Y (top edge) which
+                    // is nearly vertical when the phone is held upright → garbage azimuth.
+                    val remappedMatrix = FloatArray(9)
+                    SensorManager.remapCoordinateSystem(
                         rotationMatrix,
+                        SensorManager.AXIS_X,
+                        SensorManager.AXIS_MINUS_Z,
+                        remappedMatrix
+                    )
+
+                    SensorManager.getOrientation(
+                        remappedMatrix,
                         orientationAngles
                     )
 
@@ -103,8 +115,16 @@ fun rememberCompassAzimuth(
 
                     if (success) {
 
-                        SensorManager.getOrientation(
+                        val remappedMatrix = FloatArray(9)
+                        SensorManager.remapCoordinateSystem(
                             rotationMatrix,
+                            SensorManager.AXIS_X,
+                            SensorManager.AXIS_MINUS_Z,
+                            remappedMatrix
+                        )
+
+                        SensorManager.getOrientation(
+                            remappedMatrix,
                             orientationAngles
                         )
 

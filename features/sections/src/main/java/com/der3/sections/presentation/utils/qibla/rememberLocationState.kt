@@ -114,8 +114,8 @@ fun rememberLocationState(
             registeredProviders.forEach { provider ->
                 locationManager.requestLocationUpdates(
                     provider,
-                    0L,
-                    0f,
+                    minTimeBetweenUpdatesMillis,
+                    minDistanceBetweenUpdatesMeters,
                     listener,
                     looper
                 )

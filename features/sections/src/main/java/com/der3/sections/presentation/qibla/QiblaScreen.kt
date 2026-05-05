@@ -10,23 +10,16 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Explore
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -41,11 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.PathEffect
-import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -55,11 +44,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.der3.model.AppStyle
 import com.der3.mvi.MviEffect
 import com.der3.screens.Screens
+import com.der3.sections.presentation.qibla.components.CalibrationWarningCard
+import com.der3.sections.presentation.qibla.components.CompassDial
+import com.der3.sections.presentation.qibla.components.CompassNeedle
+import com.der3.sections.presentation.qibla.components.LocationCard
 import com.der3.sections.presentation.qibla.mvi.QiblaIntent
 import com.der3.sections.presentation.qibla.mvi.QiblaState
 import com.der3.sections.presentation.utils.qibla.hasLocationPermission
@@ -77,12 +69,15 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import java.util.Locale
 
+/**
+ * QiblaRoute serves as the entry point for the Qibla screen, managing ViewModel integration,
+ * navigation effects, and error dialogs.
+ */
 @Composable
 fun QiblaRoute(
     onNavigate: (Screens) -> Unit = {}
 ) {
     val viewModel = hiltViewModel<QiblaViewModel>()
-    val state = viewModel.viewState
     val scope = rememberCoroutineScope()
     var errorMessage by remember { mutableStateOf<String?>(null) }
     var showErrorDialog by remember { mutableStateOf(false) }
@@ -130,6 +125,9 @@ fun QiblaRoute(
     )
 }
 
+/**
+ * QiblaScreen displays the compass UI, location information, and handles sensor updates.
+ */
 @Composable
 fun QiblaScreen(
     state: QiblaState,
@@ -137,16 +135,19 @@ fun QiblaScreen(
 ) {
     val context = LocalContext.current
 
+    // State to track if location permission is granted
     var hasPermission by remember {
         mutableStateOf(context.hasLocationPermission())
     }
 
+    // Launcher to request location permissions
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
         hasPermission = permissions.values.any { it }
     }
 
+    // Request permissions on first launch if not already granted
     LaunchedEffect(Unit) {
         if (!hasPermission) {
             permissionLauncher.launch(
@@ -158,16 +159,19 @@ fun QiblaScreen(
         }
     }
 
+    // Custom remember functions for location, compass azimuth, and Qibla direction calculation
     val locationState by rememberLocationState(hasLocationPermission = hasPermission)
-    val azimuthState by rememberCompassAzimuth(sensorDelay = android.hardware.SensorManager.SENSOR_DELAY_FASTEST)
+    val azimuthState by rememberCompassAzimuth()
     val qiblaDirState by rememberQiblaDirection(locationState)
 
+    // Notify ViewModel when location changes
     LaunchedEffect(locationState) {
         locationState?.let {
             onIntent(QiblaIntent.OnLocationChanged(it.latitude, it.longitude))
         }
     }
 
+    // Notify ViewModel when direction or azimuth updates to calculate relative rotation
     LaunchedEffect(qiblaDirState, azimuthState) {
         val qDir = qiblaDirState
         val azm = azimuthState
@@ -182,7 +186,7 @@ fun QiblaScreen(
             .background(AppColors.screenBackground)
     ) {
         Der3TopAppBar(
-            title = "اتجاه القبلة",
+            title = stringResource(id = com.der3.ui.R.string.qibla_title),
             backgroundColor = AppColors.screenBackground,
             showBackButton = true,
             onBackClick = { onIntent(QiblaIntent.OnBackClick) },
@@ -213,53 +217,7 @@ fun QiblaScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // Location Card
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                shape = RoundedCornerShape(24.dp),
-                colors = CardDefaults.cardColors(containerColor = AppColors.cardColor),
-                elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
-                border = if (com.der3.ui.themes.isDarkTheme) androidx.compose.foundation.BorderStroke(
-                    1.dp,
-                    AppColors.green700.copy(alpha = 0.2f)
-                ) else null
-            ) {
-                Column(
-                    modifier = Modifier
-                        .padding(24.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            imageVector = Icons.Default.LocationOn,
-                            contentDescription = null,
-                            tint = AppColors.green700,
-                            modifier = Modifier.size(18.dp)
-                        )
-                        Spacer(modifier = Modifier.size(4.dp))
-                        Text(
-                            text = "موقعك الحالي",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = AppColors.green700,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = state.currentLocationName,
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center,
-                        color = AppColors.gray900Text
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = "المسافة إلى الكعبة: ${String.format(Locale("ar"), "%.1f", state.distanceToKaaba)} كم",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = AppColors.gray500
-                    )
-                }
-            }
+            LocationCard(state = state)
 
             Spacer(modifier = Modifier.height(48.dp))
 
@@ -268,7 +226,7 @@ fun QiblaScreen(
                 modifier = Modifier.size(300.dp),
                 contentAlignment = Alignment.Center
             ) {
-                if (state.distanceToKaaba == 0.0 && state.currentLocationName == "جاري تحديد الموقع...") {
+                if (state.distanceToKaaba == 0.0 && state.currentLocationName == stringResource(id = com.der3.ui.R.string.locating)) {
                     androidx.compose.material3.CircularProgressIndicator(
                         color = AppColors.green800,
                         modifier = Modifier.size(48.dp)
@@ -276,13 +234,13 @@ fun QiblaScreen(
                 }
 
                 // Background Circle
-                val green800 = AppColors.green800
+                val circleColor = if (com.der3.ui.themes.isDarkTheme) AppColors.gold700 else AppColors.green800
                 Canvas(
                     modifier = Modifier
                         .fillMaxSize()
                 ) {
                     drawCircle(
-                        color = green800.copy(alpha = 0.1f),
+                        color = circleColor.copy(alpha = 0.1f),
                         style = Stroke(width = 2.dp.toPx())
                     )
                 }
@@ -291,20 +249,23 @@ fun QiblaScreen(
                 androidx.compose.runtime.CompositionLocalProvider(
                     LocalLayoutDirection provides LayoutDirection.Ltr
                 ) {
-                    // Compass Dial
-                    CompassDial(modifier = Modifier.rotate(-state.compassRotation))
+                    val springSpec = spring<Float>(dampingRatio = 0.5f, stiffness = 2000f)
+
+                    // Compass Dial — animated so it doesn't snap on fast turns
+                    val animatedDialRotation by animateFloatAsState(
+                        targetValue = -state.compassRotation,
+                        animationSpec = springSpec,
+                        label = "dial_rotation"
+                    )
+                    CompassDial(modifier = Modifier.rotate(animatedDialRotation))
 
                     // Qibla Needle
-                    val animatedRotation by animateFloatAsState(
+                    val animatedNeedleRotation by animateFloatAsState(
                         targetValue = state.qiblaDirection - state.compassRotation,
-                        animationSpec = spring(
-                            dampingRatio = 0.5f,
-                            stiffness = 2000f
-                        ),
+                        animationSpec = springSpec,
                         label = "needle_rotation"
                     )
-
-                    CompassNeedle(modifier = Modifier.rotate(animatedRotation))
+                    CompassNeedle(modifier = Modifier.rotate(animatedNeedleRotation))
                 }
             }
 
@@ -312,7 +273,9 @@ fun QiblaScreen(
 
             // Guidance Text
             val guidanceColor by animateColorAsState(
-                targetValue = if (state.isOnTarget) AppColors.green800 else AppColors.gray500,
+                targetValue = if (state.isOnTarget) {
+                    if (com.der3.ui.themes.isDarkTheme) AppColors.gold700 else AppColors.green800
+                } else AppColors.gray500,
                 label = "guidance_color"
             )
 
@@ -331,7 +294,7 @@ fun QiblaScreen(
                 text = "${state.qiblaDirection.toInt()}°",
                 style = MaterialTheme.typography.displayMedium,
                 fontWeight = FontWeight.Bold,
-                color = AppColors.green800
+                color = if (com.der3.ui.themes.isDarkTheme) AppColors.gold700 else AppColors.green800
             )
             Text(
                 text = state.directionText,
@@ -343,151 +306,8 @@ fun QiblaScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             // Calibration Warning
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 16.dp),
-                shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = if (com.der3.ui.themes.isDarkTheme) AppColors.gray100 else Color(0xFFFDF6E3)
-                ),
-                border = androidx.compose.foundation.BorderStroke(
-                    1.dp,
-                    if (com.der3.ui.themes.isDarkTheme) AppColors.green700.copy(alpha = 0.2f) else Color(0xFFF9EBC8)
-                )
-            ) {
-                Row(
-                    modifier = Modifier.padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        modifier = Modifier.weight(1f),
-                        text = stringResource(id = com.der3.ui.R.string.qibla_calibration_hint),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = if (com.der3.ui.themes.isDarkTheme) AppColors.gold700 else Color(0xFFB8942E),
-                        lineHeight = 18.sp,
-                        textAlign = TextAlign.Right
-                    )
-                    Spacer(modifier = Modifier.size(12.dp))
-                    Icon(
-                        imageVector = Icons.Default.Info,
-                        contentDescription = null,
-                        tint = if (com.der3.ui.themes.isDarkTheme) AppColors.gold700 else Color(0xFFD4A017),
-                        modifier = Modifier.size(24.dp)
-                    )
-                }
-            }
+            CalibrationWarningCard(modifier = Modifier.padding(vertical = 16.dp))
         }
-    }
-}
-
-@Composable
-fun CompassDial(modifier: Modifier = Modifier) {
-    val gray200 = AppColors.gray200
-    val gray500 = AppColors.gray500
-    Box(modifier = modifier.fillMaxSize()) {
-        Canvas(modifier = Modifier.fillMaxSize()) {
-            // Outer faint circle
-
-            drawCircle(
-                color = gray200.copy(alpha = 0.5f),
-                style = Stroke(width = 1.dp.toPx())
-            )
-            // Dotted circle
-            drawCircle(
-                color = gray200,
-                radius = size.width / 2 * 0.85f,
-                style = Stroke(
-                    width = 1.dp.toPx(),
-                    pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
-                )
-            )
-        }
-        Text(
-            text = "ش",
-            modifier = Modifier.align(Alignment.TopCenter).padding(top = 10.dp),
-            color = gray500,
-            fontWeight = FontWeight.Bold,
-            fontSize = 18.sp
-        )
-        Text(
-            text = "ج",
-            modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 10.dp),
-            color = gray500,
-            fontWeight = FontWeight.Bold,
-            fontSize = 18.sp
-        )
-        Text(
-            text = "ق",
-            modifier = Modifier.align(Alignment.CenterEnd).padding(end = 10.dp),
-            color = gray500,
-            fontWeight = FontWeight.Bold,
-            fontSize = 18.sp
-        )
-        Text(
-            text = "غ",
-            modifier = Modifier.align(Alignment.CenterStart).padding(start = 10.dp),
-            color = gray500,
-            fontWeight = FontWeight.Bold,
-            fontSize = 18.sp
-        )
-    }
-}
-
-@Composable
-fun CompassNeedle(modifier: Modifier = Modifier) {
-    val green800 = AppColors.green800
-    val gold = AppColors.gold700
-    
-    Canvas(modifier = modifier.size(240.dp)) {
-        val centerX = size.width / 2
-        val centerY = size.height / 2
-        
-        // Needle Shaft
-        // Green Tail
-        drawLine(
-            color = green800,
-            start = center,
-            end = Offset(centerX, centerY + 80.dp.toPx()),
-            strokeWidth = 4.dp.toPx(),
-            cap = StrokeCap.Round
-        )
-        
-        // Gold Shaft
-        drawLine(
-            color = gold,
-            start = center,
-            end = Offset(centerX, centerY - 80.dp.toPx()),
-            strokeWidth = 4.dp.toPx(),
-            cap = StrokeCap.Round
-        )
-        
-        // Arrow Head
-        val headPath = Path().apply {
-            moveTo(centerX, centerY - 105.dp.toPx()) // Tip
-            lineTo(centerX - 12.dp.toPx(), centerY - 80.dp.toPx())
-            lineTo(centerX + 12.dp.toPx(), centerY - 80.dp.toPx())
-            close()
-        }
-        drawPath(headPath, color = gold)
-        
-        // Center Hub
-        drawCircle(
-            color = green800,
-            radius = 10.dp.toPx(),
-            center = center
-        )
-        drawCircle(
-            color = gold,
-            radius = 10.dp.toPx(),
-            center = center,
-            style = Stroke(width = 2.dp.toPx())
-        )
-        drawCircle(
-            color = Color.White,
-            radius = 3.dp.toPx(),
-            center = center
-        )
     }
 }
 

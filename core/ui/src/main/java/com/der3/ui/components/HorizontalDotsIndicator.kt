@@ -26,14 +26,15 @@ import androidx.compose.ui.unit.dp
 import com.der3.model.AppStyle
 import com.der3.ui.themes.AppColors
 import com.der3.ui.themes.Der3MuslimTheme
+import com.der3.ui.themes.isDarkTheme
 
 @Composable
 fun HorizontalDotsIndicator(
     modifier: Modifier = Modifier,
     currentPage: Int,
     totalPages: Int,
-    selectedColor: Color = AppColors.green700,
-    unselectedColor: Color = AppColors.gray100,
+    selectedColor: Color = if (isDarkTheme) AppColors.gold700 else AppColors.green700,
+    unselectedColor: Color = if (isDarkTheme) AppColors.gray400 else AppColors.gray100,
     selectedWidth: Dp = 38.dp,
     unselectedWidth: Dp = 12.dp,
     indicatorHeight: Dp = 10.dp,
