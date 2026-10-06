@@ -52,6 +52,13 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      # Step 3.5: Create local.properties for Secrets Gradle Plugin & Base URL.
+      # الخطوة 3.5: إنشاء ملف local.properties لكونه مطلوباً بواسطة Secrets Gradle Plugin.
+      - name: Create local.properties
+        run: |
+          echo "sdk.dir=$ANDROID_HOME" > local.properties
+          echo "BASE_URL=https://api.example.com" >> local.properties
+
       # Step 4: Conditional check of the trigger type and print debug info.
       # الخطوة 4: التحقق الشرطي من نوع الـ Trigger وطباعة معلومات التصحيح.
       - name: Check and Log Trigger Conditions
