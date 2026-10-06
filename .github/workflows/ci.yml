@@ -8,7 +8,7 @@ on:
   # Triggers when code is pushed to specific branches.
   # يتم التشغيل عند رفع الكود (Push) إلى فروع محددة.
   push:
-    branches: [ "master", "develop" ]
+    branches: [ "master", "develop" , ci_cd]
 
   # Triggers on any Pull Request created between any branches.
   # يتم التشغيل عند إنشاء أي Pull Request (PR) بين أي فروع.
