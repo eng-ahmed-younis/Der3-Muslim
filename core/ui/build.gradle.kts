@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.android.library)
-  //  alias(libs.plugins.kotlin.android)
+    //  alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
 }
 
@@ -23,9 +23,9 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile(
-                    "proguard-android-optimize.txt"
+                    "proguard-android-optimize.txt",
                 ),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -45,8 +45,8 @@ android {
         compilerOptions {
             jvmTarget.set(
                 org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(
-                    BuildVersions.JAVA_VERSION.toString()
-                )
+                    BuildVersions.JAVA_VERSION.toString(),
+                ),
             )
         }
     }
@@ -82,8 +82,6 @@ dependencies {
     implementation(libs.androidx.compose.material.icons.core)
     implementation(libs.androidx.compose.material.icons.extended)
 
-
-
     implementation(project(path = ":core:ui-model"))
-   // implementation(project(path = ":core:utils"))
+    // implementation(project(path = ":core:utils"))
 }

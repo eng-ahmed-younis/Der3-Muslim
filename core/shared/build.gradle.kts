@@ -11,7 +11,6 @@ android {
     namespace = "com.der3.shared"
     compileSdk = BuildVersions.COMPILE_SDK
 
-
     defaultConfig {
         minSdk = BuildVersions.MIN_SDK
 
@@ -28,62 +27,58 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
 
             buildConfigField(
                 "String",
                 "BASE_URL",
-                "\"${project.findProperty("BASE_URL")}\""
+                "\"${project.findProperty("BASE_URL")}\"",
             )
 
             buildConfigField(
                 "String",
                 "NETWORK_DEBUGGING",
-                "\"false\""
+                "\"false\"",
             )
-
         }
 
         create("staging") {
             isDefault = true
-         //   initWith(getByName("release"))
+            //   initWith(getByName("release"))
             // “If this build type (or flavor) doesn’t exist in a dependency, fall back to using release instead.”
             matchingFallbacks += listOf("release")
             // signingConfigs: a container holding all signing configurations
             // assigning the debug signing configuration to something (usually a build type like release or a custom one).
             //    signingConfig = signingConfigs.getByName("debug")
 
-
             buildConfigField(
                 "String",
                 "BASE_URL",
-                "\"${project.findProperty("BASE_URL")}\""
+                "\"${project.findProperty("BASE_URL")}\"",
             )
 
             buildConfigField(
                 "String",
                 "NETWORK_DEBUGGING",
-                "\"true\""
+                "\"true\"",
             )
-
         }
 
         debug {
             buildConfigField(
                 "String",
                 "BASE_URL",
-                "\"${project.findProperty("BASE_URL")}\""
+                "\"${project.findProperty("BASE_URL")}\"",
             )
 
             buildConfigField(
                 "String",
                 "NETWORK_DEBUGGING",
-                "\"true\""
+                "\"true\"",
             )
         }
     }
-
 
     compileOptions {
         sourceCompatibility =
@@ -96,8 +91,8 @@ android {
         compilerOptions {
             jvmTarget.set(
                 org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(
-                    BuildVersions.JAVA_VERSION.toString()
-                )
+                    BuildVersions.JAVA_VERSION.toString(),
+                ),
             )
         }
     }
@@ -127,7 +122,7 @@ dependencies {
     implementation(libs.firebase.database)
     implementation(libs.firebase.messaging)
 
-    //Hilt
+    // Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
@@ -150,9 +145,9 @@ dependencies {
     implementation(libs.ktor.client.logging)
 
     // chucker
-    debugImplementation (libs.library)
+    debugImplementation(libs.library)
     add("stagingImplementation", libs.library)
-    releaseImplementation (libs.library.no.op)
+    releaseImplementation(libs.library.no.op)
 
     // Image loading
     implementation(libs.coil.compose)

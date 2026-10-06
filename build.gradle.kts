@@ -10,4 +10,11 @@ plugins {
     alias(libs.plugins.hilt.android) apply false
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.secrets.gradle.plugin) apply false
+    id("org.jlleitschuh.gradle.ktlint") version "12.1.0" apply false
+}
+
+subprojects {
+    if (project.name != "buildSrc") {
+        apply(plugin = "org.jlleitschuh.gradle.ktlint")
+    }
 }

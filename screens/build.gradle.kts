@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.android.library)
-  //  alias(libs.plugins.kotlin.android)
+    //  alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.kotlin.compose)
 }
@@ -25,7 +25,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -41,8 +41,8 @@ android {
         compilerOptions {
             jvmTarget.set(
                 org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(
-                    BuildVersions.JAVA_VERSION.toString()
-                )
+                    BuildVersions.JAVA_VERSION.toString(),
+                ),
             )
         }
     }
@@ -56,7 +56,6 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-
     // Kotlin Serialization
     implementation(libs.kotlinx.serialization.json)
 
@@ -64,7 +63,7 @@ dependencies {
     implementation(libs.androidx.compose.runtime)
     implementation(libs.androidx.compose.runtime.saveable)
 
-    //Navigation
+    // Navigation
     implementation(libs.androidx.navigation.compose)
     implementation(libs.hilt.navigation.compose)
 

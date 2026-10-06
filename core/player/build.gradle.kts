@@ -7,7 +7,6 @@ android {
     namespace = "com.der3.player"
     compileSdk = BuildVersions.COMPILE_SDK
 
-
     defaultConfig {
         minSdk = BuildVersions.MIN_SDK
 
@@ -24,7 +23,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -35,14 +34,12 @@ android {
             JavaVersion.toVersion(BuildVersions.JAVA_VERSION)
     }
 
-
-
     kotlin {
         compilerOptions {
             jvmTarget.set(
                 org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(
-                    BuildVersions.JAVA_VERSION.toString()
-                )
+                    BuildVersions.JAVA_VERSION.toString(),
+                ),
             )
         }
     }
@@ -56,8 +53,7 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-
-    //Hilt
+    // Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 

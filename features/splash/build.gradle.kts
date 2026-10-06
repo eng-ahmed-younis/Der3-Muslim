@@ -27,7 +27,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -42,13 +42,12 @@ android {
         compose = true
     }
 
-
     kotlin {
         compilerOptions {
             jvmTarget.set(
                 org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(
-                    BuildVersions.JAVA_VERSION.toString()
-                )
+                    BuildVersions.JAVA_VERSION.toString(),
+                ),
             )
         }
     }
@@ -62,7 +61,6 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-
     // Compose BOM
     implementation(platform(libs.androidx.compose.bom))
 
@@ -72,14 +70,12 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
 
-
     // testing
     debugImplementation(libs.androidx.compose.ui.tooling)
 
-
-    //Hilt
+    // Hilt
     implementation(libs.hilt.android)
-    //kapt(libs.hilt.compiler)
+    // kapt(libs.hilt.compiler)
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
 

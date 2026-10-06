@@ -1,9 +1,9 @@
 plugins {
     alias(libs.plugins.android.library)
-  //  alias(libs.plugins.kotlin.android)
+    //  alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.hilt.android)
- //   alias(libs.plugins.kotlin.kapt)
+    //   alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.ksp)
 }
 
@@ -27,11 +27,10 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
-
 
     compileOptions {
         sourceCompatibility =
@@ -44,13 +43,12 @@ android {
         compose = true
     }
 
-
     kotlin {
         compilerOptions {
             jvmTarget.set(
                 org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(
-                    BuildVersions.JAVA_VERSION.toString()
-                )
+                    BuildVersions.JAVA_VERSION.toString(),
+                ),
             )
         }
     }
@@ -80,18 +78,16 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
-   // androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    // androidTestImplementation(libs.androidx.compose.ui.test.junit4)
 
     // Debug
     debugImplementation(libs.androidx.compose.ui.tooling)
- //   debugImplementation(libs.androidx.compose.ui.test.manifest)
+    //   debugImplementation(libs.androidx.compose.ui.test.manifest)
 
-
-    //Hilt
+    // Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
-
 
     implementation(project(path = ":core:ui"))
     implementation(project(path = ":core:mvi"))

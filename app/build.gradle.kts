@@ -38,14 +38,14 @@ android {
         }
 
         release {
-          //  signingConfig = signingConfigs.getByName("debug")
+            //  signingConfig = signingConfigs.getByName("debug")
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile(
-                    "proguard-android-optimize.txt"
+                    "proguard-android-optimize.txt",
                 ),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -54,13 +54,10 @@ android {
         abi {
             isEnable = false
             reset()
-            include("armeabi-v7a", "arm64-v8a")   // Only the two most common ABIs
-            isUniversalApk = false                // Don't create one huge universal APK
+            include("armeabi-v7a", "arm64-v8a") // Only the two most common ABIs
+            isUniversalApk = false // Don't create one huge universal APK
         }
     }
-
-
-
 
     compileOptions {
         sourceCompatibility = JavaVersion.toVersion(BuildVersions.JAVA_VERSION)
@@ -71,13 +68,11 @@ android {
         compilerOptions {
             jvmTarget.set(
                 org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(
-                    BuildVersions.JAVA_VERSION.toString()
-                )
-
+                    BuildVersions.JAVA_VERSION.toString(),
+                ),
             )
         }
     }
-
 
     buildFeatures {
         compose = true
@@ -101,7 +96,6 @@ dependencies {
     // Compose BOM
     implementation(platform(libs.androidx.compose.bom))
 
-
     // Firebase BoM
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
@@ -120,14 +114,13 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
-  //  androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    //  androidTestImplementation(libs.androidx.compose.ui.test.junit4)
 
     // Debug
     implementation(libs.androidx.compose.ui.tooling)
 //    debugImplementation(libs.androidx.compose.ui.test.manifest)
 
-
-    //Hilt
+    // Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
@@ -136,7 +129,7 @@ dependencies {
     implementation(libs.androidx.compose.material.icons.core)
     implementation(libs.androidx.compose.material.icons.extended)
 
-    //Navigation
+    // Navigation
     implementation(libs.androidx.navigation.compose)
 
     // modules
@@ -149,5 +142,4 @@ dependencies {
     implementation(project(path = ":features:splash"))
     implementation(project(path = ":navigation"))
     implementation(project(path = ":screens"))
-
 }

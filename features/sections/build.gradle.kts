@@ -11,7 +11,6 @@ android {
     namespace = "com.der3.sections"
     compileSdk = BuildVersions.COMPILE_SDK
 
-
     defaultConfig {
         minSdk = BuildVersions.MIN_SDK
 
@@ -28,7 +27,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -36,7 +35,6 @@ android {
         sourceCompatibility = JavaVersion.toVersion(BuildVersions.JAVA_VERSION)
         targetCompatibility = JavaVersion.toVersion(BuildVersions.JAVA_VERSION)
     }
-
 }
 
 dependencies {
@@ -59,21 +57,17 @@ dependencies {
     // testing
     debugImplementation(libs.androidx.compose.ui.tooling)
 
-
     // KotlinX Serialization
     implementation(libs.kotlinx.serialization.json)
 
-
-    //Hilt
+    // Hilt
     implementation(libs.hilt.android)
-    //kapt(libs.hilt.compiler)
+    // kapt(libs.hilt.compiler)
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
 
-
     implementation(libs.androidx.compose.material.icons.core)
     implementation(libs.androidx.compose.material.icons.extended)
-
 
     // ktor
     implementation(libs.ktor.client.core)
@@ -82,7 +76,6 @@ dependencies {
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.ktor.client.okhttp)
     implementation(libs.ktor.client.logging)
-
 
     implementation(project(":core:ui"))
     implementation(project(":core:mvi"))

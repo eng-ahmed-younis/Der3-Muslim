@@ -5,5 +5,5 @@ enum class ShareAppType {
     WHATS_APP,
     TELEGRAM,
     FACEBOOK,
-    TWITTER
+    TWITTER,
 }

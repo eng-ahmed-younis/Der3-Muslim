@@ -4,17 +4,16 @@ plugins {
 }
 
 java {
-    sourceCompatibility =   JavaVersion.toVersion(BuildVersions.JAVA_VERSION)
-    targetCompatibility =   JavaVersion.toVersion(BuildVersions.JAVA_VERSION)
+    sourceCompatibility = JavaVersion.toVersion(BuildVersions.JAVA_VERSION)
+    targetCompatibility = JavaVersion.toVersion(BuildVersions.JAVA_VERSION)
 }
 
 kotlin {
     compilerOptions {
         jvmTarget.set(
             org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(
-                BuildVersions.JAVA_VERSION.toString()
-            )
+                BuildVersions.JAVA_VERSION.toString(),
+            ),
         )
     }
-
 }

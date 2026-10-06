@@ -7,7 +7,8 @@ enum class DaysSelector(val shortName: String) {
     TUESDAY("ث"),
     WEDNESDAY("ر"),
     THURSDAY("خ"),
-    FRIDAY("ج");
+    FRIDAY("ج"),
+    ;
 
     override fun toString(): String = shortName
 }

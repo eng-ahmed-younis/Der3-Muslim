@@ -26,7 +26,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -43,8 +43,8 @@ android {
         compilerOptions {
             jvmTarget.set(
                 org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(
-                    BuildVersions.JAVA_VERSION.toString()
-                )
+                    BuildVersions.JAVA_VERSION.toString(),
+                ),
             )
         }
     }
@@ -72,21 +72,18 @@ dependencies {
     // testing
     // debugImplementation(libs.androidx.compose.ui.tooling)
 
-
     // KotlinX Serialization
     implementation(libs.kotlinx.serialization.json)
 
-
-    //Hilt
+    // Hilt
     implementation(libs.hilt.android)
-    //kapt(libs.hilt.compiler)
+    // kapt(libs.hilt.compiler)
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
 
-
     implementation(libs.androidx.compose.material.icons.core)
     implementation(libs.androidx.compose.material.icons.extended)
-    
+
     implementation(project(":core:ui"))
     implementation(project(":core:mvi"))
     implementation(project(":core:utils"))
@@ -95,5 +92,4 @@ dependencies {
     implementation(project(":core:data_store"))
     implementation(project(":core:player"))
     implementation(project(":screens"))
-
 }

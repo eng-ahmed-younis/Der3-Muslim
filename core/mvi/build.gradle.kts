@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.android.library)
-   // alias(libs.plugins.kotlin.android)
+    // alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
 }
 
@@ -24,7 +24,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -40,8 +40,8 @@ android {
         compilerOptions {
             jvmTarget.set(
                 org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(
-                    BuildVersions.JAVA_VERSION.toString()
-                )
+                    BuildVersions.JAVA_VERSION.toString(),
+                ),
             )
         }
     }
@@ -58,12 +58,11 @@ dependencies {
 
     // Compose
     implementation(libs.androidx.compose.runtime)
-    //ViewModel
+    // ViewModel
     implementation(libs.lifecycle.viewmodel.ktx)
     // serialization
     implementation(libs.kotlinx.serialization.json)
 
     implementation(project(path = ":screens"))
     implementation(project(path = ":core:ui-model"))
-
 }

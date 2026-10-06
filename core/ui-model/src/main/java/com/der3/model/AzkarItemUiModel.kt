@@ -6,5 +6,5 @@ data class AzkarItemUiModel(
     val count: Int,
     val audioPath: String,
     val isPlaying: Boolean = false,
-    val currentCount: Int = 0
+    val currentCount: Int = 0,
 )

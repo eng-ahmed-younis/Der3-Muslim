@@ -4,5 +4,5 @@ enum class ZekrCountType {
     SINGLE,
     DUAL,
     PLURAL,
-    TANWEEN // 11+
+    TANWEEN, // 11+
 }
