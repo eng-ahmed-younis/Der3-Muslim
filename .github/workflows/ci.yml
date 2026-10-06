@@ -1,0 +1,92 @@
+# Name of the GitHub Actions workflow displayed in the GitHub repository UI.
+# اسم مسار العمل (Workflow) الذي يظهر في واجهة مستودع GitHub.
+name: Advanced CI & Trigger Conditions
+
+# Defines the events (triggers) that activate this workflow.
+# يحدد الأحداث (Triggers) التي تقوم بتنشيط مسار العمل هذا.
+on:
+  # Triggers when code is pushed to specific branches.
+  # يتم التشغيل عند رفع الكود (Push) إلى فروع محددة.
+  push:
+    branches: [ "master", "develop" ]
+
+  # Triggers on any Pull Request created between any branches.
+  # يتم التشغيل عند إنشاء أي Pull Request (PR) بين أي فروع.
+  pull_request:
+    types: [opened, synchronize, reopened] # Runs when PR is opened, updated, or reopened
+
+  # Allows manual triggering from the GitHub Actions tab with optional inputs.
+  # يتيح التشغيل اليدوي من تبويب Actions في GitHub مع خيارات إدخال اختيارية.
+  workflow_dispatch:
+    inputs:
+      run_full_build:
+        description: 'Run full release build as well?'
+        required: false
+        default: false
+        type: boolean
+
+# Defines the jobs executed by the workflow.
+# يحدد المهام التي سيتم تنفيذها بواسطة مسار العمل.
+jobs:
+  # job id build-and-lint is the job ID you define yourself in the YAML file.
+  build-and-lint:
+    name: Build, Lint & Conditional Checks
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out the repository source code.
+      # الخطوة 1: سحب كود المصدر الخاص بالمستودع.
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Set up Java Development Kit (JDK) version 17.
+      # الخطوة 2: إعداد حزمة تطوير جافا (JDK) الإصدار 17.
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      # Step 3: Grant executable permissions to Gradle wrapper.
+      # الخطوة 3: منح صلاحيات التنفيذ لـ Gradle wrapper.
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      # Step 4: Conditional check of the trigger type and print debug info.
+      # الخطوة 4: التحقق الشرطي من نوع الـ Trigger وطباعة معلومات التصحيح.
+      - name: Check and Log Trigger Conditions
+        run: |
+          echo "=========================================="
+          echo "Workflow triggered by event: ${{ github.event_name }}"
+          echo "Branch or Ref: ${{ github.ref }}"
+          echo "Triggered by user: ${{ github.actor }}"
+          echo "=========================================="
+
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "-> Condition Met: This is a Pull Request!"
+            echo "   Source Branch: ${{ github.head_ref }}"
+            echo "   Target Branch: ${{ github.base_ref }}"
+          elif [ "${{ github.event_name }}" = "push" ]; then
+            echo "-> Condition Met: This is a direct push to ${{ github.ref_name }}"
+          elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "-> Condition Met: This was triggered MANUALLY from GitHub UI!"
+            echo "   Run full build input: ${{ inputs.run_full_build }}"
+          fi
+
+      # Step 5: Run ktlintCheck to validate code style against .editorconfig.
+      # الخطوة 5: تشغيل فحص ktlint للتحقق من تنسيق الكود مقابل قواعد .editorconfig.
+      - name: Run ktlint check
+        run: ./gradlew ktlintCheck
+
+      # Step 6: Build debug APK / project (Always runs).
+      # الخطوة 6: بناء مشروع أندرويد (يعمل دائماً).
+      - name: Build Debug Project
+        run: ./gradlew assembleDebug
+
+      # Step 7: Conditional step that runs ONLY if triggered manually and input is true.
+      # الخطوة 7: خطوة شرطية تعمل فقط عند التشغيل اليدوي إذا كان الخيار true.
+      - name: Run Extra Release Build (Manual Dispatch Condition)
+        if: github.event_name == 'workflow_dispatch' && inputs.run_full_build == true
+        run: |
+          echo "Running conditional release build because manual dispatch requested it..."
+          ./gradlew assembleRelease

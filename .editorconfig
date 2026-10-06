@@ -1,0 +1,56 @@
+# EditorConfig helps developers define and maintain consistent coding styles between different editors and IDEs.
+# يساعد EditorConfig المطورين في تحديد والحفاظ على أنماط برمجة متسقة بين المحررات وبيئات التطوير المختلفة.
+
+# Defines that this is the root EditorConfig file, stopping the search in parent directories.
+# يحدد أن هذا هو ملف EditorConfig الرئيسي، مما يوقف البحث في المجلدات الأعلى.
+root = true
+
+# Applies default formatting rules to all files in the project.
+# يطبق قواعد التنسيق الافتراضية على جميع الملفات في المشروع.
+[*]
+
+# Sets the character encoding to UTF-8.
+# يضبط ترميز الأحرف على UTF-8.
+charset = utf-8
+
+# Sets line endings to LF (Line Feed), standard for Unix/Linux/macOS.
+# يضبط نهايات الأسطر لتكون LF، وهي المعيار لأنظمة Unix/Linux/macOS.
+end_of_line = lf
+
+# Ensures that files always end with a blank newline character.
+# يضمن أن الملفات تنتهي دائماً بسطر فارغ جديد.
+insert_final_newline = true
+
+# Automatically removes trailing whitespace at the end of lines on save.
+# يزيل تلقائياً المسافات الزائدة في نهايات الأسطر عند الحفظ.
+trim_trailing_whitespace = true
+
+# Sets indentation to use spaces instead of hard tab characters.
+# يضبط المسافات البادئة لتستخدم مسافات (Spaces) بدلاً من علامات التبويب (Tabs).
+indent_style = space
+
+# Sets the default indentation width to 4 spaces (used for Kotlin, Java, XML, etc.).
+# يضبط عرض المسافة البادئة الافتراضية على 4 مسافات (تُستخدم لـ Kotlin و Java و XML وغيرها).
+indent_size = 4
+
+
+# Applies specific formatting rules to structured data and configuration files.
+# يطبق قواعد تنسيق محددة على ملفات البيانات الهيكلية وملفات الإعدادات.
+[*.{json,yml,yaml,properties}]
+
+# Uses 2-space indentation for JSON, YAML, and properties files.
+# يستخدم مسافة بادئة بمقدار مسافتين لملفات JSON و YAML و properties.
+indent_size = 2
+
+
+# Applies specific formatting rules to Markdown documentation files.
+# يطبق قواعد تنسيق محددة على ملفات توثيق Markdown.
+[*.md]
+
+# Disables trimming trailing whitespace in markdown (trailing spaces are used for hard line breaks).
+# يعطل إزالة المسافات الزائدة في ملفات markdown (حيث تُستخدم المسافات في النهاية لفواصل الأسطر).
+trim_trailing_whitespace = false
+
+# Uses 2-space indentation for markdown files.
+# يستخدم مسافة بادئة بمقدار مسافتين لملفات markdown.
+indent_size = 2
