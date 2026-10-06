@@ -14,6 +14,9 @@ plugins {
 }
 
 subprojects {
+    // In Gradle, buildSrc is not a normal subproject/submodule (like :app or :core:shared).
+    // It is a special, isolated Gradle project that builds before the main project to compile custom plugins
+    // and build scripts.
     if (project.name != "buildSrc") {
         apply(plugin = "org.jlleitschuh.gradle.ktlint")
     }

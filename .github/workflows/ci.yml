@@ -39,13 +39,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Step 2: Set up Java Development Kit (JDK) version 17.
-      # الخطوة 2: إعداد حزمة تطوير جافا (JDK) الإصدار 17.
-      - name: Set up JDK 17
+      # Step 2: Set up Java Development Kit (JDK) version 21.
+      # الخطوة 2: إعداد حزمة تطوير جافا (JDK) الإصدار 21.
+      - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '21'
 
       # Step 3: Grant executable permissions to Gradle wrapper.
       # الخطوة 3: منح صلاحيات التنفيذ لـ Gradle wrapper.
