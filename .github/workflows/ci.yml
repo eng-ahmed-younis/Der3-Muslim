@@ -157,3 +157,30 @@ jobs:
         with:
           name: unit-test-reports
           path: '**/build/reports/tests/'
+
+      # Step 9: Send Notification to Slack.
+      # الخطوة 9: إرسال إشعار إلى Slack عند اكتمال البناء.
+      - name: Send Slack Notification
+        if: always() && secrets.SLACK_WEBHOOK_URL != ''
+        run: |
+          STATUS="${{ job.status }}"
+
+          if [ "$STATUS" = "success" ]; then
+            COLOR="#36a64f"
+            EMOJI="✅"
+          else
+            COLOR="#ff0000"
+            EMOJI="❌"
+          fi
+
+          curl -X POST -H 'Content-type: application/json' --data "{
+            \"attachments\": [
+              {
+                \"color\": \"$COLOR\",
+                \"title\": \"$EMOJI Android CI/CD Build Status: $STATUS\",
+                \"title_link\": \"https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}\",
+                \"text\": \"*Repository:* ${{ github.repository }}\n*Branch:* ${{ github.ref_name }}\n*Triggered By:* ${{ github.actor }}\n*Event:* ${{ github.event_name }}\",
+                \"footer\": \"Der3 Muslim CI/CD Pipeline\"
+              }
+            ]
+          }" "${{ secrets.SLACK_WEBHOOK_URL }}"
