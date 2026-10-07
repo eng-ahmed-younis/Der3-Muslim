@@ -107,13 +107,13 @@ jobs:
       - name: Run ktlint check
         run: ./gradlew ktlintCheck
 
-      # Step 6: Run Unit Tests for the selected build variant.
-      # الخطوة 6: تشغيل الاختبارات الأحادية (Unit Tests) للبيئة المحددة.
-      - name: Run Unit Tests
+      # Step 6: Run All Unit Tests across all modules right after linting.
+      # الخطوة 6: تشغيل جميع الاختبارات الأحادية في جميع المديولات مباشرة بعد الفحص التنسيقي.
+      - name: Run All Unit Tests
         run: |
           BUILD_ENV="${{ inputs.build_environment || 'debug' }}"
           echo "=========================================="
-          echo "Running Unit Tests for Variant: $BUILD_ENV"
+          echo "Running All Unit Tests for Variant: $BUILD_ENV"
           echo "=========================================="
 
           case "$BUILD_ENV" in
