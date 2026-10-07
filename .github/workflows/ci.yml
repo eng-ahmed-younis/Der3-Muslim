@@ -161,8 +161,15 @@ jobs:
       # Step 9: Send Notification to Slack.
       # الخطوة 9: إرسال إشعار إلى Slack عند اكتمال البناء.
       - name: Send Slack Notification
-        if: always() && secrets.SLACK_WEBHOOK_URL != ''
+        if: always()
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: |
+          if [ -z "$SLACK_WEBHOOK_URL" ]; then
+            echo "SLACK_WEBHOOK_URL secret is not set. Skipping Slack notification."
+            exit 0
+          fi
+
           STATUS="${{ job.status }}"
 
           if [ "$STATUS" = "success" ]; then
@@ -183,4 +190,4 @@ jobs:
                 \"footer\": \"Der3 Muslim CI/CD Pipeline\"
               }
             ]
-          }" "${{ secrets.SLACK_WEBHOOK_URL }}"
+          }" "$SLACK_WEBHOOK_URL"
