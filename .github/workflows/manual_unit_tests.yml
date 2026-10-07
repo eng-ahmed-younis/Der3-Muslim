@@ -1,0 +1,137 @@
+# Name of the GitHub Actions workflow for running Unit Tests.
+# اسم مسار العمل الخاص بتشغيل الاختبارات الأحادية (Unit Tests).
+name: Manual Unit Tests
+
+# Triggers manually ONLY via GitHub Actions UI.
+# يتم التشغيل يدوياً فقط من واجهة GitHub Actions.
+on:
+  workflow_dispatch:
+    inputs:
+      target_module:
+        description: 'Select Module / Feature to Test'
+        required: true
+        default: 'All Modules'
+        type: choice
+        options:
+          - 'All Modules'
+          - ':app'
+          - ':core:data_store'
+          - ':core:player'
+          - ':core:shared'
+          - ':core:ui'
+          - ':features:home'
+          - ':features:on_boarding'
+          - ':features:sections'
+          - ':features:splash'
+          - ':navigation'
+
+      build_environment:
+        description: 'Select Environment (debug, staging, release)'
+        required: true
+        default: debug
+        type: choice
+        options:
+          - debug
+          - staging
+          - release
+
+jobs:
+  run-unit-tests:
+    name: Run Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout repository code.
+      # الخطوة 1: سحب كود المصدر.
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Set up Java Development Kit (JDK) version 21.
+      # الخطوة 2: إعداد حزمة تطوير جافا (JDK) الإصدار 21.
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      # Step 3: Grant executable permissions to Gradle wrapper.
+      # الخطوة 3: منح صلاحيات التنفيذ لـ Gradle wrapper.
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      # Step 4: Create local.properties required for Secrets Gradle Plugin & Base URL.
+      # الخطوة 4: إنشاء ملف local.properties المطلوب.
+      - name: Create local.properties
+        run: |
+          echo "sdk.dir=$ANDROID_HOME" > local.properties
+          echo "BASE_URL=https://api.example.com" >> local.properties
+
+      # Step 5: Execute Unit Tests for Selected Module & Environment.
+      # الخطوة 5: تنفيذ الاختبارات الأحادية للمديول والبيئة المحددين.
+      - name: Execute Unit Tests
+        run: |
+          MODULE="${{ inputs.target_module }}"
+          ENV="${{ inputs.build_environment }}"
+
+          case "$ENV" in
+            staging) VARIANT="Staging" ;;
+            release) VARIANT="Release" ;;
+            *)       VARIANT="Debug"   ;;
+          esac
+
+          TASK_NAME="test${VARIANT}UnitTest"
+
+          echo "=========================================="
+          echo "Selected Module: $MODULE"
+          echo "Selected Environment: $ENV ($VARIANT)"
+          echo "=========================================="
+
+          if [ "$MODULE" = "All Modules" ]; then
+            echo "Executing: ./gradlew $TASK_NAME"
+            ./gradlew $TASK_NAME
+          else
+            echo "Executing: ./gradlew $MODULE:$TASK_NAME"
+            ./gradlew "$MODULE:$TASK_NAME"
+          fi
+
+      # Step 6: Upload Test Reports as Artifact.
+      # الخطوة 6: رفع تقارير الاختبارات الأحادية كملف مرفق.
+      - name: Upload Test Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-reports
+          path: '**/build/reports/tests/'
+
+# ==============================================================================
+# Documentation: How $TASK_NAME is constructed and used in this workflow script
+# ==============================================================================
+# 1. Step-by-Step Logic
+#    # Step A: Get the user's selected environment input (e.g., 'debug', 'staging', 'release')
+#    ENV="${{ inputs.build_environment }}"
+#
+#    # Step B: Capitalize the first letter to match Gradle's camelCase naming convention
+#    case "$ENV" in
+#      staging) VARIANT="Staging" ;;
+#      release) VARIANT="Release" ;;
+#      *)       VARIANT="Debug"   ;;
+#    esac
+#
+#    # Step C: Construct the Gradle task name string
+#    TASK_NAME="test${VARIANT}UnitTest"
+#
+# 2. Examples of Generated Task Names
+#    Selected build_environment | $VARIANT Value | Generated $TASK_NAME
+#    ---------------------------|----------------|----------------------
+#    debug                      | Debug          | testDebugUnitTest
+#    staging                    | Staging        | testStagingUnitTest
+#    release                    | Release        | testReleaseUnitTest
+#
+# 3. How Module + Task Name Combine
+#    Depending on the target_module selected in the dropdown:
+#    - If target_module = All Modules:
+#        ./gradlew $TASK_NAME
+#        # Resolves to: ./gradlew testDebugUnitTest
+#    - If target_module = :features:home:
+#        ./gradlew $MODULE:$TASK_NAME
+#        # Resolves to: ./gradlew :features:home:testDebugUnitTest

@@ -43,11 +43,20 @@ on:
 jobs:
   # job id build-and-lint is the job ID you define yourself in the YAML file.
   build-and-lint:
-    name: Build, Lint & Conditional Checks
+    # This is the friendly job name shown in GitHub Actions.
+    # GitHub
+    #   ↓
+    # Create Ubuntu machine
+    #   ↓
+    # Run your steps
+    #   ↓
+    # Destroy machine
+    name: Build, Lint & Unit Tests
     runs-on: ubuntu-latest
 
     steps:
       # Step 1: Check out the repository source code.
+      # Your Android project exists on runner
       # الخطوة 1: سحب كود المصدر الخاص بالمستودع.
       - name: Checkout code
         uses: actions/checkout@v4
@@ -98,8 +107,29 @@ jobs:
       - name: Run ktlint check
         run: ./gradlew ktlintCheck
 
-      # Step 6: Build Selected Environment (debug, staging, or release).
-      # الخطوة 6: بناء البيئة المحددة (debug أو staging أو release).
+      # Step 6: Run Unit Tests for the selected build variant.
+      # الخطوة 6: تشغيل الاختبارات الأحادية (Unit Tests) للبيئة المحددة.
+      - name: Run Unit Tests
+        run: |
+          BUILD_ENV="${{ inputs.build_environment || 'debug' }}"
+          echo "=========================================="
+          echo "Running Unit Tests for Variant: $BUILD_ENV"
+          echo "=========================================="
+
+          case "$BUILD_ENV" in
+            staging)
+              ./gradlew testStagingUnitTest
+              ;;
+            release)
+              ./gradlew testReleaseUnitTest
+              ;;
+            *)
+              ./gradlew testDebugUnitTest
+              ;;
+          esac
+
+      # Step 7: Build Selected Environment (debug, staging, or release).
+      # الخطوة 7: بناء البيئة المحددة (debug أو staging أو release).
       - name: Build Selected Environment
         run: |
           BUILD_ENV="${{ inputs.build_environment || 'debug' }}"
@@ -118,3 +148,12 @@ jobs:
               ./gradlew assembleDebug
               ;;
           esac
+
+      # Step 8: Upload Unit Test Reports as an Artifact.
+      # الخطوة 8: رفع تقارير الاختبارات الأحادية كملف مرفق (Artifact).
+      - name: Upload Test Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-reports
+          path: '**/build/reports/tests/'

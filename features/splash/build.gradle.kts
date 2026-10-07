@@ -1,9 +1,12 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.android.library)
+    // alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.hilt.android)
+    // alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -12,10 +15,15 @@ android {
     compileSdk = BuildVersions.COMPILE_SDK
 
     defaultConfig {
+        minSdk = BuildVersions.MIN_SDK
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+    }
 
-        minSdk = BuildVersions.MIN_SDK
+    testOptions {
+        unitTests {
+            isReturnDefaultValues = true
+        }
     }
 
     buildTypes {
@@ -38,18 +46,18 @@ android {
             JavaVersion.toVersion(BuildVersions.JAVA_VERSION)
     }
 
-    buildFeatures {
-        compose = true
-    }
-
     kotlin {
         compilerOptions {
             jvmTarget.set(
-                org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(
+                JvmTarget.fromTarget(
                     BuildVersions.JAVA_VERSION.toString(),
                 ),
             )
         }
+    }
+
+    buildFeatures {
+        compose = true
     }
 }
 
@@ -58,6 +66,9 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockk)
+    testImplementation(libs.turbine)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
