@@ -3,27 +3,40 @@
 name: Advanced CI & Trigger Conditions
 
 # Defines the events (triggers) that activate this workflow.
+# Defines when this workflow should run.
 # يحدد الأحداث (Triggers) التي تقوم بتنشيط مسار العمل هذا.
 on:
   # Triggers when code is pushed to specific branches.
   # يتم التشغيل عند رفع الكود (Push) إلى فروع محددة.
   push:
-    branches: [ "master", "develop" , ci_cd]
+    branches: [ "master", "develop", ci_cd ]
 
   # Triggers on any Pull Request created between any branches.
   # يتم التشغيل عند إنشاء أي Pull Request (PR) بين أي فروع.
+  # Only these PR events trigger the workflow:
+  # opened       → PR created
+  # synchronize  → new commits pushed to the PR
+  # reopened     → closed PR opened again
   pull_request:
     types: [opened, synchronize, reopened] # Runs when PR is opened, updated, or reopened
 
   # Allows manual triggering from the GitHub Actions tab with optional inputs.
+  # Allows you to manually run the workflow from: ==>  GitHub
+  # 1- → Actions
+  # 2- → Workflow
+  # 3- → Run workflow
   # يتيح التشغيل اليدوي من تبويب Actions في GitHub مع خيارات إدخال اختيارية.
   workflow_dispatch:
     inputs:
-      run_full_build:
-        description: 'Run full release build as well?'
-        required: false
-        default: false
-        type: boolean
+      build_environment:
+        description: 'Select Environment / Build Variant (debug, staging, release)'
+        required: true
+        default: debug
+        type: choice
+        options:
+          - debug
+          - staging
+          - release
 
 # Defines the jobs executed by the workflow.
 # يحدد المهام التي سيتم تنفيذها بواسطة مسار العمل.
@@ -77,7 +90,7 @@ jobs:
             echo "-> Condition Met: This is a direct push to ${{ github.ref_name }}"
           elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "-> Condition Met: This was triggered MANUALLY from GitHub UI!"
-            echo "   Run full build input: ${{ inputs.run_full_build }}"
+            echo "   Selected Environment: ${{ inputs.build_environment }}"
           fi
 
       # Step 5: Run ktlintCheck to validate code style against .editorconfig.
@@ -85,15 +98,23 @@ jobs:
       - name: Run ktlint check
         run: ./gradlew ktlintCheck
 
-      # Step 6: Build debug APK / project (Always runs).
-      # الخطوة 6: بناء مشروع أندرويد (يعمل دائماً).
-      - name: Build Debug Project
-        run: ./gradlew assembleDebug
-
-      # Step 7: Conditional step that runs ONLY if triggered manually and input is true.
-      # الخطوة 7: خطوة شرطية تعمل فقط عند التشغيل اليدوي إذا كان الخيار true.
-      - name: Run Extra Release Build (Manual Dispatch Condition)
-        if: github.event_name == 'workflow_dispatch' && inputs.run_full_build == true
+      # Step 6: Build Selected Environment (debug, staging, or release).
+      # الخطوة 6: بناء البيئة المحددة (debug أو staging أو release).
+      - name: Build Selected Environment
         run: |
-          echo "Running conditional release build because manual dispatch requested it..."
-          ./gradlew assembleRelease
+          BUILD_ENV="${{ inputs.build_environment || 'debug' }}"
+          echo "=========================================="
+          echo "Building Android App Variant: $BUILD_ENV"
+          echo "=========================================="
+
+          case "$BUILD_ENV" in
+            staging)
+              ./gradlew assembleStaging
+              ;;
+            release)
+              ./gradlew assembleRelease
+              ;;
+            *)
+              ./gradlew assembleDebug
+              ;;
+          esac
