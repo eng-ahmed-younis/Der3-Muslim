@@ -28,6 +28,13 @@ android {
         buildConfig = true
     }
 
+    val aladhanBaseUrl =
+        (
+            project.findProperty("ALADHAN_BASE_URL")
+                ?: project.findProperty("BASE_URL")
+                ?: "https://api.aladhan.com/v1/"
+        ).toString()
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -38,8 +45,8 @@ android {
 
             buildConfigField(
                 "String",
-                "BASE_URL",
-                "\"${project.findProperty("BASE_URL")}\"",
+                "ALADHAN_BASE_URL",
+                "\"$aladhanBaseUrl\"",
             )
 
             buildConfigField(
@@ -60,8 +67,8 @@ android {
 
             buildConfigField(
                 "String",
-                "BASE_URL",
-                "\"${project.findProperty("BASE_URL")}\"",
+                "ALADHAN_BASE_URL",
+                "\"$aladhanBaseUrl\"",
             )
 
             buildConfigField(
@@ -74,8 +81,8 @@ android {
         debug {
             buildConfigField(
                 "String",
-                "BASE_URL",
-                "\"${project.findProperty("BASE_URL")}\"",
+                "ALADHAN_BASE_URL",
+                "\"$aladhanBaseUrl\"",
             )
 
             buildConfigField(

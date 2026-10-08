@@ -74,13 +74,12 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      # Step 3.5: Create local.properties and secrets.properties from GitHub Secrets.
-      # الخطوة 3.5: إنشاء ملفات local.properties و secrets.properties من أسرار GitHub.
+      # Step 3.5: Create local.properties and secrets.properties.
+      # الخطوة 3.5: إنشاء ملفات local.properties و secrets.properties.
       - name: Create Properties Files
         run: |
           echo "sdk.dir=$ANDROID_HOME" > local.properties
-          echo "BASE_URL=${{ secrets.BASE_URL }}" > secrets.properties
-          echo "SLACK_WEBHOOK_URL=${{ secrets.SLACK_WEBHOOK_URL }}" >> secrets.properties
+          echo "ALADHAN_BASE_URL=https://api.aladhan.com/v1/" > secrets.properties
 
       # Step 4: Conditional check of the trigger type and print debug info.
       # الخطوة 4: التحقق الشرطي من نوع الـ Trigger وطباعة معلومات التصحيح.

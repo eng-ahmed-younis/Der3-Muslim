@@ -59,12 +59,12 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      # Step 4: Create local.properties required for Secrets Gradle Plugin & Base URL.
-      # الخطوة 4: إنشاء ملف local.properties المطلوب.
-      - name: Create local.properties
+      # Step 4: Create local.properties and secrets.properties.
+      # الخطوة 4: إنشاء ملفات local.properties و secrets.properties المطلوبة.
+      - name: Create Properties Files
         run: |
           echo "sdk.dir=$ANDROID_HOME" > local.properties
-          echo "BASE_URL=https://api.example.com" >> local.properties
+          echo "ALADHAN_BASE_URL=https://api.aladhan.com/v1/" > secrets.properties
 
       # Step 5: Execute Unit Tests for Selected Module & Environment.
       # الخطوة 5: تنفيذ الاختبارات الأحادية للمديول والبيئة المحددين.
