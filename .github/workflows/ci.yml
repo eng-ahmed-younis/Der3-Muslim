@@ -163,13 +163,8 @@ jobs:
       - name: Send Slack Notification
         if: always()
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL || 'https://hooks.slack.com/services/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' }}
         run: |
-          if [ -z "$SLACK_WEBHOOK_URL" ]; then
-            echo "SLACK_WEBHOOK_URL secret is not set. Skipping Slack notification."
-            exit 0
-          fi
-
           STATUS="${{ job.status }}"
 
           if [ "$STATUS" = "success" ]; then
@@ -191,4 +186,3 @@ jobs:
               }
             ]
           }" "$SLACK_WEBHOOK_URL"
-
