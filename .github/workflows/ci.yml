@@ -74,12 +74,12 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      # Step 3.5: Create local.properties for Secrets Gradle Plugin & Base URL.
-      # الخطوة 3.5: إنشاء ملف local.properties لكونه مطلوباً بواسطة Secrets Gradle Plugin.
-      - name: Create local.properties
+      # Step 3.5: Create local.properties and secrets.properties.
+      # الخطوة 3.5: إنشاء ملفات local.properties و secrets.properties.
+      - name: Create Properties Files
         run: |
           echo "sdk.dir=$ANDROID_HOME" > local.properties
-          echo "BASE_URL=https://api.example.com" >> local.properties
+          echo "ALADHAN_BASE_URL=https://api.aladhan.com/v1/" > secrets.properties
 
       # Step 4: Conditional check of the trigger type and print debug info.
       # الخطوة 4: التحقق الشرطي من نوع الـ Trigger وطباعة معلومات التصحيح.
@@ -107,13 +107,13 @@ jobs:
       - name: Run ktlint check
         run: ./gradlew ktlintCheck
 
-      # Step 6: Run Unit Tests for the selected build variant.
-      # الخطوة 6: تشغيل الاختبارات الأحادية (Unit Tests) للبيئة المحددة.
-      - name: Run Unit Tests
+      # Step 6: Run All Unit Tests across all modules right after linting.
+      # الخطوة 6: تشغيل جميع الاختبارات الأحادية في جميع المديولات مباشرة بعد الفحص التنسيقي.
+      - name: Run All Unit Tests
         run: |
           BUILD_ENV="${{ inputs.build_environment || 'debug' }}"
           echo "=========================================="
-          echo "Running Unit Tests for Variant: $BUILD_ENV"
+          echo "Running All Unit Tests for Variant: $BUILD_ENV"
           echo "=========================================="
 
           case "$BUILD_ENV" in
@@ -157,3 +157,33 @@ jobs:
         with:
           name: unit-test-reports
           path: '**/build/reports/tests/'
+
+      # Step 9: Send Notification to Slack.
+      # الخطوة 9: إرسال إشعار إلى Slack عند اكتمال البناء.
+      - name: Send Slack Notification
+        if: always()
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL || 'https://hooks.slack.com/services/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' }}
+        run: |
+          STATUS="${{ job.status }}"
+
+          if [ "$STATUS" = "success" ]; then
+            COLOR="#36a64f"
+            EMOJI="✅"
+          else
+            COLOR="#ff0000"
+            EMOJI="❌"
+          fi
+
+          curl -X POST -H 'Content-type: application/json' --data "{
+            \"attachments\": [
+              {
+                \"color\": \"$COLOR\",
+                \"title\": \"$EMOJI Android CI/CD Build Status: $STATUS\",
+                \"title_link\": \"https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}\",
+                \"text\": \"*Repository:* ${{ github.repository }}\n*Branch:* ${{ github.ref_name }}\n*Triggered By:* ${{ github.actor }}\n*Event:* ${{ github.event_name }}\",
+                \"footer\": \"Der3 Muslim CI/CD Pipeline\"
+              }
+            ]
+          }" "$SLACK_WEBHOOK_URL"
+

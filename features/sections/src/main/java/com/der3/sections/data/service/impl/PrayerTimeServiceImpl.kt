@@ -3,6 +3,7 @@ package com.der3.sections.data.service.impl
 
 import com.der3.sections.data.service.api.PrayerTimeService
 import com.der3.shared.BuildConfig
+
 import com.der3.shared.data.dto.prayer.base.ApiResponseDto
 import com.der3.shared.data.dto.prayer.base.MethodDetailDto
 import com.der3.shared.data.dto.prayer.NextPrayerDto
@@ -20,7 +21,7 @@ import javax.inject.Singleton
 @Singleton
 class PrayerTimeServiceImpl @Inject constructor(
     private val client: HttpClient,
-    private val baseUrl: String = BuildConfig.BASE_URL
+    private val baseUrl: String = BuildConfig.ALADHAN_BASE_URL
 ) : PrayerTimeService {
 
     companion object {
