@@ -1,15 +1,15 @@
-# EditorConfig helps developers define and maintain consistent coding styles between different editors and IDEs.
+# EditorConfig defines and maintains consistent coding styles across editors and IDEs.
 # يساعد EditorConfig المطورين في تحديد والحفاظ على أنماط برمجة متسقة بين المحررات وبيئات التطوير المختلفة.
+# https://editorconfig.org
 
-# Defines that this is the root EditorConfig file, stopping the search in parent directories.
+# Defines that this is the root EditorConfig file, stopping search in parent directories.
 # يحدد أن هذا هو ملف EditorConfig الرئيسي، مما يوقف البحث في المجلدات الأعلى.
 root = true
 
-# Applies default formatting rules to all files in the project.
-# يطبق قواعد التنسيق الافتراضية على جميع الملفات في المشروع.
+# Top-level default settings applied to all files in the project.
+# قواعد التنسيق الافتراضية المطبقة على جميع الملفات في المشروع.
 [*]
-
-# Sets the character encoding to UTF-8.
+# Sets character encoding to UTF-8.
 # يضبط ترميز الأحرف على UTF-8.
 charset = utf-8
 
@@ -29,28 +29,51 @@ trim_trailing_whitespace = true
 # يضبط المسافات البادئة لتستخدم مسافات (Spaces) بدلاً من علامات التبويب (Tabs).
 indent_style = space
 
-# Sets the default indentation width to 4 spaces (used for Kotlin, Java, XML, etc.).
-# يضبط عرض المسافة البادئة الافتراضية على 4 مسافات (تُستخدم لـ Kotlin و Java و XML وغيرها).
+# Sets default indentation width to 4 spaces.
+# يضبط عرض المسافة البادئة الافتراضية على 4 مسافات.
 indent_size = 4
 
 
-# Applies specific formatting rules to structured data and configuration files.
-# يطبق قواعد تنسيق محددة على ملفات البيانات الهيكلية وملفات الإعدادات.
-[*.{json,yml,yaml,properties}]
+# Formatting rules for Kotlin & Java source code files.
+# قواعد التنسيق الخاصة بملفات Kotlin و Java.
+[*.{kt,kts,java}]
+# Sets maximum line length to 120 characters.
+# يضبط الحد الأقصى لطول السطر على 120 حرفاً.
+max_line_length = 120
 
-# Uses 2-space indentation for JSON, YAML, and properties files.
-# يستخدم مسافة بادئة بمقدار مسافتين لملفات JSON و YAML و properties.
+# Allows trailing commas in multiline parameter lists and call sites.
+# يسمح بالفاصلة السفلية النهائية (Trailing Comma) للقوائم متعددة الأسطر.
+ij_kotlin_allow_trailing_comma = true
+ij_kotlin_allow_trailing_comma_on_call_site = true
+
+
+# Formatting rules for Android XML Resources, Manifests, and Layouts.
+# قواعد التنسيق الخاصة بملفات XML للموارد والواجهات.
+[*.xml]
+indent_size = 4
+
+
+# Formatting rules for Gradle build scripts and Properties files.
+# قواعد التنسيق الخاصة بملفات إعدادات Gradle وملفات الخصائص.
+[*.{gradle,properties}]
+indent_size = 4
+
+
+# Formatting rules for structured data and config files (JSON, YAML).
+# قواعد التنسيق الخاصة بملفات البيانات الهيكلية والإعدادات (JSON و YAML).
+[*.{json,yml,yaml}]
 indent_size = 2
 
 
-# Applies specific formatting rules to Markdown documentation files.
-# يطبق قواعد تنسيق محددة على ملفات توثيق Markdown.
+# Formatting rules for Markdown documentation files.
+# قواعد التنسيق الخاصة بملفات توثيق Markdown.
 [*.md]
+indent_size = 2
 
-# Disables trimming trailing whitespace in markdown (trailing spaces are used for hard line breaks).
-# يعطل إزالة المسافات الزائدة في ملفات markdown (حيث تُستخدم المسافات في النهاية لفواصل الأسطر).
+# Disables trimming trailing whitespace (trailing spaces create line breaks in Markdown).
+# يعطل إزالة المسافات الزائدة (حيث تُستخدم المسافات في النهاية لفواصل الأسطر في Markdown).
 trim_trailing_whitespace = false
 
-# Uses 2-space indentation for markdown files.
-# يستخدم مسافة بادئة بمقدار مسافتين لملفات markdown.
-indent_size = 2
+# Disables line length restrictions for markdown documentation.
+# يعطل قيود طول السطر لملفات توثيق Markdown.
+max_line_length = off
