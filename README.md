@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="core/ui/src/main/res/drawable/app_logo.png" alt="Der3 Muslim Logo" width="160" height="160" />
+  <img src="core/ui/src/main/res/drawable/der3_logo.png" alt="Der3 Muslim Logo" width="160" height="160" />
 </p>
 
 <h1 align="center">Der3 Muslim (درع المسلم)</h1>

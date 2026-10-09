@@ -95,7 +95,7 @@ class NotificationBuilder @Inject constructor(
 
         val notification =
             NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.drawable.app_logo)
+                .setSmallIcon(R.drawable.der3_logo)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setSound(getSoundUri(context))
                 .setAutoCancel(true)
