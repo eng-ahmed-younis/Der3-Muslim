@@ -1,0 +1,79 @@
+# EditorConfig defines and maintains consistent coding styles across editors and IDEs.
+# يساعد EditorConfig المطورين في تحديد والحفاظ على أنماط برمجة متسقة بين المحررات وبيئات التطوير المختلفة.
+# https://editorconfig.org
+
+# Defines that this is the root EditorConfig file, stopping search in parent directories.
+# يحدد أن هذا هو ملف EditorConfig الرئيسي، مما يوقف البحث في المجلدات الأعلى.
+root = true
+
+# Top-level default settings applied to all files in the project.
+# قواعد التنسيق الافتراضية المطبقة على جميع الملفات في المشروع.
+[*]
+# Sets character encoding to UTF-8.
+# يضبط ترميز الأحرف على UTF-8.
+charset = utf-8
+
+# Sets line endings to LF (Line Feed), standard for Unix/Linux/macOS.
+# يضبط نهايات الأسطر لتكون LF، وهي المعيار لأنظمة Unix/Linux/macOS.
+end_of_line = lf
+
+# Ensures that files always end with a blank newline character.
+# يضمن أن الملفات تنتهي دائماً بسطر فارغ جديد.
+insert_final_newline = true
+
+# Automatically removes trailing whitespace at the end of lines on save.
+# يزيل تلقائياً المسافات الزائدة في نهايات الأسطر عند الحفظ.
+trim_trailing_whitespace = true
+
+# Sets indentation to use spaces instead of hard tab characters.
+# يضبط المسافات البادئة لتستخدم مسافات (Spaces) بدلاً من علامات التبويب (Tabs).
+indent_style = space
+
+# Sets default indentation width to 4 spaces.
+# يضبط عرض المسافة البادئة الافتراضية على 4 مسافات.
+indent_size = 4
+
+
+# Formatting rules for Kotlin & Java source code files.
+# قواعد التنسيق الخاصة بملفات Kotlin و Java.
+[*.{kt,kts,java}]
+# Sets maximum line length to 120 characters.
+# يضبط الحد الأقصى لطول السطر على 120 حرفاً.
+max_line_length = 120
+
+# Allows trailing commas in multiline parameter lists and call sites.
+# يسمح بالفاصلة السفلية النهائية (Trailing Comma) للقوائم متعددة الأسطر.
+ij_kotlin_allow_trailing_comma = true
+ij_kotlin_allow_trailing_comma_on_call_site = true
+
+
+# Formatting rules for Android XML Resources, Manifests, and Layouts.
+# قواعد التنسيق الخاصة بملفات XML للموارد والواجهات.
+[*.xml]
+indent_size = 4
+
+
+# Formatting rules for Gradle build scripts and Properties files.
+# قواعد التنسيق الخاصة بملفات إعدادات Gradle وملفات الخصائص.
+[*.{gradle,properties}]
+indent_size = 4
+
+
+# Formatting rules for structured data and config files (JSON, YAML).
+# قواعد التنسيق الخاصة بملفات البيانات الهيكلية والإعدادات (JSON و YAML).
+[*.{json,yml,yaml}]
+indent_size = 2
+
+
+# Formatting rules for Markdown documentation files.
+# قواعد التنسيق الخاصة بملفات توثيق Markdown.
+[*.md]
+indent_size = 2
+
+# Disables trimming trailing whitespace (trailing spaces create line breaks in Markdown).
+# يعطل إزالة المسافات الزائدة (حيث تُستخدم المسافات في النهاية لفواصل الأسطر في Markdown).
+trim_trailing_whitespace = false
+
+# Disables line length restrictions for markdown documentation.
+# يعطل قيود طول السطر لملفات توثيق Markdown.
+max_line_length = off
