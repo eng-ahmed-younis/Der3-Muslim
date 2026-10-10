@@ -1,0 +1,12 @@
+Work Type,Summary,Description,Priority,Labels,Status
+Epic,App Shell & Onboarding,First-run setup navigation dashboard and permission guidance.,P0,"der3-muslim,onboarding",To Do
+Epic,Azkar & Supplications,Browse read search count and save authentic Azkar.,P0,"der3-muslim,azkar",To Do
+Epic,Prayer Times & Hijri,Location-based prayer schedule manual location calculation preferences and Hijri date.,P0,"der3-muslim,prayer",To Do
+Epic,Qibla Compass,Qibla bearing compass accuracy guidance sensor fallback and location changes.,P0,"der3-muslim,qibla",To Do
+Epic,Digital Masbaha,Tasbeeh counter targets custom phrases haptics and history.,P0,"der3-muslim,masbaha",To Do
+Epic,Audio Player,Recitation playback controls background audio speed seek and sleep timer.,P0,"der3-muslim,audio",To Do
+Epic,Reminders & Notifications,Daily and weekly reminders notification permission and Firebase push handling.,P0,"der3-muslim,reminders",To Do
+Epic,Recycle Bin,Soft delete restore and permanent deletion for user-created content.,P1,"der3-muslim,recycle-bin",To Do
+Epic,Themes Settings & Accessibility,Themes Arabic readability saved preferences RTL and accessibility support.,P1,"der3-muslim,settings",To Do
+Epic,Quality Privacy & Reliability,Error handling privacy religious-content accuracy offline behavior and quality checks.,P0,"der3-muslim,quality",To Do
+Epic,Engineering CI/CD & Release,CI secrets modular architecture release preparation and safe observability.,P0,"der3-muslim,engineering",To Do

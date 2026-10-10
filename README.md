@@ -136,23 +136,23 @@ graph TD
 
 ### Module Structure & Responsibilities
 
-| Module Name | Type | Key Responsibilities |
-| :--- | :--- | :--- |
-| **`:app`** | App | Application root, Hilt DI setup (`Der3Application`), and app manifest. |
-| **`:navigation`** | Library | Navigation Graph definitions and type-safe screen routing. |
-| **`:screens`** | Library | Composition root assembling feature composables into main screens. |
-| **`:features:home`** | Feature | Home dashboard, Azkar category list, search engine, and favorites. |
-| **`:features:sections`** | Feature | Prayer timings, Qibla compass, Masbaha counter, and custom notification scheduler. |
-| **`:features:splash`** | Feature | Animated branding splash screen. |
-| **`:features:on_boarding`** | Feature | First-run onboarding flow and initial preference setup. |
-| **`:core:mvi`** | Core | Base framework for MVI pattern (`MviBaseViewModel`, `UiState`, `UiIntent`, `UiEffect`). |
-| **`:core:shared`** | Core | Domain entities, Use Cases, Repositories, Ktor API Services, DTOs, and FCM notification builders. |
-| **`:core:data_store`** | Core | Local key-value persistence using Jetpack Preferences DataStore. |
-| **`:core:player`** | Core | Audio playback manager service for recitation streaming. |
-| **`:core:ui`** | Core | Reusable Compose UI components, Material 3 Theme, colors, strings, and icons (`der3_logo`). |
-| **`:core:ui-model`** | Core | Platform-agnostic UI data models, Enums, and State wrappers. |
-| **`:core:utils`** | Core | Arabic text normalization, date-time formatters, and utility extensions. |
-| **`:buildSrc`** | Gradle | Centralized build dependencies, Kotlin DSL version constants (`BuildVersions.kt`), and plugins. |
+| Module Name                 | Type    | Key Responsibilities                                                                              |
+|:----------------------------|:--------|:--------------------------------------------------------------------------------------------------|
+| **`:app`**                  | App     | Application root, Hilt DI setup (`Der3Application`), and app manifest.                            |
+| **`:navigation`**           | Library | Navigation Graph definitions and type-safe screen routing.                                        |
+| **`:screens`**              | Library | Composition root assembling feature composables into main screens.                                |
+| **`:features:home`**        | Feature | Home dashboard, Azkar category list, search engine, and favorites.                                |
+| **`:features:sections`**    | Feature | Prayer timings, Qibla compass, Masbaha counter, and custom notification scheduler.                |
+| **`:features:splash`**      | Feature | Animated branding splash screen.                                                                  |
+| **`:features:on_boarding`** | Feature | First-run onboarding flow and initial preference setup.                                           |
+| **`:core:mvi`**             | Core    | Base framework for MVI pattern (`MviBaseViewModel`, `UiState`, `UiIntent`, `UiEffect`).           |
+| **`:core:shared`**          | Core    | Domain entities, Use Cases, Repositories, Ktor API Services, DTOs, and FCM notification builders. |
+| **`:core:data_store`**      | Core    | Local key-value persistence using Jetpack Preferences DataStore.                                  |
+| **`:core:player`**          | Core    | Audio playback manager service for recitation streaming.                                          |
+| **`:core:ui`**              | Core    | Reusable Compose UI components, Material 3 Theme, colors, strings, and icons (`der3_logo`).       |
+| **`:core:ui-model`**        | Core    | Platform-agnostic UI data models, Enums, and State wrappers.                                      |
+| **`:core:utils`**           | Core    | Arabic text normalization, date-time formatters, and utility extensions.                          |
+| **`:buildSrc`**             | Gradle  | Centralized build dependencies, Kotlin DSL version constants (`BuildVersions.kt`), and plugins.   |
 
 ---
 
